@@ -23,6 +23,7 @@ private:
     Ui::CodeEdit *ui;
 
     QString buffer;
+    QTextDocument * document;
 };
 
 class HighLighter : public QSyntaxHighlighter
@@ -33,6 +34,8 @@ public:
     explicit HighLighter(QTextDocument* parent = nullptr);
 
 private:
+    static QStringList keyWords;
+
     struct HighLightRule{
         QTextCharFormat format;
         QRegularExpression exp;

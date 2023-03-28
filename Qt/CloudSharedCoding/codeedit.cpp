@@ -2,14 +2,18 @@
 #include "ui_codeedit.h"
 #include<QKeyEvent>
 
+QStringList HighLighter::keyWords = {
+    "\\bint\\b","\\bdouble\\b","\\bchar\\b","\\bstring\\b"
+};
 CodeEdit::CodeEdit(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CodeEdit)
 {
     ui->setupUi(this);
 
+    document = ui->textEdit->document();
     ui->textEdit->setFontFamily("Consolas");
-    HighLighter* highLighter = new HighLighter(ui->textEdit->document());
+    HighLighter* highLighter = new HighLighter(document);
 }
 
 CodeEdit::~CodeEdit()
@@ -22,7 +26,6 @@ HighLighter::HighLighter(QTextDocument* parent):QSyntaxHighlighter (parent)
     HighLightRule rule;
     keyWordFormat.setForeground(QColor(127, 255, 212));
     keyWordFormat.setFontWeight(QFont::Bold);
-    QStringList keyWords = {"\\bint\\b","\\bdouble\\b","\\bchar\\b","\\bstring\\b"};
     for(auto i : keyWords)
     {
         rule.exp = QRegularExpression(i);
