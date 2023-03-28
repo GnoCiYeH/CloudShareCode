@@ -7,6 +7,9 @@ CodeEdit::CodeEdit(QWidget *parent) :
     ui(new Ui::CodeEdit)
 {
     ui->setupUi(this);
+
+    ui->textEdit->setFontFamily("Consolas");
+    HighLighter* highLighter = new HighLighter(ui->textEdit->document());
 }
 
 CodeEdit::~CodeEdit()
@@ -14,18 +17,29 @@ CodeEdit::~CodeEdit()
     delete ui;
 }
 
-bool CodeEdit::eventFilter(QObject *obj, QEvent *e)
+HighLighter::HighLighter(QTextDocument* parent):QSyntaxHighlighter (parent)
 {
-    if(obj==ui->textEdit&&e->type()==QEvent::KeyPress)
+    HighLightRule rule;
+    keyWordFormat.setForeground(QColor(127, 255, 212));
+    keyWordFormat.setFontWeight(QFont::Bold);
+    QStringList keyWords = {"\\bint\\b","\\bdouble\\b","\\bchar\\b","\\bstring\\b"};
+    for(auto i : keyWords)
     {
-        QKeyEvent* keyEvent = static_cast<QKeyEvent *>(e);
-        int keyVal = keyEvent->key();
-        if(keyVal==Qt::Key_Space)
-        {
-            format();
-        }
-        else if((keyVal>=Qt::Key_0&&keyVal<=Qt::Key_9)||(keyVal>=Qt::Key_A&&keyVal<=Qt::Key_Z)){
+        rule.exp = QRegularExpression(i);
+        rule.format = keyWordFormat;
+        rules.append(rule);
+    }
+}
 
+void HighLighter::highlightBlock(const QString &text)
+{
+    for(auto i : rules)
+    {
+        QRegularExpressionMatchIterator it = i.exp.globalMatch(text);
+        while(it.hasNext())
+        {
+            QRegularExpressionMatch match = it.next();
+            setFormat(match.capturedStart(),match.capturedLength(),i.format);
         }
     }
 }

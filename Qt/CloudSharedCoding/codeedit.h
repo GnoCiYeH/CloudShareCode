@@ -3,6 +3,9 @@
 
 #include <QWidget>
 #include<QTextEdit>
+#include<QSyntaxHighlighter>
+#include<QTextCharFormat>
+#include<QRegularExpression>
 
 namespace Ui {
 class CodeEdit;
@@ -19,11 +22,34 @@ public:
 private:
     Ui::CodeEdit *ui;
 
-    bool eventFilter(QObject *obj, QEvent *e)override;
-
     QString buffer;
 
     void format();
+
+    QSet<QString> keyWords = {
+        "int",
+        "string",
+        "double"
+    };
+};
+
+class HighLighter : public QSyntaxHighlighter
+{
+    Q_OBJECT
+
+public:
+    explicit HighLighter(QTextDocument* parent = nullptr);
+
+private:
+    struct HighLightRule{
+        QTextCharFormat format;
+        QRegularExpression exp;
+    };
+    QVector<HighLightRule> rules;
+    QTextCharFormat keyWordFormat;
+
+protected:
+    void highlightBlock(const QString &text) override;
 };
 
 #endif // CODEEDIT_H
