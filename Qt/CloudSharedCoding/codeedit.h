@@ -23,14 +23,6 @@ private:
     Ui::CodeEdit *ui;
 
     QString buffer;
-
-    void format();
-
-    QSet<QString> keyWords = {
-        "int",
-        "string",
-        "double"
-    };
 };
 
 class HighLighter : public QSyntaxHighlighter
