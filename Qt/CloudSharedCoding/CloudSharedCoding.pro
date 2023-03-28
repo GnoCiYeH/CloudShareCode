@@ -6,7 +6,7 @@
 
 QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets network
 
 TARGET = CloudSharedCoding
 TEMPLATE = app
@@ -27,16 +27,19 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    codeedit.cpp
+    codeedit.cpp \
+    logindialog.cpp
 
 HEADERS += \
         mainwindow.h \
     myhelper.h \
-    codeedit.h
+    codeedit.h \
+    logindialog.h
 
 FORMS += \
         mainwindow.ui \
-    codeedit.ui
+    codeedit.ui \
+    logindialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
