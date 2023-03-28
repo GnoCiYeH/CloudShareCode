@@ -2,6 +2,7 @@
 #define CODEEDIT_H
 
 #include <QWidget>
+#include<QTextEdit>
 
 namespace Ui {
 class CodeEdit;
@@ -17,6 +18,12 @@ public:
 
 private:
     Ui::CodeEdit *ui;
+
+    bool eventFilter(QObject *obj, QEvent *e)override;
+
+    QString buffer;
+
+    void format();
 };
 
 #endif // CODEEDIT_H
