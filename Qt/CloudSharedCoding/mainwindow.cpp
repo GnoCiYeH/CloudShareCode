@@ -25,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionCloud_project,SIGNAL(triggered()),this,SLOT(openCloudProj()));
     connect(ui->actionLocal_project,SIGNAL(triggered()),this,SLOT(openLoaclProj()));
     connect(ui->actionNew_local_project,SIGNAL(triggered()),this,SLOT(newLocalProj()));
-    connect(ui->actionNew_cloud_project,SIGNAL(triggered()),this,SLOT(newCloutProj()));
+    connect(ui->actionNew_cloud_project,SIGNAL(triggered()),this,SLOT(newCloudProj()));
     connect(ui->actionSetting,SIGNAL(triggered()),this,SLOT(openSettingDialog()));
 }
 
