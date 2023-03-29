@@ -28,13 +28,15 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     codeedit.cpp \
-    logindialog.cpp
+    logindialog.cpp \
+    package.cpp
 
 HEADERS += \
         mainwindow.h \
     myhelper.h \
     codeedit.h \
-    logindialog.h
+    logindialog.h \
+    package.h
 
 FORMS += \
         mainwindow.ui \
