@@ -11,8 +11,22 @@ MainWindow::MainWindow(QWidget *parent) :
     myHelper::setStyle(":/qss/psblack.css");
     this->setWindowTitle("CloudSharedCoding");
 
+    QToolButton* undoButton = new QToolButton(this);
+    undoButton->setIcon(QIcon("://qss/darkblack/add_left.png"));
+    undoButton->setFixedSize(20,20);
+    ui->mainToolBar->addWidget(undoButton);
+    QToolButton* forwordButton = new QToolButton(this);
+    forwordButton->setIcon(QIcon("://qss/darkblack/add_right.png"));
+    forwordButton->setFixedSize(20,20);
+    ui->mainToolBar->addWidget(forwordButton);
+
     connect(ui->actionClose,SIGNAL(triggered()),this,SLOT(close()));
+    connect(ui->actionClose_project,SIGNAL(triggered()),this,SLOT(closeProject()));
     connect(ui->actionCloud_project,SIGNAL(triggered()),this,SLOT(openCloudProj()));
+    connect(ui->actionLocal_project,SIGNAL(triggered()),this,SLOT(openLoaclProj()));
+    connect(ui->actionNew_local_project,SIGNAL(triggered()),this,SLOT(newLocalProj()));
+    connect(ui->actionNew_cloud_project,SIGNAL(triggered()),this,SLOT(newCloutProj()));
+    connect(ui->actionSetting,SIGNAL(triggered()),this,SLOT(openSettingDialog()));
 }
 
 MainWindow::~MainWindow()
