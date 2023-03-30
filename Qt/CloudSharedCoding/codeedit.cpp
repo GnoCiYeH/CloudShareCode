@@ -1,6 +1,8 @@
 #include "codeedit.h"
 #include "ui_codeedit.h"
 #include<QKeyEvent>
+#include<QDebug>
+#include<QTimer>
 
 QStringList HighLighter::keyWords = {
     "\\bint\\b","\\bdouble\\b","\\bchar\\b","\\bstring\\b"
@@ -14,11 +16,66 @@ CodeEdit::CodeEdit(QWidget *parent) :
     document = ui->textEdit->document();
     ui->textEdit->setFontFamily("Consolas");
     HighLighter* highLighter = new HighLighter(document);
+
+    connect(document,SIGNAL(contentsChange(int, int, int)),this,SLOT(docChange(int,int,int)));
+
+    thread = new EditWorkThread(this);
+    thread->start();
 }
 
 CodeEdit::~CodeEdit()
 {
     delete ui;
+    thread->deleteLater();
+    delete thread;
+}
+
+void CodeEdit::docChange(int p, int charsRemoved, int charsAdded)
+{
+    int position = ui->textEdit->textCursor().position()-(charsAdded-charsRemoved);
+    qDebug()<<position<<" "<<charsRemoved<<" "<<charsAdded;
+    if(position==lastPosition);
+    if(charsRemoved>0)
+    {
+        if(charsAdded==0)
+            emit deleteInfo(position,charsRemoved);
+        else
+        {
+            for (int i = position;i<charsAdded+position-charsRemoved;i++) {
+                buffer.append(document->characterAt(i));
+            }
+        }
+    }
+    else{
+        for (int i = position;i<charsAdded+position;i++) {
+            buffer.append(document->characterAt(i));
+        }
+    }
+}
+
+EditWorkThread::EditWorkThread(CodeEdit* codeE)
+{
+    this->codeEdit = codeE;
+}
+
+void EditWorkThread::deleteInfo(int position,int charsRemoved)
+{
+    qDebug()<<"在"<<position<<"删除"<<charsRemoved<<"个字符";
+}
+
+void EditWorkThread::run()
+{
+    connect(codeEdit,SIGNAL(deleteInfo(int,int)),this,SLOT(deleteInfo(int,int)),Qt::DirectConnection);
+    QTimer timer;
+    connect(&timer,&QTimer::timeout,this,[=](){
+        if(!codeEdit->buffer.isEmpty())
+        {
+            qDebug()<<"buffer:"<<codeEdit->buffer;
+            codeEdit->buffer = "";
+        }
+    },Qt::DirectConnection);
+    timer.start(500);
+    this->exec();
 }
 
 HighLighter::HighLighter(QTextDocument* parent):QSyntaxHighlighter (parent)
