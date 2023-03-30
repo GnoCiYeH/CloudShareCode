@@ -26,50 +26,6 @@ TcpServer::~TcpServer()
     delete pool;
 }
 
-//void TcpServer::recvFile(int fd, HizZ::File* file)
-//{
-//    int recvSize = 0;
-//    int fileSize = file->getSize();
-//    std::ofstream ofs;
-//    ofs.open(file->getPath(), std::ios::out | std::ios::app | std::ios::binary);
-//    if (!ofs.is_open())
-//    {
-//        perror("open file error");
-//        return;
-//    }
-//    while (file->getOffset() != fileSize)
-//    {
-//        char data[4096];
-//        memset(data, 0, sizeof(data));
-//        recvSize = read(fd, data, sizeof(data));
-//        if (recvSize == 0)
-//        {
-//            file->submitFile();
-//            ofs.close();
-//            delete file;
-//            return;
-//        }
-//        ofs.write(data, recvSize);
-//        file->addOffset(recvSize);
-//    }
-//
-//    file->submitFile();
-//
-//    std::string filedata = "";
-//    filedata += file->getName() + "\t";
-//    MYSQL_RES* result = sql->exeSql("select f_id from File where f_path = \"" + file->getPath() + "\";");
-//    std::string fid(sql->getRows(result)[0][0]);
-//    filedata += fid + "\t";
-//    filedata += std::to_string(file->getParentID()) + "\t";
-//    filedata += file->getUploadTime() + "\t";
-//    filedata += std::to_string(file->getSize());
-//
-//    Package pck(filedata.c_str(), Package::COMPLETE, filedata.size());
-//    write(fd, pck.getPdata(), pck.getSize());
-//    ofs.close();
-//    delete file;
-//}
-
 void TcpServer::tcpStart()
 {
     int ret;
@@ -121,26 +77,58 @@ void TcpServer::tcpStart()
                 }
                 else
                 {
-                    dataProcess(sock_fd, buf, sizeof(buf));
+                    int type = bytesToInt(buf, 0, sizeof(buf));
+                    int packageSize = bytesToInt(buf, 4, sizeof(buf));
+
+                    switch (type)
+                    {
+                    case Package::PackageType::LOGIN:
+                    {
+                        pool->submit(login, sock_fd, packageSize);
+                        break;
+                    }
+                    default:
+                        INFO_LOG(m_logger, "UNKNOW PACKAGETYPE");
+                        break;
+                    }
                 }
             }
         }
     }
 }
 
-void TcpServer::dataProcess(int sock_fd, char* buf, int size)
+void TcpServer::login(int sock_fd, int packageSize)
 {
-    int type = bytesToInt(buf, 0, sizeof(buf));
-    int packageSize = bytesToInt(buf, 4, sizeof(buf));
-
-    /*switch (type)
+    char data[packageSize + 1];
+    data[packageSize] = '\0';
+    read(sock_fd, data, packageSize);
+    std::string temp(data);
+    stringList list;
+    stringSplit(temp, "\t", list);
+    std::string UserId = list[0];
+    if (userMap.find(sock_fd) != userMap.end())
     {
-    case Package::Type:::
-        break;
-    default:
-        INFO_LOG(m_logger, "UNKNOW PACKAGETYPE");
-        break;
-    }*/
+        std::string str = "The user is logged in";
+        Package pck(str.c_str(), Package::ReturnType::ERROR, str.size());
+        write(sock_fd, pck.getPdata(), pck.getSize());
+    }
+    else
+    {
+        auto result = sql->exeSql("select user_id from User where user_id = \"" + UserId + "\" and user_password = md5(\"" + list[1] + "\");");
+        sqlResultRows vec = sql->getRows(result);
+        if (vec.empty())
+        {
+            std::string error = "The account number or password is incorrect";
+            Package pck(error.c_str(), Package::ReturnType::ERROR, error.size());
+            write(sock_fd, pck.getPdata(), pck.getSize());
+        }
+        else
+        {
+            std::string info = ""; //此处应为返回客户端的用户初始化信息
+            Package pck(info.c_str(), Package::ReturnType::ALLOW, info.size());
+            write(sock_fd, pck.getPdata(), pck.getSize());
+        }
+    }
 }
 
 void TcpServer::sendFile(int sock_fd, std::string path, int fileSize)

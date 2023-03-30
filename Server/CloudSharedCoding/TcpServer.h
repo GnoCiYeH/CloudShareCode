@@ -20,10 +20,10 @@ class TcpServer
 public:
     TcpServer(const char* ip, uint32_t port, uint32_t fileport, Log::Logger logger);
     virtual ~TcpServer();
-
+    typedef std::vector<std::string> stringList;
+    typedef std::vector<MYSQL_ROW> sqlResultRows;
 public:
     void tcpStart();
-    void dataProcess(int fd, char* data, int size);
     std::string SqlIp;
     static SqlTool* sql;
 
@@ -41,11 +41,11 @@ private:
 
     static void sendDir(int sock_fd, std::string* UserId);
 
-    //static void recvFile(int fd, HizZ::File* file);
-
     static void sendFile(int sock_fd, std::string path, int fileSize);
 
-    //static void fileServerStart();
+    static void login(int sock_fd, int packageSize);
+
+    static std::unordered_map<int, std::string> userMap;
 };
 #endif // TCPSERVER_H
 
