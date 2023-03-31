@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include"myhelper.h"
+#include"logindialog.h"
+#include<QAction>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -27,6 +29,12 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionNew_local_project,SIGNAL(triggered()),this,SLOT(newLocalProj()));
     connect(ui->actionNew_cloud_project,SIGNAL(triggered()),this,SLOT(newCloudProj()));
     connect(ui->actionSetting,SIGNAL(triggered()),this,SLOT(openSettingDialog()));
+
+    connect(ui->menuOpen_project->menuAction(),&QAction::triggered,this,[=](){
+        LoginDialog* dialog1=new LoginDialog(this);
+        dialog1->setAttribute(Qt::WA_DeleteOnClose);
+        dialog1->show();
+    });
 
 }
 
@@ -58,5 +66,6 @@ void MainWindow::openCloudProj()
 
 bool MainWindow::Login()
 {
+    return 0;
 
 }
