@@ -105,7 +105,7 @@ void TcpServer::tcpStart()
                     }
                     case Package::PackageType::NEW_PROJECT:
                     {
-                        pool->submit()
+                        pool->submit(newProject, sock_fd);
                         break;
                     }
                     default:
@@ -197,8 +197,9 @@ void TcpServer::newProject(int sock_fd)
     char data[packageSize + 1];
     data[packageSize] = '\0';
     read(sock_fd, data, packageSize);
+    std::string proName(data);
     std::string userpath = "./" + userMap->find(sock_fd)->second;
-    std::string path = userpath + "/" + std::string(data);
+    std::string path = userpath + "/" + proName;
 
     if (!opendir(userpath.c_str()))
     {
@@ -206,5 +207,12 @@ void TcpServer::newProject(int sock_fd)
     }
     mkdir(path.c_str(),700);
 
-    sql->exeSql("insert into Project (pro_name,pro_owner) value ()");
+    auto res = sql->exeSql("insert into Project (pro_name,pro_owner) value (\""+proName+"\",\""+userMap->find(sock_fd)->second + "\");\
+                    select * from Project where pro_name =  \"" + proName + "\";");
+    sqlResultRows rows = sql->getRows(res);
+    std::string str = std::string(rows[0][0]) + "\t" + std::string(rows[0][1]) + "\t" + std::string(rows[0][2]);
+    Package pck(str.c_str(), Package::ReturnType::NEW_PROJ_INFO, str.size());
+    write(sock_fd, pck.getPdata(), pck.getSize());
+
+    mysql_free_result(res);
 }

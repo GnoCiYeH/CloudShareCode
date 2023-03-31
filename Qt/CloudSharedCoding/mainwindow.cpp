@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include"myhelper.h"
+#include"projectform.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -43,16 +44,18 @@ void MainWindow::close()
 void MainWindow::openCloudProj()
 {
     //若用户未登录则无法使用在线功能，弹出登录界面
-    bool temp;
     if(!isLogin)
     {
-        temp = Login();
+        isLogin = Login();
     }
 
     //登录成功才可进行下列操作
-    if(temp)
+    if(isLogin)
     {
         //从服务器拉取文件
+        ProjectForm *form = new ProjectForm(this);
+        form->setWindowFlag(Qt::Window);
+        form->show();
     }
 }
 

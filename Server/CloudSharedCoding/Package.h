@@ -38,7 +38,8 @@ public:
         ALLOW = 0,
         ERROR,
         USER_PROJS,
-        PROJ_INFO
+        PROJ_INFO,
+        NEW_PROJ_INFO
     };
     Package(const char* data, int type, int size);
     ~Package();
