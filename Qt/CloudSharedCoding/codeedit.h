@@ -8,6 +8,7 @@
 #include<QRegularExpression>
 #include<QThread>
 #include<QMutex>
+#include<QTcpSocket>
 
 namespace Ui {
 class CodeEdit;
@@ -37,6 +38,7 @@ private:
     QTextDocument * document;
     EditWorkThread* thread;
 
+
     QMutex mutex;
 };
 
@@ -53,6 +55,7 @@ private slots:
 
 private:
     CodeEdit * codeEdit;
+    QTcpSocket* socket;
 protected:
     void run() override;
 };
