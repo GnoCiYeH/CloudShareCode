@@ -78,29 +78,95 @@ void EditWorkThread::run()
     this->exec();
 }
 
-HighLighter::HighLighter(QTextDocument* parent):QSyntaxHighlighter (parent)
+HighLighter::HighLighter(QTextDocument* text):QSyntaxHighlighter (text)
 {
-    HighLightRule rule;
-    keyWordFormat.setForeground(QColor(127, 255, 212));
-    keyWordFormat.setFontWeight(QFont::Bold);
-    for(auto i : keyWords)
-    {
-        rule.exp = QRegularExpression(i);
-        rule.format = keyWordFormat;
-        rules.append(rule);
-    }
+    //制定高亮规则
+    HighLighterRule rule;
+
+    //1.添加关键字高亮规则
+    keyword_format.setForeground(Qt::blue);//设置关键字前景颜色(blue)
+    keyword_format.setFontWeight(QFont::Bold);//设置关键字的字体格式(Bold)
+    QVector<QString>keyword_pattern={// \b在表示单词字符边界，防止例如intVal也被识别为int导致高亮
+      "\\bchar\\b",  "\\bclass\\b","\\bconst\\b","\\bdouble\\b","\\benum\\b","\\bexplicit\\b",
+      "\\bfriend\\b","\\binline\\b","\\bint\\b","\\blong\\b","\\bnamespace\\b","\\boperator\\b",
+      "\\bprivate\\b","\\bprotected\\b","\\bpublic\\b","\\bshort\\b","\\bsignals\\b","\\bsigned\\b",
+      "\\bslots\\b","\\bstatic\\b","\\bstruct\\b","\\btemplate\\b","\\btypedef\\b","\\btypename\\b",
+      "\\bunion\\b","\\bunsigned\\b","\\bvirtual\\b","\\bvoid\\b","\\bvolatile\\b","\\bbool\\b"
+    };//关键字集合
+    //遍历关键字集合，通过正则表达式识别字符串。并设定为rule的pattern，代表当前关键字的标识符；再设定rule的格式，最终加入规则集合中
+    for(auto& keyword:keyword_pattern){
+        rule.pattern=QRegularExpression(keyword);
+        rule.format=keyword_format;
+        highlighterrules.push_back(rule);
+    }//规则集合中存储着keyword_pattern中所有关键字的标识符和格式(蓝色 粗体)
+
+    //2.添加Qt类高亮规则
+    class_format.setForeground(Qt::darkCyan);//设置Qt类前景色(darkCyan)
+    class_format.setFontWeight(QFont::Bold);//设置Qt类字体格式(Bold)
+    QString class_pattern="\\bQ[a-zA-z]+\\b";//Qt类识别格式为两边有分隔符，且以Q开头的所有英文字符串
+    rule.pattern=QRegularExpression(class_pattern);
+    rule.format=class_format;
+    highlighterrules.push_back(rule);
+
+    //3.添加单行注释高亮规则
+    singleLine_comment_format.setForeground(Qt::green);//注释颜色为green
+    QString singleLine_comment_pattern="//[^\n]*";//单行注释识别格式为跟在//后，但不包括换行符，且不需要间隔符
+    rule.pattern=QRegularExpression(singleLine_comment_pattern);
+    rule.format=singleLine_comment_format;
+    highlighterrules.push_back(rule);
+
+    //4.添加多行注释高亮规则
+    //多行注释的匹配正则表达式
+    QString comment_start_pattern="/\\*";//开始位置\*，因为正则表达式的*需要用\*表达，而\*需要字符串用\\*表达
+    comment_start=QRegularExpression(comment_start_pattern);
+    QString comment_end_pattern="\\*/";//结束位置
+    comment_end=QRegularExpression(comment_end_pattern);
+
+
+    //5.添加引号高亮规则
+    quotation_format.setForeground(Qt::cyan);//引号内容颜色(cyan)
+    QString quotation_pattern="\".*\"";
+    rule.pattern=QRegularExpression(quotation_pattern);
+    rule.format=quotation_format;
+    highlighterrules.push_back(rule);
+    multiLine_comment_format.setForeground(Qt::green);//多行注释颜色为green
+
+    //6.添加函数高亮格式
+    function_format.setForeground(Qt::darkGreen);//函数字体颜色设置为darkGreen
+    function_format.setFontWeight(QFont::Bold);//函数字体格式设置为Bold
+    QString function_pattern="\\b[a-zA-Z0-9_]+(?=\\()";//函数名可以是大小写英文字符、数字、下划线，其中，(?=\\()表示后面必须跟着一个左括号，但是这个左括号不会被匹配到
+    rule.pattern=QRegularExpression(function_pattern);
+    rule.format=function_format;
+    highlighterrules.push_back(rule);
 }
 
-void HighLighter::highlightBlock(const QString &text)
-{
-    for(auto i : rules)
-    {
-        QRegularExpressionMatchIterator it = i.exp.globalMatch(text);
-        while(it.hasNext())
-        {
-            QRegularExpressionMatch match = it.next();
-            setFormat(match.capturedStart(),match.capturedLength(),i.format);
+void HighLighter::highlightBlock(const QString &text){//应用高亮规则
+    foreach(const HighLighterRule& rule,highlighterrules){
+        QRegularExpressionMatchIterator matchIterator=rule.pattern.globalMatch(text);//在整个text文本中匹配当前rule的pattern
+        while(matchIterator.hasNext()){//高亮整个文本中匹配到的字符
+            QRegularExpressionMatch match=matchIterator.next();
+            setFormat(match.capturedStart(),match.capturedLength(),rule.format);//(匹配到的起始位置，文本块长度，高亮规则格式)
         }
+    }
+
+    //处理多行注释
+    setCurrentBlockState(0);
+    int start=0;
+    if(previousBlockState()!=1){//上一个文本块不是多行注释的文本内容，如果是，文本状态应设置成1
+        start=text.indexOf(comment_start);//先定位到第一个多行注释的起始字符，找到返回位置，没找到返回-1
+    }
+    while(start>=0){
+        QRegularExpressionMatch match=comment_end.match(text,start);//从当前起始字符匹配第一个结束字符，即当前多行注释的截止字符
+        int end=match.capturedStart();//match对应comment_end，此时找的是从当前start(多行注释起始字符)开始匹配的第一个结束字符
+        int length=0;
+        if(end==-1){//找不到结束字符，说明是最后一个多行注释，为了让下一个文本块知道之前是多行注释模块，所以设状态为1，然后结束位置与文本结束位置相同
+            setCurrentBlockState(1);
+            length=text.length()-start;
+        }else{
+            length=end-start+match.capturedLength();//需要高亮的文本长度为 结束字符下标-起始字符下标+匹配到的文本(*/)的长度
+        }
+        setFormat(start,length,multiLine_comment_format);
+        start=text.indexOf(comment_start,start+length);//从当前start+length开始匹配下一个start
     }
 }
 

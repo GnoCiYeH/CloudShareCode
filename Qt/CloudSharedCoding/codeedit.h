@@ -62,20 +62,29 @@ class HighLighter : public QSyntaxHighlighter
     Q_OBJECT
 
 public:
-    explicit HighLighter(QTextDocument* parent = nullptr);
-
-private:
-    static QStringList keyWords;
-
-    struct HighLightRule{
-        QTextCharFormat format;
-        QRegularExpression exp;
-    };
-    QVector<HighLightRule> rules;
-    QTextCharFormat keyWordFormat;
+    HighLighter(QTextDocument*text=nullptr);//构造函数需要先传一个QTextDocument对象给父类，因为要先构造父类
 
 protected:
-    void highlightBlock(const QString &text) override;
+    void highlightBlock(const QString &text) override; //重写父类QSyntaxHighlighter的highlightBlock函数，使多行注释高亮
+
+private:
+    struct HighLighterRule{//封装高亮规则为结构体
+        QRegularExpression pattern;
+        QTextCharFormat format;
+    };
+
+    QVector<HighLighterRule>highlighterrules;//规则集合，允许有多条高亮规则
+
+    QTextCharFormat keyword_format;//关键字高亮格式
+    QTextCharFormat class_format;//Qt类高亮格式
+    QTextCharFormat singleLine_comment_format;//单行注释高亮格式
+    QTextCharFormat multiLine_comment_format;//多行注释高亮格式
+    QTextCharFormat quotation_format;//引号高亮格式
+    QTextCharFormat function_format;//函数高亮格式
+
+    //用于匹配注释
+    QRegularExpression comment_start;
+    QRegularExpression comment_end;
 };
 
 #endif // CODEEDIT_H
