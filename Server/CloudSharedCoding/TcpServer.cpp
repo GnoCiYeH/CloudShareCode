@@ -2,6 +2,9 @@
 #include <fstream>
 #include <sys/timeb.h>
 #include <errno.h>
+#include <sys/types.h>
+#include <dirent.h>
+#include <sys/stat.h>
 
 #define MAXCONNECTION 64
 #define EVENT_SIZE 20
@@ -56,7 +59,7 @@ void TcpServer::tcpStart()
     {
         int eNum = epoll_wait(m_epfd, events, EVENT_SIZE, -1);
         FATAL_CHECK(eNum, "epoll_wait error", m_logger);
-        char buf[8];
+        char buf[4];
 
         for (int i = 0; i < eNum; i++)
         {
@@ -77,17 +80,17 @@ void TcpServer::tcpStart()
                 {
                     INFO_LOG(m_logger, std::string("client_fd:") + (m_logger, std::to_string(sock_fd)) + " disconnected");
                     epoll_ctl(m_epfd, EPOLL_CTL_DEL, sock_fd, NULL);
+                    userMap->erase(sock_fd);
                 }
                 else
                 {
                     int type = bytesToInt(buf, 0, sizeof(buf));
-                    int packageSize = bytesToInt(buf, 4, sizeof(buf));
 
                     switch (type)
                     {
                     case Package::PackageType::LOGIN:
                     {
-                        pool->submit(login, sock_fd, packageSize);
+                        pool->submit(login, sock_fd);
                         break;
                     }
                     case Package::PackageType::INIT_PROJS:
@@ -97,7 +100,12 @@ void TcpServer::tcpStart()
                     }
                     case Package::PackageType::GET_PROJECT:
                     {
-                        pool->submit(sendProjectInfo, sock_fd,packageSize);
+                        pool->submit(sendProjectInfo, sock_fd);
+                        break;
+                    }
+                    case Package::PackageType::NEW_PROJECT:
+                    {
+                        pool->submit()
                         break;
                     }
                     default:
@@ -110,8 +118,11 @@ void TcpServer::tcpStart()
     }
 }
 
-void TcpServer::login(int sock_fd, int packageSize)
+void TcpServer::login(int sock_fd)
 {
+    char buf[4];
+    read(sock_fd, buf, sizeof(buf));
+    int packageSize = bytesToInt(buf, 4, sizeof(buf));
     char data[packageSize + 1];
     data[packageSize] = '\0';
     read(sock_fd, data, packageSize);
@@ -144,8 +155,11 @@ void TcpServer::login(int sock_fd, int packageSize)
     }
 }
 
-void TcpServer::sendProjectInfo(int sock_fd,int packageSize)
+void TcpServer::sendProjectInfo(int sock_fd)
 {
+    char temp[4];
+    read(sock_fd, temp, sizeof(temp));
+    int packageSize = bytesToInt(temp, 4, sizeof(temp));
     char buf[packageSize+1];
     buf[packageSize] = '\0';
     read(sock_fd, buf, packageSize);
@@ -173,4 +187,24 @@ void TcpServer::initUserProjects(int sock_fd)
     Package pck(data.c_str(), Package::ReturnType::USER_PROJS,data.size());
     write(sock_fd, pck.getPdata(), pck.getSize());
     mysql_free_result(userProjRes);
+}
+
+void TcpServer::newProject(int sock_fd)
+{
+    char temp[4];
+    read(sock_fd, temp, sizeof(temp));
+    int packageSize = bytesToInt(temp, 4, sizeof(temp));
+    char data[packageSize + 1];
+    data[packageSize] = '\0';
+    read(sock_fd, data, packageSize);
+    std::string userpath = "./" + userMap->find(sock_fd)->second;
+    std::string path = userpath + "/" + std::string(data);
+
+    if (!opendir(userpath.c_str()))
+    {
+        mkdir(userpath.c_str(),700);
+    }
+    mkdir(path.c_str(),700);
+
+    sql->exeSql("insert into Project (pro_name,pro_owner) value ()");
 }

@@ -4,9 +4,10 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core5compat gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets network
+greaterThan(QT_MAJOR_VERSION, 5): QT += core5compat
 
 TARGET = CloudSharedCoding
 TEMPLATE = app

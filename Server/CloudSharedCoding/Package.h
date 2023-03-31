@@ -29,7 +29,10 @@ public:
         SUBMIT,
 
         //上传项目保存至服务器端，携带文件名，文件大小，用户id，权限，后续应开辟线程发送项目文件
-        POST_PROJECT
+        POST_PROJECT,
+
+        //创建云项目
+        NEW_PROJECT
     };
     enum ReturnType {
         ALLOW = 0,

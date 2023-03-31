@@ -16,7 +16,7 @@ CodeEdit::CodeEdit(QWidget *parent) :
 
     const int tabstop = 4;
     QFontMetrics m(ui->textEdit->font());
-    ui->textEdit->setTabStopWidth(tabstop*m.width(" "));
+    ui->textEdit->setTabStopDistance(tabstop*m.horizontalAdvance(" "));
 
     connect(document,SIGNAL(contentsChange(int, int, int)),this,SLOT(docChange(int,int,int)));
 
