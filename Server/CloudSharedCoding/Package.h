@@ -22,6 +22,9 @@ public:
         //从服务器获取项目，携带用户id及所需项目id
         GET_PROJECT,
 
+        //从服务器获取当前用户参与的所有项目基本信息 无需携带其他数据
+        INIT_PROJS,
+
         //提交保存信号，携带文件id及提交者信息（用户名）
         SUBMIT,
 
@@ -30,7 +33,9 @@ public:
     };
     enum ReturnType {
         ALLOW = 0,
-        ERROR
+        ERROR,
+        USER_PROJS,
+        PROJ_INFO
     };
     Package(const char* data, int type, int size);
     ~Package();

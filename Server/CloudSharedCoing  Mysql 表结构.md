@@ -37,7 +37,7 @@
 |      字段名      | 字段类型及其属性           | 描述                   |
 | :--------------: | -------------------------- | ---------------------- |
 |     _user_id     | varchar(32) not null       | 拥有该项目权限的用户id |
-|     _user_id     | int not null               | 项目表中pro_id外键     |
+|     _pro_id      | int not null               | 项目表中pro_id外键     |
 | _privilege_level | tinyint not null default 0 | 权限等级               |
 
 ---

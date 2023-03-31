@@ -90,6 +90,16 @@ void TcpServer::tcpStart()
                         pool->submit(login, sock_fd, packageSize);
                         break;
                     }
+                    case Package::PackageType::INIT_PROJS:
+                    {
+                        pool->submit(initUserProjects, sock_fd);
+                        break;
+                    }
+                    case Package::PackageType::GET_PROJECT:
+                    {
+                        pool->submit(sendProjectInfo, sock_fd,packageSize);
+                        break;
+                    }
                     default:
                         INFO_LOG(m_logger, "UNKNOW PACKAGETYPE");
                         break;
@@ -127,87 +137,40 @@ void TcpServer::login(int sock_fd, int packageSize)
         }
         else
         {
-            auto res = sql->exeSql("select pro_id,pro_name from Project where pro_owner = \"" + UserId + "\";");
-            sqlResultRows rows = sql->getRows(res);
-            std::string info = "";
-            for (auto i : rows)
-            {
-                info += std::string(i[0]) + "\t" + std::string(i[1]) + "\n";
-            }
-            Package pck(info.c_str(), Package::ReturnType::ALLOW, info.size());
+            Package pck("", Package::ReturnType::ALLOW, 0);
             write(sock_fd, pck.getPdata(), pck.getSize());
-            mysql_free_result(res);
+            userMap->insert(std::pair<int, std::string>(sock_fd, UserId));
         }
     }
 }
 
-void TcpServer::sendFile(int sock_fd, std::string path, int fileSize)
+void TcpServer::sendProjectInfo(int sock_fd,int packageSize)
 {
-    int sendSize = 0;
-    int ret = 0;
-    char buf[1024];
-    std::ifstream ifs;
-    ifs.open(path, std::ios::in | std::ios::binary);
-    if (!ifs.is_open())
-    {
-        std::cout << "send file open error";
-    }
-    while (sendSize < fileSize)
-    {
-        ret = ifs.readsome(buf, sizeof(buf));
-        sendSize += ret;
-        write(sock_fd, buf, ret);
-    }
-    ifs.close();
+    char buf[packageSize+1];
+    buf[packageSize] = '\0';
+    read(sock_fd, buf, packageSize);
+    std::string projId = std::string(buf);
+    auto projRes = sql->exeSql("select * from Project where pro_id = " + projId);
+    auto rows = sql->getRows(projRes);
+    std::string data = std::string(rows[0][0]) + "\t" + std::string(rows[0][1]) + "\t" + std::string(rows[0][2]);
+    Package pck(data.c_str(), Package::ReturnType::PROJ_INFO, data.size());
+    write(sock_fd, pck.getPdata(), pck.getSize());
+    mysql_free_result(projRes);
 }
 
-void TcpServer::sendDir(int sock_fd, std::string* UserId)
+void TcpServer::initUserProjects(int sock_fd)
 {
     std::string data = "";
-    MYSQL_RES* file = sql->exeSql("select f_name,f_id,f_parent,f_uploadtime,f_size from File where u_id = \"" + *UserId + "\";");
-    int field_num = mysql_num_fields(file);
-    std::vector<MYSQL_ROW> file_rows = sql->getRows(file);
-    for (auto item : file_rows)
+
+    std::string userId = userMap->find(sock_fd)->second;
+    auto userProjRes = sql->exeSql("select Project.pro_id,Project.pro_name,Project.pro_owner from Project inner join Privilege\
+                                     where (Privilege._user_id = \""+userId+"\" and Privilege._pro_id = Project.pro_id);");
+    sqlResultRows rows = sql->getRows(userProjRes);
+    for (auto i : rows)
     {
-        for (int i = 0; i < field_num; i++)
-        {
-            if (item[i] != nullptr)
-            {
-                std::string temp(item[i]);
-                data = data.append(temp);
-            }
-            else
-            {
-                std::string temp = "null";
-                data = data.append(temp);
-            }
-            data += "\t";
-        }
-        data.append("\n");
+        data += std::string(i[0]) + "\t" + std::string(i[1]) + "\t" + std::string(i[2]) + "\n";
     }
-    mysql_free_result(file);
-    MYSQL_RES* dir = sql->exeSql("select name,dirId,parent,isLeaf from Directory where userId = \"" + *UserId + "\";");
-    field_num = mysql_num_fields(dir);
-    std::vector<MYSQL_ROW> dir_rows = sql->getRows(dir);
-    for (auto item : dir_rows)
-    {
-        for (int i = 0; i < field_num; i++)
-        {
-            if (item[i] != nullptr)
-            {
-                std::string temp(item[i]);
-                data = data.append(temp);
-            }
-            else
-            {
-                std::string temp = "null";
-                data = data.append(temp);
-            }
-            data += "\t";
-        }
-        data.append("\n");
-    }
-    mysql_free_result(dir);
-    //Package pck(data.c_str(), Package::UPDATEFILE, data.size());
-    //write(sock_fd, pck.getPdata(), pck.getSize());
+    Package pck(data.c_str(), Package::ReturnType::USER_PROJS,data.size());
+    write(sock_fd, pck.getPdata(), pck.getSize());
+    mysql_free_result(userProjRes);
 }

@@ -38,7 +38,9 @@ private:
 
     ThreadPool* pool;
 
-    static void sendDir(int sock_fd, std::string* UserId);
+    static void initUserProjects(int sock_fd);
+
+    static void sendProjectInfo(int sock_fd,int packageSize);
 
     static void sendFile(int sock_fd, std::string path, int fileSize);
 
