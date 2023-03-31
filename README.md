@@ -20,7 +20,7 @@
 
 - 服务器
   - Linux搭建服务器
-  - 使用epool io多路复用
+  - 使用epoll io多路复用
   - 连接Mysql数据库进行数据存储  [数据库结构](https://github.com/GnoCiYeH/CloudShareCode/blob/main/Server/CloudSharedCoing%20%20Mysql%20%E8%A1%A8%E7%BB%93%E6%9E%84.md)
   - 未来可能的拓展
     - 分布式文件存储
