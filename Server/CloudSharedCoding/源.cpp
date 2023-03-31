@@ -1,7 +1,9 @@
-#include<iostream>
+#include"Log.h"
+#include"TcpServer.h"
 using namespace std;
 int main()
 {
-	std::cout << "hello linux" << std::endl;
-	return 0;
+	Log::Logger logger;
+	TcpServer server("127.0.0.1", 9897, logger);
+	server.tcpStart();
 }

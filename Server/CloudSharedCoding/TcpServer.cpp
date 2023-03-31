@@ -7,7 +7,8 @@
 #define EVENT_SIZE 20
 #define FILEPATH "/home/heyicong/C++/HizZNetDisk/UserFiles/"
 SqlTool* TcpServer::sql = new SqlTool(SqlIP, "root", "191230", "CloudSharedCoding");
-TcpServer::TcpServer(const char* ip, uint32_t port, uint32_t fileport, Log::Logger logger)
+std::unordered_map<int, std::string>* TcpServer::userMap = new std::unordered_map<int, std::string>();
+TcpServer::TcpServer(const char* ip, uint32_t port, Log::Logger& logger)
 {
     m_logger = logger;
     m_server_addr.sin_family = AF_INET;
@@ -24,10 +25,12 @@ TcpServer::~TcpServer()
     close(m_epfd);
     delete sql;
     delete pool;
+    delete userMap;
 }
 
 void TcpServer::tcpStart()
 {
+    INFO_LOG(m_logger, "Server start!");
     int ret;
     m_sock_fd = socket(AF_INET, SOCK_STREAM, 0);
     FATAL_CHECK(m_sock_fd, "Create socket error", m_logger);
@@ -106,7 +109,7 @@ void TcpServer::login(int sock_fd, int packageSize)
     stringList list;
     stringSplit(temp, "\t", list);
     std::string UserId = list[0];
-    if (userMap.find(sock_fd) != userMap.end())
+    if (userMap->find(sock_fd) != userMap->end())
     {
         std::string str = "The user is logged in";
         Package pck(str.c_str(), Package::ReturnType::ERROR, str.size());
@@ -124,9 +127,16 @@ void TcpServer::login(int sock_fd, int packageSize)
         }
         else
         {
-            std::string info = ""; //此处应为返回客户端的用户初始化信息
+            auto res = sql->exeSql("select pro_id,pro_name from Project where pro_owner = \"" + UserId + "\";");
+            sqlResultRows rows = sql->getRows(res);
+            std::string info = "";
+            for (auto i : rows)
+            {
+                info += std::string(i[0]) + "\t" + std::string(i[1]) + "\n";
+            }
             Package pck(info.c_str(), Package::ReturnType::ALLOW, info.size());
             write(sock_fd, pck.getPdata(), pck.getSize());
+            mysql_free_result(res);
         }
     }
 }
@@ -198,6 +208,6 @@ void TcpServer::sendDir(int sock_fd, std::string* UserId)
         data.append("\n");
     }
     mysql_free_result(dir);
-    Package pck(data.c_str(), Package::UPDATEFILE, data.size());
-    write(sock_fd, pck.getPdata(), pck.getSize());
+    //Package pck(data.c_str(), Package::UPDATEFILE, data.size());
+    //write(sock_fd, pck.getPdata(), pck.getSize());
 }

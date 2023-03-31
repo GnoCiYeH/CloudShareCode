@@ -40,7 +40,7 @@ void CodeEdit::docChange(int p, int charsRemoved, int charsAdded)
     if(charsRemoved>0)
     {
         if(charsAdded==0)
-            emit deleteInfo(position,charsRemoved);
+            buffer.append("\b");
         else
         {
             for (int i = position;i<charsAdded+position-charsRemoved;i++) {
@@ -58,6 +58,9 @@ void CodeEdit::docChange(int p, int charsRemoved, int charsAdded)
 EditWorkThread::EditWorkThread(CodeEdit* codeE)
 {
     this->codeEdit = codeE;
+    
+    socket = new QTcpSocket(this);
+    socket->connectToHost("192.168.239.129",9897);
 }
 
 void EditWorkThread::deleteInfo(int position,int charsRemoved)
@@ -72,7 +75,7 @@ void EditWorkThread::run()
     connect(&timer,&QTimer::timeout,this,[=](){
         if(!codeEdit->buffer.isEmpty())
         {
-            qDebug()<<"buffer:"<<codeEdit->buffer;
+            
             codeEdit->buffer = "";
         }
     },Qt::DirectConnection);
