@@ -14,14 +14,15 @@
 
 ### File
 
-|     字段名     | 字段类型及其属性                        | 描述                            |
-| :------------: | --------------------------------------- | ------------------------------- |
-|    file_id     | int primary key auto_increment not null | 文件的唯一标识符,主键 非空 自增 |
-|   file_name    | varchar(32) not null                    | 文件名                          |
-|   file_user    | varchar(32) not null                    | 文件所属用户                    |
-|   file_path    | varchar(255) not null                   | 文件服务器路径                  |
-|  file_project  | int not null                            | 所属项目id                      |
-| file_privilege | tinyint not null default 0              | 权限等级                        |
+|      字段名      | 字段类型及其属性                        | 描述                            |
+| :--------------: | --------------------------------------- | ------------------------------- |
+|     file_id      | int primary key auto_increment not null | 文件的唯一标识符,主键 非空 自增 |
+|    file_name     | varchar(32) not null                    | 文件名                          |
+|    file_user     | varchar(32) not null                    | 文件所属用户                    |
+|    file_path     | varchar(255) not null                   | 文件服务器路径                  |
+|   file_project   | int not null                            | 所属项目id                      |
+|  file_privilege  | tinyint not null default 0              | 权限等级                        |
+| file_isProtected | bool not null default 0                 | 是否为受保护文件                |
 
 ### Project
 
