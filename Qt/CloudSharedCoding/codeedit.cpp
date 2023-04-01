@@ -4,9 +4,6 @@
 #include<QDebug>
 #include<QTimer>
 
-QStringList HighLighter::keyWords = {
-    "\\bint\\b","\\bdouble\\b","\\bchar\\b","\\bstring\\b"
-};
 CodeEdit::CodeEdit(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CodeEdit)
@@ -84,14 +81,15 @@ HighLighter::HighLighter(QTextDocument* text):QSyntaxHighlighter (text)
     HighLighterRule rule;
 
     //1.添加关键字高亮规则
-    keyword_format.setForeground(Qt::blue);//设置关键字前景颜色(blue)
+    keyword_format.setForeground(Qt::darkBlue);//设置关键字前景颜色(blue)
     keyword_format.setFontWeight(QFont::Bold);//设置关键字的字体格式(Bold)
     QVector<QString>keyword_pattern={// \b在表示单词字符边界，防止例如intVal也被识别为int导致高亮
       "\\bchar\\b",  "\\bclass\\b","\\bconst\\b","\\bdouble\\b","\\benum\\b","\\bexplicit\\b",
       "\\bfriend\\b","\\binline\\b","\\bint\\b","\\blong\\b","\\bnamespace\\b","\\boperator\\b",
       "\\bprivate\\b","\\bprotected\\b","\\bpublic\\b","\\bshort\\b","\\bsignals\\b","\\bsigned\\b",
       "\\bslots\\b","\\bstatic\\b","\\bstruct\\b","\\btemplate\\b","\\btypedef\\b","\\btypename\\b",
-      "\\bunion\\b","\\bunsigned\\b","\\bvirtual\\b","\\bvoid\\b","\\bvolatile\\b","\\bbool\\b"
+      "\\bunion\\b","\\bunsigned\\b","\\bvirtual\\b","\\bvoid\\b","\\bvolatile\\b","\\bbool\\b",
+      "\\busing\\b","vector"
     };//关键字集合
     //遍历关键字集合，通过正则表达式识别字符串。并设定为rule的pattern，代表当前关键字的标识符；再设定rule的格式，最终加入规则集合中
     for(auto& keyword:keyword_pattern){
@@ -138,6 +136,54 @@ HighLighter::HighLighter(QTextDocument* text):QSyntaxHighlighter (text)
     rule.pattern=QRegularExpression(function_pattern);
     rule.format=function_format;
     highlighterrules.push_back(rule);
+
+    //7.添加分支高亮格式
+    branch_format.setForeground(Qt::red);
+    branch_format.setFontWeight(QFont::Bold);
+    QVector<QString>branch_pattern={
+      "if","else","switch","case","while","for"
+    };
+    rule.format=branch_format;
+    for(QString&pattern:branch_pattern){
+        rule.pattern=QRegularExpression(pattern);
+        highlighterrules.push_back(rule);
+    }
+
+    //8.添加输入输出高亮格式
+    cincout_format.setForeground(Qt::darkGray);
+    cincout_format.setFontWeight(QFont::Bold);
+    QVector<QString>cincout_pattern={
+      "cin","cout","std","endl","<<",">>"
+    };
+    rule.format=cincout_format;
+    for(auto&pattern :cincout_pattern){
+        rule.pattern=QRegularExpression(pattern);
+        highlighterrules.push_back(rule);
+    }
+    //9.添加头文件高亮格式
+    //9.1 #开头
+    headfile_format.setForeground(Qt::darkGray);
+    headfile_format.setFontWeight(QFont::Bold);
+    rule.format=headfile_format;
+    rule.pattern=QRegularExpression("#.*");
+    highlighterrules.push_back(rule);
+
+    //9.2 各头文件
+    headfile_format.setForeground(Qt::yellow);
+    headfile_format.setFontWeight(QFont::Bold);
+    QVector<QString>headfile_pattern={
+      "<algorithm>","<bitset>","<cctype>","<cerrno>","<cerrno>","<cerrno>",
+      "\\b<?complex>?\\b","<cstdio>","<cstdlib>","\\b<?cstring>?\\b","<ctime>","\\b<?deque>?\\b",
+      "\\b<?exception>?\\b","\\b<?fstream>?\\b","\\b<?limits>?\\b","\\b<?list>?\\b","\\b<?map>?\\b","<iomanip>","<ios>",
+      "<iosfwd>","<iostream>","\\b<?istream>?\\b","\\b<?ostream>?\\b","\\b<?queue>?\\b","\\b<?set>?\\b",
+      "\\b<?sstream>?\\b","\\b<?stack>?\\b","<stdexcept>","<streambuf>","<string>","<utility>",
+      "\\b<?vector>?\\b","\\b<?cwchar>?\\b","\\b<?cwctype>?\\b"
+    };
+    rule.format=headfile_format;
+    for(auto& pattern:headfile_pattern){
+        rule.pattern=QRegularExpression(pattern);
+        highlighterrules.push_back(rule);
+    }
 }
 
 void HighLighter::highlightBlock(const QString &text){//应用高亮规则
@@ -149,7 +195,7 @@ void HighLighter::highlightBlock(const QString &text){//应用高亮规则
         }
     }
 
-    //处理多行注释
+    //处理多行注释，由于多行注释优先级最高，所以最后处理
     setCurrentBlockState(0);
     int start=0;
     if(previousBlockState()!=1){//上一个文本块不是多行注释的文本内容，如果是，文本状态应设置成1

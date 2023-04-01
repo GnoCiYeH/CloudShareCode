@@ -81,6 +81,9 @@ private:
     QTextCharFormat multiLine_comment_format;//多行注释高亮格式
     QTextCharFormat quotation_format;//引号高亮格式
     QTextCharFormat function_format;//函数高亮格式
+    QTextCharFormat headfile_format;//头文件高亮格式
+    QTextCharFormat cincout_format;//输入输出高亮格式
+    QTextCharFormat branch_format;//分支高亮格式
 
     //用于匹配注释
     QRegularExpression comment_start;
