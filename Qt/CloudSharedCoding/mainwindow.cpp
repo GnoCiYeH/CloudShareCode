@@ -76,10 +76,9 @@ void MainWindow::openCloudProj()
     //登录成功才可进行下列操作
     if(isLogin)
     {
-        //从服务器拉取文件
+        //从服务器拉取项目信息
         Package pck("",Package::PackageType::INIT_PROJS);
         socket->write(pck.getPdata(),pck.getSize());
-        qDebug()<<pck.getPdata();
         projectForm->show();
     }
 }
@@ -109,6 +108,11 @@ void MainWindow::dataProgress()
     }
     case Package::ReturnType::SERVER_ERROR:
     {
+        QByteArray arr = socket->read(packageSize);
+        QMessageBox box;
+        box.setWindowTitle("发生错误");
+        box.setText("错误码："+QString(arr));
+        emit recvError();
         break;
     }
     case Package::ReturnType::USER_PROJS:

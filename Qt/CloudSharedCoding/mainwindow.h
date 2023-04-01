@@ -45,6 +45,7 @@ public slots:
 
 signals:
     void loginAllowed();
+    void recvError();
     void projInited();
 
 private:
