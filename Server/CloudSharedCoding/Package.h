@@ -22,15 +22,24 @@ public:
         //从服务器获取项目，携带用户id及所需项目id
         GET_PROJECT,
 
+        //从服务器获取当前用户参与的所有项目基本信息 无需携带其他数据
+        INIT_PROJS,
+
         //提交保存信号，携带文件id及提交者信息（用户名）
         SUBMIT,
 
         //上传项目保存至服务器端，携带文件名，文件大小，用户id，权限，后续应开辟线程发送项目文件
-        POST_PROJECT
+        POST_PROJECT,
+
+        //创建云项目
+        NEW_PROJECT
     };
     enum ReturnType {
         ALLOW = 0,
-        ERROR
+        ERROR,
+        USER_PROJS,
+        PROJ_INFO,
+        NEW_PROJ_INFO
     };
     Package(const char* data, int type, int size);
     ~Package();

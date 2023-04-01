@@ -2,12 +2,16 @@
 #include <fstream>
 #include <sys/timeb.h>
 #include <errno.h>
+#include <sys/types.h>
+#include <dirent.h>
+#include <sys/stat.h>
 
 #define MAXCONNECTION 64
 #define EVENT_SIZE 20
 #define FILEPATH "/home/heyicong/C++/HizZNetDisk/UserFiles/"
 SqlTool* TcpServer::sql = new SqlTool(SqlIP, "root", "191230", "CloudSharedCoding");
-TcpServer::TcpServer(const char* ip, uint32_t port, uint32_t fileport, Log::Logger logger)
+std::unordered_map<int, std::string>* TcpServer::userMap = new std::unordered_map<int, std::string>();
+TcpServer::TcpServer(const char* ip, uint32_t port, Log::Logger& logger)
 {
     m_logger = logger;
     m_server_addr.sin_family = AF_INET;
@@ -24,10 +28,12 @@ TcpServer::~TcpServer()
     close(m_epfd);
     delete sql;
     delete pool;
+    delete userMap;
 }
 
 void TcpServer::tcpStart()
 {
+    INFO_LOG(m_logger, "Server start!");
     int ret;
     m_sock_fd = socket(AF_INET, SOCK_STREAM, 0);
     FATAL_CHECK(m_sock_fd, "Create socket error", m_logger);
@@ -53,7 +59,7 @@ void TcpServer::tcpStart()
     {
         int eNum = epoll_wait(m_epfd, events, EVENT_SIZE, -1);
         FATAL_CHECK(eNum, "epoll_wait error", m_logger);
-        char buf[8];
+        char buf[4];
 
         for (int i = 0; i < eNum; i++)
         {
@@ -74,17 +80,32 @@ void TcpServer::tcpStart()
                 {
                     INFO_LOG(m_logger, std::string("client_fd:") + (m_logger, std::to_string(sock_fd)) + " disconnected");
                     epoll_ctl(m_epfd, EPOLL_CTL_DEL, sock_fd, NULL);
+                    userMap->erase(sock_fd);
                 }
                 else
                 {
                     int type = bytesToInt(buf, 0, sizeof(buf));
-                    int packageSize = bytesToInt(buf, 4, sizeof(buf));
 
                     switch (type)
                     {
                     case Package::PackageType::LOGIN:
                     {
-                        pool->submit(login, sock_fd, packageSize);
+                        pool->submit(login, sock_fd);
+                        break;
+                    }
+                    case Package::PackageType::INIT_PROJS:
+                    {
+                        pool->submit(initUserProjects, sock_fd);
+                        break;
+                    }
+                    case Package::PackageType::GET_PROJECT:
+                    {
+                        pool->submit(sendProjectInfo, sock_fd);
+                        break;
+                    }
+                    case Package::PackageType::NEW_PROJECT:
+                    {
+                        pool->submit(newProject, sock_fd);
                         break;
                     }
                     default:
@@ -97,8 +118,11 @@ void TcpServer::tcpStart()
     }
 }
 
-void TcpServer::login(int sock_fd, int packageSize)
+void TcpServer::login(int sock_fd)
 {
+    char buf[4];
+    read(sock_fd, buf, sizeof(buf));
+    int packageSize = bytesToInt(buf, 4, sizeof(buf));
     char data[packageSize + 1];
     data[packageSize] = '\0';
     read(sock_fd, data, packageSize);
@@ -106,7 +130,7 @@ void TcpServer::login(int sock_fd, int packageSize)
     stringList list;
     stringSplit(temp, "\t", list);
     std::string UserId = list[0];
-    if (userMap.find(sock_fd) != userMap.end())
+    if (userMap->find(sock_fd) != userMap->end())
     {
         std::string str = "The user is logged in";
         Package pck(str.c_str(), Package::ReturnType::ERROR, str.size());
@@ -124,80 +148,71 @@ void TcpServer::login(int sock_fd, int packageSize)
         }
         else
         {
-            std::string info = ""; //此处应为返回客户端的用户初始化信息
-            Package pck(info.c_str(), Package::ReturnType::ALLOW, info.size());
+            Package pck("", Package::ReturnType::ALLOW, 0);
             write(sock_fd, pck.getPdata(), pck.getSize());
+            userMap->insert(std::pair<int, std::string>(sock_fd, UserId));
         }
     }
 }
 
-void TcpServer::sendFile(int sock_fd, std::string path, int fileSize)
+void TcpServer::sendProjectInfo(int sock_fd)
 {
-    int sendSize = 0;
-    int ret = 0;
-    char buf[1024];
-    std::ifstream ifs;
-    ifs.open(path, std::ios::in | std::ios::binary);
-    if (!ifs.is_open())
-    {
-        std::cout << "send file open error";
-    }
-    while (sendSize < fileSize)
-    {
-        ret = ifs.readsome(buf, sizeof(buf));
-        sendSize += ret;
-        write(sock_fd, buf, ret);
-    }
-    ifs.close();
+    char temp[4];
+    read(sock_fd, temp, sizeof(temp));
+    int packageSize = bytesToInt(temp, 4, sizeof(temp));
+    char buf[packageSize+1];
+    buf[packageSize] = '\0';
+    read(sock_fd, buf, packageSize);
+    std::string projId = std::string(buf);
+    auto projRes = sql->exeSql("select * from Project where pro_id = " + projId);
+    auto rows = sql->getRows(projRes);
+    std::string data = std::string(rows[0][0]) + "\t" + std::string(rows[0][1]) + "\t" + std::string(rows[0][2]);
+    Package pck(data.c_str(), Package::ReturnType::PROJ_INFO, data.size());
+    write(sock_fd, pck.getPdata(), pck.getSize());
+    mysql_free_result(projRes);
 }
 
-void TcpServer::sendDir(int sock_fd, std::string* UserId)
+void TcpServer::initUserProjects(int sock_fd)
 {
     std::string data = "";
-    MYSQL_RES* file = sql->exeSql("select f_name,f_id,f_parent,f_uploadtime,f_size from File where u_id = \"" + *UserId + "\";");
-    int field_num = mysql_num_fields(file);
-    std::vector<MYSQL_ROW> file_rows = sql->getRows(file);
-    for (auto item : file_rows)
+
+    std::string userId = userMap->find(sock_fd)->second;
+    auto userProjRes = sql->exeSql("select Project.pro_id,Project.pro_name,Project.pro_owner from Project inner join Privilege\
+                                     where (Privilege._user_id = \""+userId+"\" and Privilege._pro_id = Project.pro_id);");
+    sqlResultRows rows = sql->getRows(userProjRes);
+    for (auto i : rows)
     {
-        for (int i = 0; i < field_num; i++)
-        {
-            if (item[i] != nullptr)
-            {
-                std::string temp(item[i]);
-                data = data.append(temp);
-            }
-            else
-            {
-                std::string temp = "null";
-                data = data.append(temp);
-            }
-            data += "\t";
-        }
-        data.append("\n");
+        data += std::string(i[0]) + "\t" + std::string(i[1]) + "\t" + std::string(i[2]) + "\n";
     }
-    mysql_free_result(file);
-    MYSQL_RES* dir = sql->exeSql("select name,dirId,parent,isLeaf from Directory where userId = \"" + *UserId + "\";");
-    field_num = mysql_num_fields(dir);
-    std::vector<MYSQL_ROW> dir_rows = sql->getRows(dir);
-    for (auto item : dir_rows)
-    {
-        for (int i = 0; i < field_num; i++)
-        {
-            if (item[i] != nullptr)
-            {
-                std::string temp(item[i]);
-                data = data.append(temp);
-            }
-            else
-            {
-                std::string temp = "null";
-                data = data.append(temp);
-            }
-            data += "\t";
-        }
-        data.append("\n");
-    }
-    mysql_free_result(dir);
-    Package pck(data.c_str(), Package::UPDATEFILE, data.size());
+    Package pck(data.c_str(), Package::ReturnType::USER_PROJS,data.size());
     write(sock_fd, pck.getPdata(), pck.getSize());
+    mysql_free_result(userProjRes);
+}
+
+void TcpServer::newProject(int sock_fd)
+{
+    char temp[4];
+    read(sock_fd, temp, sizeof(temp));
+    int packageSize = bytesToInt(temp, 4, sizeof(temp));
+    char data[packageSize + 1];
+    data[packageSize] = '\0';
+    read(sock_fd, data, packageSize);
+    std::string proName(data);
+    std::string userpath = "./" + userMap->find(sock_fd)->second;
+    std::string path = userpath + "/" + proName;
+
+    if (!opendir(userpath.c_str()))
+    {
+        mkdir(userpath.c_str(),700);
+    }
+    mkdir(path.c_str(),700);
+
+    auto res = sql->exeSql("insert into Project (pro_name,pro_owner) value (\""+proName+"\",\""+userMap->find(sock_fd)->second + "\");\
+                    select * from Project where pro_name =  \"" + proName + "\";");
+    sqlResultRows rows = sql->getRows(res);
+    std::string str = std::string(rows[0][0]) + "\t" + std::string(rows[0][1]) + "\t" + std::string(rows[0][2]);
+    Package pck(str.c_str(), Package::ReturnType::NEW_PROJ_INFO, str.size());
+    write(sock_fd, pck.getPdata(), pck.getSize());
+
+    mysql_free_result(res);
 }

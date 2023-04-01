@@ -11,14 +11,13 @@
 #include"SqlTool.h"
 #include"Package.h"
 #include<unordered_map>
-//#include"File.h"
-#include"threadPool.h"
+#include"ThreadPool.h"
 
 #define SqlIP "192.168.239.129"
 class TcpServer
 {
 public:
-    TcpServer(const char* ip, uint32_t port, uint32_t fileport, Log::Logger logger);
+    TcpServer(const char* ip, uint32_t port, Log::Logger& logger);
     virtual ~TcpServer();
     typedef std::vector<std::string> stringList;
     typedef std::vector<MYSQL_ROW> sqlResultRows;
@@ -39,13 +38,17 @@ private:
 
     ThreadPool* pool;
 
-    static void sendDir(int sock_fd, std::string* UserId);
+    static void newProject(int sock_fd);
+
+    static void initUserProjects(int sock_fd);
+
+    static void sendProjectInfo(int sock_fd);
 
     static void sendFile(int sock_fd, std::string path, int fileSize);
 
-    static void login(int sock_fd, int packageSize);
+    static void login(int sock_fd);
 
-    static std::unordered_map<int, std::string> userMap;
+    static std::unordered_map<int, std::string>* userMap;
 };
 #endif // TCPSERVER_H
 

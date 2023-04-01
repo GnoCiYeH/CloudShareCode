@@ -4,9 +4,10 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core5compat gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets network
+greaterThan(QT_MAJOR_VERSION, 5): QT += core5compat
 
 TARGET = CloudSharedCoding
 TEMPLATE = app
@@ -29,19 +30,22 @@ SOURCES += \
         mainwindow.cpp \
     codeedit.cpp \
     logindialog.cpp \
-    package.cpp
+    package.cpp \
+    projectform.cpp
 
 HEADERS += \
         mainwindow.h \
     myhelper.h \
     codeedit.h \
     logindialog.h \
-    package.h
+    package.h \
+    projectform.h
 
 FORMS += \
         mainwindow.ui \
     codeedit.ui \
-    logindialog.ui
+    logindialog.ui \
+    projectform.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

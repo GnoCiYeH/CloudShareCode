@@ -1,12 +1,13 @@
 #ifndef MYHELPER_H
 #define MYHELPER_H
 
-#include <QtCore>
+#include <QtCore5Compat/QtCore5Compat>
 #include <QtGui>
 
 #if (QT_VERSION > QT_VERSION_CHECK(5, 0, 0))
 
 #include <QtWidgets>
+#include <QScreen>
 
 #endif
 
@@ -90,10 +91,10 @@ public:
         int frmX = frm->width();
         int frmY = frm->height();
 
-        QDesktopWidget dwt;
+        QScreen* dwt = QApplication::primaryScreen();
 
-        int deskWidth = dwt.availableGeometry().width();
-        int deskHeight = dwt.availableGeometry().height();
+        int deskWidth = dwt->availableGeometry().width();
+        int deskHeight = dwt->availableGeometry().height();
 
         QPoint movePoint(deskWidth / 2 - frmX / 2, deskHeight / 2 - frmY / 2);
         frm->move(movePoint);

@@ -14,6 +14,10 @@ CodeEdit::CodeEdit(QWidget *parent) :
     ui->textEdit->setFontFamily("Consolas");
     HighLighter* highLighter = new HighLighter(document);
 
+    const int tabstop = 4;
+    QFontMetrics m(ui->textEdit->font());
+    ui->textEdit->setTabStopDistance(tabstop*m.horizontalAdvance(" "));
+
     connect(document,SIGNAL(contentsChange(int, int, int)),this,SLOT(docChange(int,int,int)));
 
     thread = new EditWorkThread(this);
@@ -30,12 +34,13 @@ CodeEdit::~CodeEdit()
 void CodeEdit::docChange(int p, int charsRemoved, int charsAdded)
 {
     int position = ui->textEdit->textCursor().position()-(charsAdded-charsRemoved);
+    if(position<0)position=0;
     qDebug()<<position<<" "<<charsRemoved<<" "<<charsAdded;
     if(position==lastPosition);
     if(charsRemoved>0)
     {
         if(charsAdded==0)
-            emit deleteInfo(position,charsRemoved);
+            buffer.append("\b");
         else
         {
             for (int i = position;i<charsAdded+position-charsRemoved;i++) {
@@ -53,6 +58,9 @@ void CodeEdit::docChange(int p, int charsRemoved, int charsAdded)
 EditWorkThread::EditWorkThread(CodeEdit* codeE)
 {
     this->codeEdit = codeE;
+
+    socket = new QTcpSocket(this);
+    socket->connectToHost("192.168.239.129",9897);
 }
 
 void EditWorkThread::deleteInfo(int position,int charsRemoved)
@@ -67,7 +75,7 @@ void EditWorkThread::run()
     connect(&timer,&QTimer::timeout,this,[=](){
         if(!codeEdit->buffer.isEmpty())
         {
-            qDebug()<<"buffer:"<<codeEdit->buffer;
+
             codeEdit->buffer = "";
         }
     },Qt::DirectConnection);
@@ -81,7 +89,7 @@ HighLighter::HighLighter(QTextDocument* text):QSyntaxHighlighter (text)
     HighLighterRule rule;
 
     //1.添加关键字高亮规则
-    keyword_format.setForeground(Qt::darkBlue);//设置关键字前景颜色(blue)
+    keyword_format.setForeground(QColor(118, 238, 198));//设置关键字前景颜色(blue)
     keyword_format.setFontWeight(QFont::Bold);//设置关键字的字体格式(Bold)
     QVector<QString>keyword_pattern={// \b在表示单词字符边界，防止例如intVal也被识别为int导致高亮
       "\\bchar\\b",  "\\bclass\\b","\\bconst\\b","\\bdouble\\b","\\benum\\b","\\bexplicit\\b",
@@ -107,7 +115,7 @@ HighLighter::HighLighter(QTextDocument* text):QSyntaxHighlighter (text)
     highlighterrules.push_back(rule);
 
     //3.添加单行注释高亮规则
-    singleLine_comment_format.setForeground(Qt::green);//注释颜色为green
+    singleLine_comment_format.setForeground(QColor(211, 211 ,211));//注释颜色为green
     QString singleLine_comment_pattern="//[^\n]*";//单行注释识别格式为跟在//后，但不包括换行符，且不需要间隔符
     rule.pattern=QRegularExpression(singleLine_comment_pattern);
     rule.format=singleLine_comment_format;
@@ -130,7 +138,7 @@ HighLighter::HighLighter(QTextDocument* text):QSyntaxHighlighter (text)
     multiLine_comment_format.setForeground(Qt::green);//多行注释颜色为green
 
     //6.添加函数高亮格式
-    function_format.setForeground(Qt::darkGreen);//函数字体颜色设置为darkGreen
+    function_format.setForeground(QColor(238, 180, 180));//函数字体颜色设置为darkGreen
     function_format.setFontWeight(QFont::Bold);//函数字体格式设置为Bold
     QString function_pattern="\\b[a-zA-Z0-9_]+(?=\\()";//函数名可以是大小写英文字符、数字、下划线，其中，(?=\\()表示后面必须跟着一个左括号，但是这个左括号不会被匹配到
     rule.pattern=QRegularExpression(function_pattern);
