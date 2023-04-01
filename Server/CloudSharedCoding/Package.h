@@ -35,8 +35,8 @@ public:
         NEW_PROJECT
     };
     enum ReturnType {
-        ALLOW = 0,
-        ERROR,
+        SERVER_ALLOW = 0,
+        SERVER_ERROR,
         USER_PROJS,
         PROJ_INFO,
         NEW_PROJ_INFO

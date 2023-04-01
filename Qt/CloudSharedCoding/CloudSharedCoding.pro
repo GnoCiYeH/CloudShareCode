@@ -30,6 +30,7 @@ SOURCES += \
         mainwindow.cpp \
     codeedit.cpp \
     logindialog.cpp \
+    newprojectdialog.cpp \
     package.cpp \
     projectform.cpp
 
@@ -38,6 +39,7 @@ HEADERS += \
     myhelper.h \
     codeedit.h \
     logindialog.h \
+    newprojectdialog.h \
     package.h \
     projectform.h
 
@@ -45,6 +47,7 @@ FORMS += \
         mainwindow.ui \
     codeedit.ui \
     logindialog.ui \
+    newprojectdialog.ui \
     projectform.ui
 
 # Default rules for deployment.

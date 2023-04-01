@@ -59,7 +59,7 @@ void TcpServer::tcpStart()
     {
         int eNum = epoll_wait(m_epfd, events, EVENT_SIZE, -1);
         FATAL_CHECK(eNum, "epoll_wait error", m_logger);
-        char buf[4];
+        char buf[8];
 
         for (int i = 0; i < eNum; i++)
         {
@@ -85,12 +85,16 @@ void TcpServer::tcpStart()
                 else
                 {
                     int type = bytesToInt(buf, 0, sizeof(buf));
+                    int packageSize = bytesToInt(buf, 4, sizeof(buf));
 
+                    char* data = new char[packageSize + 1];
+                    data[packageSize] = '\0';
+                    read(sock_fd, data, packageSize);
                     switch (type)
                     {
                     case Package::PackageType::LOGIN:
                     {
-                        pool->submit(login, sock_fd);
+                        pool->submit(login, sock_fd,data);
                         break;
                     }
                     case Package::PackageType::INIT_PROJS:
@@ -100,12 +104,12 @@ void TcpServer::tcpStart()
                     }
                     case Package::PackageType::GET_PROJECT:
                     {
-                        pool->submit(sendProjectInfo, sock_fd);
+                        pool->submit(sendProjectInfo, sock_fd, data);
                         break;
                     }
                     case Package::PackageType::NEW_PROJECT:
                     {
-                        pool->submit(newProject, sock_fd);
+                        pool->submit(newProject, sock_fd, data);
                         break;
                     }
                     default:
@@ -118,14 +122,8 @@ void TcpServer::tcpStart()
     }
 }
 
-void TcpServer::login(int sock_fd)
+void TcpServer::login(int sock_fd, char* data)
 {
-    char buf[4];
-    read(sock_fd, buf, sizeof(buf));
-    int packageSize = bytesToInt(buf, 4, sizeof(buf));
-    char data[packageSize + 1];
-    data[packageSize] = '\0';
-    read(sock_fd, data, packageSize);
     std::string temp(data);
     stringList list;
     stringSplit(temp, "\t", list);
@@ -133,7 +131,7 @@ void TcpServer::login(int sock_fd)
     if (userMap->find(sock_fd) != userMap->end())
     {
         std::string str = "The user is logged in";
-        Package pck(str.c_str(), Package::ReturnType::ERROR, str.size());
+        Package pck(str.c_str(), Package::ReturnType::SERVER_ERROR, str.size());
         write(sock_fd, pck.getPdata(), pck.getSize());
     }
     else
@@ -143,26 +141,22 @@ void TcpServer::login(int sock_fd)
         if (vec.empty())
         {
             std::string error = "The account number or password is incorrect";
-            Package pck(error.c_str(), Package::ReturnType::ERROR, error.size());
+            Package pck(error.c_str(), Package::ReturnType::SERVER_ERROR, error.size());
             write(sock_fd, pck.getPdata(), pck.getSize());
         }
         else
         {
-            Package pck("", Package::ReturnType::ALLOW, 0);
+            Package pck("", Package::ReturnType::SERVER_ALLOW, 0);
             write(sock_fd, pck.getPdata(), pck.getSize());
             userMap->insert(std::pair<int, std::string>(sock_fd, UserId));
         }
     }
+
+    delete data;
 }
 
-void TcpServer::sendProjectInfo(int sock_fd)
+void TcpServer::sendProjectInfo(int sock_fd, char* buf)
 {
-    char temp[4];
-    read(sock_fd, temp, sizeof(temp));
-    int packageSize = bytesToInt(temp, 4, sizeof(temp));
-    char buf[packageSize+1];
-    buf[packageSize] = '\0';
-    read(sock_fd, buf, packageSize);
     std::string projId = std::string(buf);
     auto projRes = sql->exeSql("select * from Project where pro_id = " + projId);
     auto rows = sql->getRows(projRes);
@@ -189,14 +183,8 @@ void TcpServer::initUserProjects(int sock_fd)
     mysql_free_result(userProjRes);
 }
 
-void TcpServer::newProject(int sock_fd)
+void TcpServer::newProject(int sock_fd, char* data)
 {
-    char temp[4];
-    read(sock_fd, temp, sizeof(temp));
-    int packageSize = bytesToInt(temp, 4, sizeof(temp));
-    char data[packageSize + 1];
-    data[packageSize] = '\0';
-    read(sock_fd, data, packageSize);
     std::string proName(data);
     std::string userpath = "./" + userMap->find(sock_fd)->second;
     std::string path = userpath + "/" + proName;

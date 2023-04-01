@@ -25,8 +25,11 @@ public:
         */
         TEXT_CHANGE,
 
-        //从服务器获取项目，携带用户id及所需项目id
+        //从服务器获取项目，携带所需项目id
         GET_PROJECT,
+
+        //从服务器获取当前用户参与的所有项目基本信息 无需携带其他数据
+        INIT_PROJS,
 
         //提交保存信号，携带文件id及提交者信息（用户名）
         SUBMIT,
@@ -34,6 +37,14 @@ public:
         //上传项目保存至服务器端，携带文件名，文件大小，用户id，权限，后续应开辟线程发送项目文件
         POST_PROJECT
     };
+    enum ReturnType{
+        SERVER_ALLOW = 0,
+        SERVER_ERROR,
+        USER_PROJS,
+        PROJ_INFO,
+        NEW_PROJ_INFO
+    };
+
     Package(QByteArray data,int type);
     ~Package();
 public:
@@ -52,10 +63,10 @@ public:
     static int ByteArrToInt(QByteArray arr,int offset=0);
 
     //获取处理后的包数据大小
-    int getSize(){return size;}
+    int getSize(){return p_size;}
 private:
     QByteArray p_data;
-    int size;
+    int p_size;
 };
 
 #endif // PACKAGE_H

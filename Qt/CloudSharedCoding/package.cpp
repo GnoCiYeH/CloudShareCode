@@ -4,7 +4,7 @@
 Package::Package(QByteArray data,int type)
 {
     int dsize = data.size();
-    size = dsize+8;
+    p_size = dsize+8;
     if(dsize<=0)
         return;
 

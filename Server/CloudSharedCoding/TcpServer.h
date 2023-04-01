@@ -38,15 +38,15 @@ private:
 
     ThreadPool* pool;
 
-    static void newProject(int sock_fd);
+    static void newProject(int sock_fd,char* data);
 
     static void initUserProjects(int sock_fd);
 
-    static void sendProjectInfo(int sock_fd);
+    static void sendProjectInfo(int sock_fd, char* data);
 
-    static void sendFile(int sock_fd, std::string path, int fileSize);
+    static void sendFile(int sock_fd, std::string path);
 
-    static void login(int sock_fd);
+    static void login(int sock_fd, char* data);
 
     static std::unordered_map<int, std::string>* userMap;
 };

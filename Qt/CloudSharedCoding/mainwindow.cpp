@@ -4,16 +4,20 @@
 #include"projectform.h"
 #include"logindialog.h"
 #include<QAction>
+#include"package.h"
 
+QTcpSocket* MainWindow::socket = new QTcpSocket();
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
+    socket = new QTcpSocket(this);
+
+    //设置主窗口基本属性
     myHelper::setStyle(":/qss/psblack.css");
     this->setWindowTitle("CloudSharedCoding");
-
     QToolButton* undoButton = new QToolButton(this);
     undoButton->setIcon(QIcon("://qss/darkblack/add_left.png"));
     undoButton->setFixedSize(20,20);
@@ -23,6 +27,7 @@ MainWindow::MainWindow(QWidget *parent) :
     forwordButton->setFixedSize(20,20);
     ui->mainToolBar->addWidget(forwordButton);
 
+    //菜单栏槽
     connect(ui->actionClose,SIGNAL(triggered()),this,SLOT(close()));
     connect(ui->actionClose_project,SIGNAL(triggered()),this,SLOT(closeProject()));
     connect(ui->actionCloud_project,SIGNAL(triggered()),this,SLOT(openCloudProj()));
@@ -31,17 +36,23 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionNew_cloud_project,SIGNAL(triggered()),this,SLOT(newCloudProj()));
     connect(ui->actionSetting,SIGNAL(triggered()),this,SLOT(openSettingDialog()));
 
-    connect(ui->menuOpen_project->menuAction(),&QAction::triggered,this,[=](){
-        LoginDialog* dialog1=new LoginDialog(this);
-        dialog1->setAttribute(Qt::WA_DeleteOnClose);
-        dialog1->show();
-    });
+    //socket
+    connect(socket,SIGNAL(readyRead()),this,SLOT(dataProgress()));
 
+    //子窗口
+    projectForm = new ProjectForm(this);
+    projectForm->setWindowFlag(Qt::Window);
+    loginDialog=new LoginDialog(this);
+
+    //子窗口槽
+    connect(this,&MainWindow::loginAllowed,loginDialog,&LoginDialog::loginSucceed);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    socket->close();
+    socket->deleteLater();
 }
 
 void MainWindow::close()
@@ -54,21 +65,60 @@ void MainWindow::openCloudProj()
     //若用户未登录则无法使用在线功能，弹出登录界面
     if(!isLogin)
     {
-        isLogin = Login();
+        Login();
     }
 
     //登录成功才可进行下列操作
     if(isLogin)
     {
         //从服务器拉取文件
-        ProjectForm *form = new ProjectForm(this);
-        form->setWindowFlag(Qt::Window);
-        form->show();
+        projectForm->show();
     }
 }
 
-bool MainWindow::Login()
+void MainWindow::Login()
 {
-    return 0;
+    loginDialog->setAttribute(Qt::WA_DeleteOnClose);
+    connect(loginDialog,&LoginDialog::loginAllowded,this,[=]()mutable{
+        loginDialog->deleteLater();
+        this->isLogin = true;
+        this->userId = loginDialog->userID;
+    });
+    loginDialog->exec();
+}
 
+void MainWindow::dataProgress()
+{
+    QByteArray arr = socket->read(8);
+    int type = Package::ByteArrToInt(arr,0);
+    int packageSize = Package::ByteArrToInt(arr,4);
+
+    switch (type) {
+    case Package::ReturnType::SERVER_ALLOW:
+    {
+        emit loginAllowed();
+        break;
+    }
+    case Package::ReturnType::SERVER_ERROR:
+    {
+        break;
+    }
+    case Package::ReturnType::USER_PROJS:
+    {
+        QByteArray arr = socket->readAll();
+        QString data(arr);
+        QStringList rows = data.split("\n");
+
+        for(auto i : rows)
+        {
+            QStringList row = i.split("\t");
+            if(row.size())
+            {
+
+            }
+        }
+    }
+    default:
+        break;
+    }
 }

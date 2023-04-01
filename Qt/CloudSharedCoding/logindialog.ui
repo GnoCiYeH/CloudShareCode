@@ -23,6 +23,23 @@
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
+    <item row="2" column="1">
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>账号：</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="2">
+     <widget class="QLineEdit" name="lineEdit_UserID"/>
+    </item>
+    <item row="4" column="2">
+     <widget class="QLineEdit" name="lineEdit_Password">
+      <property name="echoMode">
+       <enum>QLineEdit::Password</enum>
+      </property>
+     </widget>
+    </item>
     <item row="3" column="1">
      <spacer name="verticalSpacer_2">
       <property name="orientation">
@@ -35,42 +52,6 @@
        </size>
       </property>
      </spacer>
-    </item>
-    <item row="0" column="2">
-     <widget class="QLineEdit" name="lineEdit_3"/>
-    </item>
-    <item row="4" column="1">
-     <widget class="QLabel" name="label_2">
-      <property name="text">
-       <string>密码：</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="1">
-     <widget class="QLabel" name="label">
-      <property name="text">
-       <string>账号：</string>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="2">
-     <widget class="QLineEdit" name="lineEdit_2"/>
-    </item>
-    <item row="2" column="3">
-     <spacer name="horizontalSpacer_2">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>40</width>
-        <height>20</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item row="2" column="2">
-     <widget class="QLineEdit" name="lineEdit"/>
     </item>
     <item row="1" column="1">
      <spacer name="verticalSpacer">
@@ -85,10 +66,23 @@
       </property>
      </spacer>
     </item>
-    <item row="0" column="1">
-     <widget class="QLabel" name="label_3">
+    <item row="2" column="3">
+     <spacer name="horizontalSpacer_2">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="4" column="1">
+     <widget class="QLabel" name="label_2">
       <property name="text">
-       <string>服务器地址：</string>
+       <string>密码：</string>
       </property>
      </widget>
     </item>
@@ -104,6 +98,20 @@
        </size>
       </property>
      </spacer>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLabel" name="label_3">
+      <property name="text">
+       <string>服务器地址：</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QLineEdit" name="lineEdit_ServerIp">
+      <property name="text">
+       <string>192.168.239.129</string>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>

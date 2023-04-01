@@ -4,6 +4,6 @@ using namespace std;
 int main()
 {
 	Log::Logger logger;
-	TcpServer server("127.0.0.1", 9897, logger);
+	TcpServer server("192.168.239.129", 9098, logger);
 	server.tcpStart();
 }

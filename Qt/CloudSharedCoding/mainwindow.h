@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 #include<QTcpSocket>
+#include"logindialog.h"
+#include"projectform.h"
 
 namespace Ui {
 class MainWindow;
@@ -16,9 +18,16 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    static QTcpSocket* socket;
+
 public slots:
+    void dataProgress();
+
     void close();
     void openCloudProj();
+
+signals:
+    void loginAllowed();
 
 private:
     Ui::MainWindow *ui;
@@ -28,14 +37,16 @@ private:
 
     bool isLogin = false;
 
-    QTcpSocket* socket;
     QTcpSocket* editSocket;
-    QString serverIP = "127.0.0.1";
+    QString serverIP = "192.168.239.129";
     quint16 mainPort = 9098;
-    quint16 editPort = 9097;
+
+    //子窗口
+    LoginDialog* loginDialog;
+    ProjectForm *projectForm;
 
 private:
-    bool Login();
+    void Login();
 };
 
 #endif // MAINWINDOW_H
