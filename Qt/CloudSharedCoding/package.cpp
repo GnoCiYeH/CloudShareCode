@@ -5,8 +5,6 @@ Package::Package(QByteArray data,int type)
 {
     int dsize = data.size();
     p_size = dsize+8;
-    if(dsize<=0)
-        return;
 
     p_data.append(intToByteArr(type));
     p_data.append(intToByteArr(dsize));

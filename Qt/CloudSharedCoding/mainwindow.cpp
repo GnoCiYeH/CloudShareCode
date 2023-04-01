@@ -7,6 +7,9 @@
 #include"package.h"
 
 QTcpSocket* MainWindow::socket = new QTcpSocket();
+QVector<MainWindow::Project>* MainWindow::userProjs = new QVector<MainWindow::Project>();
+QString MainWindow::userId = "";
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -46,6 +49,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //子窗口槽
     connect(this,&MainWindow::loginAllowed,loginDialog,&LoginDialog::loginSucceed);
+    connect(this,SIGNAL(projInited()),projectForm,SLOT(init()));
 }
 
 MainWindow::~MainWindow()
@@ -53,6 +57,7 @@ MainWindow::~MainWindow()
     delete ui;
     socket->close();
     socket->deleteLater();
+    delete userProjs;
 }
 
 void MainWindow::close()
@@ -72,6 +77,9 @@ void MainWindow::openCloudProj()
     if(isLogin)
     {
         //从服务器拉取文件
+        Package pck("",Package::PackageType::INIT_PROJS);
+        socket->write(pck.getPdata(),pck.getSize());
+        qDebug()<<pck.getPdata();
         projectForm->show();
     }
 }
@@ -105,18 +113,21 @@ void MainWindow::dataProgress()
     }
     case Package::ReturnType::USER_PROJS:
     {
-        QByteArray arr = socket->readAll();
+        QByteArray arr = socket->read(packageSize);
         QString data(arr);
-        QStringList rows = data.split("\n");
+        QStringList rows = data.split("\n",Qt::SkipEmptyParts);
 
         for(auto i : rows)
         {
             QStringList row = i.split("\t");
             if(row.size())
             {
-
+                int id = row[0].toInt();
+                userProjs->append(Project(id,row[1],row[2]));
             }
         }
+
+        emit projInited();
     }
     default:
         break;

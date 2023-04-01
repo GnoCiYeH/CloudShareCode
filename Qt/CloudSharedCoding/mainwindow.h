@@ -5,6 +5,7 @@
 #include<QTcpSocket>
 #include"logindialog.h"
 #include"projectform.h"
+#include<QVector>
 
 namespace Ui {
 class MainWindow;
@@ -20,6 +21,22 @@ public:
 
     static QTcpSocket* socket;
 
+    struct Project
+    {
+        int pro_id;
+        QString pro_name;
+        QString pro_owner;
+        Project(int id,QString name,QString owner) {
+            pro_id=id;
+            pro_name=name;
+            pro_owner=owner;
+        }
+    };
+
+    static QVector<Project>* userProjs;
+
+    static QString userId;
+
 public slots:
     void dataProgress();
 
@@ -28,11 +45,11 @@ public slots:
 
 signals:
     void loginAllowed();
+    void projInited();
 
 private:
     Ui::MainWindow *ui;
 
-    QString userId;
     QString userName;
 
     bool isLogin = false;
@@ -48,5 +65,7 @@ private:
 private:
     void Login();
 };
+
+Q_DECLARE_METATYPE(MainWindow::Project);
 
 #endif // MAINWINDOW_H
