@@ -3,6 +3,10 @@
 
 #include"Log.h"
 #include<cstring>
+#include<unistd.h>
+#include <sys/stat.h>
+#include<dirent.h>
+
 static Log::Logger ToolLog("ToolLog");
 static void ERROR_CHECK(int ret, std::string str, Log::Logger logger)
 {
@@ -95,5 +99,44 @@ static void stringSplit(std::string str, std::string split, std::vector<std::str
         res.push_back(str.substr(n, str.size() - 1));
 }
 
+static bool removeFile(std::string& dirName)
+{
+    DIR* dir;
+    struct dirent* dirinfo;
+    struct stat statbuf;
+    char filepath[256] = { 0 };
+    lstat(dirName.c_str(), &statbuf);
+
+
+    if (S_ISREG(statbuf.st_mode)) // 是否是文件
+    {
+        remove(dirName.c_str());
+    }
+    else if (S_ISDIR(statbuf.st_mode)) // 是否是目录
+    {
+        if ((dir = opendir(dirName.c_str())) == NULL)
+        {
+            return false;
+        }
+
+        while ((dirinfo = readdir(dir)) != NULL)
+        {
+            if (strcmp(dirinfo->d_name, ".") == 0 || strcmp(dirinfo->d_name, "..") == 0) // 是否是特殊目录
+                continue;
+
+            std::string absPath = dirName + "/" + std::string(dirinfo->d_name);
+            removeFile(absPath);
+        }
+        closedir(dir);
+
+        rmdir(dirName.c_str());
+    }
+    else
+    {
+        return false;
+    }
+
+    return true;
+}
 
 #endif // TOOL_H_INCLUDED

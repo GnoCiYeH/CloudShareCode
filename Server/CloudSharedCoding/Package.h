@@ -32,13 +32,16 @@ public:
         POST_PROJECT,
 
         //创建云项目
-        NEW_PROJECT
+        NEW_PROJECT,
+
+        //删除项目
+        DEL_PROJECT
     };
     enum ReturnType {
         SERVER_ALLOW = 0,
         SERVER_ERROR,
         USER_PROJS,
-        PROJ_INFO,
+        PROJ_FILE_INFO,
         NEW_PROJ_INFO
     };
     Package(const char* data, int type, int size);

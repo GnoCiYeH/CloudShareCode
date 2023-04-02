@@ -35,6 +35,7 @@ SOURCES += \
     projectform.cpp
 
 HEADERS += \
+    InfoType.h \
         mainwindow.h \
     myhelper.h \
     codeedit.h \

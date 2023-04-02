@@ -7,7 +7,7 @@
 #include"package.h"
 
 QTcpSocket* MainWindow::socket = new QTcpSocket();
-QVector<MainWindow::Project>* MainWindow::userProjs = new QVector<MainWindow::Project>();
+QVector<Project>* MainWindow::userProjs = new QVector<Project>();
 QString MainWindow::userId = "";
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -29,6 +29,10 @@ MainWindow::MainWindow(QWidget *parent) :
     forwordButton->setIcon(QIcon("://qss/darkblack/add_right.png"));
     forwordButton->setFixedSize(20,20);
     ui->mainToolBar->addWidget(forwordButton);
+    QVBoxLayout* layout = new QVBoxLayout(this);
+    layout->setSpacing(0);
+    layout->setContentsMargins(0,0,0,0);
+    ui->treeWidget->setLayout(layout);
 
     //菜单栏槽
     connect(ui->actionClose,SIGNAL(triggered()),this,SLOT(close()));
@@ -50,6 +54,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //子窗口槽
     connect(this,&MainWindow::loginAllowed,loginDialog,&LoginDialog::loginSucceed);
     connect(this,SIGNAL(projInited()),projectForm,SLOT(init()));
+    connect(projectForm,SIGNAL(openProj(int)),this,SLOT(openProj(int)));
 }
 
 MainWindow::~MainWindow()
@@ -71,14 +76,17 @@ void MainWindow::openCloudProj()
     if(!isLogin)
     {
         Login();
+        if(isLogin)
+        {
+            //从服务器拉取项目信息
+            Package pck("",Package::PackageType::INIT_PROJS);
+            socket->write(pck.getPdata(),pck.getSize());
+        }
     }
 
     //登录成功才可进行下列操作
     if(isLogin)
     {
-        //从服务器拉取项目信息
-        Package pck("",Package::PackageType::INIT_PROJS);
-        socket->write(pck.getPdata(),pck.getSize());
         projectForm->show();
     }
 }
@@ -92,6 +100,12 @@ void MainWindow::Login()
         this->userId = loginDialog->userID;
     });
     loginDialog->exec();
+}
+
+void MainWindow::openProj(int id)
+{
+    Package pck(QString::number(id).toUtf8(),Package::PackageType::GET_PROJECT);
+    socket->write(pck.getPdata(),pck.getSize());
 }
 
 void MainWindow::dataProgress()
@@ -132,6 +146,63 @@ void MainWindow::dataProgress()
         }
 
         emit projInited();
+        break;
+    }
+    case Package::ReturnType::NEW_PROJ_INFO:
+    {
+        QByteArray arr = socket->read(packageSize);
+        QString data(arr);
+        QStringList list = data.split("\t");
+        Project proj(list[0].toInt(),list[1],list[2]);
+        projectForm->addItem(proj);
+        userProjs->append(proj);
+        break;
+    }
+    case Package::ReturnType::PROJ_FILE_INFO:
+    {
+        QString data(socket->read(packageSize));
+        QStringList list = data.split("\n",Qt::SkipEmptyParts);
+        QVector<FileInfo> fileVec;
+        for(auto i : list)
+        {
+            auto info = i.split("\t",Qt::SkipEmptyParts);
+            FileInfo file;
+            file.file_id = info[0].toInt();
+            file.file_name = info[1];
+            file.file_user = info[2];
+            file.file_path = info[3];
+            file.file_project = info[4].toInt();
+            file.file_privilege = info[5].toShort();
+            file.file_isProtect = info[6].toInt();
+
+            fileVec.append(file);
+        }
+        int pro_id = fileVec[0].file_project;
+        pro_fileMap.insert(pro_id,fileVec);
+
+        QTreeWidgetItem* item = new QTreeWidgetItem();
+        for(auto i : *userProjs)
+        {
+            if(i.pro_id==pro_id)
+            {
+                item->setText(0,i.pro_name);
+                QVariant var;
+                var.setValue(i);
+                item->setData(0,Qt::UserRole,var);
+                ui->treeWidget->addTopLevelItem(item);
+            }
+        }
+
+        for(int i = 0; i < fileVec.size() ; i++)
+        {
+            QTreeWidgetItem* file_item = new QTreeWidgetItem();
+            file_item->setText(0,fileVec[i].file_name);
+            QVariant var;
+            var.setValue(fileVec[i]);
+            file_item->setData(0,Qt::UserRole,var);
+            item->addChild(file_item);
+        }
+        break;
     }
     default:
         break;

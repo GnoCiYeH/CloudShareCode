@@ -4,6 +4,8 @@
 #include <QWidget>
 #include<QTcpSocket>
 #include<QMessageBox>
+#include<QListWidget>
+#include"InfoType.h"
 
 namespace Ui {
 class ProjectForm;
@@ -17,11 +19,20 @@ public:
     explicit ProjectForm(QWidget *parent = nullptr);
     ~ProjectForm();
 
+    void addItem(Project proj);
+
+signals:
+    void openProj(int);
+
 public slots:
     void init();
 
 private slots:
     void on_toolButton_clicked();
+
+    void on_pushButton_3_clicked();
+
+    void on_pushButton_2_clicked();
 
 private:
     Ui::ProjectForm *ui;

@@ -6,6 +6,8 @@
 #include"logindialog.h"
 #include"projectform.h"
 #include<QVector>
+#include"InfoType.h"
+#include<QHash>
 
 namespace Ui {
 class MainWindow;
@@ -21,27 +23,17 @@ public:
 
     static QTcpSocket* socket;
 
-    struct Project
-    {
-        int pro_id;
-        QString pro_name;
-        QString pro_owner;
-        Project(int id,QString name,QString owner) {
-            pro_id=id;
-            pro_name=name;
-            pro_owner=owner;
-        }
-    };
-
     static QVector<Project>* userProjs;
 
     static QString userId;
+
 
 public slots:
     void dataProgress();
 
     void close();
     void openCloudProj();
+    void openProj(int);
 
 signals:
     void loginAllowed();
@@ -63,10 +55,11 @@ private:
     LoginDialog* loginDialog;
     ProjectForm *projectForm;
 
+    //文件容器
+    QHash<int,QVector<FileInfo>> pro_fileMap;
+
 private:
     void Login();
 };
-
-Q_DECLARE_METATYPE(MainWindow::Project);
 
 #endif // MAINWINDOW_H

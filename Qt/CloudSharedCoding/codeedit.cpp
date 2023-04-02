@@ -36,7 +36,6 @@ void CodeEdit::docChange(int p, int charsRemoved, int charsAdded)
     int position = ui->textEdit->textCursor().position()-(charsAdded-charsRemoved);
     if(position<0)position=0;
     qDebug()<<position<<" "<<charsRemoved<<" "<<charsAdded;
-    if(position==lastPosition);
     if(charsRemoved>0)
     {
         if(charsAdded==0)
@@ -75,7 +74,7 @@ void EditWorkThread::run()
     connect(&timer,&QTimer::timeout,this,[=](){
         if(!codeEdit->buffer.isEmpty())
         {
-
+            qDebug()<<codeEdit->buffer;
             codeEdit->buffer = "";
         }
     },Qt::DirectConnection);

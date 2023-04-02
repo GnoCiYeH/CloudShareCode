@@ -11,6 +11,7 @@
 #define FILEPATH "/home/heyicong/C++/HizZNetDisk/UserFiles/"
 SqlTool* TcpServer::sql = new SqlTool(SqlIP, "root", "191230", "CloudSharedCoding");
 std::unordered_map<int, std::string>* TcpServer::userMap = new std::unordered_map<int, std::string>();
+Log::Logger TcpServer::m_logger;
 TcpServer::TcpServer(const char* ip, uint32_t port, Log::Logger& logger)
 {
     m_logger = logger;
@@ -112,6 +113,11 @@ void TcpServer::tcpStart()
                         pool->submit(newProject, sock_fd, data);
                         break;
                     }
+                    case Package::PackageType::DEL_PROJECT:
+                    {
+                        pool->submit(delProject, sock_fd, data);
+                        break;
+                    }
                     default:
                         INFO_LOG(m_logger, "UNKNOW PACKAGETYPE");
                         break;
@@ -158,12 +164,23 @@ void TcpServer::login(int sock_fd, char* data)
 void TcpServer::sendProjectInfo(int sock_fd, char* buf)
 {
     std::string projId = std::string(buf);
-    auto projRes = sql->exeSql("select * from Project where pro_id = " + projId);
+    auto projRes = sql->exeSql("select * from File where file_project = " + projId);
     auto rows = sql->getRows(projRes);
-    std::string data = std::string(rows[0][0]) + "\t" + std::string(rows[0][1]) + "\t" + std::string(rows[0][2]);
-    Package pck(data.c_str(), Package::ReturnType::PROJ_INFO, data.size());
+    int filedNum = mysql_num_fields(projRes);
+    std::string data = "";
+    for (auto row : rows)
+    {
+        for (int i = 0; i < filedNum; i++)
+        {
+            data += std::string(row[i]) + "\t";
+        }
+        data += "\n";
+    }
+    Package pck(data.c_str(), Package::ReturnType::PROJ_FILE_INFO, data.size());
     write(sock_fd, pck.getPdata(), pck.getSize());
+
     mysql_free_result(projRes);
+    delete buf;
 }
 
 void TcpServer::initUserProjects(int sock_fd)
@@ -180,6 +197,7 @@ void TcpServer::initUserProjects(int sock_fd)
     }
     Package pck(data.c_str(), Package::ReturnType::USER_PROJS,data.size());
     write(sock_fd, pck.getPdata(), pck.getSize());
+
     mysql_free_result(userProjRes);
 }
 
@@ -188,19 +206,39 @@ void TcpServer::newProject(int sock_fd, char* data)
     std::string proName(data);
     std::string userpath = "./" + userMap->find(sock_fd)->second;
     std::string path = userpath + "/" + proName;
-
+    std::string userId = userMap->find(sock_fd)->second;
     if (!opendir(userpath.c_str()))
     {
-        mkdir(userpath.c_str(),700);
+        mkdir(userpath.c_str(),0755);
     }
-    mkdir(path.c_str(),700);
+    mkdir(path.c_str(),0755);
 
-    auto res = sql->exeSql("insert into Project (pro_name,pro_owner) value (\""+proName+"\",\""+userMap->find(sock_fd)->second + "\");\
-                    select * from Project where pro_name =  \"" + proName + "\";");
+    sql->exeSql("insert into Project (pro_name,pro_owner) value (\"" + proName + "\",\"" + userId + "\")");
+    auto res = sql->exeSql("select pro_id,pro_name,pro_owner from Project where pro_name =  \"" + proName + "\";");
     sqlResultRows rows = sql->getRows(res);
+    sql->exeSql("insert into Privilege (_user_id,_pro_id) values(\"" + userId + "\"," + std::string(rows[0][0]) + ");");
     std::string str = std::string(rows[0][0]) + "\t" + std::string(rows[0][1]) + "\t" + std::string(rows[0][2]);
     Package pck(str.c_str(), Package::ReturnType::NEW_PROJ_INFO, str.size());
     write(sock_fd, pck.getPdata(), pck.getSize());
 
     mysql_free_result(res);
+    delete data;
+}
+
+void TcpServer::delProject(int sock_fd, char* data)
+{
+    std::string userId = userMap->find(sock_fd)->second;
+    std::string buf(data);
+    stringList list;
+    stringSplit(buf, "\t", list);
+    std::string projPath = "./" + userId + "/" + list[1]+"/";
+
+    sql->exeSql("delete from Project where pro_id = " + list[0] + ";");
+
+    if (!removeFile(projPath))
+    {
+        ERROR_LOG(m_logger, "rm_dir ERROR!");
+    }
+
+    delete data;
 }

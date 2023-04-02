@@ -28,13 +28,10 @@ public:
 
 private:
     int m_sock_fd;
-    //int m_file_sock_fd;
     struct sockaddr_in m_server_addr;
-    //struct sockaddr_in m_file_server_addr;
-    Log::Logger m_logger;
+    static Log::Logger m_logger;
     const char* m_log_filePath;
     int m_epfd;
-    //int m_file_epid;
 
     ThreadPool* pool;
 
@@ -44,7 +41,7 @@ private:
 
     static void sendProjectInfo(int sock_fd, char* data);
 
-    static void sendFile(int sock_fd, std::string path);
+    static void delProject(int sock_fd,char* data);
 
     static void login(int sock_fd, char* data);
 
