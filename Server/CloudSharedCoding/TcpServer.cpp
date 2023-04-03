@@ -164,10 +164,12 @@ void TcpServer::login(int sock_fd, char* data)
 void TcpServer::sendProjectInfo(int sock_fd, char* buf)
 {
     std::string projId = std::string(buf);
-    auto projRes = sql->exeSql("select * from File where file_project = " + projId);
-    auto rows = sql->getRows(projRes);
-    int filedNum = mysql_num_fields(projRes);
-    std::string data = "";
+    auto projInfoRes = sql->exeSql("select pro_id from Project where pro_id = " + projId + ";");
+    auto projInfo = sql->getRows(projInfoRes);
+    auto projFileRes = sql->exeSql("select * from File where file_project = " + projId + ";");
+    auto rows = sql->getRows(projFileRes);
+    int filedNum = mysql_num_fields(projFileRes);
+    std::string data = std::string(projInfo[0][0]) + "\n";
     for (auto row : rows)
     {
         for (int i = 0; i < filedNum; i++)
@@ -179,7 +181,7 @@ void TcpServer::sendProjectInfo(int sock_fd, char* buf)
     Package pck(data.c_str(), Package::ReturnType::PROJ_FILE_INFO, data.size());
     write(sock_fd, pck.getPdata(), pck.getSize());
 
-    mysql_free_result(projRes);
+    mysql_free_result(projFileRes);
     delete buf;
 }
 

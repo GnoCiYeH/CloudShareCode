@@ -1,5 +1,7 @@
 #include<QString>
 #include<QVariant>
+#include<QTreeWidgetItem>
+#include<memory>
 
 #ifndef INFOTYPE_H
 #define INFOTYPE_H
@@ -28,6 +30,32 @@ struct FileInfo
     bool file_isProtect;
     FileInfo() {}
 };
+
+class MyTreeItem : public QTreeWidgetItem
+{
+public:
+    enum Type{
+        DIR,
+        FILE,
+        PROJECT
+    };
+    explicit MyTreeItem(Type type){this->type=type;}
+    Type getType(){return this->type;}
+private:
+    Type type;
+    QTreeWidgetItem item;
+};
+
+struct Directory
+{
+    QString dir_name;
+    QString dir_path;
+    MyTreeItem* dir_item;
+    QHash<QString,std::shared_ptr<Directory>> sub_dirs = QHash<QString,std::shared_ptr<Directory>>(); //子目录容器
+    Directory(QString str,QString path,MyTreeItem* item){dir_name = str;dir_item = item;dir_path = path;}
+};
+
+Q_DECLARE_METATYPE(Directory);
 Q_DECLARE_METATYPE(Project);
 Q_DECLARE_METATYPE(FileInfo);
 
