@@ -38,6 +38,11 @@ CodeEdit::~CodeEdit()
     delete thread;
 }
 
+void CodeEdit::addText(const QString str)
+{
+    ui->textEdit->insertPlainText(str);
+}
+
 void CodeEdit::docChange(int p, int charsRemoved, int charsAdded)
 {
     int position = ui->textEdit->textCursor().position()-(charsAdded-charsRemoved);

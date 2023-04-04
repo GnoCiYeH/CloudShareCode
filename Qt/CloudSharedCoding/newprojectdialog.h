@@ -2,6 +2,7 @@
 #define NEWPROJECTDIALOG_H
 
 #include <QDialog>
+#include "ui_newprojectdialog.h"
 
 namespace Ui {
 class NewProjectDialog;
@@ -12,8 +13,11 @@ class NewProjectDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit NewProjectDialog(QWidget *parent = nullptr);
+    explicit NewProjectDialog(bool isLocal,QWidget *parent = nullptr);
     ~NewProjectDialog();
+
+signals:
+    void newLocalProInfo(QString,QString);
 
 private slots:
     void on_pushButton_clicked();
@@ -22,6 +26,8 @@ private slots:
 
 private:
     Ui::NewProjectDialog *ui;
+
+    bool isLocal = false;
 };
 
 #endif // NEWPROJECTDIALOG_H

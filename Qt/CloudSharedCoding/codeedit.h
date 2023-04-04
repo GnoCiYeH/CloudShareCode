@@ -37,6 +37,8 @@ public:
     ~CodeEdit() override;
     void setUpAssociateList();//初始化联想列表
 
+    void addText(const QString str);
+
 signals:
     void deleteInfo(int,int);
 

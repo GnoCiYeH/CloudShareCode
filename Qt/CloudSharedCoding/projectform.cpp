@@ -80,15 +80,7 @@ void ProjectForm::on_pushButton_3_clicked()
         MainWindow::socket->write(pck.getPdata(),pck.getSize());
         ui->listWidget->removeItemWidget(litem);
         delete litem;
-        for(int i = 0; i<MainWindow::userProjs->size();i++)
-        {
-            auto item = MainWindow::userProjs->at(i);
-            if(item.pro_id==proj.pro_id)
-            {
-                MainWindow::userProjs->erase(MainWindow::userProjs->begin()+i);
-                break;
-            }
-        }
+        MainWindow::userProjs->remove(proj.pro_id);
     }
     else if(ui->tabWidget->currentWidget()==ui->tab_2)
     {
@@ -104,5 +96,6 @@ void ProjectForm::on_pushButton_2_clicked()
     Project proj = var.value<Project>();
 
     emit openProj(proj.pro_id);
+    this->close();
 }
 

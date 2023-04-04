@@ -43,6 +43,8 @@ private:
 
     static void delProject(int sock_fd,char* data);
 
+    static void sendFile(int sock_fd, char* data);
+
     static void login(int sock_fd, char* data);
 
     static std::unordered_map<int, std::string>* userMap;

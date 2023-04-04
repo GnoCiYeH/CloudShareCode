@@ -35,14 +35,18 @@ public:
         NEW_PROJECT,
 
         //删除项目
-        DEL_PROJECT
+        DEL_PROJECT,
+
+        //获取文件
+        GET_FILE
     };
     enum ReturnType {
         SERVER_ALLOW = 0,
         SERVER_ERROR,
         USER_PROJS,
         PROJ_FILE_INFO,
-        NEW_PROJ_INFO
+        NEW_PROJ_INFO,
+        FILE
     };
     Package(const char* data, int type, int size);
     ~Package();

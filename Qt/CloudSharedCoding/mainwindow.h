@@ -9,6 +9,8 @@
 #include"InfoType.h"
 #include<QHash>
 
+#include"ui_mainwindow.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -23,7 +25,7 @@ public:
 
     static QTcpSocket* socket;
 
-    static QVector<Project>* userProjs;
+    static QHash<int,Project>* userProjs;
 
     static QString userId;
 
@@ -34,6 +36,10 @@ public slots:
     void close();
     void openCloudProj();
     void openProj(int);
+    void newLocalProj();
+    void projectItemPressedSlot(QTreeWidgetItem*,int);
+
+    void openProjFile();
 
 signals:
     void loginAllowed();
@@ -57,9 +63,21 @@ private:
 
     //文件容器
     QHash<int,QVector<FileInfo>> pro_fileMap;
+    QHash<int,QWidget*> fileWidgets;
+
+    //项目树状列表菜单
+    QAction* submitProject;
+    QAction* closeProject;
+    QAction* newFile;
+    QAction* newFileFolder;
+    QAction* deleteFile;
+    QAction* openFile;
+    QAction* attribute;
+    QAction* rename;
 
 private:
     void Login();
+    void addFileWidget(FileInfo& file);
 };
 
 #endif // MAINWINDOW_H

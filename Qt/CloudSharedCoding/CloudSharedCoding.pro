@@ -32,7 +32,8 @@ SOURCES += \
     logindialog.cpp \
     newprojectdialog.cpp \
     package.cpp \
-    projectform.cpp
+    projectform.cpp \
+    settingform.cpp
 
 HEADERS += \
     InfoType.h \
@@ -42,14 +43,16 @@ HEADERS += \
     logindialog.h \
     newprojectdialog.h \
     package.h \
-    projectform.h
+    projectform.h \
+    settingform.h
 
 FORMS += \
         mainwindow.ui \
     codeedit.ui \
     logindialog.ui \
     newprojectdialog.ui \
-    projectform.ui
+    projectform.ui \
+    settingform.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
