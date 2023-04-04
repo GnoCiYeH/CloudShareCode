@@ -9,12 +9,24 @@
 #include<QThread>
 #include<QMutex>
 #include<QTcpSocket>
+#include<QObject>
+#include<QListWidget>
+#include<QPlainTextEdit>
+#include<QApplication>
+#include<vector>
+#include<string>
+#include<cmath>
+using std::string;
+using std::vector;
+using std::min;
 
 namespace Ui {
 class CodeEdit;
 }
 
 class EditWorkThread;
+class AssociateListWidget;
+
 class CodeEdit : public QWidget
 {
     Q_OBJECT
@@ -23,6 +35,7 @@ public: friend class EditWorkThread;
 public:
     explicit CodeEdit(QWidget *parent = nullptr);
     ~CodeEdit() override;
+    void setUpAssociateList();//初始化联想列表
 
 signals:
     void deleteInfo(int,int);
@@ -40,6 +53,14 @@ private:
 
 
     QMutex mutex;
+    int associateState;//联想状态
+    AssociateListWidget *associateWidget;//联想表
+    QStringList associateList;//保存用于联想的关键字
+    QString getWordCursor();//获取当前光标所在位置的字符串
+    int getAssociateWidgetX();
+
+private slots:
+    void showAssociateWidget();//展示联想列表
 };
 
 class EditWorkThread : public QThread
@@ -91,6 +112,24 @@ private:
     //用于匹配注释
     QRegularExpression comment_start;
     QRegularExpression comment_end;
+};
+
+enum AssociateState{
+    Ignore=0,
+    Showing=1,
+    Hide=2
+};
+
+class AssociateListWidget:public QListWidget{
+public:
+    AssociateListWidget(QWidget*parent=0);
+    static int letterDifference(const string source,const string target);//两个字符串的差异度
+protected:
+    void keyPressEvent(QKeyEvent *event) override;
+private:
+    QPlainTextEdit* p;
+    QColor backgroundColor;//联想列表背景色
+    QColor highlightColor;//高亮联想词
 };
 
 #endif // CODEEDIT_H

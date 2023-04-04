@@ -14,6 +14,13 @@ CodeEdit::CodeEdit(QWidget *parent) :
     ui->textEdit->setFontFamily("Consolas");
     HighLighter* highLighter = new HighLighter(document);
 
+    //初始化联想列表
+    setUpAssociateList();
+    associateWidget= new AssociateListWidget(ui->textEdit);
+    associateWidget->hide();
+    associateWidget->setMaximumHeight(fontMetrics().height()*5);
+    associateState=AssociateState::Hide;
+
     const int tabstop = 4;
     QFontMetrics m(ui->textEdit->font());
     ui->textEdit->setTabStopDistance(tabstop*m.horizontalAdvance(" "));
@@ -52,6 +59,97 @@ void CodeEdit::docChange(int p, int charsRemoved, int charsAdded)
             buffer.append(document->characterAt(i));
         }
     }
+}
+
+void CodeEdit::showAssociateWidget(){
+    if(associateState==AssociateState::Ignore)return;//对于光标和文本变化不做任何相应，避免陷入死循环
+    associateWidget->hide();
+    associateState=AssociateState::Hide;
+    QString word=this->getWordCursor();
+    associateWidget->clear();
+    if(!word.isEmpty()){
+        int maxSize=0;
+        QMap<QString,int>differenceRecord;
+        vector<QString>itemVec;
+        foreach(const QString &keyword,associateList){
+            if(keyword.contains(word)){//如果当前输入字符属于联想表中的字符串
+                itemVec.push_back(keyword);
+                differenceRecord[keyword]=AssociateListWidget::letterDifference(keyword.toStdString(),word.toStdString());
+                if(keyword.length()>maxSize)maxSize=keyword.length();//找到联想列表中最长的一个，好设置联想列表宽度
+            }
+        }
+
+        if(itemVec.size()>0){//有匹配字符
+            //按差异度从小到大排，最匹配的在最前面
+            sort(itemVec.begin(),itemVec.end(),[&](const QString &s1,const QString &s2)->bool{return differenceRecord[s1]<differenceRecord[s2];});
+            foreach(const QString& item,itemVec){
+                associateWidget->addItem(new QListWidgetItem(item));
+            }
+
+            int x=this->getAssociateWidgetX();
+            int y=ui->textEdit->cursorRect().y()+fontMetrics().height();
+
+            associateWidget->move(x,y);//设置联想列表的位置
+            //设置联想列表合适的大小
+            if(associateWidget->count()>5)associateWidget->setFixedHeight(fontMetrics().height()*6);
+            else associateWidget->setFixedHeight(fontMetrics().height()*(associateWidget->count()+1));
+            associateWidget->setFixedHeight((fontMetrics().lineWidth()+6)*maxSize);
+            associateWidget->show();
+            associateState=AssociateState::Showing;
+            associateWidget->setCurrentRow(0,QItemSelectionModel::Select);
+        }
+    }
+}
+
+void CodeEdit::setUpAssociateList(){
+    associateList<< "char" << "class" << "const"
+                 << "double" << "enum" << "explicit"
+                 << "friend" << "inline" << "int"
+                 << "long" << "namespace" << "operator"
+                 << "private" << "protected" << "public"
+                 << "short" << "signals" << "signed"
+                 << "slots" << "static" << "struct"
+                 << "template" << "typedef" << "typename"
+                 << "union" << "unsigned" << "virtual"
+                 << "void" << "volatile" << "bool"<<"using"<<"constexpr"
+                 <<"sizeof"<<"if"<<"for"<<"foreach"<<"while"<<"do"<<"case"
+                 <<"break"<<"continue"<<"template"<<"delete"<<"new"
+                 <<"default"<<"try"<<"return"<<"throw"<<"catch"<<"goto"<<"else"
+                 <<"extren"<<"this"<<"switch"<<"#include <>"<<"#include \"\""<<"#define"<<"iostream";
+}
+
+QString CodeEdit::getWordCursor(){
+    int pos=ui->textEdit->textCursor().position()-1;
+    QString res;
+    QChar ch=ui->textEdit->document()->characterAt(pos+1);
+    if(ch.isDigit()||ch.isLetter()||ch==' ')return res;//如果光标在当前字符串或两个字符串之间，就不联想
+    ch=ui->textEdit->document()->characterAt(pos);
+    if(ch==' ')return res;
+    while(ch.isDigit()||ch.isLetter()||ch=='_'||ch=='#'){
+        res.push_back(ch);
+        pos--;
+        ch=ui->textEdit->document()->characterAt(pos);
+    }
+    return res;
+}
+
+int CodeEdit::getAssociateWidgetX(){
+    QTextCursor cursor=ui->textEdit->textCursor();
+    int pos=cursor.position()-1;
+    int originalPos=pos+1;
+    QChar ch=ui->textEdit->document()->characterAt(pos);
+    while((ch.isDigit()||ch.isLetter()||ch=='_'||ch=='#')&&pos>0){
+        ch=ui->textEdit->document()->characterAt(pos--);
+    }
+    pos++;
+    associateState=AssociateState::Ignore;
+    cursor.setPosition(pos);
+    ui->textEdit->setTextCursor(cursor);
+    int x=ui->textEdit->cursorRect().x()+2*fontMetrics().lineWidth();
+    cursor.setPosition(originalPos);
+    ui->textEdit->setTextCursor(cursor);
+    associateState=AssociateState::Hide;
+    return x;
 }
 
 EditWorkThread::EditWorkThread(CodeEdit* codeE)
@@ -96,7 +194,7 @@ HighLighter::HighLighter(QTextDocument* text):QSyntaxHighlighter (text)
       "\\bprivate\\b","\\bprotected\\b","\\bpublic\\b","\\bshort\\b","\\bsignals\\b","\\bsigned\\b",
       "\\bslots\\b","\\bstatic\\b","\\bstruct\\b","\\btemplate\\b","\\btypedef\\b","\\btypename\\b",
       "\\bunion\\b","\\bunsigned\\b","\\bvirtual\\b","\\bvoid\\b","\\bvolatile\\b","\\bbool\\b",
-      "\\busing\\b","vector"
+      "\\busing\\b","vector","return"
     };//关键字集合
     //遍历关键字集合，通过正则表达式识别字符串。并设定为rule的pattern，代表当前关键字的标识符；再设定rule的格式，最终加入规则集合中
     for(auto& keyword:keyword_pattern){
@@ -223,3 +321,45 @@ void HighLighter::highlightBlock(const QString &text){//应用高亮规则
     }
 }
 
+AssociateListWidget::AssociateListWidget(QWidget*parent):QListWidget(parent){
+    p=(QPlainTextEdit*)parent;
+    backgroundColor=Qt::lightGray;
+    highlightColor.setRgb(22,165,248);
+    QPalette palette=this->palette();
+    palette.setColor(QPalette::Active,QPalette::Highlight,highlightColor);
+    palette.setColor(QPalette::Inactive,QPalette::Highlight,highlightColor);
+    palette.setColor(QPalette::Active, QPalette::Base,backgroundColor);
+    palette.setColor(QPalette::Inactive, QPalette::Base, backgroundColor);
+    palette.setColor(QPalette::Text,Qt::white);
+    this->setPalette(palette);
+}
+
+void AssociateListWidget::keyPressEvent(QKeyEvent *event){
+    if(event->key()==16777235||event->key()==16777237){//如果用户按下回车或ESC键
+        QListWidget::keyPressEvent(event);
+    }else{
+        QApplication::sendEvent(p,event);
+        p->setFocus();
+    }
+}
+
+int AssociateListWidget::letterDifference(const std::string source, const std::string target){
+    int n = source.length();
+    int m = target.length();
+    if (m == 0) return n;
+    if (n == 0) return m;
+    vector< vector<int> >dMatrix(n + 1,vector<int>(m+1));//dMatrix[i][j]：source[0,i-1]和target[0,j-1]字符串的最小差异度(有几个字符不同);
+    for (int i = 1; i <= n; i++) dMatrix[i][0] = i;
+    for (int j = 1; j <= m; j++) dMatrix[0][j] = j;
+
+    for (int i = 1; i <= n; i++){
+        for (int j = 1; j <= m; j++){
+            if(source[i-1]==target[j-1]){
+                dMatrix[i][j]=dMatrix[i-1][j-1];
+            }else{
+                dMatrix[i][j]=min(dMatrix[i-1][j],dMatrix[i][j-1])+1;//不取source[i-1]或不取target[j-1]
+            }
+        }
+    }
+    return dMatrix[n][m];
+}
