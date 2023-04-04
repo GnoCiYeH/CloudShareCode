@@ -5,6 +5,7 @@
 #include <sys/types.h>
 #include <dirent.h>
 #include <sys/stat.h>
+#include<fstream>
 
 #define MAXCONNECTION 64
 #define EVENT_SIZE 20
@@ -116,6 +117,11 @@ void TcpServer::tcpStart()
                     case Package::PackageType::DEL_PROJECT:
                     {
                         pool->submit(delProject, sock_fd, data);
+                        break;
+                    }
+                    case Package::PackageType::GET_FILE:
+                    {
+                        pool->submit(sendFile, sock_fd, data);
                         break;
                     }
                     default:
@@ -242,5 +248,42 @@ void TcpServer::delProject(int sock_fd, char* data)
         ERROR_LOG(m_logger, "rm_dir ERROR!");
     }
 
+    delete data;
+}
+
+void TcpServer::sendFile(int sock_fd, char* data)
+{
+    std::string temp(data);
+    auto res = sql->exeSql("select file_path from File where file_id = " + temp + ";");
+    auto row = sql->getRows(res);
+
+    struct stat st;
+    stat(row[0][0], &st);
+
+    std::ifstream ifs(row[0][0], std::ios::in | std::ios::binary);
+    if (!ifs.is_open())
+    {
+        ERROR_LOG(m_logger, "ifstream open file error");
+    }
+    else
+    {
+        int fid = std::stoi(temp);
+
+        char buffer[1024];
+        intToBytes(fid, buffer, 0,sizeof(buffer));
+
+        size_t sended = 0;
+
+        while (sended<st.st_size)
+        {
+            memset(buffer+4, 0, sizeof(buffer)-4);
+            int ret = ifs.readsome(buffer+4, sizeof(buffer)-4);
+            sended += ret;
+            Package pck(buffer, Package::ReturnType::FILE, ret+4);
+            write(sock_fd, pck.getPdata(), pck.getSize());
+        }
+    }
+
+    mysql_free_result(res);
     delete data;
 }

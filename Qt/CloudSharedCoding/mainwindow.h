@@ -39,6 +39,8 @@ public slots:
     void newLocalProj();
     void projectItemPressedSlot(QTreeWidgetItem*,int);
 
+    void openProjFile();
+
 signals:
     void loginAllowed();
     void recvError();
@@ -61,6 +63,7 @@ private:
 
     //文件容器
     QHash<int,QVector<FileInfo>> pro_fileMap;
+    QHash<int,QWidget*> fileWidgets;
 
     //项目树状列表菜单
     QAction* submitProject;
@@ -74,6 +77,7 @@ private:
 
 private:
     void Login();
+    void addFileWidget(FileInfo& file);
 };
 
 #endif // MAINWINDOW_H

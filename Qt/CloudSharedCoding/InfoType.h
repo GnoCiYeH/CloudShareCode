@@ -28,6 +28,7 @@ struct FileInfo
     int file_project;
     short file_privilege;
     bool file_isProtect;
+    bool is_open = false;
     FileInfo() {}
 };
 

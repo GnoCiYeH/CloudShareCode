@@ -48,6 +48,8 @@ MainWindow::MainWindow(QWidget *parent) :
     openFile = new QAction("打开",ui->treeWidget);
     attribute = new QAction("属性",ui->treeWidget);
     rename = new QAction("重命名",ui->treeWidget);
+    //右键菜单槽
+    connect(openFile,SIGNAL(triggered(bool)),this,SLOT(openProjFile()));
 
     //主菜单栏槽
     connect(ui->actionClose,SIGNAL(triggered()),this,SLOT(close()));
@@ -80,6 +82,37 @@ MainWindow::~MainWindow()
     socket->close();
     socket->deleteLater();
     delete userProjs;
+}
+
+void MainWindow::addFileWidget(FileInfo& file)
+{
+    QWidget* wind = new QWidget(this);
+    CodeEdit* widget = new CodeEdit(this);
+    QVBoxLayout* layout = new QVBoxLayout(this);
+    layout->addWidget(widget);
+    wind->setLayout(layout);
+    ui->tabWidget->addTab(wind,file.file_name);
+    fileWidgets.insert(file.file_id,widget);
+    file.is_open = true;
+}
+
+void MainWindow::openProjFile()
+{
+    MyTreeItem* item = (MyTreeItem*)ui->treeWidget->currentItem();
+    QVariant var = item->data(0,Qt::UserRole);
+    FileInfo file = var.value<FileInfo>();
+
+    if(!file.is_open)
+    {
+        addFileWidget(file);
+        Package pck(QString::number(file.file_id).toUtf8(),Package::PackageType::GET_FILE);
+        socket->write(pck.getPdata(),pck.getSize());
+    }
+    else
+    {
+        QWidget* widget = fileWidgets.value(file.file_id);
+        ui->tabWidget->setCurrentWidget(widget);
+    }
 }
 
 void MainWindow::projectItemPressedSlot(QTreeWidgetItem* i,int column)
@@ -294,6 +327,20 @@ void MainWindow::dataProgress()
                 }
             }
         }
+        break;
+    }
+    case Package::ReturnType::FILE:
+    {
+        //接收文件，并显示在CodeEdit中
+        QByteArray temp = socket->read(4);
+        int fid = Package::ByteArrToInt(temp,0);
+
+        QByteArray data = socket->read(packageSize-4);
+
+        auto fileEditor = (CodeEdit*)fileWidgets.value(fid);
+
+        fileEditor->addText(QString(data));
+
         break;
     }
     default:

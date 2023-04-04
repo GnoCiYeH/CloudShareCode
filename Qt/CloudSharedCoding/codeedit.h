@@ -24,6 +24,8 @@ public:
     explicit CodeEdit(QWidget *parent = nullptr);
     ~CodeEdit() override;
 
+    void addText(const QString str);
+
 signals:
     void deleteInfo(int,int);
 
