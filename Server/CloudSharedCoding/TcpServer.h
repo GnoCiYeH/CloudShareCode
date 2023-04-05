@@ -12,6 +12,7 @@
 #include"Package.h"
 #include<unordered_map>
 #include"ThreadPool.h"
+#include<vector>
 
 #define SqlIP "192.168.239.129"
 class TcpServer
@@ -49,7 +50,13 @@ private:
 
     static void newFile(int sock_fd, char* data);
 
+    static void delFile(int sock_fd, char* data);
+
     static std::unordered_map<int, std::string>* userMap;
+
+    static std::unordered_map<int, std::vector<int>>* file_map;
+
+    static std::unordered_map<int, std::vector<int>>* project_map;
 };
 #endif // TCPSERVER_H
 

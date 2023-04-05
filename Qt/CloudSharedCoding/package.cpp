@@ -15,10 +15,10 @@ QByteArray Package::intToByteArr(int num)
 {
     QByteArray arr;
     arr.resize(4);
-    arr[0] = (uchar)(0x000000ff & num);
-    arr[1] = (uchar)((0x0000ff00 & num)>>8);
-    arr[2] = (uchar)((0x00ff0000 & num)>>16);
-    arr[3] = (uchar)((0xff000000 & num)>>24);
+    arr[0] = (unsigned char)(0x000000ff & num);
+    arr[1] = (unsigned char)((0x0000ff00 & num)>>8);
+    arr[2] = (unsigned char)((0x00ff0000 & num)>>16);
+    arr[3] = (unsigned char)((0xff000000 & num)>>24);
     return arr;
 }
 

@@ -41,6 +41,7 @@ public slots:
 
     void openProjFile();
     void newProFile();
+    void deleteProFile();
 
     static bool loginState(){
         return isLogin;
@@ -70,8 +71,9 @@ private:
     ProjectForm* projectForm;
 
     //文件容器
-    QHash<int,QVector<FileInfo>> pro_fileMap;
+    QHash<int,QVector<std::shared_ptr<FileInfo>>> pro_fileMap;
     QHash<int,QWidget*> fileWidgets;
+    QHash<int,std::shared_ptr<Directory>> mainDirMap;
 
     //项目树状列表菜单
     QAction* submitProject;
@@ -84,7 +86,7 @@ private:
 
 private:
     void Login();
-    void addFileWidget(FileInfo& file);
+    void addFileWidget(std::shared_ptr<FileInfo> file);
 };
 
 #endif // MAINWINDOW_H

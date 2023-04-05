@@ -18,7 +18,7 @@ ProjectForm::~ProjectForm()
 
 void ProjectForm::on_toolButton_clicked()
 {
-    NewProjectDialog dialog(this);
+    NewProjectDialog dialog(false,this);
     dialog.exec();
 }
 

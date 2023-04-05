@@ -3,6 +3,7 @@
 #include<QKeyEvent>
 #include<QDebug>
 #include<QTimer>
+#include"mainwindow.h"
 
 CodeEdit::CodeEdit(int id,QWidget *parent) :
     QWidget(parent),
@@ -35,7 +36,7 @@ CodeEdit::CodeEdit(int id,QWidget *parent) :
 CodeEdit::~CodeEdit()
 {
     delete ui;
-    thread->deleteLater();
+    thread->exit(0);
     delete thread;
 }
 
@@ -47,6 +48,7 @@ void CodeEdit::addText(const QString str)
 void CodeEdit::docChange(int p, int charsRemoved, int charsAdded)
 {
     showAssociateWidget();
+    this->isChanged = true;
     int position = ui->textEdit->textCursor().position()-(charsAdded-charsRemoved);
     if(position<0)position=0;
     qDebug()<<position<<" "<<charsRemoved<<" "<<charsAdded;
@@ -183,6 +185,14 @@ void EditWorkThread::run()
         }
     },Qt::DirectConnection);
     timer.start(500);
+    QTimer subTimer;
+    connect(&subTimer,&QTimer::timeout,this,[=](){
+            if(codeEdit->isChanged)
+            {
+                char* data = codeEdit->document->toPlainText().toUtf8().data();
+                int offset = 0;
+            }
+        },Qt::DirectConnection);
     this->exec();
 }
 

@@ -16,47 +16,51 @@ public:
         LOGIN = 0,
 
         //注册信号
-        REGISTER,
+        REGISTER = 1,
 
         /*
          * 在codeEdit->document 发出 void contentsChange(int position, int charsRemoved, int charsAdded) 信号时应及时向服务器发送该类型数据
          * 应携带改变的文本数据所在的文件id、用户id、文本改变的位置、改变的文本数据（该文本数据可能含有\n，所以不能使用\n分割）
          * 可使用4字节携带文件id，4字节携带用户id的size+用户id,4字节携带文本数据size+文本数据的格式
         */
-        TEXT_CHANGE,
+        TEXT_CHANGE = 2,
 
         //从服务器获取项目，携带所需项目id
-        GET_PROJECT,
+        GET_PROJECT = 3,
 
         //从服务器获取当前用户参与的所有项目基本信息 无需携带其他数据
-        INIT_PROJS,
+        INIT_PROJS = 4,
 
         //提交保存信号，携带文件id及提交者信息（用户名）
-        SUBMIT,
+        SUBMIT = 5,
 
         //上传项目保存至服务器端，携带文件名，文件大小，用户id，权限，后续应开辟线程发送项目文件
-        POST_PROJECT,
+        POST_PROJECT = 6,
 
         //创建云项目
-        NEW_PROJECT,
+        NEW_PROJECT = 7,
 
         //删除项目,携带项目id
-        DEL_PROJECT,
+        DEL_PROJECT = 8,
 
         //获取文件
-        GET_FILE,
+        GET_FILE = 9,
 
         //新建文件
-        NEW_FILE
+        NEW_FILE = 10,
+
+        //删除文件
+        DEL_FILE = 11
     };
     enum ReturnType{
         SERVER_ALLOW = 0,
-        SERVER_ERROR,
-        USER_PROJS,
-        PROJ_FILE_INFO,
-        NEW_PROJ_INFO,
-        FILE,
-        NEW_FILE_INFO
+        SERVER_ERROR = 1,
+        USER_PROJS = 2,
+        PROJ_FILE_INFO = 3,
+        NEW_PROJ_INFO = 4,
+        FILE = 5,
+        NEW_FILE_INFO = 6,
+        PROJECT_FILE_DELETE = 7
     };
 
     Package(QByteArray data,int type);

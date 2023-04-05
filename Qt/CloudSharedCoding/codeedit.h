@@ -55,6 +55,8 @@ private:
     QTextDocument * document;
     EditWorkThread* thread;
 
+    bool isChanged = false;
+
     int file_id;
 
 
@@ -75,9 +77,6 @@ class EditWorkThread : public QThread
 
 public:
     explicit EditWorkThread(CodeEdit*);
-    ~EditWorkThread(){
-        this->exit(0);
-    }
 
 private slots:
     void deleteInfo(int,int);

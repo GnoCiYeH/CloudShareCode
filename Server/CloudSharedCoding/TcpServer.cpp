@@ -13,6 +13,8 @@
 #define FILEPATH "/home/heyicong/C++/HizZNetDisk/UserFiles/"
 SqlTool* TcpServer::sql = new SqlTool(SqlIP, "root", "191230", "CloudSharedCoding");
 std::unordered_map<int, std::string>* TcpServer::userMap = new std::unordered_map<int, std::string>();
+std::unordered_map<int, std::vector<int>>* TcpServer::file_map = new std::unordered_map<int, std::vector<int>>();
+std::unordered_map<int, std::vector<int>>* TcpServer::project_map = new std::unordered_map<int, std::vector<int>>();
 Log::Logger TcpServer::m_logger;
 TcpServer::TcpServer(const char* ip, uint32_t port, Log::Logger& logger)
 {
@@ -32,6 +34,7 @@ TcpServer::~TcpServer()
     delete sql;
     delete pool;
     delete userMap;
+    delete file_map;
 }
 
 void TcpServer::tcpStart()
@@ -107,8 +110,7 @@ void TcpServer::tcpStart()
                     }
                     case Package::PackageType::GET_PROJECT:
                     {
-                        sendProjectInfo(sock_fd, data);
-                        //pool->submit(sendProjectInfo, sock_fd, data);
+                        pool->submit(sendProjectInfo, sock_fd, data);
                         break;
                     }
                     case Package::PackageType::NEW_PROJECT:
@@ -129,6 +131,11 @@ void TcpServer::tcpStart()
                     case Package::PackageType::NEW_FILE:
                     {
                         pool->submit(newFile, sock_fd, data);
+                        break;
+                    }
+                    case Package::PackageType::DEL_FILE:
+                    {
+                        pool->submit(delFile, sock_fd, data);
                         break;
                     }
                     default:
@@ -177,6 +184,20 @@ void TcpServer::login(int sock_fd, char* data)
 void TcpServer::sendProjectInfo(int sock_fd, char* buf)
 {
     std::string projId = std::string(buf);
+
+    int pid = std::stoi(projId);
+    if (project_map->find(pid) != project_map->end())
+    {
+        project_map->find(pid)->second.push_back(sock_fd);
+    }
+    else
+    {
+        std::vector<int> vec;
+        vec.push_back(sock_fd);
+        std::pair<int, std::vector<int>> p(pid, vec);
+        project_map->insert(p);
+    }
+
     auto projInfoRes = sql->exeSql("select pro_id from Project where pro_id = " + projId + ";");
     auto projInfo = sql->getRows(projInfoRes);
     auto projFileRes = sql->exeSql("select * from File where file_project = " + projId + ";");
@@ -267,6 +288,7 @@ void TcpServer::sendFile(int sock_fd, char* data)
 
     struct stat st;
     stat(row[0][0], &st);
+    int fid = std::stoi(temp);
 
     std::ifstream ifs(row[0][0], std::ios::in | std::ios::binary);
     if (!ifs.is_open())
@@ -275,8 +297,6 @@ void TcpServer::sendFile(int sock_fd, char* data)
     }
     else
     {
-        int fid = std::stoi(temp);
-
         char buffer[1024];
         intToBytes(fid, buffer, 0,sizeof(buffer));
 
@@ -290,6 +310,19 @@ void TcpServer::sendFile(int sock_fd, char* data)
             Package pck(buffer, Package::ReturnType::FILE, ret+4);
             write(sock_fd, pck.getPdata(), pck.getSize());
         }
+    }
+
+
+    if (file_map->find(fid) != file_map->end())
+    {
+        file_map->find(fid)->second.push_back(sock_fd);
+    }
+    else
+    {
+        std::vector<int> vec;
+        vec.push_back(sock_fd);
+        std::pair<int, std::vector<int>> p(fid, vec);
+        file_map->insert(p);
     }
 
     mysql_free_result(res);
@@ -321,9 +354,11 @@ void TcpServer::newFile(int sock_fd, char* data)
     auto res = sql->exeSql("select * from File where file_path = \"" + list[1] + "\";");
     auto row = sql->getRows(res);
 
+    int num = mysql_num_fields(res);
+
     std::string buf = "";
 
-    for (int i = 0; i < row.size(); i++)
+    for (int i = 0; i < num; i++)
     {
         buf += std::string(row[0][i]) + "\t";
     }
@@ -332,5 +367,54 @@ void TcpServer::newFile(int sock_fd, char* data)
     write(sock_fd, pck.getPdata(), pck.getSize());
 
     mysql_free_result(res);
+    delete data;
+}
+
+void TcpServer::delFile(int sock_fd, char* data)
+{
+
+    std::string buf(data);
+    stringList list;
+    stringSplit(buf, "\t", list);
+    std::string path = list[1];
+    removeFile(path);
+    std::string pdir = getParentDir(path);
+
+    int fid = std::stoi(list[0]);
+    int pid = std::stoi(list[2]);
+    if (file_map->find(fid) != file_map->end())
+    {
+        file_map->erase(fid);
+
+        //向打开该项目的参与者发送文件变更信息
+        std::string buf = list[2] + "\t" + list[0];
+        Package pck(buf.c_str(), Package::ReturnType::PROJECT_FILE_DELETE, list[0].size());
+        for (auto i : project_map->find(pid)->second)
+        {
+            write(i, pck.getPdata(), pck.getSize());
+        }
+    }
+
+    DIR* pDir;
+    struct dirent* ptr;
+
+    pDir = opendir(pdir.c_str());
+
+    if((ptr = readdir(pDir))!=0)
+        closedir(pDir);
+    else
+    {
+        while ((ptr = readdir(pDir)) == 0)
+        {
+            pdir = getParentDir(pdir);
+            closedir(pDir);
+            pDir = opendir(pdir.c_str());
+        }
+        closedir(pDir);
+        removeFile(pdir);
+    }
+
+    sql->exeSql("delete from File where file_id = " + list[0] + ";");
+
     delete data;
 }

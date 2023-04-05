@@ -13,7 +13,6 @@ struct Project
     QString pro_name;
     QString pro_owner;
     short pro_privilege_level = 4;
-    MyTreeItem* pro_item;
     Project(){}
     Project(int id,QString name,QString owner,short level) {
         pro_id=id;
@@ -30,6 +29,7 @@ struct FileInfo
     QString file_name;
     QString file_user;
     QString file_path;
+    MyTreeItem* file_item;
     int file_project;
     short file_privilege;
     bool is_open = false;
