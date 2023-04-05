@@ -6,16 +6,21 @@
 #ifndef INFOTYPE_H
 #define INFOTYPE_H
 
+class MyTreeItem;
 struct Project
 {
     int pro_id;
     QString pro_name;
     QString pro_owner;
+    short pro_privilege_level = 4;
+    MyTreeItem* pro_item;
     Project(){}
-    Project(int id,QString name,QString owner) {
+    Project(int id,QString name,QString owner,short level) {
         pro_id=id;
         pro_name=name;
         pro_owner=owner;
+        if(level>=0&&level<=4)
+            pro_privilege_level=level;
     }
 };
 
@@ -27,7 +32,6 @@ struct FileInfo
     QString file_path;
     int file_project;
     short file_privilege;
-    bool file_isProtect;
     bool is_open = false;
     FileInfo() {}
 };
@@ -51,9 +55,10 @@ struct Directory
 {
     QString dir_name;
     QString dir_path;
+    int pro_id = -1; //-1代表本地项目或非法项目
     MyTreeItem* dir_item;
     QHash<QString,std::shared_ptr<Directory>> sub_dirs = QHash<QString,std::shared_ptr<Directory>>(); //子目录容器
-    Directory(QString str,QString path,MyTreeItem* item){dir_name = str;dir_item = item;dir_path = path;}
+    Directory(int id,QString str,QString path,MyTreeItem* item){pro_id = id;dir_name = str;dir_item = item;dir_path = path;}
 };
 
 Q_DECLARE_METATYPE(Directory);

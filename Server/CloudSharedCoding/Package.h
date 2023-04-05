@@ -38,7 +38,10 @@ public:
         DEL_PROJECT,
 
         //获取文件
-        GET_FILE
+        GET_FILE,
+
+        //新建文件
+        NEW_FILE
     };
     enum ReturnType {
         SERVER_ALLOW = 0,
@@ -46,7 +49,8 @@ public:
         USER_PROJS,
         PROJ_FILE_INFO,
         NEW_PROJ_INFO,
-        FILE
+        FILE,
+        NEW_FILE_INFO
     };
     Package(const char* data, int type, int size);
     ~Package();

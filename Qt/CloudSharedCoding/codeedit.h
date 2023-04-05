@@ -33,11 +33,13 @@ class CodeEdit : public QWidget
 
 public: friend class EditWorkThread;
 public:
-    explicit CodeEdit(QWidget *parent = nullptr);
+    explicit CodeEdit(int file_id,QWidget *parent = nullptr);
     ~CodeEdit() override;
     void setUpAssociateList();//初始化联想列表
 
     void addText(const QString str);
+
+    int getFId(){return file_id;}
 
 signals:
     void deleteInfo(int,int);
@@ -52,6 +54,8 @@ private:
     QString buffer;
     QTextDocument * document;
     EditWorkThread* thread;
+
+    int file_id;
 
 
     QMutex mutex;
@@ -71,7 +75,9 @@ class EditWorkThread : public QThread
 
 public:
     explicit EditWorkThread(CodeEdit*);
-    ~EditWorkThread(){}
+    ~EditWorkThread(){
+        this->exit(0);
+    }
 
 private slots:
     void deleteInfo(int,int);

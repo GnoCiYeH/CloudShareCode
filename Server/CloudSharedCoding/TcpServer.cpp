@@ -6,6 +6,7 @@
 #include <dirent.h>
 #include <sys/stat.h>
 #include<fstream>
+#include<fcntl.h>
 
 #define MAXCONNECTION 64
 #define EVENT_SIZE 20
@@ -106,7 +107,8 @@ void TcpServer::tcpStart()
                     }
                     case Package::PackageType::GET_PROJECT:
                     {
-                        pool->submit(sendProjectInfo, sock_fd, data);
+                        sendProjectInfo(sock_fd, data);
+                        //pool->submit(sendProjectInfo, sock_fd, data);
                         break;
                     }
                     case Package::PackageType::NEW_PROJECT:
@@ -122,6 +124,11 @@ void TcpServer::tcpStart()
                     case Package::PackageType::GET_FILE:
                     {
                         pool->submit(sendFile, sock_fd, data);
+                        break;
+                    }
+                    case Package::PackageType::NEW_FILE:
+                    {
+                        pool->submit(newFile, sock_fd, data);
                         break;
                     }
                     default:
@@ -196,12 +203,12 @@ void TcpServer::initUserProjects(int sock_fd)
     std::string data = "";
 
     std::string userId = userMap->find(sock_fd)->second;
-    auto userProjRes = sql->exeSql("select Project.pro_id,Project.pro_name,Project.pro_owner from Project inner join Privilege\
+    auto userProjRes = sql->exeSql("select Project.pro_id,Project.pro_name,Project.pro_owner,Privilege._privilege_level from Project inner join Privilege\
                                      where (Privilege._user_id = \""+userId+"\" and Privilege._pro_id = Project.pro_id);");
     sqlResultRows rows = sql->getRows(userProjRes);
     for (auto i : rows)
     {
-        data += std::string(i[0]) + "\t" + std::string(i[1]) + "\t" + std::string(i[2]) + "\n";
+        data += std::string(i[0]) + "\t" + std::string(i[1]) + "\t" + std::string(i[2]) + "\t" + std::string(i[3]) + "\n";
     }
     Package pck(data.c_str(), Package::ReturnType::USER_PROJS,data.size());
     write(sock_fd, pck.getPdata(), pck.getSize());
@@ -242,6 +249,7 @@ void TcpServer::delProject(int sock_fd, char* data)
     std::string projPath = "./" + userId + "/" + list[1]+"/";
 
     sql->exeSql("delete from Project where pro_id = " + list[0] + ";");
+    sql->exeSql("delete from File where file_project = " + list[0] + ";");
 
     if (!removeFile(projPath))
     {
@@ -283,6 +291,45 @@ void TcpServer::sendFile(int sock_fd, char* data)
             write(sock_fd, pck.getPdata(), pck.getSize());
         }
     }
+
+    mysql_free_result(res);
+    delete data;
+}
+
+void TcpServer::newFile(int sock_fd, char* data)
+{
+    std::string temp(data);
+    stringList list;
+    stringSplit(temp, "\t", list);
+
+    std::string path = list[1].substr(0, list[1].find_last_of("/"));
+
+    CreateDir(path);
+
+    int fd = open(list[1].c_str(), O_RDWR | O_CREAT, 0755);
+
+    if (fd != -1) {
+        // ¹Ø±ÕÎÄ¼þÃèÊö·û
+        close(fd);
+    }
+
+    std::string userId = userMap->find(sock_fd)->second;
+
+    sql->exeSql("insert into File (file_name,file_user,file_path,file_project,file_privilege) \
+        values(\"" + list[0] + "\",\"" + userId + "\",\"" + list[1] + "\"," + list[2] + "," + list[3] + ");");
+
+    auto res = sql->exeSql("select * from File where file_path = \"" + list[1] + "\";");
+    auto row = sql->getRows(res);
+
+    std::string buf = "";
+
+    for (int i = 0; i < row.size(); i++)
+    {
+        buf += std::string(row[0][i]) + "\t";
+    }
+
+    Package pck(buf.c_str(), Package::ReturnType::NEW_FILE_INFO,buf.size());
+    write(sock_fd, pck.getPdata(), pck.getSize());
 
     mysql_free_result(res);
     delete data;

@@ -47,6 +47,8 @@ private:
 
     static void login(int sock_fd, char* data);
 
+    static void newFile(int sock_fd, char* data);
+
     static std::unordered_map<int, std::string>* userMap;
 };
 #endif // TCPSERVER_H

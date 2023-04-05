@@ -30,6 +30,7 @@ SOURCES += \
         mainwindow.cpp \
     codeedit.cpp \
     logindialog.cpp \
+    newfiledialog.cpp \
     newprojectdialog.cpp \
     package.cpp \
     projectform.cpp \
@@ -41,6 +42,7 @@ HEADERS += \
     myhelper.h \
     codeedit.h \
     logindialog.h \
+    newfiledialog.h \
     newprojectdialog.h \
     package.h \
     projectform.h \
@@ -50,6 +52,7 @@ FORMS += \
         mainwindow.ui \
     codeedit.ui \
     logindialog.ui \
+    newfiledialog.ui \
     newprojectdialog.ui \
     projectform.ui \
     settingform.ui

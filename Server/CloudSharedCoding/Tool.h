@@ -73,10 +73,10 @@ static int bytesToInt(char* bytes, int offset, int size)
         ERROR_LOG(ToolLog, "Array access could out of bounds");
         return 0;
     }
-    int addr = (int)bytes[offset];
-    addr |= ((int)bytes[offset + 1] << 8);
-    addr |= ((int)bytes[offset + 2] << 16);
-    addr |= ((int)bytes[offset + 3] << 24);
+    int addr = (int)bytes[offset] & 0x000000ff;
+    addr |= ((int)bytes[offset + 1] << 8) & 0x0000ff00;
+    addr |= ((int)bytes[offset + 2] << 16) & 0x00ff0000;
+    addr |= ((int)bytes[offset + 3] << 24) & 0xff000000;
     return addr;
 }
 
@@ -137,6 +137,35 @@ static bool removeFile(std::string& dirName)
     }
 
     return true;
+}
+
+static std::string getParentDir(const std::string path)
+{
+    std::string pdir = path;
+    if (pdir.length() < 1 || (pdir[0] != '/')) {
+        return "";
+    }
+    while (pdir.length() > 1 && (pdir[pdir.length() - 1] == '/')) pdir = pdir.substr(0, pdir.length() - 1);
+
+    pdir = pdir.substr(0, pdir.find_last_of('/'));
+    return pdir;
+}
+
+static int CreateDir(const std::string dir)
+{
+    int ret = 0;
+    if (dir.empty())
+        return -1;
+    std::string pdir = "";
+    if ((ret = mkdir(dir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH)))
+    {
+        pdir = getParentDir(dir);
+        if ((ret = CreateDir(pdir)) == 0)
+        {
+            ret = CreateDir(dir);
+        }
+    }
+    return ret;
 }
 
 #endif // TOOL_H_INCLUDED

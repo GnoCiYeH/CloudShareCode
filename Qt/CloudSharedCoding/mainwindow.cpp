@@ -7,11 +7,13 @@
 #include<QFileDialog>
 #include"package.h"
 #include"newprojectdialog.h"
+#include "newfiledialog.h"
 #include<QPoint>
 
 QTcpSocket* MainWindow::socket = new QTcpSocket();
 QHash<int,Project>* MainWindow::userProjs = new QHash<int,Project>();
 QString MainWindow::userId = "";
+bool MainWindow::isLogin = false;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -43,13 +45,13 @@ MainWindow::MainWindow(QWidget *parent) :
     submitProject = new QAction("提交项目",ui->treeWidget);
     closeProject = new QAction("关闭项目",ui->treeWidget);
     newFile = new QAction("新建文件",ui->treeWidget);
-    newFileFolder = new QAction("新建文件夹",ui->treeWidget);
     deleteFile = new QAction("删除",ui->treeWidget);
     openFile = new QAction("打开",ui->treeWidget);
     attribute = new QAction("属性",ui->treeWidget);
     rename = new QAction("重命名",ui->treeWidget);
     //右键菜单槽
     connect(openFile,SIGNAL(triggered(bool)),this,SLOT(openProjFile()));
+    connect(newFile,SIGNAL(triggered(bool)),this,SLOT(newProFile()));
 
     //主菜单栏槽
     connect(ui->actionClose,SIGNAL(triggered()),this,SLOT(close()));
@@ -84,10 +86,24 @@ MainWindow::~MainWindow()
     delete userProjs;
 }
 
+void MainWindow::newProFile()
+{
+    auto item = ui->treeWidget->currentItem();
+    QVariant var = item->data(0,Qt::UserRole);
+    auto dir = var.value<std::shared_ptr<Directory>>();
+
+    if(dir->pro_id!=-1)
+    {
+        //向服务器发送请求
+        NewFileDialog wind(dir,this);
+        wind.exec();
+    }
+}
+
 void MainWindow::addFileWidget(FileInfo& file)
 {
     QWidget* wind = new QWidget(this);
-    CodeEdit* widget = new CodeEdit(this);
+    CodeEdit* widget = new CodeEdit(file.file_id,this);
     QVBoxLayout* layout = new QVBoxLayout(this);
     layout->addWidget(widget);
     wind->setLayout(layout);
@@ -126,7 +142,6 @@ void MainWindow::projectItemPressedSlot(QTreeWidgetItem* i,int column)
         case MyTreeItem::Type::DIR:
         {
             menu->addAction(newFile);
-            menu->addAction(newFileFolder);
             menu->addAction(rename);
             menu->addAction(deleteFile);
             menu->addAction(attribute);
@@ -136,7 +151,6 @@ void MainWindow::projectItemPressedSlot(QTreeWidgetItem* i,int column)
         {
             menu->addAction(submitProject);
             menu->addAction(newFile);
-            menu->addAction(newFileFolder);
             menu->addAction(rename);
             menu->addAction(closeProject);
             menu->addAction(deleteFile);
@@ -235,7 +249,8 @@ void MainWindow::dataProgress()
             if(row.size())
             {
                 int id = row[0].toInt();
-                userProjs->insert(id,Project(id,row[1],row[2]));
+                short level = row[3].toShort();
+                userProjs->insert(id,Project(id,row[1],row[2],level));
             }
         }
 
@@ -247,7 +262,7 @@ void MainWindow::dataProgress()
         QByteArray arr = socket->read(packageSize);
         QString data(arr);
         QStringList list = data.split("\t");
-        Project proj(list[0].toInt(),list[1],list[2]);
+        Project proj(list[0].toInt(),list[1],list[2],0);
         projectForm->addItem(proj);
         userProjs->insert(proj.pro_id,proj);
         break;
@@ -261,9 +276,10 @@ void MainWindow::dataProgress()
         int pro_id = proInfo[0].toInt();
         MyTreeItem* item = new MyTreeItem(MyTreeItem::Type::PROJECT);
         auto i = userProjs->value(pro_id);
+        i.pro_item = item;
         item->setText(0,i.pro_name);
         QString path = "./"+i.pro_owner+"/"+i.pro_name+"/";
-        std::shared_ptr<Directory> mainDir(new Directory(i.pro_name,path,item));
+        std::shared_ptr<Directory> mainDir(new Directory(pro_id,i.pro_name,path,item));
         QVariant var;
         var.setValue(mainDir);
         item->setData(0,Qt::UserRole,var);
@@ -284,7 +300,6 @@ void MainWindow::dataProgress()
             file.file_path = info[3];
             file.file_project = info[4].toInt();
             file.file_privilege = info[5].toShort();
-            file.file_isProtect = info[6].toInt();
 
             fileVec.append(file);
         }
@@ -309,7 +324,7 @@ void MainWindow::dataProgress()
                     MyTreeItem* item = new MyTreeItem(MyTreeItem::Type::DIR);
                     item->setText(0,list[i]);
                     dir->dir_item->addChild(item);
-                    std::shared_ptr<Directory> subDir(new Directory(list[i],dir->dir_path+list[i]+"/",item));
+                    std::shared_ptr<Directory> subDir(new Directory(pro_id,list[i],dir->dir_path+list[i]+"/",item));
                     dir->sub_dirs.insert(list[i],subDir);
                     dir = dir->sub_dirs.value(list[i]);
                     QVariant var;
@@ -343,6 +358,62 @@ void MainWindow::dataProgress()
 
         break;
     }
+    case Package::ReturnType::NEW_FILE_INFO:
+    {
+        QString data(socket->read(packageSize));
+        auto info = data.split("\t");
+        FileInfo file;
+        file.file_id = info[0].toInt();
+        file.file_name = info[1];
+        file.file_user = info[2];
+        file.file_path = info[3];
+        file.file_project = info[4].toInt();
+        file.file_privilege = info[5].toShort();
+
+        pro_fileMap.value(file.file_project).append(file);
+
+        //xxxxx/xxx
+        QString dir_path = file.file_path.mid(0,file.file_path.size()-file.file_path.lastIndexOf("/")+1);
+        QStringList dirList = dir_path.split("/");
+
+        auto item = userProjs->value(file.file_project).pro_item;
+        for (int i = 3; i < dirList.size(); ++i) {
+            int num = item->childCount();
+            bool flag = false;
+            for (int i = 0; i < num; ++i) {
+                auto dir = item->child(i);
+                auto dir_ptr = dir->data(0,Qt::UserRole).value<std::shared_ptr<Directory>>();
+                if(dir_ptr->dir_name == dirList[i])
+                {
+                    item = dir_ptr->dir_item;
+                    flag = true;
+                    break;
+                }
+            }
+            if(!flag)
+            {
+                for(int j = i ; j < dirList.size() ; j++)
+                {
+                    MyTreeItem* dir_item = new MyTreeItem(MyTreeItem::Type::DIR);
+                    auto pdir = item->data(0,Qt::UserRole).value<std::shared_ptr<Directory>>();
+                    std::shared_ptr<Directory> dir_ptr(new Directory(file.file_project,dirList[j],pdir->dir_path+dirList[j]+"/",dir_item));
+                    QVariant var;
+                    var.setValue(dir_ptr);
+                    dir_item->setData(0,Qt::UserRole,var);
+                    item->addChild(dir_item);
+                    item = dir_item;
+                }
+            }
+        }
+
+        MyTreeItem* file_item = new MyTreeItem(MyTreeItem::Type::FILE);
+        QVariant var;
+        var.setValue(file);
+        file_item->setData(0,Qt::UserRole,var);
+        item->addChild(file_item);
+
+        break;
+    }
     default:
         break;
     }
@@ -352,3 +423,12 @@ void MainWindow::newLocalProj()
 {
 
 }
+
+void MainWindow::on_tabWidget_tabCloseRequested(int index)
+{
+    CodeEdit* wind = (CodeEdit*)ui->tabWidget->widget(index);
+    fileWidgets.remove(wind->getFId());
+    ui->tabWidget->removeTab(index);
+    wind->deleteLater();
+}
+

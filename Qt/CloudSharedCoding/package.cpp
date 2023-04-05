@@ -24,10 +24,10 @@ QByteArray Package::intToByteArr(int num)
 
 int Package::ByteArrToInt(QByteArray bytes,int offset)
 {
-    int addr = bytes[offset];
-    addr |= (bytes[offset+1] << 8);
-    addr |= (bytes[offset+2] << 16);
-    addr |= (bytes[offset+3] << 24);
+    int addr = (int)bytes[offset] & 0x000000ff;
+    addr |= ((int)bytes[offset + 1] << 8) & 0x0000ff00;
+    addr |= ((int)bytes[offset + 2] << 16) & 0x00ff0000;
+    addr |= ((int)bytes[offset + 3] << 24) & 0xff000000;
     return addr;
 }
 

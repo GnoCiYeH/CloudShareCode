@@ -4,12 +4,13 @@
 #include<QDebug>
 #include<QTimer>
 
-CodeEdit::CodeEdit(QWidget *parent) :
+CodeEdit::CodeEdit(int id,QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CodeEdit)
 {
     ui->setupUi(this);
 
+    this->file_id = id;
     document = ui->textEdit->document();
     ui->textEdit->setFontFamily("Consolas");
     HighLighter* highLighter = new HighLighter(document);
@@ -45,6 +46,7 @@ void CodeEdit::addText(const QString str)
 
 void CodeEdit::docChange(int p, int charsRemoved, int charsAdded)
 {
+    showAssociateWidget();
     int position = ui->textEdit->textCursor().position()-(charsAdded-charsRemoved);
     if(position<0)position=0;
     qDebug()<<position<<" "<<charsRemoved<<" "<<charsAdded;

@@ -40,18 +40,26 @@ public slots:
     void projectItemPressedSlot(QTreeWidgetItem*,int);
 
     void openProjFile();
+    void newProFile();
+
+    static bool loginState(){
+        return isLogin;
+    }
 
 signals:
     void loginAllowed();
     void recvError();
     void projInited();
 
+private slots:
+    void on_tabWidget_tabCloseRequested(int index);
+
 private:
     Ui::MainWindow *ui;
 
     QString userName;
 
-    bool isLogin = false;
+    static bool isLogin;
 
     QTcpSocket* editSocket;
     QString serverIP = "192.168.239.129";
@@ -59,7 +67,7 @@ private:
 
     //子窗口
     LoginDialog* loginDialog;
-    ProjectForm *projectForm;
+    ProjectForm* projectForm;
 
     //文件容器
     QHash<int,QVector<FileInfo>> pro_fileMap;
@@ -69,7 +77,6 @@ private:
     QAction* submitProject;
     QAction* closeProject;
     QAction* newFile;
-    QAction* newFileFolder;
     QAction* deleteFile;
     QAction* openFile;
     QAction* attribute;
