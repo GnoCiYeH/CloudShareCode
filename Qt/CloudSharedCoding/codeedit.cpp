@@ -134,8 +134,7 @@ QString CodeEdit::getWordCursor(){
     if(ch==' ')return res;
     while(ch.isDigit()||ch.isLetter()||ch=='_'||ch=='#'){
         res.push_back(ch);
-        pos--;
-        ch=ui->textEdit->document()->characterAt(pos);
+        ch=ui->textEdit->document()->characterAt(pos++);
     }
     return res;
 }
@@ -218,12 +217,30 @@ HighLighter::HighLighter(QTextDocument* text):QSyntaxHighlighter (text)
     rule.format=class_format;
     highlighterrules.push_back(rule);
 
-    //3.添加单行注释高亮规则
-    singleLine_comment_format.setForeground(QColor(211, 211 ,211));//注释颜色为green
-    QString singleLine_comment_pattern="//[^\n]*";//单行注释识别格式为跟在//后，但不包括换行符，且不需要间隔符
-    rule.pattern=QRegularExpression(singleLine_comment_pattern);
-    rule.format=singleLine_comment_format;
+    //3.添加头文件高亮格式
+    //3.1 #开头
+    headfile_format.setForeground(Qt::darkGray);
+    headfile_format.setFontWeight(QFont::Bold);
+    rule.format=headfile_format;
+    rule.pattern=QRegularExpression("#.*");
     highlighterrules.push_back(rule);
+
+    //3.2 各头文件
+    headfile_format.setForeground(Qt::yellow);
+    headfile_format.setFontWeight(QFont::Bold);
+    QVector<QString>headfile_pattern={
+        "<algorithm>","<bitset>","<cctype>","<cerrno>","<cerrno>","<cerrno>",
+        "\\b<?complex>?\\b","<cstdio>","<cstdlib>","\\b<?cstring>?\\b","<ctime>","\\b<?deque>?\\b",
+        "\\b<?exception>?\\b","\\b<?fstream>?\\b","\\b<?limits>?\\b","\\b<?list>?\\b","\\b<?map>?\\b","<iomanip>","<ios>",
+        "<iosfwd>","<iostream>","\\b<?istream>?\\b","\\b<?ostream>?\\b","\\b<?queue>?\\b","\\b<?set>?\\b",
+        "\\b<?sstream>?\\b","\\b<?stack>?\\b","<stdexcept>","<streambuf>","<string>","<utility>",
+        "\\b<?vector>?\\b","\\b<?cwchar>?\\b","\\b<?cwctype>?\\b"
+    };
+    rule.format=headfile_format;
+    for(auto& pattern:headfile_pattern){
+        rule.pattern=QRegularExpression(pattern);
+        highlighterrules.push_back(rule);
+    }
 
     //4.添加多行注释高亮规则
     //多行注释的匹配正则表达式
@@ -272,30 +289,13 @@ HighLighter::HighLighter(QTextDocument* text):QSyntaxHighlighter (text)
         rule.pattern=QRegularExpression(pattern);
         highlighterrules.push_back(rule);
     }
-    //9.添加头文件高亮格式
-    //9.1 #开头
-    headfile_format.setForeground(Qt::darkGray);
-    headfile_format.setFontWeight(QFont::Bold);
-    rule.format=headfile_format;
-    rule.pattern=QRegularExpression("#.*");
-    highlighterrules.push_back(rule);
 
-    //9.2 各头文件
-    headfile_format.setForeground(Qt::yellow);
-    headfile_format.setFontWeight(QFont::Bold);
-    QVector<QString>headfile_pattern={
-      "<algorithm>","<bitset>","<cctype>","<cerrno>","<cerrno>","<cerrno>",
-      "\\b<?complex>?\\b","<cstdio>","<cstdlib>","\\b<?cstring>?\\b","<ctime>","\\b<?deque>?\\b",
-      "\\b<?exception>?\\b","\\b<?fstream>?\\b","\\b<?limits>?\\b","\\b<?list>?\\b","\\b<?map>?\\b","<iomanip>","<ios>",
-      "<iosfwd>","<iostream>","\\b<?istream>?\\b","\\b<?ostream>?\\b","\\b<?queue>?\\b","\\b<?set>?\\b",
-      "\\b<?sstream>?\\b","\\b<?stack>?\\b","<stdexcept>","<streambuf>","<string>","<utility>",
-      "\\b<?vector>?\\b","\\b<?cwchar>?\\b","\\b<?cwctype>?\\b"
-    };
-    rule.format=headfile_format;
-    for(auto& pattern:headfile_pattern){
-        rule.pattern=QRegularExpression(pattern);
-        highlighterrules.push_back(rule);
-    }
+    //9.添加单行注释高亮规则
+    singleLine_comment_format.setForeground(QColor(211, 211 ,211));//注释颜色为green
+    QString singleLine_comment_pattern="//[^\n]*";//单行注释识别格式为跟在//后，但不包括换行符，且不需要间隔符
+    rule.pattern=QRegularExpression(singleLine_comment_pattern);
+    rule.format=singleLine_comment_format;
+    highlighterrules.push_back(rule);
 }
 
 void HighLighter::highlightBlock(const QString &text){//应用高亮规则
