@@ -8,6 +8,10 @@
 #include<QVector>
 #include"InfoType.h"
 #include<QHash>
+#include<QStatusBar>
+#include<QTimer>
+#include<QLabel>
+#include<QDateTime>
 
 #include"ui_mainwindow.h"
 
@@ -83,6 +87,10 @@ private:
     QAction* attribute;
     QAction* rename;
 
+    QStatusBar* status_bar=new QStatusBar();
+    QLabel* label1=new QLabel("就绪",this);
+    QLabel* label2=new QLabel;
+    QTimer *timer=new QTimer;
 private:
     void Login();
     void addFileWidget(std::shared_ptr<FileInfo> file);

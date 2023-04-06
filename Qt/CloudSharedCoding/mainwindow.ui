@@ -132,8 +132,8 @@
     <addaction name="menuOpen_project"/>
     <addaction name="menuNew_project"/>
     <addaction name="separator"/>
-    <addaction name="actionClose_project"/>
-    <addaction name="actionClose_CloudSharedCoding"/>
+    <addaction name="add_file_action"/>
+    <addaction name="new_file_action"/>
     <addaction name="separator"/>
     <addaction name="actionClose_project_2"/>
     <addaction name="actionClose"/>
@@ -201,12 +201,12 @@
     <string>New local project</string>
    </property>
   </action>
-  <action name="actionClose_project">
+  <action name="add_file_action">
    <property name="text">
     <string>添加文件</string>
    </property>
   </action>
-  <action name="actionClose_CloudSharedCoding">
+  <action name="new_file_action">
    <property name="text">
     <string>新建文件</string>
    </property>
