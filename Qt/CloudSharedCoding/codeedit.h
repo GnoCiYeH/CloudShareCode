@@ -33,24 +33,28 @@ class CodeEdit : public QWidget
 
 public: friend class EditWorkThread;
 public:
-    explicit CodeEdit(int file_id,QWidget *parent = nullptr);
+    explicit CodeEdit(QWidget *parent = nullptr);
     ~CodeEdit() override;
     void setUpAssociateList();//初始化联想列表
 
     void addText(const QString str);
 
+    void setFid(int id){this->file_id = id;}
+
     int getFId(){return file_id;}
+
+    void changeText(int blockNum,QString data);
 
 signals:
     void deleteInfo(int,int);
 
 public slots:
-    void docChange(int,int,int);
+    void textChange();
 
 private:
     Ui::CodeEdit *ui;
 
-    int lastPosition;
+    int lastBlock = 0;
     QString buffer;
     QTextDocument * document;
     EditWorkThread* thread;

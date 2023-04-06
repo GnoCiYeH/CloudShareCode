@@ -5,7 +5,7 @@
 class Package
 {
 public:
-    enum PackageType {
+    enum class PackageType {
         //请求登录，应携带用户id及密码数据 使用\n分割
         LOGIN = 0,
 
@@ -44,9 +44,12 @@ public:
         NEW_FILE = 10,
 
         //删除文件
-        DEL_FILE = 11
+        DEL_FILE = 11,
+
+        //加入项目
+        JOIN_PROJECT =12
     };
-    enum ReturnType {
+    enum class ReturnType {
         SERVER_ALLOW = 0,
         SERVER_ERROR = 1,
         USER_PROJS = 2,
@@ -54,7 +57,8 @@ public:
         NEW_PROJ_INFO = 4,
         FILE = 5,
         NEW_FILE_INFO = 6,
-        PROJECT_FILE_DELETE = 7
+        PROJECT_FILE_DELETE = 7,
+        TEXT_CHANGE = 8
     };
     Package(const char* data, int type, int size);
     ~Package();

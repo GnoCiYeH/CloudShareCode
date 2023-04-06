@@ -98,7 +98,7 @@ void MainWindow::deleteProFile()
         return;
 
     QString data = QString::number(file.file_id) + "\t" + file.file_path + "\t" + QString::number(file.file_project);
-    Package pck(data.toUtf8(),Package::PackageType::DEL_FILE);
+    Package pck(data.toUtf8(),(int)Package::PackageType::DEL_FILE);
 
     socket->write(pck.getPdata(),pck.getSize());
 }
@@ -120,7 +120,8 @@ void MainWindow::newProFile()
 void MainWindow::addFileWidget(std::shared_ptr<FileInfo> file)
 {
     QWidget* wind = new QWidget(this);
-    CodeEdit* widget = new CodeEdit(file->file_id,this);
+    CodeEdit* widget = new CodeEdit(this);
+    widget->setFid(file->file_id);
     QVBoxLayout* layout = new QVBoxLayout(this);
     layout->addWidget(widget);
     wind->setLayout(layout);
@@ -138,7 +139,7 @@ void MainWindow::openProjFile()
     if(!file->is_open)
     {
         addFileWidget(file);
-        Package pck(QString::number(file->file_id).toUtf8(),Package::PackageType::GET_FILE);
+        Package pck(QString::number(file->file_id).toUtf8(),(int)Package::PackageType::GET_FILE);
         socket->write(pck.getPdata(),pck.getSize());
     }
     else
@@ -204,7 +205,7 @@ void MainWindow::openCloudProj()
         if(isLogin)
         {
             //从服务器拉取项目信息
-            Package pck("",Package::PackageType::INIT_PROJS);
+            Package pck("",(int)Package::PackageType::INIT_PROJS);
             socket->write(pck.getPdata(),pck.getSize());
         }
     }
@@ -229,7 +230,7 @@ void MainWindow::Login()
 
 void MainWindow::openProj(int id)
 {
-    Package pck(QString::number(id).toUtf8(),Package::PackageType::GET_PROJECT);
+    Package pck(QString::number(id).toUtf8(),(int)Package::PackageType::GET_PROJECT);
     socket->write(pck.getPdata(),pck.getSize());
 }
 
@@ -240,21 +241,21 @@ void MainWindow::dataProgress()
     int packageSize = Package::ByteArrToInt(arr,4);
 
     switch (type) {
-    case Package::ReturnType::SERVER_ALLOW:
+    case (int)Package::ReturnType::SERVER_ALLOW:
     {
         emit loginAllowed();
         break;
     }
-    case Package::ReturnType::SERVER_ERROR:
+    case (int)Package::ReturnType::SERVER_ERROR:
     {
         QByteArray arr = socket->read(packageSize);
         QMessageBox box;
         box.setWindowTitle("发生错误");
         box.setText("错误码："+QString(arr));
-        emit recvError();
+        box.exec();
         break;
     }
-    case Package::ReturnType::USER_PROJS:
+    case (int)Package::ReturnType::USER_PROJS:
     {
         QByteArray arr = socket->read(packageSize);
         QString data(arr);
@@ -267,24 +268,24 @@ void MainWindow::dataProgress()
             {
                 int id = row[0].toInt();
                 short level = row[3].toShort();
-                userProjs->insert(id,Project(id,row[1],row[2],level));
+                userProjs->insert(id,Project(id,row[1],row[2],level,row[4]));
             }
         }
 
         emit projInited();
         break;
     }
-    case Package::ReturnType::NEW_PROJ_INFO:
+    case (int)Package::ReturnType::NEW_PROJ_INFO:
     {
         QByteArray arr = socket->read(packageSize);
         QString data(arr);
         QStringList list = data.split("\t");
-        Project proj(list[0].toInt(),list[1],list[2],0);
+        Project proj(list[0].toInt(),list[1],list[2],0,list[3]);
         projectForm->addItem(proj);
         userProjs->insert(proj.pro_id,proj);
         break;
     }
-    case Package::ReturnType::PROJ_FILE_INFO:
+    case (int)Package::ReturnType::PROJ_FILE_INFO:
     {
         QString data(socket->read(packageSize));
         QStringList list = data.split("\n",Qt::SkipEmptyParts);
@@ -363,7 +364,7 @@ void MainWindow::dataProgress()
         }
         break;
     }
-    case Package::ReturnType::FILE:
+    case (int)Package::ReturnType::FILE:
     {
         //接收文件，并显示在CodeEdit中
         QByteArray temp = socket->read(4);
@@ -377,7 +378,7 @@ void MainWindow::dataProgress()
 
         break;
     }
-    case Package::ReturnType::NEW_FILE_INFO:
+    case (int)Package::ReturnType::NEW_FILE_INFO:
     {
         QString data(socket->read(packageSize));
         auto info = data.split("\t");
@@ -438,7 +439,7 @@ void MainWindow::dataProgress()
 
         break;
     }
-    case Package::ReturnType::PROJECT_FILE_DELETE:
+    case (int)Package::ReturnType::PROJECT_FILE_DELETE:
     {
         QString data(socket->read(packageSize));
         QStringList list = data.split("\t");
@@ -465,6 +466,19 @@ void MainWindow::dataProgress()
         {
             fileWidgets.value(fid)->deleteLater();
             fileWidgets.remove(fid);
+        }
+        break;
+    }
+    case (int)Package::ReturnType::TEXT_CHANGE:
+    {
+        QString data(socket->read(packageSize));
+        QStringList list = data.split("#split#");
+        int file_id = list[0].toInt();
+        int blockNum = list[1].toInt();
+        if(fileWidgets.contains(file_id))
+        {
+            CodeEdit* wind = fileWidgets.value(file_id);
+            wind->changeText(blockNum,list[2]);
         }
         break;
     }

@@ -3,6 +3,7 @@
 #include"mainwindow.h"
 #include"newprojectdialog.h"
 #include"package.h"
+#include<QInputDialog>
 
 ProjectForm::ProjectForm(QWidget *parent) :
     QWidget(parent),
@@ -76,7 +77,7 @@ void ProjectForm::on_pushButton_3_clicked()
             return;
 
         QString data = QString::number(proj.pro_id)+"\t"+proj.pro_name;
-        Package pck(data.toUtf8(),Package::PackageType::DEL_PROJECT);
+        Package pck(data.toUtf8(),(int)Package::PackageType::DEL_PROJECT);
         MainWindow::socket->write(pck.getPdata(),pck.getSize());
         ui->listWidget->removeItemWidget(litem);
         delete litem;
@@ -92,6 +93,44 @@ void ProjectForm::on_pushButton_3_clicked()
 void ProjectForm::on_pushButton_2_clicked()
 {
     QListWidgetItem* litem = ui->listWidget->currentItem();
+    QVariant var = litem->data(Qt::UserRole);
+    Project proj = var.value<Project>();
+
+    emit openProj(proj.pro_id);
+    this->close();
+}
+
+
+void ProjectForm::on_toolButton_3_clicked()
+{
+    QString uuid = QInputDialog::getText(this,"加入项目","请输入项目uuid");
+    if(uuid.size()!=36)
+    {
+        QMessageBox::warning(this,"错误","请输入正确uuid");
+        return;
+    }
+
+    Package pck(uuid.toUtf8(),(int)Package::PackageType::JOIN_PROJECT);
+    MainWindow::socket->write(pck.getPdata(),pck.getSize());
+}
+
+
+void ProjectForm::on_pushButton_clicked()
+{
+    auto item = ui->listWidget->currentItem();
+    Project proj = item->data(Qt::UserRole).value<Project>();
+
+    QMessageBox box;
+    box.setWindowTitle("分享项目");
+    box.setText("项目分享码: " + proj.pro_uuid);
+    box.setTextInteractionFlags(Qt::TextSelectableByMouse);
+    box.exec();
+}
+
+
+void ProjectForm::on_pushButton_4_clicked()
+{
+    QListWidgetItem* litem = ui->listWidget_2->currentItem();
     QVariant var = litem->data(Qt::UserRole);
     Project proj = var.value<Project>();
 

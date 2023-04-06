@@ -12,14 +12,21 @@ struct Project
     int pro_id;
     QString pro_name;
     QString pro_owner;
+    QString pro_uuid = "";
     short pro_privilege_level = 4;
     Project(){}
-    Project(int id,QString name,QString owner,short level) {
+    Project(int id,QString name,QString owner,short level,QString uuid) {
         pro_id=id;
         pro_name=name;
         pro_owner=owner;
         if(level>=0&&level<=4)
+        {
             pro_privilege_level=level;
+        }
+        if(pro_privilege_level<=1)
+        {
+            pro_uuid = uuid;
+        }
     }
 };
 

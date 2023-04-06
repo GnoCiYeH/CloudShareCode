@@ -4,16 +4,17 @@
 #include<QDebug>
 #include<QTimer>
 #include"mainwindow.h"
+#include "package.h"
 
-CodeEdit::CodeEdit(int id,QWidget *parent) :
+CodeEdit::CodeEdit(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CodeEdit)
 {
     ui->setupUi(this);
 
-    this->file_id = id;
     document = ui->textEdit->document();
-    ui->textEdit->setFontFamily("Consolas");
+    //ui->textEdit->setFontFamily("Consolas");
+    ui->textEdit->setFont(QFont("Consolas"));
     HighLighter* highLighter = new HighLighter(document);
 
     //初始化联想列表
@@ -27,7 +28,8 @@ CodeEdit::CodeEdit(int id,QWidget *parent) :
     QFontMetrics m(ui->textEdit->font());
     ui->textEdit->setTabStopDistance(tabstop*m.horizontalAdvance(" "));
 
-    connect(document,SIGNAL(contentsChange(int, int, int)),this,SLOT(docChange(int,int,int)));
+    connect(ui->textEdit,SIGNAL(textChanged()),this,SLOT(textChange()));
+    //connect(document,SIGNAL(contentsChange(int,int,int)),this,SLOT(docChange(int,int,int)));
 
     thread = new EditWorkThread(this);
     thread->start();
@@ -40,34 +42,54 @@ CodeEdit::~CodeEdit()
     delete thread;
 }
 
+void CodeEdit::textChange()
+{
+    showAssociateWidget();
+    auto cursor = ui->textEdit->textCursor();
+    int block = cursor.blockNumber();
+    QString data = QString::number(file_id)+"#split#"+QString::number(lastBlock)+"#split#";
+    if(block<lastBlock)
+    {
+        qDebug()<<"-----------------------------";
+        for (int var = block; var <= lastBlock; ++var) {
+            qDebug()<<"deleteLine("<<var<<")";
+        }
+    }
+    else if(document->findBlockByLineNumber(block).text()=="")
+    {
+        qDebug()<<"-----------------------------";
+        qDebug()<<block;
+        qDebug()<<document->findBlockByLineNumber(block).text();
+
+        data+="\n";
+    }
+    else{
+        qDebug()<<"-----------------------------";
+        qDebug()<<block;
+        for (int var = lastBlock; var <= block; ++var) {
+            qDebug()<<document->findBlockByLineNumber(var).text();
+            data+=document->findBlockByLineNumber(var).text();
+        }
+    }
+    lastBlock = block;
+
+    Package pck(data.toUtf8(),(int)Package::PackageType::TEXT_CHANGE);
+    MainWindow::socket->write(pck.getPdata(),pck.getSize());
+}
+
 void CodeEdit::addText(const QString str)
 {
     ui->textEdit->insertPlainText(str);
 }
 
-void CodeEdit::docChange(int p, int charsRemoved, int charsAdded)
+void CodeEdit::changeText(int blockNum,QString data)
 {
-    showAssociateWidget();
-    this->isChanged = true;
-    int position = ui->textEdit->textCursor().position()-(charsAdded-charsRemoved);
-    if(position<0)position=0;
-    qDebug()<<position<<" "<<charsRemoved<<" "<<charsAdded;
-    if(charsRemoved>0)
-    {
-        if(charsAdded==0)
-            buffer.append("\b");
-        else
-        {
-            for (int i = position;i<charsAdded+position-charsRemoved;i++) {
-                buffer.append(document->characterAt(i));
-            }
-        }
-    }
-    else{
-        for (int i = position;i<charsAdded+position;i++) {
-            buffer.append(document->characterAt(i));
-        }
-    }
+    QTextCursor cursor(document);
+    int pos = document->findBlockByLineNumber(blockNum).position();
+    cursor.setPosition(pos);
+    QObject::blockSignals(true);
+    cursor.insertText(data);
+    QObject::blockSignals(false);
 }
 
 void CodeEdit::showAssociateWidget(){
@@ -128,15 +150,14 @@ void CodeEdit::setUpAssociateList(){
 }
 
 QString CodeEdit::getWordCursor(){
-    int pos=ui->textEdit->textCursor().position()-1;
-    QString res;
-    QChar ch=ui->textEdit->document()->characterAt(pos+1);
-    if(ch.isDigit()||ch.isLetter()||ch==' ')return res;//如果光标在当前字符串或两个字符串之间，就不联想
-    ch=ui->textEdit->document()->characterAt(pos);
-    if(ch==' ')return res;
+    QTextCursor cursor = ui->textEdit->textCursor();
+    cursor.movePosition(QTextCursor::MoveOperation::StartOfWord);
+    int start = cursor.position();
+    QString res = "";
+    QChar ch = document->characterAt(start);
     while(ch.isDigit()||ch.isLetter()||ch=='_'||ch=='#'){
         res.push_back(ch);
-        ch=ui->textEdit->document()->characterAt(pos++);
+        ch=ui->textEdit->document()->characterAt(++start);
     }
     return res;
 }
@@ -353,11 +374,12 @@ AssociateListWidget::AssociateListWidget(QWidget*parent):QListWidget(parent){
 
 void AssociateListWidget::keyPressEvent(QKeyEvent *event){
     if(event->key()==16777235||event->key()==16777237){//如果用户按下回车或ESC键
-        QListWidget::keyPressEvent(event);
+        QString str = this->currentItem()->text();
     }else{
         QApplication::sendEvent(p,event);
         p->setFocus();
     }
+    return QListWidget::keyPressEvent(event);
 }
 
 int AssociateListWidget::letterDifference(const std::string source, const std::string target){

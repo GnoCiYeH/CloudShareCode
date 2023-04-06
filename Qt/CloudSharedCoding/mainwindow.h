@@ -49,7 +49,6 @@ public slots:
 
 signals:
     void loginAllowed();
-    void recvError();
     void projInited();
 
 private slots:
@@ -72,7 +71,7 @@ private:
 
     //文件容器
     QHash<int,QVector<std::shared_ptr<FileInfo>>> pro_fileMap;
-    QHash<int,QWidget*> fileWidgets;
+    QHash<int,CodeEdit*> fileWidgets;
     QHash<int,std::shared_ptr<Directory>> mainDirMap;
 
     //项目树状列表菜单

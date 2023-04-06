@@ -34,7 +34,7 @@ void NewProjectDialog::on_pushButton_clicked()
     if(!isLocal)
     {
         QString name = ui->lineEdit_pro_name->text();
-        Package pck(name.toUtf8(),Package::PackageType::NEW_PROJECT);
+        Package pck(name.toUtf8(),(int)Package::PackageType::NEW_PROJECT);
         MainWindow::socket->write(pck.getPdata(),pck.getSize());
 
         this->close();

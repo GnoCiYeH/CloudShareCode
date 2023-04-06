@@ -52,11 +52,18 @@ private:
 
     static void delFile(int sock_fd, char* data);
 
+    static void joinProject(int sock_fd, char* data);
+
+    static void sendTextChange(int sock_fd, char* data);
+
+
+
     static std::unordered_map<int, std::string>* userMap;
 
     static std::unordered_map<int, std::vector<int>>* file_map;
 
     static std::unordered_map<int, std::vector<int>>* project_map;
+
 };
 #endif // TCPSERVER_H
 

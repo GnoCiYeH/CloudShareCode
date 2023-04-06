@@ -15,7 +15,7 @@ LoginDialog::LoginDialog(QWidget *parent) :
     connect(socket,&QTcpSocket::connected,this,[=](){
         QString data = ui->lineEdit_UserID->text() + "\t" + ui->lineEdit_Password->text();
         userID = ui->lineEdit_UserID->text();
-        Package pck(data.toUtf8(),Package::PackageType::LOGIN);
+        Package pck(data.toUtf8(),(int)Package::PackageType::LOGIN);
         socket->write(pck.getPdata(),pck.getSize());
     });
 }

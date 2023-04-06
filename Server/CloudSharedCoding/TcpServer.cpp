@@ -7,6 +7,7 @@
 #include <sys/stat.h>
 #include<fstream>
 #include<fcntl.h>
+#include"uuid/uuid.h"
 
 #define MAXCONNECTION 64
 #define EVENT_SIZE 20
@@ -98,44 +99,54 @@ void TcpServer::tcpStart()
                     read(sock_fd, data, packageSize);
                     switch (type)
                     {
-                    case Package::PackageType::LOGIN:
+                    case (int)Package::PackageType::LOGIN:
                     {
                         pool->submit(login, sock_fd,data);
                         break;
                     }
-                    case Package::PackageType::INIT_PROJS:
+                    case (int)Package::PackageType::TEXT_CHANGE:
+                    {
+                        pool->submit(sendTextChange, sock_fd, data);
+                        break;
+                    }
+                    case (int)Package::PackageType::INIT_PROJS:
                     {
                         pool->submit(initUserProjects, sock_fd);
                         break;
                     }
-                    case Package::PackageType::GET_PROJECT:
+                    case (int)Package::PackageType::GET_PROJECT:
                     {
                         pool->submit(sendProjectInfo, sock_fd, data);
                         break;
                     }
-                    case Package::PackageType::NEW_PROJECT:
+                    case (int)Package::PackageType::NEW_PROJECT:
                     {
                         pool->submit(newProject, sock_fd, data);
                         break;
                     }
-                    case Package::PackageType::DEL_PROJECT:
+                    case (int)Package::PackageType::DEL_PROJECT:
                     {
                         pool->submit(delProject, sock_fd, data);
                         break;
                     }
-                    case Package::PackageType::GET_FILE:
+                    case (int)Package::PackageType::GET_FILE:
                     {
                         pool->submit(sendFile, sock_fd, data);
                         break;
                     }
-                    case Package::PackageType::NEW_FILE:
+                    case (int)Package::PackageType::NEW_FILE:
                     {
                         pool->submit(newFile, sock_fd, data);
                         break;
                     }
-                    case Package::PackageType::DEL_FILE:
+                    case (int)Package::PackageType::DEL_FILE:
                     {
                         pool->submit(delFile, sock_fd, data);
+                        break;
+                    }
+                    case (int)Package::PackageType::JOIN_PROJECT:
+                    {
+                        pool->submit(joinProject, sock_fd, data);
                         break;
                     }
                     default:
@@ -157,7 +168,7 @@ void TcpServer::login(int sock_fd, char* data)
     if (userMap->find(sock_fd) != userMap->end())
     {
         std::string str = "The user is logged in";
-        Package pck(str.c_str(), Package::ReturnType::SERVER_ERROR, str.size());
+        Package pck(str.c_str(), (int)Package::ReturnType::SERVER_ERROR, str.size());
         write(sock_fd, pck.getPdata(), pck.getSize());
     }
     else
@@ -167,12 +178,12 @@ void TcpServer::login(int sock_fd, char* data)
         if (vec.empty())
         {
             std::string error = "The account number or password is incorrect";
-            Package pck(error.c_str(), Package::ReturnType::SERVER_ERROR, error.size());
+            Package pck(error.c_str(), (int)Package::ReturnType::SERVER_ERROR, error.size());
             write(sock_fd, pck.getPdata(), pck.getSize());
         }
         else
         {
-            Package pck("", Package::ReturnType::SERVER_ALLOW, 0);
+            Package pck("", (int)Package::ReturnType::SERVER_ALLOW, 0);
             write(sock_fd, pck.getPdata(), pck.getSize());
             userMap->insert(std::pair<int, std::string>(sock_fd, UserId));
         }
@@ -212,7 +223,8 @@ void TcpServer::sendProjectInfo(int sock_fd, char* buf)
         }
         data += "\n";
     }
-    Package pck(data.c_str(), Package::ReturnType::PROJ_FILE_INFO, data.size());
+
+    Package pck(data.c_str(), (int)Package::ReturnType::PROJ_FILE_INFO, data.size());
     write(sock_fd, pck.getPdata(), pck.getSize());
 
     mysql_free_result(projFileRes);
@@ -224,14 +236,14 @@ void TcpServer::initUserProjects(int sock_fd)
     std::string data = "";
 
     std::string userId = userMap->find(sock_fd)->second;
-    auto userProjRes = sql->exeSql("select Project.pro_id,Project.pro_name,Project.pro_owner,Privilege._privilege_level from Project inner join Privilege\
+    auto userProjRes = sql->exeSql("select Project.pro_id,Project.pro_name,Project.pro_owner,Privilege._privilege_level,Project.pro_uuid from Project inner join Privilege\
                                      where (Privilege._user_id = \""+userId+"\" and Privilege._pro_id = Project.pro_id);");
     sqlResultRows rows = sql->getRows(userProjRes);
     for (auto i : rows)
     {
-        data += std::string(i[0]) + "\t" + std::string(i[1]) + "\t" + std::string(i[2]) + "\t" + std::string(i[3]) + "\n";
+        data += std::string(i[0]) + "\t" + std::string(i[1]) + "\t" + std::string(i[2]) + "\t" + std::string(i[3]) + "\t" + std::string(i[4]) + "\n";
     }
-    Package pck(data.c_str(), Package::ReturnType::USER_PROJS,data.size());
+    Package pck(data.c_str(), (int)Package::ReturnType::USER_PROJS,data.size());
     write(sock_fd, pck.getPdata(), pck.getSize());
 
     mysql_free_result(userProjRes);
@@ -249,12 +261,17 @@ void TcpServer::newProject(int sock_fd, char* data)
     }
     mkdir(path.c_str(),0755);
 
-    sql->exeSql("insert into Project (pro_name,pro_owner) value (\"" + proName + "\",\"" + userId + "\")");
-    auto res = sql->exeSql("select pro_id,pro_name,pro_owner from Project where pro_name =  \"" + proName + "\";");
+    uuid_t uuid;
+    char uuidStr[36];
+    uuid_generate(uuid);
+    uuid_unparse(uuid, uuidStr);
+
+    sql->exeSql("insert into Project (pro_name,pro_owner,pro_uuid) value (\"" + proName + "\",\"" + userId + "\",\"" + uuidStr +  "\")");
+    auto res = sql->exeSql("select pro_id,pro_name,pro_owner,pro_uuid from Project where pro_name =  \"" + proName + "\";");
     sqlResultRows rows = sql->getRows(res);
     sql->exeSql("insert into Privilege (_user_id,_pro_id) values(\"" + userId + "\"," + std::string(rows[0][0]) + ");");
-    std::string str = std::string(rows[0][0]) + "\t" + std::string(rows[0][1]) + "\t" + std::string(rows[0][2]);
-    Package pck(str.c_str(), Package::ReturnType::NEW_PROJ_INFO, str.size());
+    std::string str = std::string(rows[0][0]) + "\t" + std::string(rows[0][1]) + "\t" + std::string(rows[0][2]) + "\t" + std::string(rows[0][3]);
+    Package pck(str.c_str(), (int)Package::ReturnType::NEW_PROJ_INFO, str.size());
     write(sock_fd, pck.getPdata(), pck.getSize());
 
     mysql_free_result(res);
@@ -307,7 +324,7 @@ void TcpServer::sendFile(int sock_fd, char* data)
             memset(buffer+4, 0, sizeof(buffer)-4);
             int ret = ifs.readsome(buffer+4, sizeof(buffer)-4);
             sended += ret;
-            Package pck(buffer, Package::ReturnType::FILE, ret+4);
+            Package pck(buffer, (int)Package::ReturnType::FILE, ret+4);
             write(sock_fd, pck.getPdata(), pck.getSize());
         }
     }
@@ -363,8 +380,14 @@ void TcpServer::newFile(int sock_fd, char* data)
         buf += std::string(row[0][i]) + "\t";
     }
 
-    Package pck(buf.c_str(), Package::ReturnType::NEW_FILE_INFO,buf.size());
-    write(sock_fd, pck.getPdata(), pck.getSize());
+    int pro_id = std::stoi(list[2]);
+    auto vec = project_map->find(pro_id)->second;
+
+    for (auto it : vec)
+    {
+        Package pck(buf.c_str(), (int)Package::ReturnType::NEW_FILE_INFO, buf.size());
+        write(sock_fd, pck.getPdata(), pck.getSize());
+    }
 
     mysql_free_result(res);
     delete data;
@@ -388,7 +411,7 @@ void TcpServer::delFile(int sock_fd, char* data)
 
         //向打开该项目的参与者发送文件变更信息
         std::string buf = list[2] + "\t" + list[0];
-        Package pck(buf.c_str(), Package::ReturnType::PROJECT_FILE_DELETE, list[0].size());
+        Package pck(buf.c_str(), (int)Package::ReturnType::PROJECT_FILE_DELETE, list[0].size());
         for (auto i : project_map->find(pid)->second)
         {
             write(i, pck.getPdata(), pck.getSize());
@@ -415,6 +438,60 @@ void TcpServer::delFile(int sock_fd, char* data)
     }
 
     sql->exeSql("delete from File where file_id = " + list[0] + ";");
+
+    delete data;
+}
+
+void TcpServer::joinProject(int sock_fd, char* data)
+{
+    std::string uuid(data);
+    std::string userId = userMap->find(sock_fd)->second;
+    auto pro_res = sql->exeSql("select pro_id,pro_name,pro_owner,pro_uuid from Project where pro_uuid = \"" + uuid + "\";");
+    auto pro_row = sql->getRows(pro_res);
+    auto res = sql->exeSql("select * from Privilege where _user_id = \"" + userId + "\" and _pro_id = " + pro_row[0][0] + ";");
+    auto row = sql->getRows(res);
+    if (pro_row.size() == 0)
+    {
+        std::string str = "The project does not exist!";
+        Package pck(str.c_str(), (int)Package::ReturnType::SERVER_ERROR, str.size());
+        write(sock_fd, pck.getPdata(), pck.getSize());
+    }
+    else if (row.size() != 0)
+    {
+        std::string str = "You have already joined the project, please do not join it repeatedly!";
+        Package pck(str.c_str(), (int)Package::ReturnType::SERVER_ERROR, str.size());
+        write(sock_fd, pck.getPdata(), pck.getSize());
+    }
+    else
+    {
+        sql->exeSql("insert into Privilege (_user_id,_pro_id,_privilege_level) values (\""+userId+"\","+pro_row[0][0]+",4);");
+
+        std::string data = std::string(pro_row[0][0]) + "\t" + std::string(pro_row[0][1]) + "\t" + std::string(pro_row[0][2]) + "\t" + std::string(pro_row[0][3]);
+        Package pck(data.c_str(), (int)Package::ReturnType::NEW_PROJ_INFO, data.size());
+        write(sock_fd, pck.getPdata(), pck.getSize());
+    }
+
+    mysql_free_result(pro_res);
+    mysql_free_result(res);
+    delete data;
+}
+
+void TcpServer::sendTextChange(int sock_fd, char* data)
+{
+    std::string buf(data);
+    stringList list;
+    stringSplit(buf, "#split#", list,3);
+    int file_id = std::stoi(list[0]);
+
+    std::vector<int> fds = file_map->find(file_id)->second;
+    for (auto it : fds)
+    {
+        if (it != sock_fd)
+        {
+            Package pck(data, (int)Package::ReturnType::TEXT_CHANGE,buf.size());
+            write(it, pck.getPdata(), pck.getSize());
+        }
+    }
 
     delete data;
 }

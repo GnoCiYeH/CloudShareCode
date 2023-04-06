@@ -80,7 +80,7 @@ static int bytesToInt(char* bytes, int offset, int size)
     return addr;
 }
 
-static void stringSplit(std::string str, std::string split, std::vector<std::string>& res)
+static void stringSplit(std::string str, std::string split, std::vector<std::string>& res,int splitNum = -1)
 {
     int index = str.find(split, 0);
     if (index == std::string::npos)
@@ -89,13 +89,15 @@ static void stringSplit(std::string str, std::string split, std::vector<std::str
         return;
     }
     int n = 0;
-    while (index != std::string::npos)
+    int num = 0;
+    while (index != std::string::npos && num != splitNum)
     {
         res.push_back(str.substr(n, index - n));
+        num++;
         n = index + 1;
         index = str.find(split, index + 1);
     }
-    if (index != str.size() - 1)
+    if (index != str.size() - 1 && num != splitNum)
         res.push_back(str.substr(n, str.size() - 1));
 }
 

@@ -68,7 +68,7 @@ void NewFileDialog::on_pushButton_clicked()
     if(MainWindow::loginState())
     {
         QString data = filename + "\t" + path + "\t" + QString::number(m_dir->pro_id) + "\t" + QString::number(level);
-        Package pck(data.toUtf8(),Package::PackageType::NEW_FILE);
+        Package pck(data.toUtf8(),(int)Package::PackageType::NEW_FILE);
 
         MainWindow::socket->write(pck.getPdata(),pck.getSize());
     }
