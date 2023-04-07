@@ -8,14 +8,16 @@
 #include<fstream>
 #include<fcntl.h>
 #include"uuid/uuid.h"
+#include<netinet/tcp.h>
+#include<netinet/in.h>
 
 #define MAXCONNECTION 64
 #define EVENT_SIZE 20
 #define FILEPATH "/home/heyicong/C++/HizZNetDisk/UserFiles/"
 SqlTool* TcpServer::sql = new SqlTool(SqlIP, "root", "191230", "CloudSharedCoding");
-std::unordered_map<int, std::string>* TcpServer::userMap = new std::unordered_map<int, std::string>();
-std::unordered_map<int, std::vector<int>>* TcpServer::file_map = new std::unordered_map<int, std::vector<int>>();
-std::unordered_map<int, std::vector<int>>* TcpServer::project_map = new std::unordered_map<int, std::vector<int>>();
+std::unordered_map<int, TcpServer::UserInfo>* TcpServer::userMap = new std::unordered_map<int, TcpServer::UserInfo>();
+std::multimap<int, int>* TcpServer::file_map = new std::multimap<int, int>();
+std::multimap<int, int>* TcpServer::project_map = new std::multimap<int, int>();
 Log::Logger TcpServer::m_logger;
 TcpServer::TcpServer(const char* ip, uint32_t port, Log::Logger& logger)
 {
@@ -46,6 +48,10 @@ void TcpServer::tcpStart()
     FATAL_CHECK(m_sock_fd, "Create socket error", m_logger);
     int reuse = 1;
     if (setsockopt(m_sock_fd, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse)) < 0)
+    {
+        perror("setsockopet error\n");
+    }
+    if (setsockopt(m_sock_fd, IPPROTO_TCP, TCP_NODELAY, &reuse, sizeof(reuse)) < 0)
     {
         perror("setsockopet error\n");
     }
@@ -87,6 +93,37 @@ void TcpServer::tcpStart()
                 {
                     INFO_LOG(m_logger, std::string("client_fd:") + (m_logger, std::to_string(sock_fd)) + " disconnected");
                     epoll_ctl(m_epfd, EPOLL_CTL_DEL, sock_fd, NULL);
+                    auto user = userMap->find(sock_fd)->second;
+                    for (auto it : user.openedFiles)
+                    {
+                        int num = file_map->count(it);
+                        auto fit = file_map->find(it);
+                        while (num > 0)
+                        {
+                            if (fit->second == sock_fd)
+                            {
+                                file_map->erase(fit);
+                                break;
+                            }
+                            num--;
+                            fit++;
+                        }
+                    }
+                    for (auto it : user.openedProjects)
+                    {
+                        int num = project_map->count(it);
+                        auto pit = project_map->find(it);
+                        while (num > 0)
+                        {
+                            if (pit->second == sock_fd)
+                            {
+                                project_map->erase(pit);
+                                break;
+                            }
+                            num--;
+                            pit++;
+                        }
+                    }
                     userMap->erase(sock_fd);
                 }
                 else
@@ -106,12 +143,14 @@ void TcpServer::tcpStart()
                     }
                     case (int)Package::PackageType::TEXT_CHANGE:
                     {
-                        pool->submit(sendTextChange, sock_fd, data);
+                        sendTextChange(sock_fd, data);
+                        //pool->submit(sendTextChange, sock_fd, data);
                         break;
                     }
                     case (int)Package::PackageType::INIT_PROJS:
                     {
                         pool->submit(initUserProjects, sock_fd);
+                        delete[] data;
                         break;
                     }
                     case (int)Package::PackageType::GET_PROJECT:
@@ -147,6 +186,13 @@ void TcpServer::tcpStart()
                     case (int)Package::PackageType::JOIN_PROJECT:
                     {
                         pool->submit(joinProject, sock_fd, data);
+                        break;
+                    }
+                    case (int)Package::PackageType::HEART_PCK:
+                    {
+                        Package pck("", (int)Package::ReturnType::HEART_PCK, 0);
+                        write(sock_fd, pck.getPdata(), pck.getSize());
+                        delete[] data;
                         break;
                     }
                     default:
@@ -185,11 +231,15 @@ void TcpServer::login(int sock_fd, char* data)
         {
             Package pck("", (int)Package::ReturnType::SERVER_ALLOW, 0);
             write(sock_fd, pck.getPdata(), pck.getSize());
-            userMap->insert(std::pair<int, std::string>(sock_fd, UserId));
+            UserInfo userinfo;
+            userinfo.openedFiles = std::vector<int>();
+            userinfo.openedProjects = std::vector<int>();
+            userinfo.userId = UserId;
+            userMap->insert(std::pair<int, TcpServer::UserInfo>(sock_fd, userinfo));
         }
     }
 
-    delete data;
+    delete[] data;
 }
 
 void TcpServer::sendProjectInfo(int sock_fd, char* buf)
@@ -197,17 +247,10 @@ void TcpServer::sendProjectInfo(int sock_fd, char* buf)
     std::string projId = std::string(buf);
 
     int pid = std::stoi(projId);
-    if (project_map->find(pid) != project_map->end())
-    {
-        project_map->find(pid)->second.push_back(sock_fd);
-    }
-    else
-    {
-        std::vector<int> vec;
-        vec.push_back(sock_fd);
-        std::pair<int, std::vector<int>> p(pid, vec);
-        project_map->insert(p);
-    }
+    std::pair<int, int> p(pid, sock_fd);
+    project_map->insert(p);
+
+    userMap->find(sock_fd)->second.openedProjects.push_back(pid);
 
     auto projInfoRes = sql->exeSql("select pro_id from Project where pro_id = " + projId + ";");
     auto projInfo = sql->getRows(projInfoRes);
@@ -235,7 +278,7 @@ void TcpServer::initUserProjects(int sock_fd)
 {
     std::string data = "";
 
-    std::string userId = userMap->find(sock_fd)->second;
+    std::string userId = userMap->find(sock_fd)->second.userId;
     auto userProjRes = sql->exeSql("select Project.pro_id,Project.pro_name,Project.pro_owner,Privilege._privilege_level,Project.pro_uuid from Project inner join Privilege\
                                      where (Privilege._user_id = \""+userId+"\" and Privilege._pro_id = Project.pro_id);");
     sqlResultRows rows = sql->getRows(userProjRes);
@@ -252,9 +295,9 @@ void TcpServer::initUserProjects(int sock_fd)
 void TcpServer::newProject(int sock_fd, char* data)
 {
     std::string proName(data);
-    std::string userpath = "./" + userMap->find(sock_fd)->second;
+    std::string userpath = "./" + userMap->find(sock_fd)->second.userId;
     std::string path = userpath + "/" + proName;
-    std::string userId = userMap->find(sock_fd)->second;
+    std::string userId = userMap->find(sock_fd)->second.userId;
     if (!opendir(userpath.c_str()))
     {
         mkdir(userpath.c_str(),0755);
@@ -275,12 +318,12 @@ void TcpServer::newProject(int sock_fd, char* data)
     write(sock_fd, pck.getPdata(), pck.getSize());
 
     mysql_free_result(res);
-    delete data;
+    delete[] data;
 }
 
 void TcpServer::delProject(int sock_fd, char* data)
 {
-    std::string userId = userMap->find(sock_fd)->second;
+    std::string userId = userMap->find(sock_fd)->second.userId;
     std::string buf(data);
     stringList list;
     stringSplit(buf, "\t", list);
@@ -294,7 +337,9 @@ void TcpServer::delProject(int sock_fd, char* data)
         ERROR_LOG(m_logger, "rm_dir ERROR!");
     }
 
-    delete data;
+    project_map->erase(std::stoi(list[0]));
+
+    delete[] data;
 }
 
 void TcpServer::sendFile(int sock_fd, char* data)
@@ -329,21 +374,12 @@ void TcpServer::sendFile(int sock_fd, char* data)
         }
     }
 
-
-    if (file_map->find(fid) != file_map->end())
-    {
-        file_map->find(fid)->second.push_back(sock_fd);
-    }
-    else
-    {
-        std::vector<int> vec;
-        vec.push_back(sock_fd);
-        std::pair<int, std::vector<int>> p(fid, vec);
-        file_map->insert(p);
-    }
+    std::pair<int, int> p(fid, sock_fd);
+    file_map->insert(p);
+    userMap->find(sock_fd)->second.openedFiles.push_back(fid);
 
     mysql_free_result(res);
-    delete data;
+    delete[] data;
 }
 
 void TcpServer::newFile(int sock_fd, char* data)
@@ -363,7 +399,7 @@ void TcpServer::newFile(int sock_fd, char* data)
         close(fd);
     }
 
-    std::string userId = userMap->find(sock_fd)->second;
+    std::string userId = userMap->find(sock_fd)->second.userId;
 
     sql->exeSql("insert into File (file_name,file_user,file_path,file_project,file_privilege) \
         values(\"" + list[0] + "\",\"" + userId + "\",\"" + list[1] + "\"," + list[2] + "," + list[3] + ");");
@@ -381,16 +417,17 @@ void TcpServer::newFile(int sock_fd, char* data)
     }
 
     int pro_id = std::stoi(list[2]);
-    auto vec = project_map->find(pro_id)->second;
-
-    for (auto it : vec)
+    int pnum = project_map->count(pro_id);
+    auto it = project_map->find(pro_id);
+    for (; pnum >0; pnum--,it++)
     {
+        int fd = it->second;
         Package pck(buf.c_str(), (int)Package::ReturnType::NEW_FILE_INFO, buf.size());
-        write(sock_fd, pck.getPdata(), pck.getSize());
+        write(fd, pck.getPdata(), pck.getSize());
     }
 
     mysql_free_result(res);
-    delete data;
+    delete[] data;
 }
 
 void TcpServer::delFile(int sock_fd, char* data)
@@ -412,9 +449,12 @@ void TcpServer::delFile(int sock_fd, char* data)
         //向打开该项目的参与者发送文件变更信息
         std::string buf = list[2] + "\t" + list[0];
         Package pck(buf.c_str(), (int)Package::ReturnType::PROJECT_FILE_DELETE, list[0].size());
-        for (auto i : project_map->find(pid)->second)
+        int num = project_map->count(pid);
+        auto it = project_map->find(pid);
+        for (; num > 0; num--, it++)
         {
-            write(i, pck.getPdata(), pck.getSize());
+            int fd = it->second;
+            write(fd, pck.getPdata(), pck.getSize());
         }
     }
 
@@ -439,13 +479,15 @@ void TcpServer::delFile(int sock_fd, char* data)
 
     sql->exeSql("delete from File where file_id = " + list[0] + ";");
 
-    delete data;
+    file_map->erase(fid);
+
+    delete[] data;
 }
 
 void TcpServer::joinProject(int sock_fd, char* data)
 {
     std::string uuid(data);
-    std::string userId = userMap->find(sock_fd)->second;
+    std::string userId = userMap->find(sock_fd)->second.userId;
     auto pro_res = sql->exeSql("select pro_id,pro_name,pro_owner,pro_uuid from Project where pro_uuid = \"" + uuid + "\";");
     auto pro_row = sql->getRows(pro_res);
     auto res = sql->exeSql("select * from Privilege where _user_id = \"" + userId + "\" and _pro_id = " + pro_row[0][0] + ";");
@@ -473,25 +515,36 @@ void TcpServer::joinProject(int sock_fd, char* data)
 
     mysql_free_result(pro_res);
     mysql_free_result(res);
-    delete data;
+    delete[] data;
 }
 
 void TcpServer::sendTextChange(int sock_fd, char* data)
 {
     std::string buf(data);
     stringList list;
-    stringSplit(buf, "#split#", list,3);
+    stringSplit(buf, "#", list,5);
     int file_id = std::stoi(list[0]);
+    int pos = std::stoi(list[1]);
+    int charRemoved = std::stoi(list[2]);
+    std::string path = list[3];
 
-    std::vector<int> fds = file_map->find(file_id)->second;
-    for (auto it : fds)
+    if (!textChange(path, pos, charRemoved, list[4]))
     {
-        if (it != sock_fd)
+        ERROR_LOG(m_logger, "更改文件失败");
+    }
+
+    int num = file_map->count(file_id);
+    auto it = file_map->find(file_id);
+
+    for (; num>0; it++,num--)
+    {
+        int fd = it->second;
+        if (fd != sock_fd)
         {
-            Package pck(data, (int)Package::ReturnType::TEXT_CHANGE,buf.size());
-            write(it, pck.getPdata(), pck.getSize());
+            Package pck(data, (int)Package::ReturnType::TEXT_CHANGE, buf.size());
+            write(fd, pck.getPdata(), pck.getSize());
         }
     }
 
-    delete data;
+    delete[] data;
 }

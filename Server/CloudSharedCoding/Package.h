@@ -47,7 +47,10 @@ public:
         DEL_FILE = 11,
 
         //加入项目
-        JOIN_PROJECT =12
+        JOIN_PROJECT =12,
+
+        //心跳包
+        HEART_PCK = 13
     };
     enum class ReturnType {
         SERVER_ALLOW = 0,
@@ -58,7 +61,8 @@ public:
         FILE = 5,
         NEW_FILE_INFO = 6,
         PROJECT_FILE_DELETE = 7,
-        TEXT_CHANGE = 8
+        TEXT_CHANGE = 8,
+        HEART_PCK = 9
     };
     Package(const char* data, int type, int size);
     ~Package();

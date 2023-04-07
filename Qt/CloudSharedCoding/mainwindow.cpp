@@ -22,6 +22,19 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     socket = new QTcpSocket(this);
+    heartTimer = new QTimer(this);
+    detectTimer = new QTimer(this);
+    connect(heartTimer,&QTimer::timeout,this,[=](){
+        Package pck("",(int)Package::PackageType::HEART_PCK);
+        socket->write(pck.getPdata(),pck.getSize());
+    });
+    connect(detectTimer,&QTimer::timeout,this,[=]()mutable{
+        if(!isAlive)
+            {
+            qDebug()<<"离线！！！！";
+        }
+        isAlive = false;
+    });
 
     //设置主窗口基本属性
     myHelper::setStyle(":/qss/psblack.css");
@@ -121,7 +134,7 @@ void MainWindow::addFileWidget(std::shared_ptr<FileInfo> file)
 {
     QWidget* wind = new QWidget(this);
     CodeEdit* widget = new CodeEdit(this);
-    widget->setFid(file->file_id);
+    widget->setFile(file);
     QVBoxLayout* layout = new QVBoxLayout(this);
     layout->addWidget(widget);
     wind->setLayout(layout);
@@ -141,6 +154,7 @@ void MainWindow::openProjFile()
         addFileWidget(file);
         Package pck(QString::number(file->file_id).toUtf8(),(int)Package::PackageType::GET_FILE);
         socket->write(pck.getPdata(),pck.getSize());
+        socket->flush();
     }
     else
     {
@@ -244,6 +258,7 @@ void MainWindow::dataProgress()
     case (int)Package::ReturnType::SERVER_ALLOW:
     {
         emit loginAllowed();
+        heartTimer->start(50);
         break;
     }
     case (int)Package::ReturnType::SERVER_ERROR:
@@ -472,14 +487,20 @@ void MainWindow::dataProgress()
     case (int)Package::ReturnType::TEXT_CHANGE:
     {
         QString data(socket->read(packageSize));
-        QStringList list = data.split("#split#");
+        QStringList list = data.split("#");
         int file_id = list[0].toInt();
-        int blockNum = list[1].toInt();
+        int pos = list[1].toInt();
+        int charRemoved = list[2].toInt();
         if(fileWidgets.contains(file_id))
         {
             CodeEdit* wind = fileWidgets.value(file_id);
-            wind->changeText(blockNum,list[2]);
+            wind->changeText(pos,charRemoved,list[4]);
         }
+        break;
+    }
+    case (int)Package::ReturnType::HEART_PCK:
+    {
+        this->isAlive = true;
         break;
     }
     default:
@@ -495,7 +516,7 @@ void MainWindow::newLocalProj()
 void MainWindow::on_tabWidget_tabCloseRequested(int index)
 {
     CodeEdit* wind = (CodeEdit*)ui->tabWidget->widget(index);
-    fileWidgets.remove(wind->getFId());
+    fileWidgets.remove(wind->getFile()->file_id);
     ui->tabWidget->removeTab(index);
     wind->deleteLater();
 }

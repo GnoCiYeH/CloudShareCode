@@ -14,7 +14,6 @@
 namespace Ui {
 class MainWindow;
 }
-
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -50,6 +49,7 @@ public slots:
 signals:
     void loginAllowed();
     void projInited();
+    void returnHeart();
 
 private slots:
     void on_tabWidget_tabCloseRequested(int index);
@@ -83,9 +83,15 @@ private:
     QAction* attribute;
     QAction* rename;
 
+    //心跳检测
+    QTimer* heartTimer;
+    QTimer* detectTimer;
+    bool isAlive = true;
+
 private:
     void Login();
     void addFileWidget(std::shared_ptr<FileInfo> file);
 };
+
 
 #endif // MAINWINDOW_H

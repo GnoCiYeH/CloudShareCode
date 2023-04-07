@@ -27,9 +27,11 @@ CodeEdit::CodeEdit(QWidget *parent) :
     const int tabstop = 4;
     QFontMetrics m(ui->textEdit->font());
     ui->textEdit->setTabStopDistance(tabstop*m.horizontalAdvance(" "));
+//    ui->textEdit->insertPlainText("1\n");
+//    document->begin().setVisible(false);
 
-    connect(ui->textEdit,SIGNAL(textChanged()),this,SLOT(textChange()));
-    //connect(document,SIGNAL(contentsChange(int,int,int)),this,SLOT(docChange(int,int,int)));
+    //connect(ui->textEdit,SIGNAL(textChanged()),this,SLOT(textChange()));
+    connect(document,SIGNAL(contentsChange(int,int,int)),this,SLOT(docChange(int,int,int)));
 
     thread = new EditWorkThread(this);
     thread->start();
@@ -42,54 +44,41 @@ CodeEdit::~CodeEdit()
     delete thread;
 }
 
-void CodeEdit::textChange()
+void CodeEdit::docChange(int pos,int charRemoved,int charAdded)
 {
     showAssociateWidget();
-    auto cursor = ui->textEdit->textCursor();
-    int block = cursor.blockNumber();
-    QString data = QString::number(file_id)+"#split#"+QString::number(lastBlock)+"#split#";
-    if(block<lastBlock)
-    {
-        qDebug()<<"-----------------------------";
-        for (int var = block; var <= lastBlock; ++var) {
-            qDebug()<<"deleteLine("<<var<<")";
-        }
+    qDebug()<<pos<<" "<<charRemoved<<" "<<charAdded;
+    QString data = QString::number(file->file_id)+"#"+QString::number(pos)+"#"+QString::number(charRemoved)+"#"+file->file_path+"#";
+    for (int var = pos; var < pos+charAdded; ++var) {
+        if(document->characterAt(var)==QChar(8233))
+            data+="\n";
+        else
+            data+=document->characterAt(var);
     }
-    else if(document->findBlockByLineNumber(block).text()=="")
-    {
-        qDebug()<<"-----------------------------";
-        qDebug()<<block;
-        qDebug()<<document->findBlockByLineNumber(block).text();
-
-        data+="\n";
-    }
-    else{
-        qDebug()<<"-----------------------------";
-        qDebug()<<block;
-        for (int var = lastBlock; var <= block; ++var) {
-            qDebug()<<document->findBlockByLineNumber(var).text();
-            data+=document->findBlockByLineNumber(var).text();
-        }
-    }
-    lastBlock = block;
-
+    qDebug()<<data;
     Package pck(data.toUtf8(),(int)Package::PackageType::TEXT_CHANGE);
     MainWindow::socket->write(pck.getPdata(),pck.getSize());
+    MainWindow::socket->flush();
 }
 
 void CodeEdit::addText(const QString str)
 {
+    document->disconnect(SIGNAL(contentsChange(int,int,int)));
     ui->textEdit->insertPlainText(str);
+    connect(document,SIGNAL(contentsChange(int,int,int)),this,SLOT(docChange(int,int,int)));
 }
 
-void CodeEdit::changeText(int blockNum,QString data)
+void CodeEdit::changeText(int pos,int charRemoved,QString data)
 {
     QTextCursor cursor(document);
-    int pos = document->findBlockByLineNumber(blockNum).position();
     cursor.setPosition(pos);
-    QObject::blockSignals(true);
+    cursor.movePosition(QTextCursor::NextCharacter,QTextCursor::MoveAnchor,pos);
+    qDebug()<<ui->textEdit->toPlainText().size();
+    cursor.movePosition(QTextCursor::NextCharacter,QTextCursor::KeepAnchor,charRemoved);
+    document->disconnect(SIGNAL(contentsChange(int,int,int)));
+    cursor.removeSelectedText();
     cursor.insertText(data);
-    QObject::blockSignals(false);
+    connect(document,SIGNAL(contentsChange(int,int,int)),this,SLOT(docChange(int,int,int)));
 }
 
 void CodeEdit::showAssociateWidget(){

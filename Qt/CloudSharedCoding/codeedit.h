@@ -16,6 +16,7 @@
 #include<vector>
 #include<string>
 #include<cmath>
+#include"InfoType.h"
 using std::string;
 using std::vector;
 using std::min;
@@ -39,17 +40,22 @@ public:
 
     void addText(const QString str);
 
-    void setFid(int id){this->file_id = id;}
+    void setFile(std::shared_ptr<FileInfo> file){this->file = file;}
 
-    int getFId(){return file_id;}
+    std::shared_ptr<FileInfo> getFile(){return file;}
 
-    void changeText(int blockNum,QString data);
+    void changeText(int pos,int charRemoved,QString data);
+
+    //
+    int tcnum = 0;
+    int ctnum = 0;
 
 signals:
     void deleteInfo(int,int);
 
 public slots:
-    void textChange();
+    //void textChange();
+    void docChange(int,int,int);
 
 private:
     Ui::CodeEdit *ui;
@@ -61,7 +67,7 @@ private:
 
     bool isChanged = false;
 
-    int file_id;
+    std::shared_ptr<FileInfo> file;
 
 
     QMutex mutex;
