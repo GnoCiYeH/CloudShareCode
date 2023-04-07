@@ -94,7 +94,7 @@ void CodeEdit::showAssociateWidget(){
         foreach(const QString &keyword,associateList){
             if(keyword.contains(word)){//如果当前输入字符属于联想表中的字符串
                 itemVec.push_back(keyword);
-                differenceRecord[keyword]=AssociateListWidget::letterDifference(keyword.toStdString(),word.toStdString());
+                differenceRecord[keyword]=associateWidget->letterDifference(keyword.toStdString(),word.toStdString());
                 if(keyword.length()>maxSize)maxSize=keyword.length();//找到联想列表中最长的一个，好设置联想列表宽度
             }
         }
@@ -371,23 +371,24 @@ void AssociateListWidget::keyPressEvent(QKeyEvent *event){
     return QListWidget::keyPressEvent(event);
 }
 
-int AssociateListWidget::letterDifference(const std::string source, const std::string target){
-    int n = source.length();
-    int m = target.length();
-    if (m == 0) return n;
-    if (n == 0) return m;
-    vector< vector<int> >dMatrix(n + 1,vector<int>(m+1));//dMatrix[i][j]：source[0,i-1]和target[0,j-1]字符串的最小差异度(有几个字符不同);
-    for (int i = 1; i <= n; i++) dMatrix[i][0] = i;
-    for (int j = 1; j <= m; j++) dMatrix[0][j] = j;
-
-    for (int i = 1; i <= n; i++){
-        for (int j = 1; j <= m; j++){
-            if(source[i-1]==target[j-1]){
-                dMatrix[i][j]=dMatrix[i-1][j-1];
-            }else{
-                dMatrix[i][j]=min(dMatrix[i-1][j],dMatrix[i][j-1])+1;//不取source[i-1]或不取target[j-1]
+int AssociateListWidget::letterDifference(const std::string source, const std::string text){
+    int difference=0;
+    for(int i=0;i<source.length();i++){
+        if(i<text.length())difference+=abs(text[i]-source[i]);
+        else{
+            if(difference==0){
+                return strToInt(source.substr(i,source.length()-i));
             }
+            difference+=source[i];
         }
     }
-    return dMatrix[n][m];
+    return difference;
+}
+
+int AssociateListWidget::strToInt(string str){
+    int res=0;
+    for(int i=0;i<str.length();i++){
+        res+=str[i]-'a';
+    }
+    return res;
 }

@@ -141,6 +141,7 @@ class AssociateListWidget:public QListWidget{
 public:
     AssociateListWidget(QWidget*parent=0);
     static int letterDifference(const string source,const string target);//两个字符串的差异度
+    static int strToInt(string str);
 protected:
     void keyPressEvent(QKeyEvent *event) override;
 private:

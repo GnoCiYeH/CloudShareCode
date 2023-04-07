@@ -8,6 +8,10 @@
 #include<QVector>
 #include"InfoType.h"
 #include<QHash>
+#include<QStatusBar>
+#include<QTimer>
+#include<QLabel>
+#include<QDateTime>
 
 #include"ui_mainwindow.h"
 
@@ -65,7 +69,7 @@ private:
     QString serverIP = "192.168.239.129";
     quint16 mainPort = 9098;
 
-    //子窗口
+    //子窗�?
     LoginDialog* loginDialog;
     ProjectForm* projectForm;
 
@@ -83,11 +87,15 @@ private:
     QAction* attribute;
     QAction* rename;
 
-    //心跳检测
+    //心跳检�?
     QTimer* heartTimer;
     QTimer* detectTimer;
     bool isAlive = true;
 
+    QStatusBar* status_bar=new QStatusBar();
+    QLabel* label1=new QLabel("就绪",this);
+    QLabel* label2=new QLabel;
+    QTimer *timer=new QTimer;
 private:
     void Login();
     void addFileWidget(std::shared_ptr<FileInfo> file);

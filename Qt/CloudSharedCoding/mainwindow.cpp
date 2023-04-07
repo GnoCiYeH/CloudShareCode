@@ -10,6 +10,7 @@
 #include "newfiledialog.h"
 #include<QPoint>
 
+
 QTcpSocket* MainWindow::socket = new QTcpSocket();
 QHash<int,Project>* MainWindow::userProjs = new QHash<int,Project>();
 QString MainWindow::userId = "";
@@ -69,7 +70,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //主菜单栏槽
     connect(ui->actionClose,SIGNAL(triggered()),this,SLOT(close()));
-    connect(ui->actionClose_project,SIGNAL(triggered()),this,SLOT(closeProject()));
     connect(ui->actionCloud_project,SIGNAL(triggered()),this,SLOT(openCloudProj()));
     connect(ui->actionLocal_project,SIGNAL(triggered()),this,SLOT(openLoaclProj()));
     connect(ui->actionNew_local_project,SIGNAL(triggered()),this,SLOT(newLocalProj()));
@@ -90,6 +90,32 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(projectForm,SIGNAL(openProj(int)),this,SLOT(openProj(int)));
 
     connect(ui->treeWidget, SIGNAL(itemPressed(QTreeWidgetItem*,int)), this, SLOT(projectItemPressedSlot(QTreeWidgetItem*,int)));
+
+    //状态栏(显示状态和时间）
+    setStatusBar(status_bar);
+    status_bar->addWidget(label1);
+    status_bar->setStyleSheet("color::rgb(0,0,0");
+    timer->start(1000);
+    connect(timer,&QTimer::timeout,this,[=](){
+        QString str;
+        QDateTime time_date=QDateTime::currentDateTime();
+        str=time_date.toString("yyyy-MM-dd hh:mm:ss");
+        label2->setText(str);
+        status_bar->addPermanentWidget(label2);
+    });
+
+    //关闭
+    connect(ui->actionClose,&QAction::triggered,this,&QMainWindow::close);
+
+    //新建文件
+    connect(ui->new_file_action,&QAction::triggered,this,[=](){
+        QFileDialog::getOpenFileName(this,"新建文件","C:/Users");
+    });
+
+    //添加文件
+    connect(ui->add_file_action,&QAction::triggered,this,[=](){
+        QFileDialog::getOpenFileName(this,"添加文件","C:/Users");
+    });
 }
 
 MainWindow::~MainWindow()
