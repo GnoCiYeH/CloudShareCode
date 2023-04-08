@@ -26,6 +26,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+    cloudsharedcoding.cpp \
         main.cpp \
         mainwindow.cpp \
     codeedit.cpp \
@@ -39,6 +40,7 @@ SOURCES += \
 
 HEADERS += \
     InfoType.h \
+    cloudsharedcoding.h \
         mainwindow.h \
     myhelper.h \
     codeedit.h \
@@ -51,6 +53,7 @@ HEADERS += \
     switchingencodingmode.h
 
 FORMS += \
+    cloudsharedcoding.ui \
         mainwindow.ui \
     codeedit.ui \
     logindialog.ui \

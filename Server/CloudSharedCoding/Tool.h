@@ -174,31 +174,28 @@ static int CreateDir(const std::string dir)
 
 static bool textChange(std::string path,int pos, int charRemoved, std::string data)
 {
-    std::fstream fileStream(path.c_str(), std::ios::in | std::ios::out);
+    std::fstream fileStream(path.c_str(), std::ios::in | std::ios::out | std::ios::binary);
     if (!fileStream.is_open())
         return false;
-    if (charRemoved != 0)
-    {
-        fileStream.seekg(0, std::ios::end);
-        int length = fileStream.tellg();
-        char* buffer = new char[length + 1];
-        fileStream.seekg(0, std::ios::beg);
-        fileStream.read(buffer, length);
-        fileStream.close();
-        buffer[length] = '\0';
-        std::string buf(buffer);
-        buf.erase(pos, charRemoved);
-        buf.insert(pos, data.c_str(), data.size());
-        std::ofstream ofs(path);
-        ofs.write(buf.c_str(), buf.size());
-        ofs.close();
-    }
-    else
-    {
-        fileStream.seekp(pos, std::ios::beg);
-        fileStream.write(data.c_str(), data.size());
-        fileStream.close();
-    }
+
+    struct stat stbuf;
+    stat(path.c_str(), &stbuf);
+
+    int length = stbuf.st_size;
+
+    char* buffer = new char[length + 1];
+    fileStream.seekg(0, std::ios::beg);
+    fileStream.read(buffer, length);
+    fileStream.close();
+    buffer[length] = '\0';
+    std::string buf(buffer);
+    buf.erase(pos, charRemoved);
+    buf.insert(pos, data.c_str(), data.size());
+    std::ofstream ofs(path);
+    ofs.write(buf.c_str(), buf.size());
+    ofs.close();
+
+    delete buffer;
     return true;
 }
 

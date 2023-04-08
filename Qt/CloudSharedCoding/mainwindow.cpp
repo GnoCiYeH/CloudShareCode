@@ -39,7 +39,8 @@ MainWindow::MainWindow(QWidget *parent) :
     });
 
     //设置主窗口基本属性
-    myHelper::setStyle(":/qss/psblack.css");
+    this->setWindowFlags(Qt::FramelessWindowHint);
+    myHelper::setStyle(":/qss/flatwhite.css");
     this->setWindowTitle("CloudSharedCoding");
     QToolButton* undoButton = new QToolButton(this);
     undoButton->setIcon(QIcon("://qss/darkblack/add_left.png"));
@@ -237,7 +238,7 @@ void MainWindow::projectItemPressedSlot(QTreeWidgetItem* i,int column)
 
 void MainWindow::close()
 {
-    this->deleteLater();
+    qApp->exit(0);
 }
 
 void MainWindow::openCloudProj()
@@ -551,6 +552,7 @@ void MainWindow::on_tabWidget_tabCloseRequested(int index)
     wind->deleteLater();
 }
 
+<<<<<<< HEAD
 void MainWindow::selectencodingMode()
 {
     encodingType->show();
@@ -570,3 +572,8 @@ void MainWindow::selectencodingMode()
 
     connect(encodingType->getButtonCancel(),&QPushButton::clicked,this,&QDialog::close);
 }
+=======
+
+
+
+>>>>>>> d848e743ddefb73984a896836f052cbe825b64b8

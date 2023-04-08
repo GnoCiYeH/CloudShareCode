@@ -89,9 +89,9 @@ D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(102,15): warning :       |
 D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(111,10): warning : unused variable ‘filepath’ [-Wunused-variable]
 D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(111,10): warning :   111 |     char filepath[256] = { 0 };
 D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(111,10): warning :       |          ^~~~~~~~
-D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(183,39): warning : conversion from ‘std::streamoff’ {aka ‘long int’} to ‘int’ may change value [-Wconversion]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(183,39): warning :   183 |         int length = fileStream.tellg();
-D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(183,39): warning :       |                                       ^
+D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(184,24): warning : conversion from ‘__off_t’ {aka ‘long int’} to ‘int’ may change value [-Wconversion]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(184,24): warning :   184 |     int length = stbuf.st_size;
+D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(184,24): warning :       |                  ~~~~~~^~~~~~~
 D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(175,13): warning : ‘bool textChange(std::string, int, int, std::string)’ defined but not used [-Wunused-function]
 D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(85,13): warning : ‘void stringSplit(std::string, std::string, std::vector<std::__cxx11::basic_string<char> >&, int)’ defined but not used [-Wunused-function]
 D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(71,12): warning : ‘int bytesToInt(char*, int, int)’ defined but not used [-Wunused-function]
@@ -201,9 +201,9 @@ D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(102,15): warning :       |
 D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(111,10): warning : unused variable ‘filepath’ [-Wunused-variable]
 D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(111,10): warning :   111 |     char filepath[256] = { 0 };
 D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(111,10): warning :       |          ^~~~~~~~
-D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(183,39): warning : conversion from ‘std::streamoff’ {aka ‘long int’} to ‘int’ may change value [-Wconversion]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(183,39): warning :   183 |         int length = fileStream.tellg();
-D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(183,39): warning :       |                                       ^
+D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(184,24): warning : conversion from ‘__off_t’ {aka ‘long int’} to ‘int’ may change value [-Wconversion]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(184,24): warning :   184 |     int length = stbuf.st_size;
+D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(184,24): warning :       |                  ~~~~~~^~~~~~~
 D:\Git\CloudShareCode\Server\CloudSharedCoding\ThreadPool.h(107,27): warning : comparison of integer expressions of different signedness: ‘int’ and ‘std::vector<std::thread>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]
 D:\Git\CloudShareCode\Server\CloudSharedCoding\ThreadPool.h(107,27): warning :   107 |         for (int i = 0; i < m_threads.size(); i++)
 D:\Git\CloudShareCode\Server\CloudSharedCoding\ThreadPool.h(107,27): warning :       |                         ~~^~~~~~~~~~~~~~~~~~
@@ -343,9 +343,9 @@ D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(102,15): warning :       |
 D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(111,10): warning : unused variable ‘filepath’ [-Wunused-variable]
 D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(111,10): warning :   111 |     char filepath[256] = { 0 };
 D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(111,10): warning :       |          ^~~~~~~~
-D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(183,39): warning : conversion from ‘std::streamoff’ {aka ‘long int’} to ‘int’ may change value [-Wconversion]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(183,39): warning :   183 |         int length = fileStream.tellg();
-D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(183,39): warning :       |                                       ^
+D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(184,24): warning : conversion from ‘__off_t’ {aka ‘long int’} to ‘int’ may change value [-Wconversion]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(184,24): warning :   184 |     int length = stbuf.st_size;
+D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(184,24): warning :       |                  ~~~~~~^~~~~~~
 D:\Git\CloudShareCode\Server\CloudSharedCoding\ThreadPool.h(107,27): warning : comparison of integer expressions of different signedness: ‘int’ and ‘std::vector<std::thread>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]
 D:\Git\CloudShareCode\Server\CloudSharedCoding\ThreadPool.h(107,27): warning :   107 |         for (int i = 0; i < m_threads.size(); i++)
 D:\Git\CloudShareCode\Server\CloudSharedCoding\ThreadPool.h(107,27): warning :       |                         ~~^~~~~~~~~~~~~~~~~~
