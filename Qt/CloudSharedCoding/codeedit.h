@@ -1,6 +1,7 @@
 #ifndef CODEEDIT_H
 #define CODEEDIT_H
 
+#include "ui_codeedit.h"
 #include <QWidget>
 #include<QTextEdit>
 #include<QSyntaxHighlighter>
@@ -25,17 +26,20 @@ class CodeEdit;
 }
 
 class EditWorkThread;
+class HighLighter;
 class AssociateListWidget;
+static void setUpAssociateList();
+static QStringList associateList;
 
 class CodeEdit : public QWidget
 {
     Q_OBJECT
 
 public: friend class EditWorkThread;
+    friend class HighLighter;
 public:
     explicit CodeEdit(QWidget *parent = nullptr);
     ~CodeEdit() override;
-    void setUpAssociateList();//初始化联想列表
 
     void addText(const QString str);
 
@@ -51,6 +55,9 @@ signals:
 public slots:
     void textChange();
 
+protected:
+    void keyReleaseEvent(QKeyEvent* event)override;
+
 private:
     Ui::CodeEdit *ui;
 
@@ -58,16 +65,15 @@ private:
     QString buffer;
     QTextDocument * document;
     EditWorkThread* thread;
+    HighLighter *highLighter;
 
     bool isChanged = false;
 
     int file_id;
 
-
     QMutex mutex;
     int associateState;//联想状态
     AssociateListWidget *associateWidget;//联想表
-    QStringList associateList;//保存用于联想的关键字
     QString getWordCursor();//获取当前光标所在位置的字符串
     int getAssociateWidgetX();
 
@@ -97,7 +103,8 @@ class HighLighter : public QSyntaxHighlighter
     Q_OBJECT
 
 public:
-    HighLighter(QTextDocument*text=nullptr);//构造函数需要先传一个QTextDocument对象给父类，因为要先构造父类
+    friend class CodeEdit;
+    HighLighter(CodeEdit*edit,QTextDocument*text=nullptr);//构造函数需要先传一个QTextDocument对象给父类，因为要先构造父类
 
 protected:
     void highlightBlock(const QString &text) override; //重写父类QSyntaxHighlighter的highlightBlock函数，使多行注释高亮
@@ -119,10 +126,14 @@ private:
     QTextCharFormat headfile_format;//头文件高亮格式
     QTextCharFormat cincout_format;//输入输出高亮格式
     QTextCharFormat branch_format;//分支高亮格式
+    QTextCharFormat mistake_format;//语法报错格式
+    QStringList mistake_pattern;
 
     //用于匹配注释
     QRegularExpression comment_start;
     QRegularExpression comment_end;
+
+    CodeEdit *edit;
 };
 
 enum AssociateState{
@@ -136,12 +147,10 @@ public:
     AssociateListWidget(QWidget*parent=0);
     static int letterDifference(const string source,const string target);//两个字符串的差异度
     static int strToInt(string str);
-protected:
-    void keyPressEvent(QKeyEvent *event) override;
 private:
     QPlainTextEdit* p;
     QColor backgroundColor;//联想列表背景色
-    QColor highlightColor;//高亮联想词
+    QColor highlightColor;
 };
 
 #endif // CODEEDIT_H

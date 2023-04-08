@@ -15,7 +15,7 @@ CodeEdit::CodeEdit(QWidget *parent) :
     document = ui->textEdit->document();
     //ui->textEdit->setFontFamily("Consolas");
     ui->textEdit->setFont(QFont("Consolas"));
-    HighLighter* highLighter = new HighLighter(document);
+    highLighter=new HighLighter(this,document);
 
     //初始化联想列表
     setUpAssociateList();
@@ -45,6 +45,7 @@ CodeEdit::~CodeEdit()
 void CodeEdit::textChange()
 {
     showAssociateWidget();
+    highLighter = new HighLighter(this,document);
     auto cursor = ui->textEdit->textCursor();
     int block = cursor.blockNumber();
     QString data = QString::number(file_id)+"#split#"+QString::number(lastBlock)+"#split#";
@@ -132,23 +133,6 @@ void CodeEdit::showAssociateWidget(){
     }
 }
 
-void CodeEdit::setUpAssociateList(){
-    associateList<< "char" << "class" << "const"
-                 << "double" << "enum" << "explicit"
-                 << "friend" << "inline" << "int"
-                 << "long" << "namespace" << "operator"
-                 << "private" << "protected" << "public"
-                 << "short" << "signals" << "signed"
-                 << "slots" << "static" << "struct"
-                 << "template" << "typedef" << "typename"
-                 << "union" << "unsigned" << "virtual"
-                 << "void" << "volatile" << "bool"<<"using"<<"constexpr"
-                 <<"sizeof"<<"if"<<"for"<<"foreach"<<"while"<<"do"<<"case"
-                 <<"break"<<"continue"<<"template"<<"delete"<<"new"
-                 <<"default"<<"try"<<"return"<<"throw"<<"catch"<<"goto"<<"else"
-                 <<"extren"<<"this"<<"switch"<<"#include <>"<<"#include \"\""<<"#define"<<"iostream";
-}
-
 QString CodeEdit::getWordCursor(){
     QTextCursor cursor = ui->textEdit->textCursor();
     cursor.movePosition(QTextCursor::MoveOperation::StartOfWord);
@@ -179,6 +163,34 @@ int CodeEdit::getAssociateWidgetX(){
     ui->textEdit->setTextCursor(cursor);
     associateState=AssociateState::Hide;
     return x;
+}
+
+void CodeEdit::keyReleaseEvent(QKeyEvent *event){
+    int pos=ui->textEdit->textCursor().position();
+    if(event->key()==Qt::Key_Return&&associateState==AssociateState::Showing){
+        QString insertText=associateWidget->currentItem()->text();//联想列表当前选中字符串
+        QString text=this->getWordCursor();
+        associateState=AssociateState::Ignore;
+        //删除已输入文本
+        for(int i=0;i<text.length();i++){
+            ui->textEdit->textCursor().deletePreviousChar();
+        }
+        ui->textEdit->insertPlainText(insertText);
+        associateState=AssociateState::Hide;
+        associateWidget->hide();
+    }
+
+    if(event->key()==Qt::Key_Down&&associateState==AssociateState::Showing){
+        int row=associateWidget->currentRow();
+        associateWidget->setCurrentRow(row+1);
+    }
+
+    if(event->key()==Qt::Key_Up&&associateState==AssociateState::Showing){
+        int row=associateWidget->currentRow();
+        associateWidget->setCurrentRow(row-1);
+    }
+
+    return QWidget::keyReleaseEvent(event);
 }
 
 EditWorkThread::EditWorkThread(CodeEdit* codeE)
@@ -217,10 +229,26 @@ void EditWorkThread::run()
     this->exec();
 }
 
-HighLighter::HighLighter(QTextDocument* text):QSyntaxHighlighter (text)
+HighLighter::HighLighter(CodeEdit*edit,QTextDocument* text):
+    QSyntaxHighlighter (text),
+    edit(edit)
 {
     //制定高亮规则
     HighLighterRule rule;
+
+    //0.语法错误
+    mistake_format.setUnderlineStyle(QTextCharFormat::DashUnderline);
+    mistake_format.setUnderlineColor(Qt::red);
+    rule.format=mistake_format;
+    QTextCursor cursor = edit->ui->textEdit->textCursor();
+    QString currentLineText = cursor.block().text();
+    QStringList words = currentLineText.trimmed().split(" ");
+    QString firstWord = words.at(0);
+    if(!mistake_pattern.contains(firstWord))mistake_pattern.push_back(firstWord);
+    foreach(QString pattern,mistake_pattern){
+        rule.pattern=QRegularExpression(pattern);
+        highlighterrules.push_back(rule);
+    }
 
     //1.添加关键字高亮规则
     keyword_format.setForeground(QColor(118, 238, 198));//设置关键字前景颜色(blue)
@@ -287,7 +315,6 @@ HighLighter::HighLighter(QTextDocument* text):QSyntaxHighlighter (text)
     rule.pattern=QRegularExpression(quotation_pattern);
     rule.format=quotation_format;
     highlighterrules.push_back(rule);
-    multiLine_comment_format.setForeground(Qt::green);//多行注释颜色为green
 
     //6.添加函数高亮格式
     function_format.setForeground(QColor(238, 180, 180));//函数字体颜色设置为darkGreen
@@ -322,11 +349,22 @@ HighLighter::HighLighter(QTextDocument* text):QSyntaxHighlighter (text)
     }
 
     //9.添加单行注释高亮规则
-    singleLine_comment_format.setForeground(QColor(211, 211 ,211));//注释颜色为green
+    singleLine_comment_format.setForeground(QColor(211, 211 ,211));
+    singleLine_comment_format.setFontWeight(QFont::Bold);
     QString singleLine_comment_pattern="//[^\n]*";//单行注释识别格式为跟在//后，但不包括换行符，且不需要间隔符
     rule.pattern=QRegularExpression(singleLine_comment_pattern);
     rule.format=singleLine_comment_format;
     highlighterrules.push_back(rule);
+
+    //多行注释格式
+    multiLine_comment_format.setForeground(QColor(211, 211 ,211));
+    multiLine_comment_format.setFontWeight(QFont::Bold);
+
+    rule.format=mistake_format;
+    foreach(QString pattern,mistake_pattern){
+        rule.pattern=QRegularExpression(pattern);
+        highlighterrules.push_back(rule);
+    }
 }
 
 void HighLighter::highlightBlock(const QString &text){//应用高亮规则
@@ -359,6 +397,23 @@ void HighLighter::highlightBlock(const QString &text){//应用高亮规则
     }
 }
 
+void setUpAssociateList(){
+    associateList<< "char" << "class" << "const"
+                  << "double" << "enum" << "explicit"
+                  << "friend" << "inline" << "int"
+                  << "long" << "namespace" << "operator"
+                  << "private" << "protected" << "public"
+                  << "short" << "signals" << "signed"
+                  << "slots" << "static" << "struct"
+                  << "template" << "typedef" << "typename"
+                  << "union" << "unsigned" << "virtual"
+                  << "void" << "volatile" << "bool"<<"using"<<"constexpr"
+                  <<"sizeof"<<"if"<<"for"<<"foreach"<<"while"<<"do"<<"case"
+                  <<"break"<<"continue"<<"template"<<"delete"<<"new"
+                  <<"default"<<"try"<<"return"<<"throw"<<"catch"<<"goto"<<"else"
+                  <<"extren"<<"this"<<"switch"<<"#include <>"<<"#include \"\""<<"#define"<<"iostream";
+}
+
 AssociateListWidget::AssociateListWidget(QWidget*parent):QListWidget(parent){
     p=(QPlainTextEdit*)parent;
     backgroundColor=Qt::lightGray;
@@ -370,16 +425,6 @@ AssociateListWidget::AssociateListWidget(QWidget*parent):QListWidget(parent){
     palette.setColor(QPalette::Inactive, QPalette::Base, backgroundColor);
     palette.setColor(QPalette::Text,Qt::white);
     this->setPalette(palette);
-}
-
-void AssociateListWidget::keyPressEvent(QKeyEvent *event){
-    if(event->key()==16777235||event->key()==16777237){//如果用户按下回车或ESC键
-        QString str = this->currentItem()->text();
-    }else{
-        QApplication::sendEvent(p,event);
-        p->setFocus();
-    }
-    return QListWidget::keyPressEvent(event);
 }
 
 int AssociateListWidget::letterDifference(const std::string source, const std::string text){
