@@ -1,10 +1,10 @@
-#include "mainwindow.h"
+#include "cloudsharedcoding.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w;
+    CloudSharedCoding w;
     w.show();
 
     return a.exec();

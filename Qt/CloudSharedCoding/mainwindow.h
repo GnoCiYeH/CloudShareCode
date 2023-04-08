@@ -33,6 +33,8 @@ public:
     static QString userId;
 
 
+
+
 public slots:
     void dataProgress();
 
@@ -69,16 +71,16 @@ private:
     QString serverIP = "192.168.239.129";
     quint16 mainPort = 9098;
 
-    //子窗�?
+    //瀛愮獥鍙?
     LoginDialog* loginDialog;
     ProjectForm* projectForm;
 
-    //文件容器
+    //鏂囦欢瀹瑰櫒
     QHash<int,QVector<std::shared_ptr<FileInfo>>> pro_fileMap;
     QHash<int,CodeEdit*> fileWidgets;
     QHash<int,std::shared_ptr<Directory>> mainDirMap;
 
-    //项目树状列表菜单
+    //椤圭洰鏍戠姸鍒楄〃鑿滃崟
     QAction* submitProject;
     QAction* closeProject;
     QAction* newFile;
@@ -87,18 +89,19 @@ private:
     QAction* attribute;
     QAction* rename;
 
-    //心跳检�?
+    //蹇冭烦妫€娴?
     QTimer* heartTimer;
     QTimer* detectTimer;
     bool isAlive = true;
 
     QStatusBar* status_bar=new QStatusBar();
     QLabel* label1=new QLabel("就绪",this);
-    QLabel* label2=new QLabel;
-    QTimer *timer=new QTimer;
+    QLabel* label2=new QLabel(this);
+    QTimer *timer=new QTimer(this);
 private:
     void Login();
     void addFileWidget(std::shared_ptr<FileInfo> file);
+
 };
 
 

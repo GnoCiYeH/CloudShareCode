@@ -24,8 +24,6 @@ using std::min;
 namespace Ui {
 class CodeEdit;
 }
-
-class EditWorkThread;
 class AssociateListWidget;
 
 class CodeEdit : public QWidget
@@ -63,7 +61,6 @@ private:
     int lastBlock = 0;
     QString buffer;
     QTextDocument * document;
-    EditWorkThread* thread;
 
     bool isChanged = false;
 
@@ -79,23 +76,6 @@ private:
 
 private slots:
     void showAssociateWidget();//展示联想列表
-};
-
-class EditWorkThread : public QThread
-{
-    Q_OBJECT
-
-public:
-    explicit EditWorkThread(CodeEdit*);
-
-private slots:
-    void deleteInfo(int,int);
-
-private:
-    CodeEdit * codeEdit;
-    QTcpSocket* socket;
-protected:
-    void run() override;
 };
 
 class HighLighter : public QSyntaxHighlighter

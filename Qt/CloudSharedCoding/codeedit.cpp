@@ -13,9 +13,10 @@ CodeEdit::CodeEdit(QWidget *parent) :
     ui->setupUi(this);
 
     document = ui->textEdit->document();
-    //ui->textEdit->setFontFamily("Consolas");
     ui->textEdit->setFont(QFont("Consolas"));
     HighLighter* highLighter = new HighLighter(document);
+
+    this->file = std::shared_ptr<FileInfo>(new FileInfo());
 
     //初始化联想列表
     setUpAssociateList();
@@ -27,21 +28,13 @@ CodeEdit::CodeEdit(QWidget *parent) :
     const int tabstop = 4;
     QFontMetrics m(ui->textEdit->font());
     ui->textEdit->setTabStopDistance(tabstop*m.horizontalAdvance(" "));
-//    ui->textEdit->insertPlainText("1\n");
-//    document->begin().setVisible(false);
 
-    //connect(ui->textEdit,SIGNAL(textChanged()),this,SLOT(textChange()));
     connect(document,SIGNAL(contentsChange(int,int,int)),this,SLOT(docChange(int,int,int)));
-
-    thread = new EditWorkThread(this);
-    thread->start();
 }
 
 CodeEdit::~CodeEdit()
 {
     delete ui;
-    thread->exit(0);
-    delete thread;
 }
 
 void CodeEdit::docChange(int pos,int charRemoved,int charAdded)
@@ -71,7 +64,6 @@ void CodeEdit::addText(const QString str)
 void CodeEdit::changeText(int pos,int charRemoved,QString data)
 {
     QTextCursor cursor(document);
-    cursor.setPosition(pos);
     cursor.movePosition(QTextCursor::NextCharacter,QTextCursor::MoveAnchor,pos);
     qDebug()<<ui->textEdit->toPlainText().size();
     cursor.movePosition(QTextCursor::NextCharacter,QTextCursor::KeepAnchor,charRemoved);
@@ -168,42 +160,6 @@ int CodeEdit::getAssociateWidgetX(){
     ui->textEdit->setTextCursor(cursor);
     associateState=AssociateState::Hide;
     return x;
-}
-
-EditWorkThread::EditWorkThread(CodeEdit* codeE)
-{
-    this->codeEdit = codeE;
-
-    socket = new QTcpSocket(this);
-    socket->connectToHost("192.168.239.129",9897);
-}
-
-void EditWorkThread::deleteInfo(int position,int charsRemoved)
-{
-    qDebug()<<"在"<<position<<"删除"<<charsRemoved<<"个字符";
-}
-
-void EditWorkThread::run()
-{
-    connect(codeEdit,SIGNAL(deleteInfo(int,int)),this,SLOT(deleteInfo(int,int)),Qt::DirectConnection);
-    QTimer timer;
-    connect(&timer,&QTimer::timeout,this,[=](){
-        if(!codeEdit->buffer.isEmpty())
-        {
-            qDebug()<<codeEdit->buffer;
-            codeEdit->buffer = "";
-        }
-    },Qt::DirectConnection);
-    timer.start(500);
-    QTimer subTimer;
-    connect(&subTimer,&QTimer::timeout,this,[=](){
-            if(codeEdit->isChanged)
-            {
-                char* data = codeEdit->document->toPlainText().toUtf8().data();
-                int offset = 0;
-            }
-        },Qt::DirectConnection);
-    this->exec();
 }
 
 HighLighter::HighLighter(QTextDocument* text):QSyntaxHighlighter (text)
@@ -326,6 +282,8 @@ void HighLighter::highlightBlock(const QString &text){//应用高亮规则
             setFormat(match.capturedStart(),match.capturedLength(),rule.format);//(匹配到的起始位置，文本块长度，高亮规则格式)
         }
     }
+
+
 
     //处理多行注释，由于多行注释优先级最高，所以最后处理
     setCurrentBlockState(0);
