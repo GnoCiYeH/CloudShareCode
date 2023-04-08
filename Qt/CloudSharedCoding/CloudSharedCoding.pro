@@ -34,7 +34,8 @@ SOURCES += \
     newprojectdialog.cpp \
     package.cpp \
     projectform.cpp \
-    settingform.cpp
+    settingform.cpp \
+    switchingencodingmode.cpp
 
 HEADERS += \
     InfoType.h \
@@ -46,7 +47,8 @@ HEADERS += \
     newprojectdialog.h \
     package.h \
     projectform.h \
-    settingform.h
+    settingform.h \
+    switchingencodingmode.h
 
 FORMS += \
         mainwindow.ui \
@@ -55,7 +57,8 @@ FORMS += \
     newfiledialog.ui \
     newprojectdialog.ui \
     projectform.ui \
-    settingform.ui
+    settingform.ui \
+    switchingencodingmode.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

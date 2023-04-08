@@ -14,7 +14,8 @@
 #include<QDateTime>
 
 #include"ui_mainwindow.h"
-
+#include"switchingencodingmode.h"
+#include"ui_switchingencodingmode.h"
 namespace Ui {
 class MainWindow;
 }
@@ -57,6 +58,7 @@ signals:
 
 private slots:
     void on_tabWidget_tabCloseRequested(int index);
+    void selectencodingMode();
 
 private:
     Ui::MainWindow *ui;
@@ -69,7 +71,7 @@ private:
     QString serverIP = "192.168.239.129";
     quint16 mainPort = 9098;
 
-    //子窗�?
+    //子窗��?
     LoginDialog* loginDialog;
     ProjectForm* projectForm;
 
@@ -87,7 +89,7 @@ private:
     QAction* attribute;
     QAction* rename;
 
-    //心跳检�?
+    //心跳检��?
     QTimer* heartTimer;
     QTimer* detectTimer;
     bool isAlive = true;
@@ -96,9 +98,14 @@ private:
     QLabel* label1=new QLabel("就绪",this);
     QLabel* label2=new QLabel;
     QTimer *timer=new QTimer;
+
+
 private:
     void Login();
     void addFileWidget(std::shared_ptr<FileInfo> file);
+
+    SwitchingEncodingMode* encodingType=new SwitchingEncodingMode(this);//编码方式
+    QLabel* EncodingCodeLabel=new QLabel(this);//打印编码方式到状态栏
 };
 
 

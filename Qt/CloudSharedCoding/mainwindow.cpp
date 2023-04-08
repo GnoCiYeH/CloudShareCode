@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    encodingType->setAttribute(Qt::WA_DeleteOnClose);
 
     socket = new QTcpSocket(this);
     heartTimer = new QTimer(this);
@@ -63,33 +64,6 @@ MainWindow::MainWindow(QWidget *parent) :
     openFile = new QAction("打开",ui->treeWidget);
     attribute = new QAction("属性",ui->treeWidget);
     rename = new QAction("重命名",ui->treeWidget);
-    //右键菜单槽
-    connect(openFile,SIGNAL(triggered(bool)),this,SLOT(openProjFile()));
-    connect(newFile,SIGNAL(triggered(bool)),this,SLOT(newProFile()));
-    connect(deleteFile,SIGNAL(triggered(bool)),this,SLOT(deleteProFile()));
-
-    //主菜单栏槽
-    connect(ui->actionClose,SIGNAL(triggered()),this,SLOT(close()));
-    connect(ui->actionCloud_project,SIGNAL(triggered()),this,SLOT(openCloudProj()));
-    connect(ui->actionLocal_project,SIGNAL(triggered()),this,SLOT(openLoaclProj()));
-    connect(ui->actionNew_local_project,SIGNAL(triggered()),this,SLOT(newLocalProj()));
-    connect(ui->actionNew_cloud_project,SIGNAL(triggered()),this,SLOT(newCloudProj()));
-    connect(ui->actionSetting,SIGNAL(triggered()),this,SLOT(openSettingDialog()));
-
-    //socket
-    connect(socket,SIGNAL(readyRead()),this,SLOT(dataProgress()));
-
-    //子窗口
-    projectForm = new ProjectForm(this);
-    projectForm->setWindowFlag(Qt::Window);
-    loginDialog=new LoginDialog(this);
-
-    //子窗口槽
-    connect(this,&MainWindow::loginAllowed,loginDialog,&LoginDialog::loginSucceed);
-    connect(this,SIGNAL(projInited()),projectForm,SLOT(init()));
-    connect(projectForm,SIGNAL(openProj(int)),this,SLOT(openProj(int)));
-
-    connect(ui->treeWidget, SIGNAL(itemPressed(QTreeWidgetItem*,int)), this, SLOT(projectItemPressedSlot(QTreeWidgetItem*,int)));
 
     //状态栏(显示状态和时间）
     setStatusBar(status_bar);
@@ -104,18 +78,48 @@ MainWindow::MainWindow(QWidget *parent) :
         status_bar->addPermanentWidget(label2);
     });
 
+    //在状态栏显示编码方式
+    EncodingCodeLabel->setText("当前的编码方式为：");
+    status_bar->addWidget(EncodingCodeLabel);
+
+    //右键菜单槽
+    connect(openFile,SIGNAL(triggered(bool)),this,SLOT(openProjFile()));
+    connect(newFile,SIGNAL(triggered(bool)),this,SLOT(newProFile()));
+    connect(deleteFile,SIGNAL(triggered(bool)),this,SLOT(deleteProFile()));
+
+    //主菜单栏槽
+    connect(ui->actionClose,SIGNAL(triggered()),this,SLOT(close()));
+    connect(ui->actionCloud_project,SIGNAL(triggered()),this,SLOT(openCloudProj()));
+    connect(ui->actionLocal_project,SIGNAL(triggered()),this,SLOT(openLoaclProj()));
+    connect(ui->actionNew_local_project,SIGNAL(triggered()),this,SLOT(newLocalProj()));
+    connect(ui->actionNew_cloud_project,SIGNAL(triggered()),this,SLOT(newCloudProj()));
+    connect(ui->Setting,SIGNAL(triggered()),this,SLOT(openSettingDialog()));
+
+    //socket
+    connect(socket,SIGNAL(readyRead()),this,SLOT(dataProgress()));
+
+    //子窗口
+    projectForm = new ProjectForm(this);
+    projectForm->setWindowFlag(Qt::Window);
+    loginDialog=new LoginDialog(this);
+
+    //子窗口槽
+    connect(this,&MainWindow::loginAllowed,loginDialog,&LoginDialog::loginSucceed);
+    connect(this,SIGNAL(projInited()),projectForm,SLOT(init()));
+    connect(projectForm,SIGNAL(openProj(int)),this,SLOT(openProj(int)));
+    connect(ui->treeWidget, SIGNAL(itemPressed(QTreeWidgetItem*,int)), this, SLOT(projectItemPressedSlot(QTreeWidgetItem*,int)));
+
+    //选择编码方式
+    connect(ui->actionSwitching,&QAction::triggered,this,&MainWindow::selectencodingMode);
+
     //关闭
     connect(ui->actionClose,&QAction::triggered,this,&QMainWindow::close);
 
     //新建文件
-    connect(ui->new_file_action,&QAction::triggered,this,[=](){
-        QFileDialog::getOpenFileName(this,"新建文件","C:/Users");
-    });
+    connect(ui->new_file_action,&QAction::triggered,this,[=](){QFileDialog::getOpenFileName(this,"新建文件","C:/Users");});
 
     //添加文件
-    connect(ui->add_file_action,&QAction::triggered,this,[=](){
-        QFileDialog::getOpenFileName(this,"添加文件","C:/Users");
-    });
+    connect(ui->add_file_action,&QAction::triggered,this,[=](){QFileDialog::getOpenFileName(this,"添加文件","C:/Users");});
 }
 
 MainWindow::~MainWindow()
@@ -545,4 +549,24 @@ void MainWindow::on_tabWidget_tabCloseRequested(int index)
     fileWidgets.remove(wind->getFile()->file_id);
     ui->tabWidget->removeTab(index);
     wind->deleteLater();
+}
+
+void MainWindow::selectencodingMode()
+{
+    encodingType->show();
+    connect(encodingType->getButtonConfirm(),&QPushButton::clicked,this,[=](){
+        if(encodingType->getRadioButtonASCII()->isChecked())
+            EncodingCodeLabel->setText("当前的编码方式为:ASCII");
+        else if(encodingType->getRadioButtonUTF8()->isChecked())
+            EncodingCodeLabel->setText("当前的编码方式为:UTF-8");
+        else if(encodingType->getRadioButtonGBK()->isChecked())
+            EncodingCodeLabel->setText("当前的编码方式为:GBK");
+        else if(encodingType->getRadioButtonISO()->isChecked())
+            EncodingCodeLabel->setText("当前的编码方式为:ISO");
+        else
+            EncodingCodeLabel->setText("当前的编码方式为:");
+        encodingType->close();
+    });
+
+    connect(encodingType->getButtonCancel(),&QPushButton::clicked,this,&QDialog::close);
 }

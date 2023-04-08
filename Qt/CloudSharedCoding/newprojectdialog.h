@@ -28,6 +28,7 @@ private:
     Ui::NewProjectDialog *ui;
 
     bool isLocal = false;
+    int mode=0;
 };
 
 #endif // NEWPROJECTDIALOG_H
