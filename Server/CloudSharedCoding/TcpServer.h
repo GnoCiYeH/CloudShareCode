@@ -13,6 +13,7 @@
 #include<unordered_map>
 #include"ThreadPool.h"
 #include<vector>
+#include<map>
 
 #define SqlIP "192.168.239.129"
 class TcpServer
@@ -56,13 +57,18 @@ private:
 
     static void sendTextChange(int sock_fd, char* data);
 
+    struct UserInfo
+    {
+        std::string userId;
+        std::vector<int> openedFiles;
+        std::vector<int> openedProjects;
+    };
 
+    static std::unordered_map<int, UserInfo>* userMap;
 
-    static std::unordered_map<int, std::string>* userMap;
+    static std::multimap<int, int>* file_map;
 
-    static std::unordered_map<int, std::vector<int>>* file_map;
-
-    static std::unordered_map<int, std::vector<int>>* project_map;
+    static std::multimap<int, int>* project_map;
 
 };
 #endif // TCPSERVER_H

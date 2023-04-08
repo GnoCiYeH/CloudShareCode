@@ -26,6 +26,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+    cloudsharedcoding.cpp \
         main.cpp \
         mainwindow.cpp \
     codeedit.cpp \
@@ -34,10 +35,12 @@ SOURCES += \
     newprojectdialog.cpp \
     package.cpp \
     projectform.cpp \
-    settingform.cpp
+    settingform.cpp \
+    switchingencodingmode.cpp
 
 HEADERS += \
     InfoType.h \
+    cloudsharedcoding.h \
         mainwindow.h \
     myhelper.h \
     codeedit.h \
@@ -46,16 +49,19 @@ HEADERS += \
     newprojectdialog.h \
     package.h \
     projectform.h \
-    settingform.h
+    settingform.h \
+    switchingencodingmode.h
 
 FORMS += \
+    cloudsharedcoding.ui \
         mainwindow.ui \
     codeedit.ui \
     logindialog.ui \
     newfiledialog.ui \
     newprojectdialog.ui \
     projectform.ui \
-    settingform.ui
+    settingform.ui \
+    switchingencodingmode.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

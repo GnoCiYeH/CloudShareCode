@@ -17,6 +17,7 @@
 #include<vector>
 #include<string>
 #include<cmath>
+#include"InfoType.h"
 using std::string;
 using std::vector;
 using std::min;
@@ -24,9 +25,6 @@ using std::min;
 namespace Ui {
 class CodeEdit;
 }
-
-class EditWorkThread;
-class HighLighter;
 class AssociateListWidget;
 static void setUpAssociateList();
 static QStringList associateList;
@@ -43,17 +41,22 @@ public:
 
     void addText(const QString str);
 
-    void setFid(int id){this->file_id = id;}
+    void setFile(std::shared_ptr<FileInfo> file){this->file = file;}
 
-    int getFId(){return file_id;}
+    std::shared_ptr<FileInfo> getFile(){return file;}
 
-    void changeText(int blockNum,QString data);
+    void changeText(int pos,int charRemoved,QString data);
+
+    //
+    int tcnum = 0;
+    int ctnum = 0;
 
 signals:
     void deleteInfo(int,int);
 
 public slots:
-    void textChange();
+    //void textChange();
+    void docChange(int,int,int);
 
 protected:
     void keyReleaseEvent(QKeyEvent* event)override;
@@ -64,12 +67,10 @@ private:
     int lastBlock = 0;
     QString buffer;
     QTextDocument * document;
-    EditWorkThread* thread;
-    HighLighter *highLighter;
 
     bool isChanged = false;
 
-    int file_id;
+    std::shared_ptr<FileInfo> file;
 
     QMutex mutex;
     int associateState;//联想状态
@@ -79,23 +80,6 @@ private:
 
 private slots:
     void showAssociateWidget();//展示联想列表
-};
-
-class EditWorkThread : public QThread
-{
-    Q_OBJECT
-
-public:
-    explicit EditWorkThread(CodeEdit*);
-
-private slots:
-    void deleteInfo(int,int);
-
-private:
-    CodeEdit * codeEdit;
-    QTcpSocket* socket;
-protected:
-    void run() override;
 };
 
 class HighLighter : public QSyntaxHighlighter

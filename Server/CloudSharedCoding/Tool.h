@@ -6,6 +6,8 @@
 #include<unistd.h>
 #include <sys/stat.h>
 #include<dirent.h>
+#include<fstream>
+#include<unistd.h>
 
 static Log::Logger ToolLog("ToolLog");
 static void ERROR_CHECK(int ret, std::string str, Log::Logger logger)
@@ -90,14 +92,14 @@ static void stringSplit(std::string str, std::string split, std::vector<std::str
     }
     int n = 0;
     int num = 0;
-    while (index != std::string::npos && num != splitNum)
+    while (index != std::string::npos && num != splitNum-1)
     {
         res.push_back(str.substr(n, index - n));
         num++;
         n = index + 1;
         index = str.find(split, index + 1);
     }
-    if (index != str.size() - 1 && num != splitNum)
+    if (index != str.size() - 1)
         res.push_back(str.substr(n, str.size() - 1));
 }
 
@@ -168,6 +170,33 @@ static int CreateDir(const std::string dir)
         }
     }
     return ret;
+}
+
+static bool textChange(std::string path,int pos, int charRemoved, std::string data)
+{
+    std::fstream fileStream(path.c_str(), std::ios::in | std::ios::out | std::ios::binary);
+    if (!fileStream.is_open())
+        return false;
+
+    struct stat stbuf;
+    stat(path.c_str(), &stbuf);
+
+    int length = stbuf.st_size;
+
+    char* buffer = new char[length + 1];
+    fileStream.seekg(0, std::ios::beg);
+    fileStream.read(buffer, length);
+    fileStream.close();
+    buffer[length] = '\0';
+    std::string buf(buffer);
+    buf.erase(pos, charRemoved);
+    buf.insert(pos, data.c_str(), data.size());
+    std::ofstream ofs(path);
+    ofs.write(buf.c_str(), buf.size());
+    ofs.close();
+
+    delete buffer;
+    return true;
 }
 
 #endif // TOOL_H_INCLUDED

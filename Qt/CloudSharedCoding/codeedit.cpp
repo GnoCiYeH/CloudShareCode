@@ -13,9 +13,10 @@ CodeEdit::CodeEdit(QWidget *parent) :
     ui->setupUi(this);
 
     document = ui->textEdit->document();
-    //ui->textEdit->setFontFamily("Consolas");
     ui->textEdit->setFont(QFont("Consolas"));
     highLighter=new HighLighter(this,document);
+
+    this->file = std::shared_ptr<FileInfo>(new FileInfo());
 
     //初始化联想列表
     setUpAssociateList();
@@ -28,69 +29,48 @@ CodeEdit::CodeEdit(QWidget *parent) :
     QFontMetrics m(ui->textEdit->font());
     ui->textEdit->setTabStopDistance(tabstop*m.horizontalAdvance(" "));
 
-    connect(ui->textEdit,SIGNAL(textChanged()),this,SLOT(textChange()));
-    //connect(document,SIGNAL(contentsChange(int,int,int)),this,SLOT(docChange(int,int,int)));
-
-    thread = new EditWorkThread(this);
-    thread->start();
+    connect(document,SIGNAL(contentsChange(int,int,int)),this,SLOT(docChange(int,int,int)));
 }
 
 CodeEdit::~CodeEdit()
 {
     delete ui;
-    thread->exit(0);
-    delete thread;
 }
 
-void CodeEdit::textChange()
+void CodeEdit::docChange(int pos,int charRemoved,int charAdded)
 {
     showAssociateWidget();
-    highLighter = new HighLighter(this,document);
-    auto cursor = ui->textEdit->textCursor();
-    int block = cursor.blockNumber();
-    QString data = QString::number(file_id)+"#split#"+QString::number(lastBlock)+"#split#";
-    if(block<lastBlock)
-    {
-        qDebug()<<"-----------------------------";
-        for (int var = block; var <= lastBlock; ++var) {
-            qDebug()<<"deleteLine("<<var<<")";
-        }
+    qDebug()<<pos<<" "<<charRemoved<<" "<<charAdded;
+    QString data = QString::number(file->file_id)+"#"+QString::number(pos)+"#"+QString::number(charRemoved)+"#"+file->file_path+"#";
+    for (int var = pos; var < pos+charAdded; ++var) {
+        if(document->characterAt(var)==QChar(8233))
+            data+="\n";
+        else
+            data+=document->characterAt(var);
     }
-    else if(document->findBlockByLineNumber(block).text()=="")
-    {
-        qDebug()<<"-----------------------------";
-        qDebug()<<block;
-        qDebug()<<document->findBlockByLineNumber(block).text();
-
-        data+="\n";
-    }
-    else{
-        qDebug()<<"-----------------------------";
-        qDebug()<<block;
-        for (int var = lastBlock; var <= block; ++var) {
-            qDebug()<<document->findBlockByLineNumber(var).text();
-            data+=document->findBlockByLineNumber(var).text();
-        }
-    }
-    lastBlock = block;
-
+    qDebug()<<data;
     Package pck(data.toUtf8(),(int)Package::PackageType::TEXT_CHANGE);
     MainWindow::socket->write(pck.getPdata(),pck.getSize());
+    MainWindow::socket->flush();
 }
 
 void CodeEdit::addText(const QString str)
 {
+    document->disconnect(SIGNAL(contentsChange(int,int,int)));
     ui->textEdit->insertPlainText(str);
+    connect(document,SIGNAL(contentsChange(int,int,int)),this,SLOT(docChange(int,int,int)));
 }
 
-void CodeEdit::changeText(int blockNum,QString data)
+void CodeEdit::changeText(int pos,int charRemoved,QString data)
 {
     QTextCursor cursor(document);
-    int pos = document->findBlockByLineNumber(blockNum).position();
-    cursor.setPosition(pos);
-    QObject::blockSignals(true);
+    cursor.movePosition(QTextCursor::NextCharacter,QTextCursor::MoveAnchor,pos);
+    qDebug()<<ui->textEdit->toPlainText().size();
+    cursor.movePosition(QTextCursor::NextCharacter,QTextCursor::KeepAnchor,charRemoved);
+    document->disconnect(SIGNAL(contentsChange(int,int,int)));
+    cursor.removeSelectedText();
     cursor.insertText(data);
-    QObject::blockSignals(false);
+    connect(document,SIGNAL(contentsChange(int,int,int)),this,SLOT(docChange(int,int,int)));
 }
 
 void CodeEdit::showAssociateWidget(){
@@ -165,73 +145,7 @@ int CodeEdit::getAssociateWidgetX(){
     return x;
 }
 
-void CodeEdit::keyReleaseEvent(QKeyEvent *event){
-    int pos=ui->textEdit->textCursor().position();
-    if(event->key()==Qt::Key_Return&&associateState==AssociateState::Showing){
-        QString insertText=associateWidget->currentItem()->text();//联想列表当前选中字符串
-        QString text=this->getWordCursor();
-        associateState=AssociateState::Ignore;
-        //删除已输入文本
-        for(int i=0;i<text.length();i++){
-            ui->textEdit->textCursor().deletePreviousChar();
-        }
-        ui->textEdit->insertPlainText(insertText);
-        associateState=AssociateState::Hide;
-        associateWidget->hide();
-    }
-
-    if(event->key()==Qt::Key_Down&&associateState==AssociateState::Showing){
-        int row=associateWidget->currentRow();
-        associateWidget->setCurrentRow(row+1);
-    }
-
-    if(event->key()==Qt::Key_Up&&associateState==AssociateState::Showing){
-        int row=associateWidget->currentRow();
-        associateWidget->setCurrentRow(row-1);
-    }
-
-    return QWidget::keyReleaseEvent(event);
-}
-
-EditWorkThread::EditWorkThread(CodeEdit* codeE)
-{
-    this->codeEdit = codeE;
-
-    socket = new QTcpSocket(this);
-    socket->connectToHost("192.168.239.129",9897);
-}
-
-void EditWorkThread::deleteInfo(int position,int charsRemoved)
-{
-    qDebug()<<"在"<<position<<"删除"<<charsRemoved<<"个字符";
-}
-
-void EditWorkThread::run()
-{
-    connect(codeEdit,SIGNAL(deleteInfo(int,int)),this,SLOT(deleteInfo(int,int)),Qt::DirectConnection);
-    QTimer timer;
-    connect(&timer,&QTimer::timeout,this,[=](){
-        if(!codeEdit->buffer.isEmpty())
-        {
-            qDebug()<<codeEdit->buffer;
-            codeEdit->buffer = "";
-        }
-    },Qt::DirectConnection);
-    timer.start(500);
-    QTimer subTimer;
-    connect(&subTimer,&QTimer::timeout,this,[=](){
-            if(codeEdit->isChanged)
-            {
-                char* data = codeEdit->document->toPlainText().toUtf8().data();
-                int offset = 0;
-            }
-        },Qt::DirectConnection);
-    this->exec();
-}
-
-HighLighter::HighLighter(CodeEdit*edit,QTextDocument* text):
-    QSyntaxHighlighter (text),
-    edit(edit)
+HighLighter::HighLighter(QTextDocument* text):QSyntaxHighlighter (text)
 {
     //制定高亮规则
     HighLighterRule rule;
@@ -375,6 +289,8 @@ void HighLighter::highlightBlock(const QString &text){//应用高亮规则
             setFormat(match.capturedStart(),match.capturedLength(),rule.format);//(匹配到的起始位置，文本块长度，高亮规则格式)
         }
     }
+
+
 
     //处理多行注释，由于多行注释优先级最高，所以最后处理
     setCurrentBlockState(0);

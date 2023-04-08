@@ -10,6 +10,7 @@
 #include "newfiledialog.h"
 #include<QPoint>
 
+
 QTcpSocket* MainWindow::socket = new QTcpSocket();
 QHash<int,Project>* MainWindow::userProjs = new QHash<int,Project>();
 QString MainWindow::userId = "";
@@ -20,11 +21,26 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    encodingType->setAttribute(Qt::WA_DeleteOnClose);
 
     socket = new QTcpSocket(this);
+    heartTimer = new QTimer(this);
+    detectTimer = new QTimer(this);
+    connect(heartTimer,&QTimer::timeout,this,[=](){
+        Package pck("",(int)Package::PackageType::HEART_PCK);
+        socket->write(pck.getPdata(),pck.getSize());
+    });
+    connect(detectTimer,&QTimer::timeout,this,[=]()mutable{
+        if(!isAlive)
+            {
+            qDebug()<<"离线！！！！";
+        }
+        isAlive = false;
+    });
 
     //设置主窗口基本属性
-    myHelper::setStyle(":/qss/psblack.css");
+    this->setWindowFlags(Qt::FramelessWindowHint);
+    myHelper::setStyle(":/qss/flatwhite.css");
     this->setWindowTitle("CloudSharedCoding");
     QToolButton* undoButton = new QToolButton(this);
     undoButton->setIcon(QIcon("://qss/darkblack/add_left.png"));
@@ -49,6 +65,24 @@ MainWindow::MainWindow(QWidget *parent) :
     openFile = new QAction("打开",ui->treeWidget);
     attribute = new QAction("属性",ui->treeWidget);
     rename = new QAction("重命名",ui->treeWidget);
+
+    //状态栏(显示状态和时间）
+    setStatusBar(status_bar);
+    status_bar->addWidget(label1);
+    status_bar->setStyleSheet("color::rgb(0,0,0");
+    timer->start(1000);
+    connect(timer,&QTimer::timeout,this,[=](){
+        QString str;
+        QDateTime time_date=QDateTime::currentDateTime();
+        str=time_date.toString("yyyy-MM-dd hh:mm:ss");
+        label2->setText(str);
+        status_bar->addPermanentWidget(label2);
+    });
+
+    //在状态栏显示编码方式
+    EncodingCodeLabel->setText("当前的编码方式为：");
+    status_bar->addWidget(EncodingCodeLabel);
+
     //右键菜单槽
     connect(openFile,SIGNAL(triggered(bool)),this,SLOT(openProjFile()));
     connect(newFile,SIGNAL(triggered(bool)),this,SLOT(newProFile()));
@@ -56,12 +90,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //主菜单栏槽
     connect(ui->actionClose,SIGNAL(triggered()),this,SLOT(close()));
-    connect(ui->actionClose_project,SIGNAL(triggered()),this,SLOT(closeProject()));
     connect(ui->actionCloud_project,SIGNAL(triggered()),this,SLOT(openCloudProj()));
     connect(ui->actionLocal_project,SIGNAL(triggered()),this,SLOT(openLoaclProj()));
     connect(ui->actionNew_local_project,SIGNAL(triggered()),this,SLOT(newLocalProj()));
     connect(ui->actionNew_cloud_project,SIGNAL(triggered()),this,SLOT(newCloudProj()));
-    connect(ui->actionSetting,SIGNAL(triggered()),this,SLOT(openSettingDialog()));
+    connect(ui->Setting,SIGNAL(triggered()),this,SLOT(openSettingDialog()));
 
     //socket
     connect(socket,SIGNAL(readyRead()),this,SLOT(dataProgress()));
@@ -75,8 +108,19 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this,&MainWindow::loginAllowed,loginDialog,&LoginDialog::loginSucceed);
     connect(this,SIGNAL(projInited()),projectForm,SLOT(init()));
     connect(projectForm,SIGNAL(openProj(int)),this,SLOT(openProj(int)));
-
     connect(ui->treeWidget, SIGNAL(itemPressed(QTreeWidgetItem*,int)), this, SLOT(projectItemPressedSlot(QTreeWidgetItem*,int)));
+
+    //选择编码方式
+    connect(ui->actionSwitching,&QAction::triggered,this,&MainWindow::selectencodingMode);
+
+    //关闭
+    connect(ui->actionClose,&QAction::triggered,this,&QMainWindow::close);
+
+    //新建文件
+    connect(ui->new_file_action,&QAction::triggered,this,[=](){QFileDialog::getOpenFileName(this,"新建文件","C:/Users");});
+
+    //添加文件
+    connect(ui->add_file_action,&QAction::triggered,this,[=](){QFileDialog::getOpenFileName(this,"添加文件","C:/Users");});
 }
 
 MainWindow::~MainWindow()
@@ -121,7 +165,7 @@ void MainWindow::addFileWidget(std::shared_ptr<FileInfo> file)
 {
     QWidget* wind = new QWidget(this);
     CodeEdit* widget = new CodeEdit(this);
-    widget->setFid(file->file_id);
+    widget->setFile(file);
     QVBoxLayout* layout = new QVBoxLayout(this);
     layout->addWidget(widget);
     wind->setLayout(layout);
@@ -141,6 +185,7 @@ void MainWindow::openProjFile()
         addFileWidget(file);
         Package pck(QString::number(file->file_id).toUtf8(),(int)Package::PackageType::GET_FILE);
         socket->write(pck.getPdata(),pck.getSize());
+        socket->flush();
     }
     else
     {
@@ -193,7 +238,7 @@ void MainWindow::projectItemPressedSlot(QTreeWidgetItem* i,int column)
 
 void MainWindow::close()
 {
-    this->deleteLater();
+    qApp->exit(0);
 }
 
 void MainWindow::openCloudProj()
@@ -244,6 +289,7 @@ void MainWindow::dataProgress()
     case (int)Package::ReturnType::SERVER_ALLOW:
     {
         emit loginAllowed();
+        heartTimer->start(50);
         break;
     }
     case (int)Package::ReturnType::SERVER_ERROR:
@@ -472,14 +518,20 @@ void MainWindow::dataProgress()
     case (int)Package::ReturnType::TEXT_CHANGE:
     {
         QString data(socket->read(packageSize));
-        QStringList list = data.split("#split#");
+        QStringList list = data.split("#");
         int file_id = list[0].toInt();
-        int blockNum = list[1].toInt();
+        int pos = list[1].toInt();
+        int charRemoved = list[2].toInt();
         if(fileWidgets.contains(file_id))
         {
             CodeEdit* wind = fileWidgets.value(file_id);
-            wind->changeText(blockNum,list[2]);
+            wind->changeText(pos,charRemoved,list[4]);
         }
+        break;
+    }
+    case (int)Package::ReturnType::HEART_PCK:
+    {
+        this->isAlive = true;
         break;
     }
     default:
@@ -495,7 +547,31 @@ void MainWindow::newLocalProj()
 void MainWindow::on_tabWidget_tabCloseRequested(int index)
 {
     CodeEdit* wind = (CodeEdit*)ui->tabWidget->widget(index);
-    fileWidgets.remove(wind->getFId());
+    fileWidgets.remove(wind->getFile()->file_id);
     ui->tabWidget->removeTab(index);
     wind->deleteLater();
 }
+
+void MainWindow::selectencodingMode()
+{
+    encodingType->show();
+    connect(encodingType->getButtonConfirm(),&QPushButton::clicked,this,[=](){
+        if(encodingType->getRadioButtonASCII()->isChecked())
+            EncodingCodeLabel->setText("当前的编码方式为:ASCII");
+        else if(encodingType->getRadioButtonUTF8()->isChecked())
+            EncodingCodeLabel->setText("当前的编码方式为:UTF-8");
+        else if(encodingType->getRadioButtonGBK()->isChecked())
+            EncodingCodeLabel->setText("当前的编码方式为:GBK");
+        else if(encodingType->getRadioButtonISO()->isChecked())
+            EncodingCodeLabel->setText("当前的编码方式为:ISO");
+        else
+            EncodingCodeLabel->setText("当前的编码方式为:");
+        encodingType->close();
+    });
+
+    connect(encodingType->getButtonCancel(),&QPushButton::clicked,this,&QDialog::close);
+}
+
+
+
+
