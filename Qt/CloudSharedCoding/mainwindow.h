@@ -73,11 +73,11 @@ private:
     QString serverIP = "192.168.239.129";
     quint16 mainPort = 9098;
 
-<<<<<<< HEAD
+
     //子窗��?
-=======
+
     //瀛愮獥鍙?
->>>>>>> d848e743ddefb73984a896836f052cbe825b64b8
+
     LoginDialog* loginDialog;
     ProjectForm* projectForm;
 
@@ -95,35 +95,30 @@ private:
     QAction* attribute;
     QAction* rename;
 
-<<<<<<< HEAD
+
     //心跳检��?
-=======
+
     //蹇冭烦妫€娴?
->>>>>>> d848e743ddefb73984a896836f052cbe825b64b8
+
     QTimer* heartTimer;
     QTimer* detectTimer;
     bool isAlive = true;
 
     QStatusBar* status_bar=new QStatusBar();
     QLabel* label1=new QLabel("就绪",this);
-<<<<<<< HEAD
-    QLabel* label2=new QLabel;
-    QTimer *timer=new QTimer;
 
-
-=======
     QLabel* label2=new QLabel(this);
     QTimer *timer=new QTimer(this);
->>>>>>> d848e743ddefb73984a896836f052cbe825b64b8
+
 private:
     void Login();
     void addFileWidget(std::shared_ptr<FileInfo> file);
 
-<<<<<<< HEAD
+
     SwitchingEncodingMode* encodingType=new SwitchingEncodingMode(this);//编码方式
     QLabel* EncodingCodeLabel=new QLabel(this);//打印编码方式到状态栏
-=======
->>>>>>> d848e743ddefb73984a896836f052cbe825b64b8
+
+
 };
 
 

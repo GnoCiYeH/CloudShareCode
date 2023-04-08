@@ -552,7 +552,6 @@ void MainWindow::on_tabWidget_tabCloseRequested(int index)
     wind->deleteLater();
 }
 
-<<<<<<< HEAD
 void MainWindow::selectencodingMode()
 {
     encodingType->show();
@@ -572,8 +571,7 @@ void MainWindow::selectencodingMode()
 
     connect(encodingType->getButtonCancel(),&QPushButton::clicked,this,&QDialog::close);
 }
-=======
 
 
 
->>>>>>> d848e743ddefb73984a896836f052cbe825b64b8
+
