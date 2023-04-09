@@ -614,7 +614,7 @@ void MainWindow::selectencodingMode()
         else if(encodingType->getListWidgetCurrentItem()==encodingType->getItem10())
             EncodingTypeLabel->setText("当前的编码方式为：ISO-8859-5");
         else
-            EncodingTypeLabel->setText("当前的编码方式为：ASCII(默认为ASCII编码，如需更改，请打开“设置-编码方式”中进行选择）");
+            EncodingTypeLabel->setText("当前的编码方式为：UTF-8(默认为UTF-8编码，如需更改，请打开“设置-编码方式”中进行选择）");
         encodingType->close();
     });
 
