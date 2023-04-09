@@ -14,10 +14,9 @@
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QListWidget>
 #include <QtWidgets/QPushButton>
-#include <QtWidgets/QRadioButton>
 #include <QtWidgets/QSpacerItem>
-#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -25,67 +24,26 @@ QT_BEGIN_NAMESPACE
 class Ui_SwitchingEncodingMode
 {
 public:
-    QWidget *widget;
-    QVBoxLayout *verticalLayout;
-    QRadioButton *ASCII;
-    QSpacerItem *verticalSpacer;
-    QRadioButton *UTF8;
-    QSpacerItem *verticalSpacer_2;
-    QRadioButton *GBK;
-    QSpacerItem *verticalSpacer_3;
-    QRadioButton *ISO;
     QLabel *label;
     QWidget *widget_2;
     QHBoxLayout *horizontalLayout;
     QPushButton *pushButton_confirm;
     QSpacerItem *horizontalSpacer;
     QPushButton *pushButton_cancel;
+    QListWidget *listWidget;
 
     void setupUi(QDialog *SwitchingEncodingMode)
     {
         if (SwitchingEncodingMode->objectName().isEmpty())
             SwitchingEncodingMode->setObjectName("SwitchingEncodingMode");
         SwitchingEncodingMode->resize(400, 300);
-        widget = new QWidget(SwitchingEncodingMode);
-        widget->setObjectName("widget");
-        widget->setGeometry(QRect(20, 50, 281, 161));
-        verticalLayout = new QVBoxLayout(widget);
-        verticalLayout->setObjectName("verticalLayout");
-        ASCII = new QRadioButton(widget);
-        ASCII->setObjectName("ASCII");
-
-        verticalLayout->addWidget(ASCII);
-
-        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
-
-        verticalLayout->addItem(verticalSpacer);
-
-        UTF8 = new QRadioButton(widget);
-        UTF8->setObjectName("UTF8");
-
-        verticalLayout->addWidget(UTF8);
-
-        verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
-
-        verticalLayout->addItem(verticalSpacer_2);
-
-        GBK = new QRadioButton(widget);
-        GBK->setObjectName("GBK");
-
-        verticalLayout->addWidget(GBK);
-
-        verticalSpacer_3 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
-
-        verticalLayout->addItem(verticalSpacer_3);
-
-        ISO = new QRadioButton(widget);
-        ISO->setObjectName("ISO");
-
-        verticalLayout->addWidget(ISO);
-
         label = new QLabel(SwitchingEncodingMode);
         label->setObjectName("label");
-        label->setGeometry(QRect(0, 30, 131, 16));
+        label->setGeometry(QRect(10, 20, 191, 31));
+        QFont font;
+        font.setPointSize(15);
+        label->setFont(font);
+        label->setScaledContents(false);
         widget_2 = new QWidget(SwitchingEncodingMode);
         widget_2->setObjectName("widget_2");
         widget_2->setGeometry(QRect(80, 230, 261, 51));
@@ -93,6 +51,10 @@ public:
         horizontalLayout->setObjectName("horizontalLayout");
         pushButton_confirm = new QPushButton(widget_2);
         pushButton_confirm->setObjectName("pushButton_confirm");
+        pushButton_confirm->setMinimumSize(QSize(80, 30));
+        QFont font1;
+        font1.setPointSize(18);
+        pushButton_confirm->setFont(font1);
 
         horizontalLayout->addWidget(pushButton_confirm);
 
@@ -102,9 +64,14 @@ public:
 
         pushButton_cancel = new QPushButton(widget_2);
         pushButton_cancel->setObjectName("pushButton_cancel");
+        pushButton_cancel->setMinimumSize(QSize(80, 30));
+        pushButton_cancel->setFont(font1);
 
         horizontalLayout->addWidget(pushButton_cancel);
 
+        listWidget = new QListWidget(SwitchingEncodingMode);
+        listWidget->setObjectName("listWidget");
+        listWidget->setGeometry(QRect(40, 60, 341, 131));
 
         retranslateUi(SwitchingEncodingMode);
 
@@ -114,10 +81,6 @@ public:
     void retranslateUi(QDialog *SwitchingEncodingMode)
     {
         SwitchingEncodingMode->setWindowTitle(QCoreApplication::translate("SwitchingEncodingMode", "Dialog", nullptr));
-        ASCII->setText(QCoreApplication::translate("SwitchingEncodingMode", "ASCII", nullptr));
-        UTF8->setText(QCoreApplication::translate("SwitchingEncodingMode", "UTF-8", nullptr));
-        GBK->setText(QCoreApplication::translate("SwitchingEncodingMode", "GBK", nullptr));
-        ISO->setText(QCoreApplication::translate("SwitchingEncodingMode", "ISO", nullptr));
         label->setText(QCoreApplication::translate("SwitchingEncodingMode", "\350\257\267\351\200\211\346\213\251\347\274\226\347\240\201\346\226\271\345\274\217\357\274\232", nullptr));
         pushButton_confirm->setText(QCoreApplication::translate("SwitchingEncodingMode", "\347\241\256\345\256\232", nullptr));
         pushButton_cancel->setText(QCoreApplication::translate("SwitchingEncodingMode", "\345\217\226\346\266\210", nullptr));

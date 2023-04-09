@@ -15,7 +15,7 @@
 
 #include"ui_mainwindow.h"
 #include"switchingencodingmode.h"
-#include"ui_switchingencodingmode.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -116,7 +116,7 @@ private:
 
 
     SwitchingEncodingMode* encodingType=new SwitchingEncodingMode(this);//编码方式
-    QLabel* EncodingCodeLabel=new QLabel(this);//打印编码方式到状态栏
+    QLabel* EncodingTypeLabel=new QLabel(this);//打印编码方式到状态栏
 
 
 };

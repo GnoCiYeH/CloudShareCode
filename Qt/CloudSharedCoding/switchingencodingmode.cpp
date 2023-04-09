@@ -6,6 +6,27 @@ SwitchingEncodingMode::SwitchingEncodingMode(QWidget *parent) :
     ui(new Ui::SwitchingEncodingMode)
 {
     ui->setupUi(this);
+    ui->listWidget->addItem(item1);
+    ui->listWidget->addItem(item2);
+    ui->listWidget->addItem(item3);
+    ui->listWidget->addItem(item4);
+    ui->listWidget->addItem(item5);
+    ui->listWidget->addItem(item6);
+    ui->listWidget->addItem(item7);
+    ui->listWidget->addItem(item8);
+    ui->listWidget->addItem(item9);
+    ui->listWidget->addItem(item10);
+    ui->listWidget->setSelectionMode(QAbstractItemView::SingleSelection);//设置单选
+}
+
+QListWidget* SwitchingEncodingMode::getListWidget()
+{
+    return ui->listWidget;
+}
+
+QListWidgetItem* SwitchingEncodingMode::getListWidgetCurrentItem()
+{
+    return ui->listWidget->currentItem();
 }
 
 QPushButton* SwitchingEncodingMode::getButtonConfirm()
@@ -18,25 +39,59 @@ QPushButton* SwitchingEncodingMode::getButtonCancel()
     return ui->pushButton_cancel;
 }
 
-QRadioButton* SwitchingEncodingMode::getRadioButtonASCII()
+QListWidgetItem* SwitchingEncodingMode::getItem1()
 {
-    return ui->ASCII;
+    return item1;
 }
 
-
-QRadioButton* SwitchingEncodingMode::getRadioButtonUTF8()
+QListWidgetItem* SwitchingEncodingMode::getItem2()
 {
-    return ui->UTF8;
+    return item2;
 }
 
-QRadioButton* SwitchingEncodingMode::getRadioButtonGBK()
+QListWidgetItem* SwitchingEncodingMode::getItem3()
 {
-    return ui->GBK;
+    return item3;
 }
 
-QRadioButton* SwitchingEncodingMode::getRadioButtonISO()
+QListWidgetItem* SwitchingEncodingMode::getItem4()
 {
-    return ui->ISO;
+    return item4;
+}
+
+QListWidgetItem* SwitchingEncodingMode::getItem5()
+{
+    return item5;
+}
+
+QListWidgetItem* SwitchingEncodingMode::getItem6()
+{
+    return item6;
+}
+
+QListWidgetItem* SwitchingEncodingMode::getItem7()
+{
+    return item7;
+}
+
+QListWidgetItem* SwitchingEncodingMode::getItem8()
+{
+    return item8;
+}
+
+QListWidgetItem* SwitchingEncodingMode::getItem9()
+{
+    return item9;
+}
+
+QListWidgetItem* SwitchingEncodingMode::getItem10()
+{
+    return item10;
+}
+
+Ui::SwitchingEncodingMode* SwitchingEncodingMode::getUI()
+{
+    return ui;
 }
 
 SwitchingEncodingMode::~SwitchingEncodingMode()

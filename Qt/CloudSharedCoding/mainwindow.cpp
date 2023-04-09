@@ -80,8 +80,12 @@ MainWindow::MainWindow(QWidget *parent) :
     });
 
     //在状态栏显示编码方式
-    EncodingCodeLabel->setText("当前的编码方式为：");
-    status_bar->addWidget(EncodingCodeLabel);
+    EncodingTypeLabel->setText("        当前的编码方式为：ASCII (默认为ASCII编码，如需更改，请打开“设置-编码方式”中进行选择）");
+    status_bar->addWidget(EncodingTypeLabel);
+    EncodingTypeLabel->setAlignment(Qt::AlignCenter);
+
+
+
 
     //右键菜单槽
     connect(openFile,SIGNAL(triggered(bool)),this,SLOT(openProjFile()));
@@ -556,16 +560,28 @@ void MainWindow::selectencodingMode()
 {
     encodingType->show();
     connect(encodingType->getButtonConfirm(),&QPushButton::clicked,this,[=](){
-        if(encodingType->getRadioButtonASCII()->isChecked())
-            EncodingCodeLabel->setText("当前的编码方式为:ASCII");
-        else if(encodingType->getRadioButtonUTF8()->isChecked())
-            EncodingCodeLabel->setText("当前的编码方式为:UTF-8");
-        else if(encodingType->getRadioButtonGBK()->isChecked())
-            EncodingCodeLabel->setText("当前的编码方式为:GBK");
-        else if(encodingType->getRadioButtonISO()->isChecked())
-            EncodingCodeLabel->setText("当前的编码方式为:ISO");
+        if(encodingType->getListWidgetCurrentItem()==encodingType->getItem1())
+            EncodingTypeLabel->setText("当前的编码方式为：ASCII");
+        else if(encodingType->getListWidgetCurrentItem()==encodingType->getItem2())
+            EncodingTypeLabel->setText("当前的编码方式为：UTF-8");
+        else if(encodingType->getListWidgetCurrentItem()==encodingType->getItem3())
+            EncodingTypeLabel->setText("当前的编码方式为：UTF-16");
+        else if(encodingType->getListWidgetCurrentItem()==encodingType->getItem4())
+            EncodingTypeLabel->setText("当前的编码方式为：UTF-32");
+        else if(encodingType->getListWidgetCurrentItem()==encodingType->getItem5())
+            EncodingTypeLabel->setText("当前的编码方式为：GBK");
+        else if(encodingType->getListWidgetCurrentItem()==encodingType->getItem6())
+            EncodingTypeLabel->setText("当前的编码方式为：ISO-8859-1");
+        else if(encodingType->getListWidgetCurrentItem()==encodingType->getItem7())
+            EncodingTypeLabel->setText("当前的编码方式为：ISO-8859-2");
+        else if(encodingType->getListWidgetCurrentItem()==encodingType->getItem8())
+            EncodingTypeLabel->setText("当前的编码方式为：ISO-8859-3");
+        else if(encodingType->getListWidgetCurrentItem()==encodingType->getItem9())
+            EncodingTypeLabel->setText("当前的编码方式为：ISO-8859-4");
+        else if(encodingType->getListWidgetCurrentItem()==encodingType->getItem10())
+            EncodingTypeLabel->setText("当前的编码方式为：ISO-8859-5");
         else
-            EncodingCodeLabel->setText("当前的编码方式为:");
+            EncodingTypeLabel->setText("当前的编码方式为：ASCII(默认为ASCII编码，如需更改，请打开“设置-编码方式”中进行选择）");
         encodingType->close();
     });
 
