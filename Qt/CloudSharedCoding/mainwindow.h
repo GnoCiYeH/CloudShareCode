@@ -65,6 +65,8 @@ private slots:
     void on_tabWidget_tabCloseRequested(int index);
     void selectencodingMode();
 
+    void on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column);
+
 private:
     Ui::MainWindow *ui;
 

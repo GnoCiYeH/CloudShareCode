@@ -59,7 +59,10 @@ public:
         HEART_PCK = 13,
 
         //项目权限查询
-        PRIVILEGE_QUERY = 14
+        PRIVILEGE_QUERY = 14,
+
+        //项目权限更改
+        PRIVILEGE_UPDATE = 15
     };
     enum class ReturnType{
         SERVER_ALLOW = 0,
@@ -72,7 +75,8 @@ public:
         PROJECT_FILE_DELETE = 7,
         TEXT_CHANGE = 8,
         HEART_PCK = 9,
-        PRIVILEGE_INFO = 10
+        PRIVILEGE_INFO = 10,
+        SERVER_OK = 11
     };
 
     Package(QByteArray data,int type);

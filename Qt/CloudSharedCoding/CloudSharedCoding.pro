@@ -34,6 +34,8 @@ SOURCES += \
     newfiledialog.cpp \
     newprojectdialog.cpp \
     package.cpp \
+    privilegelistitem.cpp \
+    privilegemanager.cpp \
     projectform.cpp \
     settingform.cpp \
     switchingencodingmode.cpp \
@@ -49,6 +51,8 @@ HEADERS += \
     newfiledialog.h \
     newprojectdialog.h \
     package.h \
+    privilegelistitem.h \
+    privilegemanager.h \
     projectform.h \
     settingform.h \
     switchingencodingmode.h \
@@ -61,6 +65,8 @@ FORMS += \
     logindialog.ui \
     newfiledialog.ui \
     newprojectdialog.ui \
+    privilegelistitem.ui \
+    privilegemanager.ui \
     projectform.ui \
     settingform.ui \
     switchingencodingmode.ui \

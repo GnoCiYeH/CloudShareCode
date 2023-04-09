@@ -141,7 +141,7 @@ void ProjectForm::on_pushButton_4_clicked()
 
 void ProjectForm::on_pushButton_7_clicked()
 {
-    QListWidgetItem* litem = ui->listWidget_2->currentItem();
+    QListWidgetItem* litem = ui->listWidget->currentItem();
     QVariant var = litem->data(Qt::UserRole);
     Project proj = var.value<Project>();
 
