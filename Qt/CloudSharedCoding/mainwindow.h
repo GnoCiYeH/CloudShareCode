@@ -15,12 +15,9 @@
 
 #include"ui_mainwindow.h"
 #include"switchingencodingmode.h"
-<<<<<<< Updated upstream
 
-=======
 #include "codeedit.h"
 //#include"ui_switchingencodingmode.h"
->>>>>>> Stashed changes
 namespace Ui {
 class MainWindow;
 }
