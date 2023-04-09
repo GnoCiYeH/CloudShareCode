@@ -14,7 +14,7 @@ CodeEdit::CodeEdit(QWidget *parent) :
 
     document = ui->textEdit->document();
     ui->textEdit->setFont(QFont("Consolas"));
-    highLighter=new HighLighter(this,document);
+    HighLighter* highLighter=new HighLighter(this,document);
 
     this->file = std::shared_ptr<FileInfo>(new FileInfo());
 
@@ -145,10 +145,11 @@ int CodeEdit::getAssociateWidgetX(){
     return x;
 }
 
-HighLighter::HighLighter(QTextDocument* text):QSyntaxHighlighter (text)
+HighLighter::HighLighter(CodeEdit* edit,QTextDocument* text):QSyntaxHighlighter (text)
 {
     //制定高亮规则
     HighLighterRule rule;
+    this->edit = edit;
 
     //0.语法错误
     mistake_format.setUnderlineStyle(QTextCharFormat::DashUnderline);
