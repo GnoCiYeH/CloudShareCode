@@ -59,6 +59,8 @@ private:
 
     static void privilegeQuery(int sock_fd, char* data);
 
+    static void privilegeUpdate(int sock_fd, char* data);
+
     struct UserInfo
     {
         std::string userId;

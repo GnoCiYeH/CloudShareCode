@@ -15,12 +15,9 @@
 
 #include"ui_mainwindow.h"
 #include"switchingencodingmode.h"
-<<<<<<< Updated upstream
 
-=======
 #include "codeedit.h"
 //#include"ui_switchingencodingmode.h"
->>>>>>> Stashed changes
 namespace Ui {
 class MainWindow;
 }
@@ -67,6 +64,8 @@ signals:
 private slots:
     void on_tabWidget_tabCloseRequested(int index);
     void selectencodingMode();
+
+    void on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column);
 
 private:
     Ui::MainWindow *ui;

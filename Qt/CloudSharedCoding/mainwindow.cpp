@@ -9,6 +9,7 @@
 #include"newprojectdialog.h"
 #include "newfiledialog.h"
 #include<QPoint>
+#include"privilegemanager.h"
 
 
 QTcpSocket* MainWindow::socket = new QTcpSocket();
@@ -560,7 +561,16 @@ void MainWindow::dataProgress()
     case (int)Package::ReturnType::PRIVILEGE_INFO:
     {
         QString data(socket->read(packageSize));
-        //QStringList list =
+
+        PrivilegeManager* manager = new PrivilegeManager(data,this);
+        manager->setWindowFlag(Qt::Window);
+        manager->show();
+        break;
+    }
+    case (int)Package::ReturnType::SERVER_OK:
+    {
+        QString data(socket->read(packageSize));
+        QMessageBox::about(this,"Tips",data);
         break;
     }
     default:
@@ -578,6 +588,7 @@ void MainWindow::on_tabWidget_tabCloseRequested(int index)
     CodeEdit* wind = (CodeEdit*)ui->tabWidget->widget(index);
     fileWidgets.remove(wind->getFile()->file_id);
     ui->tabWidget->removeTab(index);
+    wind->getFile()->is_open=false;
     wind->deleteLater();
 }
 
@@ -615,4 +626,16 @@ void MainWindow::selectencodingMode()
 
 
 
+
+
+void MainWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column)
+{
+    MyTreeItem* treeItem = (MyTreeItem*) item;
+    if(treeItem->getType()!=MyTreeItem::FILE)
+    {
+        return;
+    }
+
+    openProjFile();
+}
 
