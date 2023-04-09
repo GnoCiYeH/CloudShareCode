@@ -16,6 +16,8 @@
 #include"ui_mainwindow.h"
 #include"switchingencodingmode.h"
 
+#include "codeedit.h"
+//#include"ui_switchingencodingmode.h"
 namespace Ui {
 class MainWindow;
 }
@@ -48,6 +50,7 @@ public slots:
     void openProjFile();
     void newProFile();
     void deleteProFile();
+    void newCloudProj();
 
     static bool loginState(){
         return isLogin;
@@ -61,6 +64,8 @@ signals:
 private slots:
     void on_tabWidget_tabCloseRequested(int index);
     void selectencodingMode();
+
+    void on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column);
 
 private:
     Ui::MainWindow *ui;

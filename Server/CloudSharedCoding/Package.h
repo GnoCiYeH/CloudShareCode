@@ -50,7 +50,13 @@ public:
         JOIN_PROJECT =12,
 
         //心跳包
-        HEART_PCK = 13
+        HEART_PCK = 13,
+
+        //项目权限查询
+        PRIVILEGE_QUERY = 14,
+
+        //项目权限管理
+        PRIVILEGE_UPDATE = 15
     };
     enum class ReturnType {
         SERVER_ALLOW = 0,
@@ -62,7 +68,9 @@ public:
         NEW_FILE_INFO = 6,
         PROJECT_FILE_DELETE = 7,
         TEXT_CHANGE = 8,
-        HEART_PCK = 9
+        HEART_PCK = 9,
+        PRIVILEGE_INFO = 10,
+        SERVER_OK = 11
     };
     Package(const char* data, int type, int size);
     ~Package();

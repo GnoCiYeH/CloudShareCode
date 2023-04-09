@@ -195,6 +195,17 @@ void TcpServer::tcpStart()
                         delete[] data;
                         break;
                     }
+                    case (int)Package::PackageType::PRIVILEGE_QUERY:
+                    {
+                        pool->submit(privilegeQuery, sock_fd, data);
+                        break;
+                    }
+                    case (int)Package::PackageType::PRIVILEGE_UPDATE:
+                    {
+                        privilegeUpdate(sock_fd, data);
+                        //pool->submit(privilegeUpdate, sock_fd, data);
+                        break;
+                    }
                     default:
                         INFO_LOG(m_logger, "UNKNOW PACKAGETYPE");
                         break;
@@ -545,6 +556,47 @@ void TcpServer::sendTextChange(int sock_fd, char* data)
             write(fd, pck.getPdata(), pck.getSize());
         }
     }
+
+    delete[] data;
+}
+
+void TcpServer::privilegeQuery(int sock_fd, char* data)
+{
+    auto res = sql->exeSql("select _user_id,_privilege_level from Privilege where _pro_id = " + std::string(data) + ";");
+    auto rows = sql->getRows(res);
+    std::string userId = userMap->find(sock_fd)->second.userId;
+    std::string buf = std::string(data) + "\n";
+    for (auto it : rows)
+    {
+        if (!(it[0] == userId))
+        {
+            buf += std::string(it[0]) + "\t" + std::string(it[1]) + "\n";
+        }
+    }
+
+    Package pck(buf.c_str(), (int)Package::ReturnType::PRIVILEGE_INFO, buf.size());
+    write(sock_fd, pck.getPdata(), pck.getSize());
+
+    delete[] data;
+}
+
+void TcpServer::privilegeUpdate(int sock_fd, char* data)
+{
+    stringList list;
+    stringSplit(std::string(data), "\n", list);
+
+    for (int i = 1; i < list.size(); i++)
+    {
+        if (list[i].empty())
+            continue;
+        stringList info;
+        stringSplit(list[i], "\t", info);
+        sql->exeSql("update Privilege set _privilege_level = " + info[1] + " where _user_id = \"" + info[0] + "\" and _pro_id = " + list[0] + ";");
+    }
+
+    std::string str = "The permission update was successful!";
+    Package pck(str.c_str(), (int)Package::ReturnType::SERVER_OK, str.size());
+    write(sock_fd, pck.getPdata(), pck.getSize());
 
     delete[] data;
 }

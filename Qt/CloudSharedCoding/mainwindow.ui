@@ -82,11 +82,23 @@
          </property>
          <widget class="QWidget" name="tab">
           <attribute name="title">
-           <string>Tab 1</string>
+           <string>Welcome</string>
           </attribute>
           <layout class="QVBoxLayout" name="verticalLayout">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
            <item>
-            <widget class="CodeEdit" name="widget" native="true"/>
+            <widget class="WelcomeWidget" name="widget" native="true"/>
            </item>
           </layout>
          </widget>
@@ -279,9 +291,9 @@
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>CodeEdit</class>
+   <class>WelcomeWidget</class>
    <extends>QWidget</extends>
-   <header>codeedit.h</header>
+   <header>welcomewidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

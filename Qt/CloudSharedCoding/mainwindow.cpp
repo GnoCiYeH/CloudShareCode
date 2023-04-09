@@ -9,6 +9,7 @@
 #include"newprojectdialog.h"
 #include "newfiledialog.h"
 #include<QPoint>
+#include"privilegemanager.h"
 
 
 QTcpSocket* MainWindow::socket = new QTcpSocket();
@@ -56,6 +57,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->treeWidget->setLayout(layout);
     ui->treeWidget->header()->hide();
     ui->treeWidget->setContextMenuPolicy(Qt::CustomContextMenu);
+    ui->tabWidget->removeTab(1);
 
     //右键菜单
     submitProject = new QAction("提交项目",ui->treeWidget);
@@ -132,6 +134,28 @@ MainWindow::~MainWindow()
     delete userProjs;
 }
 
+void MainWindow::newCloudProj()
+{
+    //若用户未登录则无法使用在线功能，弹出登录界面
+    if(!isLogin)
+    {
+        Login();
+        if(isLogin)
+        {
+            //从服务器拉取项目信息
+            Package pck("",(int)Package::PackageType::INIT_PROJS);
+            socket->write(pck.getPdata(),pck.getSize());
+        }
+    }
+
+    //登录成功才可进行下列操作
+    if(isLogin)
+    {
+        NewProjectDialog dialog(false,this);
+        dialog.exec();
+    }
+}
+
 void MainWindow::deleteProFile()
 {
     auto item = ui->treeWidget->currentItem();
@@ -164,13 +188,9 @@ void MainWindow::newProFile()
 
 void MainWindow::addFileWidget(std::shared_ptr<FileInfo> file)
 {
-    QWidget* wind = new QWidget(this);
     CodeEdit* widget = new CodeEdit(this);
     widget->setFile(file);
-    QVBoxLayout* layout = new QVBoxLayout(this);
-    layout->addWidget(widget);
-    wind->setLayout(layout);
-    ui->tabWidget->addTab(wind,file->file_name);
+    ui->tabWidget->addTab(widget,file->file_name);
     fileWidgets.insert(file->file_id,widget);
     file->is_open = true;
 }
@@ -535,6 +555,21 @@ void MainWindow::dataProgress()
         this->isAlive = true;
         break;
     }
+    case (int)Package::ReturnType::PRIVILEGE_INFO:
+    {
+        QString data(socket->read(packageSize));
+
+        PrivilegeManager* manager = new PrivilegeManager(data,this);
+        manager->setWindowFlag(Qt::Window);
+        manager->show();
+        break;
+    }
+    case (int)Package::ReturnType::SERVER_OK:
+    {
+        QString data(socket->read(packageSize));
+        QMessageBox::about(this,"Tips",data);
+        break;
+    }
     default:
         break;
     }
@@ -550,6 +585,7 @@ void MainWindow::on_tabWidget_tabCloseRequested(int index)
     CodeEdit* wind = (CodeEdit*)ui->tabWidget->widget(index);
     fileWidgets.remove(wind->getFile()->file_id);
     ui->tabWidget->removeTab(index);
+    wind->getFile()->is_open=false;
     wind->deleteLater();
 }
 
@@ -587,4 +623,16 @@ void MainWindow::selectencodingMode()
 
 
 
+
+
+void MainWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column)
+{
+    MyTreeItem* treeItem = (MyTreeItem*) item;
+    if(treeItem->getType()!=MyTreeItem::FILE)
+    {
+        return;
+    }
+
+    openProjFile();
+}
 
