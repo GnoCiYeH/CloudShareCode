@@ -56,6 +56,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->treeWidget->setLayout(layout);
     ui->treeWidget->header()->hide();
     ui->treeWidget->setContextMenuPolicy(Qt::CustomContextMenu);
+    ui->tabWidget->removeTab(1);
 
     //右键菜单
     submitProject = new QAction("提交项目",ui->treeWidget);
@@ -135,6 +136,28 @@ MainWindow::~MainWindow()
     delete userProjs;
 }
 
+void MainWindow::newCloudProj()
+{
+    //若用户未登录则无法使用在线功能，弹出登录界面
+    if(!isLogin)
+    {
+        Login();
+        if(isLogin)
+        {
+            //从服务器拉取项目信息
+            Package pck("",(int)Package::PackageType::INIT_PROJS);
+            socket->write(pck.getPdata(),pck.getSize());
+        }
+    }
+
+    //登录成功才可进行下列操作
+    if(isLogin)
+    {
+        NewProjectDialog dialog(false,this);
+        dialog.exec();
+    }
+}
+
 void MainWindow::deleteProFile()
 {
     auto item = ui->treeWidget->currentItem();
@@ -167,13 +190,9 @@ void MainWindow::newProFile()
 
 void MainWindow::addFileWidget(std::shared_ptr<FileInfo> file)
 {
-    QWidget* wind = new QWidget(this);
     CodeEdit* widget = new CodeEdit(this);
     widget->setFile(file);
-    QVBoxLayout* layout = new QVBoxLayout(this);
-    layout->addWidget(widget);
-    wind->setLayout(layout);
-    ui->tabWidget->addTab(wind,file->file_name);
+    ui->tabWidget->addTab(widget,file->file_name);
     fileWidgets.insert(file->file_id,widget);
     file->is_open = true;
 }
@@ -536,6 +555,12 @@ void MainWindow::dataProgress()
     case (int)Package::ReturnType::HEART_PCK:
     {
         this->isAlive = true;
+        break;
+    }
+    case (int)Package::ReturnType::PRIVILEGE_INFO:
+    {
+        QString data(socket->read(packageSize));
+        //QStringList list =
         break;
     }
     default:

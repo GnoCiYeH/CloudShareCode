@@ -15,7 +15,12 @@
 
 #include"ui_mainwindow.h"
 #include"switchingencodingmode.h"
+<<<<<<< Updated upstream
 
+=======
+#include "codeedit.h"
+//#include"ui_switchingencodingmode.h"
+>>>>>>> Stashed changes
 namespace Ui {
 class MainWindow;
 }
@@ -48,6 +53,7 @@ public slots:
     void openProjFile();
     void newProFile();
     void deleteProFile();
+    void newCloudProj();
 
     static bool loginState(){
         return isLogin;

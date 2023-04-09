@@ -195,6 +195,11 @@ void TcpServer::tcpStart()
                         delete[] data;
                         break;
                     }
+                    case (int)Package::PackageType::PRIVILEGE_QUERY:
+                    {
+                        pool->submit(privilegeQuery, sock_fd, data);
+                        break;
+                    }
                     default:
                         INFO_LOG(m_logger, "UNKNOW PACKAGETYPE");
                         break;
@@ -544,6 +549,20 @@ void TcpServer::sendTextChange(int sock_fd, char* data)
             Package pck(data, (int)Package::ReturnType::TEXT_CHANGE, buf.size());
             write(fd, pck.getPdata(), pck.getSize());
         }
+    }
+
+    delete[] data;
+}
+
+void TcpServer::privilegeQuery(int sock_fd, char* data)
+{
+    auto res = sql->exeSql("select _user_id,_privilege_level from Privilege where _pro_id = " + std::string(data) + ";");
+    auto rows = sql->getRows(res);
+    std::string userId = userMap->find(sock_fd)->second.userId;
+    std::string buf = "";
+    for (auto it : rows)
+    {
+        if(!it[0]==userId)
     }
 
     delete[] data;

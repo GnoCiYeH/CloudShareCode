@@ -138,3 +138,14 @@ void ProjectForm::on_pushButton_4_clicked()
     this->close();
 }
 
+
+void ProjectForm::on_pushButton_7_clicked()
+{
+    QListWidgetItem* litem = ui->listWidget_2->currentItem();
+    QVariant var = litem->data(Qt::UserRole);
+    Project proj = var.value<Project>();
+
+    Package pck(QString::number(proj.pro_id).toUtf8(),(int)Package::PackageType::PRIVILEGE_QUERY);
+    MainWindow::socket->write(pck.getPdata(),pck.getSize());
+}
+
