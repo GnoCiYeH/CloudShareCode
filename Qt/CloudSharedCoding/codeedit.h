@@ -26,6 +26,7 @@ namespace Ui {
 class CodeEdit;
 }
 class AssociateListWidget;
+class HighLighter;
 static void setUpAssociateList();
 static QStringList associateList;
 
@@ -47,7 +48,6 @@ public:
 
     void changeText(int pos,int charRemoved,QString data);
 
-    //
     int tcnum = 0;
     int ctnum = 0;
 
@@ -67,6 +67,7 @@ private:
     int lastBlock = 0;
     QString buffer;
     QTextDocument * document;
+    HighLighter *highLighter;
 
     bool isChanged = false;
 
@@ -89,6 +90,7 @@ class HighLighter : public QSyntaxHighlighter
 public:
     friend class CodeEdit;
     HighLighter(CodeEdit*edit,QTextDocument*text=nullptr);//构造函数需要先传一个QTextDocument对象给父类，因为要先构造父类
+    int showMistake();
 
 protected:
     void highlightBlock(const QString &text) override; //重写父类QSyntaxHighlighter的highlightBlock函数，使多行注释高亮
@@ -110,9 +112,6 @@ private:
     QTextCharFormat headfile_format;//头文件高亮格式
     QTextCharFormat cincout_format;//输入输出高亮格式
     QTextCharFormat branch_format;//分支高亮格式
-    QTextCharFormat mistake_format;//语法报错格式
-    QStringList mistake_pattern;
-
     //用于匹配注释
     QRegularExpression comment_start;
     QRegularExpression comment_end;
