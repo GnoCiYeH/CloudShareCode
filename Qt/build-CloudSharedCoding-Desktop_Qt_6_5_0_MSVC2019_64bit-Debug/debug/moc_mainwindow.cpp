@@ -54,14 +54,18 @@ static constexpr auto qt_meta_stringdata_CLASSMainWindowENDCLASS = QtMocHelpers:
     "openProjFile",
     "newProFile",
     "deleteProFile",
+    "newCloudProj",
     "loginState",
     "on_tabWidget_tabCloseRequested",
     "index",
-    "selectencodingMode"
+    "selectencodingMode",
+    "on_treeWidget_itemDoubleClicked",
+    "item",
+    "column"
 );
 #else  // !QT_MOC_HAS_STRING_DATA
 struct qt_meta_stringdata_CLASSMainWindowENDCLASS_t {
-    uint offsetsAndSizes[38];
+    uint offsetsAndSizes[46];
     char stringdata0[11];
     char stringdata1[13];
     char stringdata2[1];
@@ -77,10 +81,14 @@ struct qt_meta_stringdata_CLASSMainWindowENDCLASS_t {
     char stringdata12[13];
     char stringdata13[11];
     char stringdata14[14];
-    char stringdata15[11];
-    char stringdata16[31];
-    char stringdata17[6];
-    char stringdata18[19];
+    char stringdata15[13];
+    char stringdata16[11];
+    char stringdata17[31];
+    char stringdata18[6];
+    char stringdata19[19];
+    char stringdata20[32];
+    char stringdata21[5];
+    char stringdata22[7];
 };
 #define QT_MOC_LITERAL(ofs, len) \
     uint(sizeof(qt_meta_stringdata_CLASSMainWindowENDCLASS_t::offsetsAndSizes) + ofs), len 
@@ -101,10 +109,14 @@ Q_CONSTINIT static const qt_meta_stringdata_CLASSMainWindowENDCLASS_t qt_meta_st
         QT_MOC_LITERAL(143, 12),  // "openProjFile"
         QT_MOC_LITERAL(156, 10),  // "newProFile"
         QT_MOC_LITERAL(167, 13),  // "deleteProFile"
-        QT_MOC_LITERAL(181, 10),  // "loginState"
-        QT_MOC_LITERAL(192, 30),  // "on_tabWidget_tabCloseRequested"
-        QT_MOC_LITERAL(223, 5),  // "index"
-        QT_MOC_LITERAL(229, 18)   // "selectencodingMode"
+        QT_MOC_LITERAL(181, 12),  // "newCloudProj"
+        QT_MOC_LITERAL(194, 10),  // "loginState"
+        QT_MOC_LITERAL(205, 30),  // "on_tabWidget_tabCloseRequested"
+        QT_MOC_LITERAL(236, 5),  // "index"
+        QT_MOC_LITERAL(242, 18),  // "selectencodingMode"
+        QT_MOC_LITERAL(261, 31),  // "on_treeWidget_itemDoubleClicked"
+        QT_MOC_LITERAL(293, 4),  // "item"
+        QT_MOC_LITERAL(298, 6)   // "column"
     },
     "MainWindow",
     "loginAllowed",
@@ -121,10 +133,14 @@ Q_CONSTINIT static const qt_meta_stringdata_CLASSMainWindowENDCLASS_t qt_meta_st
     "openProjFile",
     "newProFile",
     "deleteProFile",
+    "newCloudProj",
     "loginState",
     "on_tabWidget_tabCloseRequested",
     "index",
-    "selectencodingMode"
+    "selectencodingMode",
+    "on_treeWidget_itemDoubleClicked",
+    "item",
+    "column"
 };
 #undef QT_MOC_LITERAL
 #endif // !QT_MOC_HAS_STRING_DATA
@@ -136,7 +152,7 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSMainWindowENDCLASS[] = {
       11,       // revision
        0,       // classname
        0,    0, // classinfo
-      15,   14, // methods
+      17,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -144,23 +160,25 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSMainWindowENDCLASS[] = {
        3,       // signalCount
 
  // signals: name, argc, parameters, tag, flags, initial metatype offsets
-       1,    0,  104,    2, 0x06,    1 /* Public */,
-       3,    0,  105,    2, 0x06,    2 /* Public */,
-       4,    0,  106,    2, 0x06,    3 /* Public */,
+       1,    0,  116,    2, 0x06,    1 /* Public */,
+       3,    0,  117,    2, 0x06,    2 /* Public */,
+       4,    0,  118,    2, 0x06,    3 /* Public */,
 
  // slots: name, argc, parameters, tag, flags, initial metatype offsets
-       5,    0,  107,    2, 0x0a,    4 /* Public */,
-       6,    0,  108,    2, 0x0a,    5 /* Public */,
-       7,    0,  109,    2, 0x0a,    6 /* Public */,
-       8,    1,  110,    2, 0x0a,    7 /* Public */,
-       9,    0,  113,    2, 0x0a,    9 /* Public */,
-      10,    2,  114,    2, 0x0a,   10 /* Public */,
-      12,    0,  119,    2, 0x0a,   13 /* Public */,
-      13,    0,  120,    2, 0x0a,   14 /* Public */,
-      14,    0,  121,    2, 0x0a,   15 /* Public */,
-      15,    0,  122,    2, 0x0a,   16 /* Public */,
-      16,    1,  123,    2, 0x08,   17 /* Private */,
-      18,    0,  126,    2, 0x08,   19 /* Private */,
+       5,    0,  119,    2, 0x0a,    4 /* Public */,
+       6,    0,  120,    2, 0x0a,    5 /* Public */,
+       7,    0,  121,    2, 0x0a,    6 /* Public */,
+       8,    1,  122,    2, 0x0a,    7 /* Public */,
+       9,    0,  125,    2, 0x0a,    9 /* Public */,
+      10,    2,  126,    2, 0x0a,   10 /* Public */,
+      12,    0,  131,    2, 0x0a,   13 /* Public */,
+      13,    0,  132,    2, 0x0a,   14 /* Public */,
+      14,    0,  133,    2, 0x0a,   15 /* Public */,
+      15,    0,  134,    2, 0x0a,   16 /* Public */,
+      16,    0,  135,    2, 0x0a,   17 /* Public */,
+      17,    1,  136,    2, 0x08,   18 /* Private */,
+      19,    0,  139,    2, 0x08,   20 /* Private */,
+      20,    2,  140,    2, 0x08,   21 /* Private */,
 
  // signals: parameters
     QMetaType::Void,
@@ -177,9 +195,11 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSMainWindowENDCLASS[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Bool,
-    QMetaType::Void, QMetaType::Int,   17,
     QMetaType::Void,
+    QMetaType::Bool,
+    QMetaType::Void, QMetaType::Int,   18,
+    QMetaType::Void,
+    QMetaType::Void, 0x80000000 | 11, QMetaType::Int,   21,   22,
 
        0        // eod
 };
@@ -220,13 +240,19 @@ Q_CONSTINIT const QMetaObject MainWindow::staticMetaObject = { {
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'deleteProFile'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'newCloudProj'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'loginState'
         QtPrivate::TypeAndForceComplete<bool, std::false_type>,
         // method 'on_tabWidget_tabCloseRequested'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         QtPrivate::TypeAndForceComplete<int, std::false_type>,
         // method 'selectencodingMode'
-        QtPrivate::TypeAndForceComplete<void, std::false_type>
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'on_treeWidget_itemDoubleClicked'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        QtPrivate::TypeAndForceComplete<QTreeWidgetItem *, std::false_type>,
+        QtPrivate::TypeAndForceComplete<int, std::false_type>
     >,
     nullptr
 } };
@@ -249,10 +275,12 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 9: _t->openProjFile(); break;
         case 10: _t->newProFile(); break;
         case 11: _t->deleteProFile(); break;
-        case 12: { bool _r = _t->loginState();
+        case 12: _t->newCloudProj(); break;
+        case 13: { bool _r = _t->loginState();
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = std::move(_r); }  break;
-        case 13: _t->on_tabWidget_tabCloseRequested((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
-        case 14: _t->selectencodingMode(); break;
+        case 14: _t->on_tabWidget_tabCloseRequested((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
+        case 15: _t->selectencodingMode(); break;
+        case 16: _t->on_treeWidget_itemDoubleClicked((*reinterpret_cast< std::add_pointer_t<QTreeWidgetItem*>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[2]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -300,13 +328,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 15)
+        if (_id < 17)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 15;
+        _id -= 17;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 15)
+        if (_id < 17)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 15;
+        _id -= 17;
     }
     return _id;
 }

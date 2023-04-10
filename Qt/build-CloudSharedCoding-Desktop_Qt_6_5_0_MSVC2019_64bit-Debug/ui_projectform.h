@@ -48,6 +48,7 @@ public:
     QWidget *widget_2;
     QHBoxLayout *horizontalLayout_2;
     QPushButton *pushButton;
+    QPushButton *pushButton_7;
     QPushButton *pushButton_3;
     QSpacerItem *horizontalSpacer;
     QPushButton *pushButton_2;
@@ -151,6 +152,11 @@ public:
 
         horizontalLayout_2->addWidget(pushButton);
 
+        pushButton_7 = new QPushButton(widget_2);
+        pushButton_7->setObjectName("pushButton_7");
+
+        horizontalLayout_2->addWidget(pushButton_7);
+
         pushButton_3 = new QPushButton(widget_2);
         pushButton_3->setObjectName("pushButton_3");
 
@@ -243,7 +249,7 @@ public:
 
         retranslateUi(ProjectForm);
 
-        tabWidget->setCurrentIndex(1);
+        tabWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(ProjectForm);
@@ -266,6 +272,7 @@ public:
 #endif // QT_CONFIG(whatsthis)
         toolButton_3->setText(QCoreApplication::translate("ProjectForm", "...", nullptr));
         pushButton->setText(QCoreApplication::translate("ProjectForm", "\345\210\206\344\272\253\351\241\271\347\233\256", nullptr));
+        pushButton_7->setText(QCoreApplication::translate("ProjectForm", "\346\235\203\351\231\220\347\256\241\347\220\206", nullptr));
         pushButton_3->setText(QCoreApplication::translate("ProjectForm", "\345\210\240\351\231\244\351\241\271\347\233\256", nullptr));
         pushButton_2->setText(QCoreApplication::translate("ProjectForm", "\346\211\223\345\274\200\351\241\271\347\233\256", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab), QCoreApplication::translate("ProjectForm", "\346\210\221\347\232\204\351\241\271\347\233\256", nullptr));

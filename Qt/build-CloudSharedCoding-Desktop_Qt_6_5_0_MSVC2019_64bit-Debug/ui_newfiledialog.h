@@ -42,7 +42,7 @@ public:
     {
         if (NewFileDialog->objectName().isEmpty())
             NewFileDialog->setObjectName("NewFileDialog");
-        NewFileDialog->resize(302, 89);
+        NewFileDialog->resize(302, 101);
         gridLayout = new QGridLayout(NewFileDialog);
         gridLayout->setObjectName("gridLayout");
         widget = new QWidget(NewFileDialog);
@@ -112,7 +112,7 @@ public:
         comboBox->setItemText(0, QCoreApplication::translate("NewFileDialog", "public", nullptr));
         comboBox->setItemText(1, QCoreApplication::translate("NewFileDialog", "default", nullptr));
         comboBox->setItemText(2, QCoreApplication::translate("NewFileDialog", "privite", nullptr));
-        comboBox->setItemText(3, QCoreApplication::translate("NewFileDialog", "protect", nullptr));
+        comboBox->setItemText(3, QCoreApplication::translate("NewFileDialog", "protected", nullptr));
         comboBox->setItemText(4, QCoreApplication::translate("NewFileDialog", "root", nullptr));
 
     } // retranslateUi

@@ -1,5 +1,4 @@
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
 #include"myhelper.h"
 #include"projectform.h"
 #include"logindialog.h"
@@ -93,10 +92,15 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //主菜单栏槽
     connect(ui->actionClose,SIGNAL(triggered()),this,SLOT(close()));
+
+    //*************************************************************************************************
     connect(ui->actionCloud_project,SIGNAL(triggered()),this,SLOT(openCloudProj()));
-    connect(ui->actionLocal_project,SIGNAL(triggered()),this,SLOT(openLoaclProj()));
-    connect(ui->actionNew_local_project,SIGNAL(triggered()),this,SLOT(newLocalProj()));
     connect(ui->actionNew_cloud_project,SIGNAL(triggered()),this,SLOT(newCloudProj()));
+
+    connect(ui->actionLocal_project,SIGNAL(triggered()),this,SLOT(openLocalProj()));
+    connect(ui->actionNew_local_project,SIGNAL(triggered()),this,SLOT(newLocalProj()));
+    //*************************************************************************************************
+
     connect(ui->Setting,SIGNAL(triggered()),this,SLOT(openSettingDialog()));
 
     //socket
@@ -134,6 +138,9 @@ MainWindow::~MainWindow()
     delete userProjs;
 }
 
+//************************************************************************************************
+//************************************************************************************************
+//************************************************************************************************
 void MainWindow::newCloudProj()
 {
     //若用户未登录则无法使用在线功能，弹出登录界面
@@ -155,6 +162,9 @@ void MainWindow::newCloudProj()
         dialog.exec();
     }
 }
+//************************************************************************************************
+//************************************************************************************************
+//************************************************************************************************
 
 void MainWindow::deleteProFile()
 {
@@ -305,6 +315,9 @@ void MainWindow::close()
     qApp->exit(0);
 }
 
+//************************************************************************************************
+//************************************************************************************************
+//************************************************************************************************
 void MainWindow::openCloudProj()
 {
     //若用户未登录则无法使用在线功能，弹出登录界面
@@ -325,6 +338,9 @@ void MainWindow::openCloudProj()
         projectForm->show();
     }
 }
+//************************************************************************************************
+//************************************************************************************************
+//************************************************************************************************
 
 void MainWindow::Login()
 {
@@ -619,10 +635,7 @@ void MainWindow::dataProgress()
     }
 }
 
-void MainWindow::newLocalProj()
-{
 
-}
 
 void MainWindow::on_tabWidget_tabCloseRequested(int index)
 {
@@ -680,3 +693,16 @@ void MainWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int colu
     openProjFile();
 }
 
+void MainWindow::openLocalProj()
+{
+    QString path=QFileDialog::getOpenFileName(this,"打开文件","C://Users");
+    QFile file(path);
+    file.open(QIODevice::ReadWrite);
+    QByteArray array=file.readAll();
+
+}
+
+void MainWindow::newLocalProj()
+{
+
+}

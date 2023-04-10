@@ -12,12 +12,12 @@
 #include<QTimer>
 #include<QLabel>
 #include<QDateTime>
-
 #include"ui_mainwindow.h"
 #include"switchingencodingmode.h"
-
 #include "codeedit.h"
-//#include"ui_switchingencodingmode.h"
+#include<QFileDialog>
+#include<QFile>
+
 namespace Ui {
 class MainWindow;
 }
@@ -45,6 +45,7 @@ public slots:
     void openCloudProj();
     void openProj(int);
     void newLocalProj();
+    void openLocalProj();
     void projectItemPressedSlot(QTreeWidgetItem*,int);
 
     void openProjFile();

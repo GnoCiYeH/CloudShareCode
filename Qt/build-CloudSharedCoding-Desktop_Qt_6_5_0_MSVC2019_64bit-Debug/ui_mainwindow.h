@@ -23,7 +23,6 @@
 #include <QtWidgets/QTreeWidget>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
-#include "codeedit.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -59,7 +58,7 @@ public:
     QTabWidget *tabWidget;
     QWidget *tab;
     QVBoxLayout *verticalLayout;
-    CodeEdit *widget;
+    QWidget *widget;
     QWidget *tab_2;
     QMenuBar *menuBar;
     QMenu *menu;
@@ -166,7 +165,8 @@ public:
         verticalLayout->setSpacing(6);
         verticalLayout->setContentsMargins(11, 11, 11, 11);
         verticalLayout->setObjectName("verticalLayout");
-        widget = new CodeEdit(tab);
+        verticalLayout->setContentsMargins(0, 0, 0, 0);
+        widget = new QWidget(tab);
         widget->setObjectName("widget");
 
         verticalLayout->addWidget(widget);
@@ -184,7 +184,7 @@ public:
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName("menuBar");
-        menuBar->setGeometry(QRect(0, 0, 1293, 22));
+        menuBar->setGeometry(QRect(0, 0, 1293, 21));
         menu = new QMenu(menuBar);
         menu->setObjectName("menu");
         menuNew_project = new QMenu(menu);
@@ -262,7 +262,7 @@ public:
         actionASCLL->setText(QCoreApplication::translate("MainWindow", "ASCII", nullptr));
         actionUTF8->setText(QCoreApplication::translate("MainWindow", "UTF-8", nullptr));
         actionSwitching->setText(QCoreApplication::translate("MainWindow", "\345\210\207\346\215\242\347\274\226\347\240\201\346\226\271\345\274\217", nullptr));
-        tabWidget->setTabText(tabWidget->indexOf(tab), QCoreApplication::translate("MainWindow", "Tab 1", nullptr));
+        tabWidget->setTabText(tabWidget->indexOf(tab), QCoreApplication::translate("MainWindow", "Welcome", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QCoreApplication::translate("MainWindow", "Tab 2", nullptr));
         menu->setTitle(QCoreApplication::translate("MainWindow", "\346\226\207\344\273\266", nullptr));
         menuNew_project->setTitle(QCoreApplication::translate("MainWindow", "\346\226\260\345\273\272\351\241\271\347\233\256", nullptr));
