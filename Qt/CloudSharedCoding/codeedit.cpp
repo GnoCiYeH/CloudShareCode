@@ -5,8 +5,9 @@
 #include<QTimer>
 #include"mainwindow.h"
 #include "package.h"
+#include"mainwindow.h"
 
-CodeEdit::CodeEdit(QWidget *parent) :
+CodeEdit::CodeEdit(std::shared_ptr<FileInfo> fileptr,QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CodeEdit)
 {
@@ -14,9 +15,34 @@ CodeEdit::CodeEdit(QWidget *parent) :
 
     document = ui->textEdit->document();
     ui->textEdit->setFont(QFont("Consolas"));
-    highLighter=new HighLighter(this,document);
+    HighLighter* highLighter=new HighLighter(this,document);
 
-    this->file = std::shared_ptr<FileInfo>(new FileInfo());
+    this->file = fileptr;
+
+    auto projPrivilege = MainWindow::userProjs->find(file->file_project)->pro_privilege_level;
+    switch (projPrivilege) {
+    case 1:
+    {
+        if(file->file_privilege<=1)
+            ui->textEdit->setReadOnly(true);
+        break;
+    }
+    case 2:
+    {
+        if(file->file_privilege==1)
+        {
+            ui->textEdit->setReadOnly(true);
+        }
+        break;
+    }
+    case 4:
+    {
+        ui->textEdit->setReadOnly(true);
+        break;
+    }
+    default:
+        break;
+    }
 
     //初始化联想列表
     setUpAssociateList();
@@ -145,6 +171,7 @@ int CodeEdit::getAssociateWidgetX(){
     return x;
 }
 
+<<<<<<< HEAD
 void CodeEdit::keyReleaseEvent(QKeyEvent *event){
 
 }
@@ -152,9 +179,13 @@ void CodeEdit::keyReleaseEvent(QKeyEvent *event){
 HighLighter::HighLighter(CodeEdit* edit,QTextDocument* text):
     QSyntaxHighlighter (text),
     edit(edit)
+=======
+HighLighter::HighLighter(CodeEdit* edit,QTextDocument* text):QSyntaxHighlighter (text)
+>>>>>>> da714803658991980fc1b46166d0d63a4ab15173
 {
     //制定高亮规则
     HighLighterRule rule;
+    this->edit = edit;
 
     //1.添加关键字高亮规则
     keyword_format.setForeground(QColor(118, 238, 198));//设置关键字前景颜色(blue)

@@ -109,7 +109,7 @@
     <item row="0" column="2">
      <widget class="QLineEdit" name="lineEdit_ServerIp">
       <property name="text">
-       <string>192.168.239.129</string>
+       <string>47.115.211.238</string>
       </property>
      </widget>
     </item>

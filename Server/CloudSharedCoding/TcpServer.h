@@ -15,7 +15,7 @@
 #include<vector>
 #include<map>
 
-#define SqlIP "192.168.239.129"
+#define SqlIP "127.0.0.1"
 class TcpServer
 {
 public:
@@ -56,6 +56,10 @@ private:
     static void joinProject(int sock_fd, char* data);
 
     static void sendTextChange(int sock_fd, char* data);
+
+    static void privilegeQuery(int sock_fd, char* data);
+
+    static void privilegeUpdate(int sock_fd, char* data);
 
     struct UserInfo
     {

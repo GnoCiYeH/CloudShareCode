@@ -9,6 +9,7 @@
 #include"newprojectdialog.h"
 #include "newfiledialog.h"
 #include<QPoint>
+#include"privilegemanager.h"
 
 
 QTcpSocket* MainWindow::socket = new QTcpSocket();
@@ -40,7 +41,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //设置主窗口基本属性
     this->setWindowFlags(Qt::FramelessWindowHint);
-    myHelper::setStyle(":/qss/flatwhite.css");
+    myHelper::setStyle("://qss/lightgray.css");
     this->setWindowTitle("CloudSharedCoding");
     QToolButton* undoButton = new QToolButton(this);
     undoButton->setIcon(QIcon("://qss/darkblack/add_left.png"));
@@ -56,6 +57,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->treeWidget->setLayout(layout);
     ui->treeWidget->header()->hide();
     ui->treeWidget->setContextMenuPolicy(Qt::CustomContextMenu);
+    ui->tabWidget->removeTab(1);
 
     //右键菜单
     submitProject = new QAction("提交项目",ui->treeWidget);
@@ -80,12 +82,9 @@ MainWindow::MainWindow(QWidget *parent) :
     });
 
     //在状态栏显示编码方式
-    EncodingTypeLabel->setText("        当前的编码方式为：ASCII (默认为ASCII编码，如需更改，请打开“设置-编码方式”中进行选择）");
+    EncodingTypeLabel->setText("        当前的编码方式为：UTF-8 (默认为UTF-8编码，如需更改，请打开“设置-编码方式”中进行选择）");
     status_bar->addWidget(EncodingTypeLabel);
     EncodingTypeLabel->setAlignment(Qt::AlignCenter);
-
-
-
 
     //右键菜单槽
     connect(openFile,SIGNAL(triggered(bool)),this,SLOT(openProjFile()));
@@ -135,20 +134,58 @@ MainWindow::~MainWindow()
     delete userProjs;
 }
 
+void MainWindow::newCloudProj()
+{
+    //若用户未登录则无法使用在线功能，弹出登录界面
+    if(!isLogin)
+    {
+        Login();
+        if(isLogin)
+        {
+            //从服务器拉取项目信息
+            Package pck("",(int)Package::PackageType::INIT_PROJS);
+            socket->write(pck.getPdata(),pck.getSize());
+        }
+    }
+
+    //登录成功才可进行下列操作
+    if(isLogin)
+    {
+        NewProjectDialog dialog(false,this);
+        dialog.exec();
+    }
+}
+
 void MainWindow::deleteProFile()
 {
-    auto item = ui->treeWidget->currentItem();
+    auto item = (MyTreeItem*)ui->treeWidget->currentItem();
     auto var = item->data(0,Qt::UserRole);
-    auto file = var.value<FileInfo>();
+    if(item->getType()==MyTreeItem::FILE)
+    {
+        auto file = var.value<std::shared_ptr<FileInfo>>();
 
-    QMessageBox::StandardButton result = QMessageBox::warning(this,"确定删除？","您确定要删除文件："+file.file_name+"?");
-    if(result!=QMessageBox::StandardButton::Ok)
-        return;
+        QMessageBox::StandardButton result = QMessageBox::warning(this,"确定删除？","您确定要删除文件："+file->file_name+"?");
+        if(result!=QMessageBox::StandardButton::Ok)
+            return;
 
-    QString data = QString::number(file.file_id) + "\t" + file.file_path + "\t" + QString::number(file.file_project);
-    Package pck(data.toUtf8(),(int)Package::PackageType::DEL_FILE);
+        QString data = QString::number(file->file_id) + "\t" + file->file_path + "\t" + QString::number(file->file_project);
+        Package pck(data.toUtf8(),(int)Package::PackageType::DEL_FILE);
 
-    socket->write(pck.getPdata(),pck.getSize());
+        socket->write(pck.getPdata(),pck.getSize());
+    }
+    else
+    {
+//        auto dir = var.value<std::shared_ptr<Directory>>();
+
+//        QMessageBox::StandardButton result = QMessageBox::warning(this,"确定删除？","您确定要删除文件："+dir->dir_name+"?");
+//        if(result!=QMessageBox::StandardButton::Ok)
+//            return;
+
+//        QString data = QString::number(dir->file_id) + "\t" + proj->pro_ + "\t" + QString::number(proj->pro_id);
+//        Package pck(data.toUtf8(),(int)Package::PackageType::DEL_FILE);
+
+//        socket->write(pck.getPdata(),pck.getSize());
+    }
 }
 
 void MainWindow::newProFile()
@@ -165,17 +202,38 @@ void MainWindow::newProFile()
     }
 }
 
-void MainWindow::addFileWidget(std::shared_ptr<FileInfo> file)
+bool MainWindow::addFileWidget(std::shared_ptr<FileInfo> file)
 {
-    QWidget* wind = new QWidget(this);
-    CodeEdit* widget = new CodeEdit(this);
-    widget->setFile(file);
-    QVBoxLayout* layout = new QVBoxLayout(this);
-    layout->addWidget(widget);
-    wind->setLayout(layout);
-    ui->tabWidget->addTab(wind,file->file_name);
+    auto projPrivilege = MainWindow::userProjs->find(file->file_project)->pro_privilege_level;
+    switch (projPrivilege) {
+    case 2:
+    {
+        if(file->file_privilege==0)
+        {
+            QMessageBox::about(this,"tips","Sorry, you don't have enough permissions to open this file!");
+            file->is_open=false;
+            return false;
+        }
+        break;
+    }
+    case 3:
+    {
+        if(file->file_privilege==1)
+        {
+            QMessageBox::about(this,"tips","Sorry, you don't have enough permissions to open this file!");
+            file->is_open=false;
+            return false;
+        }
+        break;
+    }
+    default:
+        break;
+    }
+    CodeEdit* widget = new CodeEdit(file,this);
+    ui->tabWidget->addTab(widget,file->file_name);
     fileWidgets.insert(file->file_id,widget);
     file->is_open = true;
+    return true;
 }
 
 void MainWindow::openProjFile()
@@ -186,10 +244,12 @@ void MainWindow::openProjFile()
 
     if(!file->is_open)
     {
-        addFileWidget(file);
-        Package pck(QString::number(file->file_id).toUtf8(),(int)Package::PackageType::GET_FILE);
-        socket->write(pck.getPdata(),pck.getSize());
-        socket->flush();
+        if(addFileWidget(file))
+        {
+            Package pck(QString::number(file->file_id).toUtf8(),(int)Package::PackageType::GET_FILE);
+            socket->write(pck.getPdata(),pck.getSize());
+            socket->flush();
+        }
     }
     else
     {
@@ -528,14 +588,30 @@ void MainWindow::dataProgress()
         int charRemoved = list[2].toInt();
         if(fileWidgets.contains(file_id))
         {
+            int position = (list[0]+list[1]+list[2]+list[3]).length()+4;
             CodeEdit* wind = fileWidgets.value(file_id);
-            wind->changeText(pos,charRemoved,list[4]);
+            wind->changeText(pos,charRemoved,data.mid(position));
         }
         break;
     }
     case (int)Package::ReturnType::HEART_PCK:
     {
         this->isAlive = true;
+        break;
+    }
+    case (int)Package::ReturnType::PRIVILEGE_INFO:
+    {
+        QString data(socket->read(packageSize));
+
+        PrivilegeManager* manager = new PrivilegeManager(data,this);
+        manager->setWindowFlag(Qt::Window);
+        manager->show();
+        break;
+    }
+    case (int)Package::ReturnType::SERVER_OK:
+    {
+        QString data(socket->read(packageSize));
+        QMessageBox::about(this,"Tips",data);
         break;
     }
     default:
@@ -553,6 +629,7 @@ void MainWindow::on_tabWidget_tabCloseRequested(int index)
     CodeEdit* wind = (CodeEdit*)ui->tabWidget->widget(index);
     fileWidgets.remove(wind->getFile()->file_id);
     ui->tabWidget->removeTab(index);
+    wind->getFile()->is_open=false;
     wind->deleteLater();
 }
 
@@ -581,7 +658,7 @@ void MainWindow::selectencodingMode()
         else if(encodingType->getListWidgetCurrentItem()==encodingType->getItem10())
             EncodingTypeLabel->setText("当前的编码方式为：ISO-8859-5");
         else
-            EncodingTypeLabel->setText("当前的编码方式为：ASCII(默认为ASCII编码，如需更改，请打开“设置-编码方式”中进行选择）");
+            EncodingTypeLabel->setText("当前的编码方式为：UTF-8(默认为UTF-8编码，如需更改，请打开“设置-编码方式”中进行选择）");
         encodingType->close();
     });
 
@@ -590,4 +667,16 @@ void MainWindow::selectencodingMode()
 
 
 
+
+
+void MainWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column)
+{
+    MyTreeItem* treeItem = (MyTreeItem*) item;
+    if(treeItem->getType()!=MyTreeItem::FILE)
+    {
+        return;
+    }
+
+    openProjFile();
+}
 

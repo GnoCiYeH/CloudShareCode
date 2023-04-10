@@ -14,7 +14,7 @@
 #define MAXCONNECTION 64
 #define EVENT_SIZE 20
 #define FILEPATH "/home/heyicong/C++/HizZNetDisk/UserFiles/"
-SqlTool* TcpServer::sql = new SqlTool(SqlIP, "root", "191230", "CloudSharedCoding");
+SqlTool* TcpServer::sql = new SqlTool(SqlIP, "root", "123456", "CloudSharedCoding");
 std::unordered_map<int, TcpServer::UserInfo>* TcpServer::userMap = new std::unordered_map<int, TcpServer::UserInfo>();
 std::multimap<int, int>* TcpServer::file_map = new std::multimap<int, int>();
 std::multimap<int, int>* TcpServer::project_map = new std::multimap<int, int>();
@@ -26,7 +26,7 @@ TcpServer::TcpServer(const char* ip, uint32_t port, Log::Logger& logger)
     m_server_addr.sin_addr.s_addr = inet_addr(ip);
     m_server_addr.sin_port = htons(port);
 
-    pool = new ThreadPool(1024);
+    pool = new ThreadPool(64);
     pool->init();
 }
 
@@ -195,6 +195,16 @@ void TcpServer::tcpStart()
                         delete[] data;
                         break;
                     }
+                    case (int)Package::PackageType::PRIVILEGE_QUERY:
+                    {
+                        pool->submit(privilegeQuery, sock_fd, data);
+                        break;
+                    }
+                    case (int)Package::PackageType::PRIVILEGE_UPDATE:
+                    {
+                        pool->submit(privilegeUpdate, sock_fd, data);
+                        break;
+                    }
                     default:
                         INFO_LOG(m_logger, "UNKNOW PACKAGETYPE");
                         break;
@@ -249,12 +259,35 @@ void TcpServer::sendProjectInfo(int sock_fd, char* buf)
     int pid = std::stoi(projId);
     std::pair<int, int> p(pid, sock_fd);
     project_map->insert(p);
-
-    userMap->find(sock_fd)->second.openedProjects.push_back(pid);
+    auto userinfo = userMap->find(sock_fd)->second;
+    userinfo.openedProjects.push_back(pid);
 
     auto projInfoRes = sql->exeSql("select pro_id from Project where pro_id = " + projId + ";");
     auto projInfo = sql->getRows(projInfoRes);
-    auto projFileRes = sql->exeSql("select * from File where file_project = " + projId + ";");
+    auto priRes = sql->exeSql("select _privilege_level from Privilege where _pro_id = " + projId + " and _user_id = \"" + userinfo.userId + "\";");
+    auto prirow = sql->getRows(priRes);
+    int privilege = std::stoi(prirow[0][0]);
+    MYSQL_RES* projFileRes;
+    switch (privilege)
+    {
+    case 0:
+    case 1:
+    case 2:
+    {
+        projFileRes = sql->exeSql("select * from File where file_project = " + projId + ";");
+        break;
+    }
+    case 3:
+    {
+        projFileRes = sql->exeSql("select * from File where file_project = " + projId + " and file_privilege > 0;");
+        break;
+    }
+    case 4:
+    {
+        projFileRes = sql->exeSql("select * from File where file_project = " + projId + " and file_privilege > 1;");
+        break;
+    }
+    }
     auto rows = sql->getRows(projFileRes);
     int filedNum = mysql_num_fields(projFileRes);
     std::string data = std::string(projInfo[0][0]) + "\n";
@@ -269,7 +302,7 @@ void TcpServer::sendProjectInfo(int sock_fd, char* buf)
 
     Package pck(data.c_str(), (int)Package::ReturnType::PROJ_FILE_INFO, data.size());
     write(sock_fd, pck.getPdata(), pck.getSize());
-
+    mysql_free_result(priRes);
     mysql_free_result(projFileRes);
     delete buf;
 }
@@ -312,7 +345,7 @@ void TcpServer::newProject(int sock_fd, char* data)
     sql->exeSql("insert into Project (pro_name,pro_owner,pro_uuid) value (\"" + proName + "\",\"" + userId + "\",\"" + uuidStr +  "\")");
     auto res = sql->exeSql("select pro_id,pro_name,pro_owner,pro_uuid from Project where pro_name =  \"" + proName + "\";");
     sqlResultRows rows = sql->getRows(res);
-    sql->exeSql("insert into Privilege (_user_id,_pro_id) values(\"" + userId + "\"," + std::string(rows[0][0]) + ");");
+    sql->exeSql("insert into Privilege (_user_id,_pro_id,_privilege_level) values(\"" + userId + "\"," + std::string(rows[0][0]) + ",0);");
     std::string str = std::string(rows[0][0]) + "\t" + std::string(rows[0][1]) + "\t" + std::string(rows[0][2]) + "\t" + std::string(rows[0][3]);
     Package pck(str.c_str(), (int)Package::ReturnType::NEW_PROJ_INFO, str.size());
     write(sock_fd, pck.getPdata(), pck.getSize());
@@ -445,17 +478,16 @@ void TcpServer::delFile(int sock_fd, char* data)
     if (file_map->find(fid) != file_map->end())
     {
         file_map->erase(fid);
-
-        //向打开该项目的参与者发送文件变更信息
-        std::string buf = list[2] + "\t" + list[0];
-        Package pck(buf.c_str(), (int)Package::ReturnType::PROJECT_FILE_DELETE, list[0].size());
-        int num = project_map->count(pid);
-        auto it = project_map->find(pid);
-        for (; num > 0; num--, it++)
-        {
-            int fd = it->second;
-            write(fd, pck.getPdata(), pck.getSize());
-        }
+    }
+    //向打开该项目的参与者发送文件变更信息
+    std::string buffer = list[2] + "\t" + list[0];
+    Package pck(buffer.c_str(), (int)Package::ReturnType::PROJECT_FILE_DELETE, list[0].size());
+    int num = project_map->count(pid);
+    auto it = project_map->find(pid);
+    for (; num > 0; num--, it++)
+    {
+        int fd = it->second;
+        write(fd, pck.getPdata(), pck.getSize());
     }
 
     DIR* pDir;
@@ -545,6 +577,48 @@ void TcpServer::sendTextChange(int sock_fd, char* data)
             write(fd, pck.getPdata(), pck.getSize());
         }
     }
+
+    delete[] data;
+}
+
+void TcpServer::privilegeQuery(int sock_fd, char* data)
+{
+    auto res = sql->exeSql("select _user_id,_privilege_level from Privilege where _pro_id = " + std::string(data) + ";");
+    auto rows = sql->getRows(res);
+    std::string userId = userMap->find(sock_fd)->second.userId;
+    std::string buf = std::string(data) + "\n";
+    for (auto it : rows)
+    {
+        if (!(it[0] == userId))
+        {
+            buf += std::string(it[0]) + "\t" + std::string(it[1]) + "\n";
+        }
+    }
+
+    Package pck(buf.c_str(), (int)Package::ReturnType::PRIVILEGE_INFO, buf.size());
+    write(sock_fd, pck.getPdata(), pck.getSize());
+
+    mysql_free_result(res);
+    delete[] data;
+}
+
+void TcpServer::privilegeUpdate(int sock_fd, char* data)
+{
+    stringList list;
+    stringSplit(std::string(data), "\n", list);
+
+    for (int i = 1; i < list.size(); i++)
+    {
+        if (list[i].empty())
+            continue;
+        stringList info;
+        stringSplit(list[i], "\t", info);
+        sql->exeSql("update Privilege set _privilege_level = " + info[1] + " where _user_id = \"" + info[0] + "\" and _pro_id = " + list[0] + ";");
+    }
+
+    std::string str = "The permission update was successful!";
+    Package pck(str.c_str(), (int)Package::ReturnType::SERVER_OK, str.size());
+    write(sock_fd, pck.getPdata(), pck.getSize());
 
     delete[] data;
 }
