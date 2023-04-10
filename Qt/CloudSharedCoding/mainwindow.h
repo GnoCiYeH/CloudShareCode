@@ -117,7 +117,7 @@ private:
 
 private:
     void Login();
-    void addFileWidget(std::shared_ptr<FileInfo> file);
+    bool addFileWidget(std::shared_ptr<FileInfo> file);
 
 
     SwitchingEncodingMode* encodingType=new SwitchingEncodingMode(this);//编码方式

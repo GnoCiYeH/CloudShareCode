@@ -6,7 +6,7 @@
 #include "package.h"
 #include"mainwindow.h"
 
-CodeEdit::CodeEdit(QWidget *parent) :
+CodeEdit::CodeEdit(std::shared_ptr<FileInfo> fileptr,QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CodeEdit)
 {
@@ -16,7 +16,32 @@ CodeEdit::CodeEdit(QWidget *parent) :
     ui->textEdit->setFont(QFont("Consolas"));
     HighLighter* highLighter=new HighLighter(this,document);
 
-    this->file = std::shared_ptr<FileInfo>(new FileInfo());
+    this->file = fileptr;
+
+    auto projPrivilege = MainWindow::userProjs->find(file->file_project)->pro_privilege_level;
+    switch (projPrivilege) {
+    case 1:
+    {
+        if(file->file_privilege<=1)
+            ui->textEdit->setReadOnly(true);
+        break;
+    }
+    case 2:
+    {
+        if(file->file_privilege==1)
+        {
+            ui->textEdit->setReadOnly(true);
+        }
+        break;
+    }
+    case 4:
+    {
+        ui->textEdit->setReadOnly(true);
+        break;
+    }
+    default:
+        break;
+    }
 
     //初始化联想列表
     setUpAssociateList();

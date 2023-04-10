@@ -13,6 +13,9 @@ NewFileDialog::NewFileDialog(std::shared_ptr<Directory> dir,QWidget *parent) :
     auto proj = MainWindow::userProjs->value(m_dir->pro_id);
     switch (proj.pro_privilege_level) {
     case 0:
+    {
+        break;
+    }
     case 1:
     {
         ui->comboBox->removeItem(3);

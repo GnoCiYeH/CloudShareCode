@@ -36,12 +36,10 @@ class CodeEdit : public QWidget
 public: friend class EditWorkThread;
     friend class HighLighter;
 public:
-    explicit CodeEdit(QWidget *parent = nullptr);
+    explicit CodeEdit(std::shared_ptr<FileInfo>fileptr,QWidget *parent = nullptr);
     ~CodeEdit() override;
 
     void addText(const QString str);
-
-    void setFile(std::shared_ptr<FileInfo> file){this->file = file;}
 
     std::shared_ptr<FileInfo> getFile(){return file;}
 
