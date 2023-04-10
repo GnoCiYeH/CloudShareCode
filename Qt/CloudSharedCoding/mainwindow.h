@@ -17,6 +17,7 @@
 #include "codeedit.h"
 #include<QFileDialog>
 #include<QFile>
+#include<QFileInfo>
 
 namespace Ui {
 class MainWindow;

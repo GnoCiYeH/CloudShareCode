@@ -696,9 +696,18 @@ void MainWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int colu
 void MainWindow::openLocalProj()
 {
     QString path=QFileDialog::getOpenFileName(this,"打开文件","C://Users");
+    QFileInfo info(path);
+    std::shared_ptr<FileInfo> file_information(new FileInfo);
+    file_information->file_name=info.fileName();
+    file_information->file_path=info.filePath();
+    CodeEdit* code_edit=new CodeEdit(file_information,this);
+    ui->tabWidget->addTab(code_edit,file_information->file_name);
+    file_information->is_open=true;
+
     QFile file(path);
     file.open(QIODevice::ReadWrite);
     QByteArray array=file.readAll();
+    code_edit->addText(array);
 
 }
 
