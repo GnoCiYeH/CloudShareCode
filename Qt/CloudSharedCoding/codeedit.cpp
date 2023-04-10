@@ -6,10 +6,10 @@
 #include "mainwindow.h"
 #include "package.h"
 #include "mainwindow.h"
-#include<QMenu>
+#include <QMenu>
 
 CodeEdit::CodeEdit(std::shared_ptr<FileInfo> fileptr, QWidget *parent) : QWidget(parent),
-    ui(new Ui::CodeEdit)
+                                                                         ui(new Ui::CodeEdit)
 {
     ui->setupUi(this);
 
@@ -19,7 +19,7 @@ CodeEdit::CodeEdit(std::shared_ptr<FileInfo> fileptr, QWidget *parent) : QWidget
 
     this->file = fileptr;
 
-    if(MainWindow::loginState())
+    if (MainWindow::loginState())
     {
         auto projPrivilege = MainWindow::userProjs->find(file->file_project)->pro_privilege_level;
         switch (projPrivilege)
@@ -59,7 +59,7 @@ CodeEdit::CodeEdit(std::shared_ptr<FileInfo> fileptr, QWidget *parent) : QWidget
     QFontMetrics m(ui->textEdit->font());
     ui->textEdit->setTabStopDistance(tabstop * m.horizontalAdvance(" "));
 
-    if(MainWindow::loginState())
+    if (MainWindow::loginState())
         connect(document, SIGNAL(contentsChange(int, int, int)), this, SLOT(docChange(int, int, int)));
 }
 
@@ -104,20 +104,20 @@ void CodeEdit::changeText(int pos, int charRemoved, QString data)
     cursor.insertText(data);
     connect(document, SIGNAL(contentsChange(int, int, int)), this, SLOT(docChange(int, int, int)));
 
-    QMenu* menu = new QMenu(this);
-    QAction* action = new QAction(menu);
+    QMenu *menu = new QMenu(this);
+    QAction *action = new QAction(menu);
     action->setText(data);
     menu->addAction(action);
     int x = ui->textEdit->cursorRect(cursor).x();
     int y = ui->textEdit->cursorRect(cursor).y();
-    menu->move(x,y);
+    menu->move(x, y);
     menu->show();
 }
 
 void CodeEdit::showAssociateWidget()
 {
     if (associateState == AssociateState::Ignore)
-        return; // 瀵逛簬鍏夋爣鍜屾枃鏈彉鍖栦笉鍋氫换浣曠浉搴旓紝閬垮厤闄峰叆姝诲惊鐜?
+        return; // 瀵逛簬鍏夋爣鍜屾枃鏈彉鍖栦笉鍋氫换浣曠浉搴旓紝閬垮厤闄峰叆姝诲惊�??
     associateWidget->hide();
     associateState = AssociateState::Hide;
     QString word = this->getWordCursor();
@@ -139,7 +139,7 @@ void CodeEdit::showAssociateWidget()
         }
 
         if (itemVec.size() > 0)
-        { // 鏈夊尮閰嶅瓧绗?
+        { // 鏈夊尮閰嶅瓧�??
             // 鎸夊樊寮傚害浠庡皬鍒板ぇ鎺掞紝鏈€鍖归厤鐨勫湪鏈€鍓嶉潰
             sort(itemVec.begin(), itemVec.end(), [&](const QString &s1, const QString &s2) -> bool
                  { return differenceRecord[s1] < differenceRecord[s2]; });
@@ -151,7 +151,7 @@ void CodeEdit::showAssociateWidget()
             int x = this->getAssociateWidgetX();
             int y = ui->textEdit->cursorRect().y() + fontMetrics().height();
 
-            associateWidget->move(x, y); // 璁剧疆鑱旀兂鍒楄〃鐨勪綅缃?
+            associateWidget->move(x, y); // 璁剧疆鑱旀兂鍒楄〃鐨勪綅�??
             // 璁剧疆鑱旀兂鍒楄〃鍚堥€傜殑澶у皬
             if (associateWidget->count() > 5)
                 associateWidget->setFixedHeight(fontMetrics().height() * 6);
@@ -201,20 +201,20 @@ int CodeEdit::getAssociateWidgetX()
     return x;
 }
 
-//void CodeEdit::keyReleaseEvent(QKeyEvent *event)
+// void CodeEdit::keyReleaseEvent(QKeyEvent *event)
 //{
-//}
+// }
 
 HighLighter::HighLighter(CodeEdit *edit, QTextDocument *text) : QSyntaxHighlighter(text),
-            edit(edit)
-            //,HighLighter::HighLighter(CodeEdit * edit, QTextDocument * text) : QSyntaxHighlighter(text)
+                                                                edit(edit)
+//,HighLighter::HighLighter(CodeEdit * edit, QTextDocument * text) : QSyntaxHighlighter(text)
 {
-    // 鍒跺畾楂樹寒瑙勫垯
+    // 鍒跺畾楂樹寒瑙勫�?
     HighLighterRule rule;
     this->edit = edit;
 
-    // 1.娣诲姞鍏抽敭瀛楅珮浜鍒?
-    keyword_format.setForeground(QColor(118, 238, 198)); // 璁剧疆鍏抽敭瀛楀墠鏅鑹?(blue)
+    // 1.娣诲姞鍏抽敭瀛楅珮浜�??
+    keyword_format.setForeground(QColor(118, 238, 198)); // 璁剧疆鍏抽敭瀛楀墠鏅�??(blue)
     keyword_format.setFontWeight(QFont::Bold);           // 璁剧疆鍏抽敭瀛楃殑瀛椾綋鏍煎紡(Bold)
     QVector<QString> keyword_pattern = {                 // \b鍦ㄨ〃绀哄崟璇嶅瓧绗﹁竟鐣岋紝闃叉渚嬪intVal涔熻璇嗗埆涓篿nt瀵艰嚧楂樹寒
                                         "\\bchar\\b", "\\bclass\\b", "\\bconst\\b", "\\bdouble\\b", "\\benum\\b", "\\bexplicit\\b",
@@ -229,18 +229,18 @@ HighLighter::HighLighter(CodeEdit *edit, QTextDocument *text) : QSyntaxHighlight
         rule.pattern = QRegularExpression(keyword);
         rule.format = keyword_format;
         highlighterrules.push_back(rule);
-    } // 瑙勫垯闆嗗悎涓瓨鍌ㄧ潃keyword_pattern涓墍鏈夊叧閿瓧鐨勬爣璇嗙鍜屾牸寮?(钃濊壊 绮椾綋)
+    } // 瑙勫垯闆嗗悎涓瓨鍌ㄧ潃keyword_pattern涓墍鏈夊叧閿瓧鐨勬爣璇嗙鍜屾牸�??(钃濊�? 绮椾�?)
 
-    // 2.娣诲姞Qt绫婚珮浜鍒?
+    // 2.娣诲姞Qt绫婚珮浜�??
     class_format.setForeground(Qt::darkCyan);   // 璁剧疆Qt绫诲墠鏅壊(darkCyan)
-    class_format.setFontWeight(QFont::Bold);    // 璁剧疆Qt绫诲瓧浣撴牸寮?(Bold)
-    QString class_pattern = "\\bQ[a-zA-z]+\\b"; // Qt绫昏瘑鍒牸寮忎负涓よ竟鏈夊垎闅旂锛屼笖浠寮€澶寸殑鎵€鏈夎嫳鏂囧瓧绗︿覆
+    class_format.setFontWeight(QFont::Bold);    // 璁剧疆Qt绫诲瓧浣撴牸�??(Bold)
+    QString class_pattern = "\\bQ[a-zA-z]+\\b"; // Qt绫昏瘑鍒牸寮忎负涓よ竟鏈夊垎闅旂锛屼笖浠寮€澶寸殑鎵€鏈夎嫳鏂囧瓧绗︿�?
     rule.pattern = QRegularExpression(class_pattern);
     rule.format = class_format;
     highlighterrules.push_back(rule);
 
-    // 3.娣诲姞澶存枃浠堕珮浜牸寮?
-    // 3.1 #寮€澶?
+    // 3.娣诲姞澶存枃浠堕珮浜牸�??
+    // 3.1 #寮€�??
     headfile_format.setForeground(Qt::darkGray);
     headfile_format.setFontWeight(QFont::Bold);
     rule.format = headfile_format;
@@ -264,15 +264,15 @@ HighLighter::HighLighter(CodeEdit *edit, QTextDocument *text) : QSyntaxHighlight
         highlighterrules.push_back(rule);
     }
 
-    // 4.娣诲姞澶氳娉ㄩ噴楂樹寒瑙勫垯
+    // 4.娣诲姞澶氳娉ㄩ噴楂樹寒瑙勫�?
     // 澶氳娉ㄩ噴鐨勫尮閰嶆鍒欒〃杈惧紡
-    QString comment_start_pattern = "/\\*"; // 寮€濮嬩綅缃甛*锛屽洜涓烘鍒欒〃杈惧紡鐨?*闇€瑕佺敤\*琛ㄨ揪锛岃€孿*闇€瑕佸瓧绗︿覆鐢╘\*琛ㄨ揪
+    QString comment_start_pattern = "/\\*"; // 寮€濮嬩綅缃�?*锛屽洜涓烘鍒欒〃杈惧紡�??*闇€瑕佺敤\*琛ㄨ揪锛岃€�?*闇€瑕佸瓧绗︿覆鐢╘\*琛ㄨ�?
     comment_start = QRegularExpression(comment_start_pattern);
     QString comment_end_pattern = "\\*/"; // 缁撴潫浣嶇疆
     comment_end = QRegularExpression(comment_end_pattern);
 
     // 5.娣诲姞寮曞彿楂樹寒瑙勫垯
-    quotation_format.setForeground(Qt::cyan); // 寮曞彿鍐呭棰滆壊(cyan)
+    quotation_format.setForeground(Qt::cyan); // 寮曞彿鍐呭棰滆�?(cyan)
     QString quotation_pattern = "\".*\"";
     rule.pattern = QRegularExpression(quotation_pattern);
     rule.format = quotation_format;
@@ -298,7 +298,7 @@ HighLighter::HighLighter(CodeEdit *edit, QTextDocument *text) : QSyntaxHighlight
         highlighterrules.push_back(rule);
     }
 
-    // 8.娣诲姞杈撳叆杈撳嚭楂樹寒鏍煎紡
+    // 8.娣诲姞杈撳叆杈撳嚭楂樹寒鏍煎�?
     cincout_format.setForeground(Qt::darkGray);
     cincout_format.setFontWeight(QFont::Bold);
     QVector<QString> cincout_pattern = {
@@ -310,7 +310,7 @@ HighLighter::HighLighter(CodeEdit *edit, QTextDocument *text) : QSyntaxHighlight
         highlighterrules.push_back(rule);
     }
 
-    // 9.娣诲姞鍗曡娉ㄩ噴楂樹寒瑙勫垯
+    // 9.娣诲姞鍗曡娉ㄩ噴楂樹寒瑙勫�?
     singleLine_comment_format.setForeground(QColor(211, 211, 211));
     singleLine_comment_format.setFontWeight(QFont::Bold);
     QString singleLine_comment_pattern = "//[^\n]*"; // 鍗曡娉ㄩ噴璇嗗埆鏍煎紡涓鸿窡鍦?//鍚庯紝浣嗕笉鍖呮嫭鎹㈣绗︼紝涓斾笉闇€瑕侀棿闅旂
@@ -318,34 +318,34 @@ HighLighter::HighLighter(CodeEdit *edit, QTextDocument *text) : QSyntaxHighlight
     rule.format = singleLine_comment_format;
     highlighterrules.push_back(rule);
 
-    // 澶氳娉ㄩ噴鏍煎紡
+    // 澶氳娉ㄩ噴鏍煎�?
     multiLine_comment_format.setForeground(QColor(211, 211, 211));
     multiLine_comment_format.setFontWeight(QFont::Bold);
 }
 
 void HighLighter::highlightBlock(const QString &text)
-{ // 搴旂敤楂樹寒瑙勫垯
+{ // 搴旂敤楂樹寒瑙勫�?
     foreach (const HighLighterRule &rule, highlighterrules)
     {
         QRegularExpressionMatchIterator matchIterator = rule.pattern.globalMatch(text); // 鍦ㄦ暣涓猼ext鏂囨湰涓尮閰嶅綋鍓峳ule鐨刾attern
         while (matchIterator.hasNext())
-        { // 楂樹寒鏁翠釜鏂囨湰涓尮閰嶅埌鐨勫瓧绗?
+        { // 楂樹寒鏁翠釜鏂囨湰涓尮閰嶅埌鐨勫瓧�??
             QRegularExpressionMatch match = matchIterator.next();
             setFormat(match.capturedStart(), match.capturedLength(), rule.format); //(鍖归厤鍒扮殑璧峰浣嶇疆锛屾枃鏈潡闀垮害锛岄珮浜鍒欐牸寮?)
         }
     }
 
-    // 澶勭悊澶氳娉ㄩ噴锛岀敱浜庡琛屾敞閲婁紭鍏堢骇鏈€楂橈紝鎵€浠ユ渶鍚庡鐞?
+    // 澶勭悊澶氳娉ㄩ噴锛岀敱浜庡琛屾敞閲婁紭鍏堢骇鏈€楂橈紝鎵€浠ユ渶鍚庡�??
     setCurrentBlockState(0);
     int start = 0;
     if (previousBlockState() != 1)
-    {                                        // 涓婁竴涓枃鏈潡涓嶆槸澶氳娉ㄩ噴鐨勬枃鏈唴瀹癸紝濡傛灉鏄紝鏂囨湰鐘舵€佸簲璁剧疆鎴?1
+    {                                        // 涓婁竴涓枃鏈潡涓嶆槸澶氳娉ㄩ噴鐨勬枃鏈唴瀹癸紝濡傛灉鏄紝鏂囨湰鐘舵€佸簲璁剧疆�??1
         start = text.indexOf(comment_start); // 鍏堝畾浣嶅埌绗竴涓琛屾敞閲婄殑璧峰瀛楃锛屾壘鍒拌繑鍥炰綅缃紝娌℃壘鍒拌繑鍥?-1
     }
     while (start >= 0)
     {
-        QRegularExpressionMatch match = comment_end.match(text, start); // 浠庡綋鍓嶈捣濮嬪瓧绗﹀尮閰嶇涓€涓粨鏉熷瓧绗︼紝鍗冲綋鍓嶅琛屾敞閲婄殑鎴瀛楃
-        int end = match.capturedStart();                                // match瀵瑰簲comment_end锛屾鏃舵壘鐨勬槸浠庡綋鍓峴tart(澶氳娉ㄩ噴璧峰瀛楃)寮€濮嬪尮閰嶇殑绗竴涓粨鏉熷瓧绗?
+        QRegularExpressionMatch match = comment_end.match(text, start); // 浠庡綋鍓嶈捣濮嬪瓧绗﹀尮閰嶇涓€涓粨鏉熷瓧绗︼紝鍗冲綋鍓嶅琛屾敞閲婄殑鎴瀛楃�?
+        int end = match.capturedStart();                                // match瀵瑰簲comment_end锛屾鏃舵壘鐨勬槸浠庡綋鍓峴tart(澶氳娉ㄩ噴璧峰瀛楃�?)寮€濮嬪尮閰嶇殑绗竴涓粨鏉熷瓧绗?
         int length = 0;
         if (end == -1)
         { // 鎵句笉鍒扮粨鏉熷瓧绗︼紝璇存槑鏄渶鍚庝竴涓琛屾敞閲婏紝涓轰簡璁╀笅涓€涓枃鏈潡鐭ラ亾涔嬪墠鏄琛屾敞閲婃ā鍧楋紝鎵€浠ヨ鐘舵€佷负1锛岀劧鍚庣粨鏉熶綅缃笌鏂囨湰缁撴潫浣嶇疆鐩稿悓
@@ -354,7 +354,7 @@ void HighLighter::highlightBlock(const QString &text)
         }
         else
         {
-            length = end - start + match.capturedLength(); // 闇€瑕侀珮浜殑鏂囨湰闀垮害涓? 缁撴潫瀛楃涓嬫爣-璧峰瀛楃涓嬫爣+鍖归厤鍒扮殑鏂囨湰(*/)鐨勯暱搴?
+            length = end - start + match.capturedLength(); // 闇€瑕侀珮浜殑鏂囨湰闀垮害�?? 缁撴潫瀛楃涓嬫爣-璧峰瀛楃涓嬫爣+鍖归厤鍒扮殑鏂囨�?(*/)鐨勯暱搴?
         }
         setFormat(start, length, multiLine_comment_format);
         start = text.indexOf(comment_start, start + length); // 浠庡綋鍓峴tart+length寮€濮嬪尮閰嶄笅涓€涓猻tart

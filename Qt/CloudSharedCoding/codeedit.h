@@ -57,7 +57,7 @@ public slots:
     void docChange(int,int,int);
 
 protected:
-    //void keyReleaseEvent(QKeyEvent* event)override;
+    void keyReleaseEvent(QKeyEvent* event)override;
 
 private:
     Ui::CodeEdit *ui;
