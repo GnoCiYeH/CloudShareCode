@@ -3,7 +3,6 @@
 #include<QKeyEvent>
 #include<QDebug>
 #include<QTimer>
-#include"mainwindow.h"
 #include "package.h"
 #include"mainwindow.h"
 
@@ -171,7 +170,6 @@ int CodeEdit::getAssociateWidgetX(){
     return x;
 }
 
-<<<<<<< HEAD
 void CodeEdit::keyReleaseEvent(QKeyEvent *event){
 
 }
@@ -179,9 +177,6 @@ void CodeEdit::keyReleaseEvent(QKeyEvent *event){
 HighLighter::HighLighter(CodeEdit* edit,QTextDocument* text):
     QSyntaxHighlighter (text),
     edit(edit)
-=======
-HighLighter::HighLighter(CodeEdit* edit,QTextDocument* text):QSyntaxHighlighter (text)
->>>>>>> da714803658991980fc1b46166d0d63a4ab15173
 {
     //制定高亮规则
     HighLighterRule rule;
