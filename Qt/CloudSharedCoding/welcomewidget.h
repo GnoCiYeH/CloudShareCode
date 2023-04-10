@@ -1,22 +1,29 @@
 #ifndef WELCOMEWIDGET_H
 #define WELCOMEWIDGET_H
 
-#include <QWidget>
+#include <QAbstractItemModel>
 
-namespace Ui {
-class WelcomeWidget;
-}
-
-class WelcomeWidget : public QWidget
+class welcomewidget : public QAbstractItemModel
 {
     Q_OBJECT
 
 public:
-    explicit WelcomeWidget(QWidget *parent = nullptr);
-    ~WelcomeWidget();
+    explicit welcomewidget(QObject *parent = nullptr);
+
+    // Header:
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
+
+    // Basic functionality:
+    QModelIndex index(int row, int column,
+                      const QModelIndex &parent = QModelIndex()) const override;
+    QModelIndex parent(const QModelIndex &index) const override;
+
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    int columnCount(const QModelIndex &parent = QModelIndex()) const override;
+
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
 private:
-    Ui::WelcomeWidget *ui;
 };
 
 #endif // WELCOMEWIDGET_H

@@ -3,10 +3,11 @@
 #include<QKeyEvent>
 #include<QDebug>
 #include<QTimer>
+#include"mainwindow.h"
 #include "package.h"
 #include"mainwindow.h"
 
-CodeEdit::CodeEdit(QWidget *parent) :
+CodeEdit::CodeEdit(std::shared_ptr<FileInfo> fileptr,QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CodeEdit)
 {
@@ -16,7 +17,32 @@ CodeEdit::CodeEdit(QWidget *parent) :
     ui->textEdit->setFont(QFont("Consolas"));
     HighLighter* highLighter=new HighLighter(this,document);
 
-    this->file = std::shared_ptr<FileInfo>(new FileInfo());
+    this->file = fileptr;
+
+    auto projPrivilege = MainWindow::userProjs->find(file->file_project)->pro_privilege_level;
+    switch (projPrivilege) {
+    case 1:
+    {
+        if(file->file_privilege<=1)
+            ui->textEdit->setReadOnly(true);
+        break;
+    }
+    case 2:
+    {
+        if(file->file_privilege==1)
+        {
+            ui->textEdit->setReadOnly(true);
+        }
+        break;
+    }
+    case 4:
+    {
+        ui->textEdit->setReadOnly(true);
+        break;
+    }
+    default:
+        break;
+    }
 
     //初始化联想列表
     setUpAssociateList();
@@ -145,25 +171,21 @@ int CodeEdit::getAssociateWidgetX(){
     return x;
 }
 
+<<<<<<< HEAD
+void CodeEdit::keyReleaseEvent(QKeyEvent *event){
+
+}
+
+HighLighter::HighLighter(CodeEdit* edit,QTextDocument* text):
+    QSyntaxHighlighter (text),
+    edit(edit)
+=======
 HighLighter::HighLighter(CodeEdit* edit,QTextDocument* text):QSyntaxHighlighter (text)
+>>>>>>> da714803658991980fc1b46166d0d63a4ab15173
 {
     //制定高亮规则
     HighLighterRule rule;
     this->edit = edit;
-
-    //0.语法错误
-    mistake_format.setUnderlineStyle(QTextCharFormat::DashUnderline);
-    mistake_format.setUnderlineColor(Qt::red);
-    rule.format=mistake_format;
-    QTextCursor cursor = edit->ui->textEdit->textCursor();
-    QString currentLineText = cursor.block().text();
-    QStringList words = currentLineText.trimmed().split(" ");
-    QString firstWord = words.at(0);
-    if(!mistake_pattern.contains(firstWord))mistake_pattern.push_back(firstWord);
-    foreach(QString pattern,mistake_pattern){
-        rule.pattern=QRegularExpression(pattern);
-        highlighterrules.push_back(rule);
-    }
 
     //1.添加关键字高亮规则
     keyword_format.setForeground(QColor(118, 238, 198));//设置关键字前景颜色(blue)
@@ -200,7 +222,7 @@ HighLighter::HighLighter(CodeEdit* edit,QTextDocument* text):QSyntaxHighlighter 
     highlighterrules.push_back(rule);
 
     //3.2 各头文件
-    headfile_format.setForeground(Qt::yellow);
+    headfile_format.setForeground(Qt::darkGreen);
     headfile_format.setFontWeight(QFont::Bold);
     QVector<QString>headfile_pattern={
         "<algorithm>","<bitset>","<cctype>","<cerrno>","<cerrno>","<cerrno>",
@@ -274,12 +296,6 @@ HighLighter::HighLighter(CodeEdit* edit,QTextDocument* text):QSyntaxHighlighter 
     //多行注释格式
     multiLine_comment_format.setForeground(QColor(211, 211 ,211));
     multiLine_comment_format.setFontWeight(QFont::Bold);
-
-    rule.format=mistake_format;
-    foreach(QString pattern,mistake_pattern){
-        rule.pattern=QRegularExpression(pattern);
-        highlighterrules.push_back(rule);
-    }
 }
 
 void HighLighter::highlightBlock(const QString &text){//应用高亮规则
@@ -290,8 +306,6 @@ void HighLighter::highlightBlock(const QString &text){//应用高亮规则
             setFormat(match.capturedStart(),match.capturedLength(),rule.format);//(匹配到的起始位置，文本块长度，高亮规则格式)
         }
     }
-
-
 
     //处理多行注释，由于多行注释优先级最高，所以最后处理
     setCurrentBlockState(0);

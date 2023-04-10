@@ -99,7 +99,7 @@ static void stringSplit(std::string str, std::string split, std::vector<std::str
         n = index + 1;
         index = str.find(split, index + 1);
     }
-    if (index != str.size() - 1)
+    //if (index != str.size() - 1)
         res.push_back(str.substr(n, str.size() - 1));
 }
 
@@ -146,7 +146,7 @@ static bool removeFile(std::string& dirName)
 static std::string getParentDir(const std::string path)
 {
     std::string pdir = path;
-    if (pdir.length() < 1 || (pdir[0] != '/')) {
+    if (pdir.length() < 1) {
         return "";
     }
     while (pdir.length() > 1 && (pdir[pdir.length() - 1] == '/')) pdir = pdir.substr(0, pdir.length() - 1);
@@ -160,6 +160,8 @@ static int CreateDir(const std::string dir)
     int ret = 0;
     if (dir.empty())
         return -1;
+    if (!access(dir.c_str(), F_OK))
+        return ret;
     std::string pdir = "";
     if ((ret = mkdir(dir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH)))
     {
@@ -189,8 +191,12 @@ static bool textChange(std::string path,int pos, int charRemoved, std::string da
     fileStream.close();
     buffer[length] = '\0';
     std::string buf(buffer);
-    buf.erase(pos, charRemoved);
-    buf.insert(pos, data.c_str(), data.size());
+    //buf.erase(pos, charRemoved);
+    std::string substr0 = buf.substr(0, pos);
+    substr0 += data;
+    std::string substr1 = buf.substr((size_t)(pos + charRemoved));
+    buf = substr0 + substr1;
+    //buf.insert(pos, data.c_str(), data.size());
     std::ofstream ofs(path);
     ofs.write(buf.c_str(), buf.size());
     ofs.close();

@@ -38,8 +38,7 @@ SOURCES += \
     privilegemanager.cpp \
     projectform.cpp \
     settingform.cpp \
-    switchingencodingmode.cpp \
-    welcomewidget.cpp
+    switchingencodingmode.cpp
 
 HEADERS += \
     InfoType.h \
@@ -55,8 +54,7 @@ HEADERS += \
     privilegemanager.h \
     projectform.h \
     settingform.h \
-    switchingencodingmode.h \
-    welcomewidget.h
+    switchingencodingmode.h
 
 FORMS += \
     cloudsharedcoding.ui \
@@ -69,8 +67,7 @@ FORMS += \
     privilegemanager.ui \
     projectform.ui \
     settingform.ui \
-    switchingencodingmode.ui \
-    welcomewidget.ui
+    switchingencodingmode.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
