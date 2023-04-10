@@ -52,9 +52,7 @@ public:
         pushButton_confirm = new QPushButton(widget_2);
         pushButton_confirm->setObjectName("pushButton_confirm");
         pushButton_confirm->setMinimumSize(QSize(80, 30));
-        QFont font1;
-        font1.setPointSize(18);
-        pushButton_confirm->setFont(font1);
+        pushButton_confirm->setFont(font);
 
         horizontalLayout->addWidget(pushButton_confirm);
 
@@ -65,13 +63,13 @@ public:
         pushButton_cancel = new QPushButton(widget_2);
         pushButton_cancel->setObjectName("pushButton_cancel");
         pushButton_cancel->setMinimumSize(QSize(80, 30));
-        pushButton_cancel->setFont(font1);
+        pushButton_cancel->setFont(font);
 
         horizontalLayout->addWidget(pushButton_cancel);
 
         listWidget = new QListWidget(SwitchingEncodingMode);
         listWidget->setObjectName("listWidget");
-        listWidget->setGeometry(QRect(40, 60, 341, 131));
+        listWidget->setGeometry(QRect(40, 70, 341, 151));
 
         retranslateUi(SwitchingEncodingMode);
 
