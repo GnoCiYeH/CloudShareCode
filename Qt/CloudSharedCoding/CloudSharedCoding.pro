@@ -39,6 +39,7 @@ SOURCES += \
     projectform.cpp \
     settingform.cpp \
     switchingencodingmode.cpp \
+    useredittip.cpp \
     welcomewind.cpp
 
 HEADERS += \
@@ -56,6 +57,7 @@ HEADERS += \
     projectform.h \
     settingform.h \
     switchingencodingmode.h \
+    useredittip.h \
     welcomewind.h
 
 FORMS += \
@@ -70,6 +72,7 @@ FORMS += \
     projectform.ui \
     settingform.ui \
     switchingencodingmode.ui \
+    useredittip.ui \
     welcomewind.ui
 
 # Default rules for deployment.

@@ -588,9 +588,9 @@ void MainWindow::dataProgress()
         int charRemoved = list[2].toInt();
         if(fileWidgets.contains(file_id))
         {
-            int position = (list[0]+list[1]+list[2]+list[3]).length()+4;
+            int position = (list[0]+list[1]+list[2]+list[3]+list[4]).length()+4;
             CodeEdit* wind = fileWidgets.value(file_id);
-            wind->changeText(pos,charRemoved,data.mid(position));
+            wind->changeText(pos,charRemoved,list[4],data.mid(position+1));
         }
         break;
     }
