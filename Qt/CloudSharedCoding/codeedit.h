@@ -17,7 +17,9 @@
 #include<vector>
 #include<string>
 #include<cmath>
+#include<QHash>
 #include"InfoType.h"
+#include"useredittip.h"
 using std::string;
 using std::vector;
 using std::min;
@@ -45,7 +47,7 @@ public:
 
     std::shared_ptr<FileInfo> getFile(){return file;}
 
-    void changeText(int pos,int charRemoved,QString data);
+    void changeText(int pos,int charRemoved,QString userId,QString data);
 
     int tcnum = 0;
     int ctnum = 0;
@@ -54,11 +56,10 @@ signals:
     void deleteInfo(int,int);
 
 public slots:
-    //void textChange();
     void docChange(int,int,int);
 
 protected:
-    void keyReleaseEvent(QKeyEvent* event)override;
+    //void keyReleaseEvent(QKeyEvent* event)override;
 
 private:
     Ui::CodeEdit *ui;
@@ -77,6 +78,8 @@ private:
     AssociateListWidget *associateWidget;//联想表
     QString getWordCursor();//获取当前光标所在位置的字符串
     int getAssociateWidgetX();
+
+    QHash<QString,UserEditTip*> userWidget;
 
 private slots:
     void showAssociateWidget();//展示联想列表

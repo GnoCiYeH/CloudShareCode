@@ -6,7 +6,7 @@
 #include "mainwindow.h"
 #include "package.h"
 #include "mainwindow.h"
-#include <QMenu>
+#include "useredittip.h"
 
 CodeEdit::CodeEdit(std::shared_ptr<FileInfo> fileptr, QWidget *parent) :
     QWidget(parent),
@@ -73,7 +73,7 @@ void CodeEdit::docChange(int pos, int charRemoved, int charAdded)
 {
     showAssociateWidget();
     qDebug() << pos << " " << charRemoved << " " << charAdded;
-    QString data = QString::number(file->file_id) + "#" + QString::number(pos) + "#" + QString::number(charRemoved) + "#" + file->file_path + "#";
+    QString data = QString::number(file->file_id) + "#" + QString::number(pos) + "#" + QString::number(charRemoved) + "#" + file->file_path + "#" + MainWindow::userId + "#";
     for (int var = pos; var < pos + charAdded; ++var)
     {
         if (document->characterAt(var) == QChar(8233))
@@ -94,7 +94,7 @@ void CodeEdit::addText(const QString str)
     connect(document, SIGNAL(contentsChange(int, int, int)), this, SLOT(docChange(int, int, int)));
 }
 
-void CodeEdit::changeText(int pos, int charRemoved, QString data)
+void CodeEdit::changeText(int pos, int charRemoved,QString userId,QString data)
 {
     QTextCursor cursor(document);
     cursor.movePosition(QTextCursor::NextCharacter, QTextCursor::MoveAnchor, pos);
@@ -105,14 +105,18 @@ void CodeEdit::changeText(int pos, int charRemoved, QString data)
     cursor.insertText(data);
     connect(document, SIGNAL(contentsChange(int, int, int)), this, SLOT(docChange(int, int, int)));
 
-    QMenu *menu = new QMenu(this);
-    QAction *action = new QAction(menu);
-    action->setText(data);
-    menu->addAction(action);
-    int x = ui->textEdit->cursorRect(cursor).x();
-    int y = ui->textEdit->cursorRect(cursor).y();
-    menu->move(x, y);
-    menu->show();
+    if(userWidget.contains(userId))
+    {
+        UserEditTip* wind = userWidget.find(userId).value();
+        wind->move(ui->textEdit->cursorRect(cursor).center());
+        wind->show();
+    }
+    else{
+        UserEditTip* wind = new UserEditTip(userId,this);
+        userWidget.insert(userId,wind);
+        wind->move(ui->textEdit->cursorRect(cursor).center());
+        wind->show();
+    }
 }
 
 void CodeEdit::showAssociateWidget()

@@ -554,13 +554,13 @@ void TcpServer::sendTextChange(int sock_fd, char* data)
 {
     std::string buf(data);
     stringList list;
-    stringSplit(buf, "#", list,5);
+    stringSplit(buf, "#", list,6);
     int file_id = std::stoi(list[0]);
     int pos = std::stoi(list[1]);
     int charRemoved = std::stoi(list[2]);
     std::string path = list[3];
 
-    if (!textChange(path, pos, charRemoved, list[4]))
+    if (!textChange(path, pos, charRemoved, list[5]))
     {
         ERROR_LOG(m_logger, "更改文件失败");
     }
