@@ -41,6 +41,7 @@ public:
     ~CodeEdit() override;
 
     void addText(const QString str);
+    QString getText();
 
     std::shared_ptr<FileInfo> getFile(){return file;}
 
