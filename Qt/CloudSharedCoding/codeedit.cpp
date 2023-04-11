@@ -8,8 +8,9 @@
 #include "mainwindow.h"
 #include <QMenu>
 
-CodeEdit::CodeEdit(std::shared_ptr<FileInfo> fileptr, QWidget *parent) : QWidget(parent),
-                                                                         ui(new Ui::CodeEdit)
+CodeEdit::CodeEdit(std::shared_ptr<FileInfo> fileptr, QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::CodeEdit)
 {
     ui->setupUi(this);
 
@@ -201,25 +202,22 @@ int CodeEdit::getAssociateWidgetX()
     return x;
 }
 
-<<<<<<< HEAD
 void CodeEdit::keyReleaseEvent(QKeyEvent *event){
-
+    if(associateState==AssociateState::Showing){
+        if(event->key()==Qt::Key_Up){
+            int currentRow=associateWidget->currentRow();
+            associateWidget->setCurrentRow(currentRow-1);
+        }
+        else if(event->key()==Qt::Key_Down){
+            int currentRow=associateWidget->currentRow();
+            associateWidget->setCurrentRow(currentRow+1);
+        }
+    }
 }
 
 HighLighter::HighLighter(CodeEdit* edit,QTextDocument* text):
     QSyntaxHighlighter (text),
     edit(edit)
-
-HighLighter::HighLighter(CodeEdit* edit,QTextDocument* text):QSyntaxHighlighter (text)
-=======
-// void CodeEdit::keyReleaseEvent(QKeyEvent *event)
-//{
-// }
-
-HighLighter::HighLighter(CodeEdit *edit, QTextDocument *text) : QSyntaxHighlighter(text),
-                                                                edit(edit)
-//,HighLighter::HighLighter(CodeEdit * edit, QTextDocument * text) : QSyntaxHighlighter(text)
->>>>>>> 4a6a38ebf546d0115d38d6a0b843f87c3f36aff2
 {
     // 鍒跺畾楂樹寒瑙勫�?
     HighLighterRule rule;
