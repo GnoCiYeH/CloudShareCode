@@ -130,7 +130,7 @@ public:
         label->setText(QCoreApplication::translate("LoginDialog", "\350\264\246\345\217\267\357\274\232", nullptr));
         label_2->setText(QCoreApplication::translate("LoginDialog", "\345\257\206\347\240\201\357\274\232", nullptr));
         label_3->setText(QCoreApplication::translate("LoginDialog", "\346\234\215\345\212\241\345\231\250\345\234\260\345\235\200\357\274\232", nullptr));
-        lineEdit_ServerIp->setText(QCoreApplication::translate("LoginDialog", "192.168.239.129", nullptr));
+        lineEdit_ServerIp->setText(QCoreApplication::translate("LoginDialog", "47.115.211.238", nullptr));
         pushButton->setText(QCoreApplication::translate("LoginDialog", "\347\231\273\345\275\225", nullptr));
         pushButton_2->setText(QCoreApplication::translate("LoginDialog", "\351\200\200\345\207\272", nullptr));
     } // retranslateUi

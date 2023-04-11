@@ -12,12 +12,15 @@
 #include<QTimer>
 #include<QLabel>
 #include<QDateTime>
-
 #include"ui_mainwindow.h"
 #include"switchingencodingmode.h"
-
 #include "codeedit.h"
-//#include"ui_switchingencodingmode.h"
+#include<QFileDialog>
+#include<QFile>
+#include<QFileInfo>
+#include<map>
+#include<algorithm>
+
 namespace Ui {
 class MainWindow;
 }
@@ -35,7 +38,7 @@ public:
 
     static QString userId;
 
-
+    std::map<QString,CodeEdit*>mp;//存放路径名字和CodeEdit指针的相互映射
 
 
 public slots:
@@ -45,12 +48,14 @@ public slots:
     void openCloudProj();
     void openProj(int);
     void newLocalProj();
+    void openLocalProj();
     void projectItemPressedSlot(QTreeWidgetItem*,int);
 
     void openProjFile();
     void newProFile();
     void deleteProFile();
     void newCloudProj();
+    void saveLocalProj();
 
     static bool loginState(){
         return isLogin;

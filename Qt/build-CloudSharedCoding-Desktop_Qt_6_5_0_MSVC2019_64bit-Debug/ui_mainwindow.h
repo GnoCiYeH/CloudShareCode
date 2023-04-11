@@ -33,7 +33,6 @@ public:
     QAction *actionCloud_project;
     QAction *actionLocal_project;
     QAction *actionNew_cloud_project;
-    QAction *actionNew_local_project;
     QAction *add_file_action;
     QAction *new_file_action;
     QAction *actionClose_project_2;
@@ -49,6 +48,9 @@ public:
     QAction *actionASCLL;
     QAction *actionUTF8;
     QAction *actionSwitching;
+    QAction *actionSave;
+    QAction *actionNewFileDirection;
+    QAction *actionNewFile;
     QWidget *centralWidget;
     QHBoxLayout *horizontalLayout;
     QWidget *widget_3;
@@ -64,6 +66,7 @@ public:
     QMenuBar *menuBar;
     QMenu *menu;
     QMenu *menuNew_project;
+    QMenu *menu_New_local_project;
     QMenu *menuOpen_project;
     QMenu *Tool;
     QMenu *Setting;
@@ -76,15 +79,13 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName("MainWindow");
-        MainWindow->resize(1293, 774);
+        MainWindow->resize(1390, 785);
         actionCloud_project = new QAction(MainWindow);
         actionCloud_project->setObjectName("actionCloud_project");
         actionLocal_project = new QAction(MainWindow);
         actionLocal_project->setObjectName("actionLocal_project");
         actionNew_cloud_project = new QAction(MainWindow);
         actionNew_cloud_project->setObjectName("actionNew_cloud_project");
-        actionNew_local_project = new QAction(MainWindow);
-        actionNew_local_project->setObjectName("actionNew_local_project");
         add_file_action = new QAction(MainWindow);
         add_file_action->setObjectName("add_file_action");
         new_file_action = new QAction(MainWindow);
@@ -115,6 +116,12 @@ public:
         actionUTF8->setObjectName("actionUTF8");
         actionSwitching = new QAction(MainWindow);
         actionSwitching->setObjectName("actionSwitching");
+        actionSave = new QAction(MainWindow);
+        actionSave->setObjectName("actionSave");
+        actionNewFileDirection = new QAction(MainWindow);
+        actionNewFileDirection->setObjectName("actionNewFileDirection");
+        actionNewFile = new QAction(MainWindow);
+        actionNewFile->setObjectName("actionNewFile");
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName("centralWidget");
         horizontalLayout = new QHBoxLayout(centralWidget);
@@ -166,7 +173,8 @@ public:
         verticalLayout->setSpacing(6);
         verticalLayout->setContentsMargins(11, 11, 11, 11);
         verticalLayout->setObjectName("verticalLayout");
-        widget = new CodeEdit(tab);
+        verticalLayout->setContentsMargins(0, 0, 0, 0);
+        widget = new CodeEdit(nullptr,tab);
         widget->setObjectName("widget");
 
         verticalLayout->addWidget(widget);
@@ -184,11 +192,13 @@ public:
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName("menuBar");
-        menuBar->setGeometry(QRect(0, 0, 1293, 22));
+        menuBar->setGeometry(QRect(0, 0, 1390, 21));
         menu = new QMenu(menuBar);
         menu->setObjectName("menu");
         menuNew_project = new QMenu(menu);
         menuNew_project->setObjectName("menuNew_project");
+        menu_New_local_project = new QMenu(menuNew_project);
+        menu_New_local_project->setObjectName("menu_New_local_project");
         menuOpen_project = new QMenu(menu);
         menuOpen_project->setObjectName("menuOpen_project");
         Tool = new QMenu(menuBar);
@@ -219,8 +229,11 @@ public:
         menu->addAction(actionClose_project_2);
         menu->addAction(actionClose);
         menu->addSeparator();
+        menu->addAction(actionSave);
         menuNew_project->addAction(actionNew_cloud_project);
-        menuNew_project->addAction(actionNew_local_project);
+        menuNew_project->addAction(menu_New_local_project->menuAction());
+        menu_New_local_project->addAction(actionNewFileDirection);
+        menu_New_local_project->addAction(actionNewFile);
         menuOpen_project->addAction(actionCloud_project);
         menuOpen_project->addAction(actionLocal_project);
         Tool->addAction(Setting->menuAction());
@@ -234,7 +247,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(0);
+        tabWidget->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -246,7 +259,6 @@ public:
         actionCloud_project->setText(QCoreApplication::translate("MainWindow", "Cloud project", nullptr));
         actionLocal_project->setText(QCoreApplication::translate("MainWindow", "Local project", nullptr));
         actionNew_cloud_project->setText(QCoreApplication::translate("MainWindow", "New cloud project", nullptr));
-        actionNew_local_project->setText(QCoreApplication::translate("MainWindow", "New local project", nullptr));
         add_file_action->setText(QCoreApplication::translate("MainWindow", "\346\267\273\345\212\240\346\226\207\344\273\266", nullptr));
         new_file_action->setText(QCoreApplication::translate("MainWindow", "\346\226\260\345\273\272\346\226\207\344\273\266", nullptr));
         actionClose_project_2->setText(QCoreApplication::translate("MainWindow", "\345\205\263\351\227\255\351\241\271\347\233\256", nullptr));
@@ -262,10 +274,14 @@ public:
         actionASCLL->setText(QCoreApplication::translate("MainWindow", "ASCII", nullptr));
         actionUTF8->setText(QCoreApplication::translate("MainWindow", "UTF-8", nullptr));
         actionSwitching->setText(QCoreApplication::translate("MainWindow", "\345\210\207\346\215\242\347\274\226\347\240\201\346\226\271\345\274\217", nullptr));
-        tabWidget->setTabText(tabWidget->indexOf(tab), QCoreApplication::translate("MainWindow", "Tab 1", nullptr));
+        actionSave->setText(QCoreApplication::translate("MainWindow", "\346\234\254\345\234\260\344\277\235\345\255\230", nullptr));
+        actionNewFileDirection->setText(QCoreApplication::translate("MainWindow", "NewFileDirection", nullptr));
+        actionNewFile->setText(QCoreApplication::translate("MainWindow", "NewFile", nullptr));
+        tabWidget->setTabText(tabWidget->indexOf(tab), QCoreApplication::translate("MainWindow", "Welcome", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QCoreApplication::translate("MainWindow", "Tab 2", nullptr));
         menu->setTitle(QCoreApplication::translate("MainWindow", "\346\226\207\344\273\266", nullptr));
         menuNew_project->setTitle(QCoreApplication::translate("MainWindow", "\346\226\260\345\273\272\351\241\271\347\233\256", nullptr));
+        menu_New_local_project->setTitle(QCoreApplication::translate("MainWindow", "\346\226\260\345\273\272\346\234\254\345\234\260\346\226\207\344\273\266", nullptr));
         menuOpen_project->setTitle(QCoreApplication::translate("MainWindow", "\346\211\223\345\274\200\351\241\271\347\233\256", nullptr));
         Tool->setTitle(QCoreApplication::translate("MainWindow", "\345\267\245\345\205\267", nullptr));
         Setting->setTitle(QCoreApplication::translate("MainWindow", "\350\256\276\347\275\256", nullptr));
