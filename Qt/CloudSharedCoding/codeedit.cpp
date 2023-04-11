@@ -476,3 +476,8 @@ int AssociateListWidget::strToInt(string str)
     }
     return res;
 }
+
+QString CodeEdit::getText()
+{
+    return ui->textEdit->toPlainText();
+}

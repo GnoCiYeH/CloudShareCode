@@ -18,6 +18,8 @@
 #include<QFileDialog>
 #include<QFile>
 #include<QFileInfo>
+#include<map>
+#include<algorithm>
 
 namespace Ui {
 class MainWindow;
@@ -36,7 +38,7 @@ public:
 
     static QString userId;
 
-
+    std::map<QString,CodeEdit*>mp;//存放路径名字和CodeEdit指针的相互映射
 
 
 public slots:
@@ -53,6 +55,7 @@ public slots:
     void newProFile();
     void deleteProFile();
     void newCloudProj();
+    void saveLocalProj();
 
     static bool loginState(){
         return isLogin;
