@@ -61,9 +61,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->actionCloud_project->setText("打开云项目");
     ui->actionLocal_project->setText("打开本地项目");
     ui->actionNew_cloud_project->setText("新建云项目");
-
-    ui->actionNewFileDirection->setText("添加文件目录");
-    ui->actionNewFile->setText("添加文件");
+    ui->actionNew_local_project->setText("新建本地项目");
 
 
     //右键菜单          
@@ -108,7 +106,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionLocal_project,SIGNAL(triggered()),this,SLOT(openLocalProj()));
     connect(ui->actionSave,&QAction::triggered,this,&MainWindow::saveLocalProj);
 
-    connect(ui->actionNewFile,SIGNAL(triggered()),this,SLOT(newLocalProj()));
+    connect(ui->actionNew_local_project,SIGNAL(triggered()),this,SLOT(newLocalProj()));
     //*************************************************************************************************
 
     connect(ui->Setting,SIGNAL(triggered()),this,SLOT(openSettingDialog()));
@@ -764,12 +762,68 @@ void MainWindow::saveLocalProj()
     {
 
     }
-
-
 }
 
-//新建本地项目文件
+
+//新建本地项目文件并打开
 void MainWindow::newLocalProj()
 {
+    NewLocalFile* dialog=new NewLocalFile(this);
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
+    dialog->show();
+    //确定路径以及文件名称
+    connect(dialog->getPushButtonConfrim(),&QPushButton::clicked,this,[=](){
+        if(dialog->getLineEdit_Name()->text()=="")
+        {
+            QMessageBox::warning(this,"警告","请输入文件名称");
+            return;
+        }
+        else if(!dialog->isLegal(dialog->getLineEdit_Name()->text()))
+        {
+            QMessageBox::warning(this,"警告","请输入合法的文件名（只允许包含字母和数字）");
+            return;
+        }
+        else
+        {
+            dialog->setFileName(dialog->getLineEdit_Name()->text()+".txt");
+            dialog->setFilePath(dialog->getFileTempPath()+"/"+dialog->getFileName());
+            QString file_path=dialog->getFilePath();
+            QFile *new_file=new QFile(this);
+            new_file->setFileName(file_path);
+            bool res=new_file->open(QIODevice::ReadWrite|QIODevice::Text);
+            new_file->close();
+            if(!res)
+            {
+                QMessageBox::critical(this,"错误","文件新建失败");
+                return;
+            }
+            else
+            {
+                QMessageBox::information(this,"新建文件","新建文件成功");
+                QFileInfo info(dialog->getFilePath());
+                std::shared_ptr<FileInfo> file_information(new FileInfo);
+                file_information->file_name=info.fileName();
+                file_information->file_path=info.filePath();
 
+                //file_information构造出一个code_edit文本编辑器
+                CodeEdit* code_edit=new CodeEdit(file_information,this);
+
+                //新建一个tab加入到tabWidget中
+                ui->tabWidget->addTab(code_edit,file_information->file_name);
+                file_information->is_open=true;
+
+                //读取文件的内容并打印到code_edit编辑器
+                QFile file(dialog->getFilePath());
+                file.open(QIODevice::ReadOnly);
+                QByteArray array=file.readAll();
+                code_edit->addText(array);
+
+                //一个path对应一个code_edit指针，添加到映射表中
+                mp[file_information->file_path]=code_edit;
+
+                dialog->close();
+                return;
+            }
+        }
+    });
 }
