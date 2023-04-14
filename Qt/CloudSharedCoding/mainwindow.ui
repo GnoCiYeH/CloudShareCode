@@ -131,15 +131,8 @@
      <property name="title">
       <string>新建项目</string>
      </property>
-     <widget class="QMenu" name="menu_New_local_project">
-      <property name="title">
-       <string>新建本地文件</string>
-      </property>
-      <addaction name="actionNewFileDirection"/>
-      <addaction name="actionNewFile"/>
-     </widget>
      <addaction name="actionNew_cloud_project"/>
-     <addaction name="menu_New_local_project"/>
+     <addaction name="actionNew_local_project"/>
     </widget>
     <widget class="QMenu" name="menuOpen_project">
      <property name="title">
@@ -303,6 +296,11 @@
   <action name="actionNewFile">
    <property name="text">
     <string>NewFile</string>
+   </property>
+  </action>
+  <action name="actionNew_local_project">
+   <property name="text">
+    <string>New local project</string>
    </property>
   </action>
  </widget>

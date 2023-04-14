@@ -32,6 +32,7 @@ SOURCES += \
     codeedit.cpp \
     logindialog.cpp \
     newfiledialog.cpp \
+    newlocalfile.cpp \
     newprojectdialog.cpp \
     package.cpp \
     privilegelistitem.cpp \
@@ -50,6 +51,7 @@ HEADERS += \
     codeedit.h \
     logindialog.h \
     newfiledialog.h \
+    newlocalfile.h \
     newprojectdialog.h \
     package.h \
     privilegelistitem.h \
@@ -66,6 +68,7 @@ FORMS += \
     codeedit.ui \
     logindialog.ui \
     newfiledialog.ui \
+    newlocalfile.ui \
     newprojectdialog.ui \
     privilegelistitem.ui \
     privilegemanager.ui \

@@ -20,6 +20,8 @@
 #include<QFileInfo>
 #include<map>
 #include<algorithm>
+#include<QDir>
+#include"newlocalfile.h"
 
 namespace Ui {
 class MainWindow;
