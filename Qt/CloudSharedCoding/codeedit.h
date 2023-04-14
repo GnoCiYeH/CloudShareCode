@@ -38,6 +38,7 @@ class CodeEdit : public QWidget
 
 public: friend class EditWorkThread;
     friend class HighLighter;
+    friend class AssociateListWidget;
 public:
     explicit CodeEdit(std::shared_ptr<FileInfo>fileptr=nullptr,QWidget *parent = nullptr);
     ~CodeEdit() override;
@@ -59,7 +60,7 @@ public slots:
     void docChange(int,int,int);
 
 protected:
-    void keyReleaseEvent(QKeyEvent* event)override;
+    void keyPressEvent(QKeyEvent* event)override;
 
 private:
     Ui::CodeEdit *ui;
@@ -129,13 +130,16 @@ enum AssociateState{
 
 class AssociateListWidget:public QListWidget{
 public:
-    AssociateListWidget(QWidget*parent=0);
+    AssociateListWidget(CodeEdit*edit,QWidget*parent=0);
     static int letterDifference(const string source,const string target);//两个字符串的差异度
     static int strToInt(string str);
+protected:
+    void keyPressEvent(QKeyEvent*event)override;
 private:
     QPlainTextEdit* p;
     QColor backgroundColor;//联想列表背景色
     QColor highlightColor;
+    CodeEdit* edit;
 };
 
 #endif // CODEEDIT_H
