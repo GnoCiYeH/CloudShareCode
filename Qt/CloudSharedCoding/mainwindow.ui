@@ -131,15 +131,8 @@
      <property name="title">
       <string>新建项目</string>
      </property>
-     <widget class="QMenu" name="menu_New_local_project">
-      <property name="title">
-       <string>新建本地文件</string>
-      </property>
-      <addaction name="actionNewFileDirection"/>
-      <addaction name="actionNewFile"/>
-     </widget>
      <addaction name="actionNew_cloud_project"/>
-     <addaction name="menu_New_local_project"/>
+     <addaction name="actionNew_local_project"/>
     </widget>
     <widget class="QMenu" name="menuOpen_project">
      <property name="title">
@@ -178,7 +171,7 @@
     </property>
     <widget class="QMenu" name="menuSendFeedback">
      <property name="title">
-      <string>发送反馈</string>
+      <string>发送反�?</string>
      </property>
      <addaction name="actionSuggestion"/>
      <addaction name="actionProblem"/>
@@ -309,6 +302,9 @@
   <action name="actionSetting">
    <property name="text">
     <string>Setting</string>
+  <action name="actionNew_local_project">
+   <property name="text">
+    <string>New local project</string>
    </property>
   </action>
  </widget>

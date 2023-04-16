@@ -10,7 +10,7 @@
 #include "useredittip.h"
 
 CodeEdit::CodeEdit(std::shared_ptr<FileInfo> fileptr, QWidget *parent) : QWidget(parent),
-ui(new Ui::CodeEdit)
+                                                                         ui(new Ui::CodeEdit)
 {
     ui->setupUi(this);
 
@@ -51,7 +51,7 @@ ui(new Ui::CodeEdit)
 
     // 鍒濆鍖栬仈鎯冲垪琛?
     setUpAssociateList();
-    associateWidget = new AssociateListWidget(ui->textEdit);
+    associateWidget = new AssociateListWidget(this, ui->textEdit);
     associateWidget->hide();
     associateWidget->setMaximumHeight(fontMetrics().height() * 5);
     associateState = AssociateState::Hide;
@@ -76,9 +76,9 @@ void CodeEdit::docChange(int pos, int charRemoved, int charAdded)
     QString data = QString::number(file->file_id) + "#" + QString::number(pos) + "#" + QString::number(charRemoved) + "#" + file->file_path + "#" + MainWindow::userId + "#";
     for (int var = pos; var < pos + charAdded; ++var)
     {
-        if (document->characterAt(var) == QChar(8233)|| document->characterAt(var) == QChar(8232))
+        if (document->characterAt(var) == QChar(8233) || document->characterAt(var) == QChar(8232))
         {
-            if(charRemoved==1&&charAdded==1)
+            if (charRemoved == 1 && charAdded == 1)
             {
                 return;
             }
@@ -100,7 +100,7 @@ void CodeEdit::addText(const QString str)
     connect(document, SIGNAL(contentsChange(int, int, int)), this, SLOT(docChange(int, int, int)));
 }
 
-void CodeEdit::changeText(int pos, int charRemoved,QString userId,QString data)
+void CodeEdit::changeText(int pos, int charRemoved, QString userId, QString data)
 {
     QTextCursor cursor(document);
     cursor.movePosition(QTextCursor::NextCharacter, QTextCursor::MoveAnchor, pos);
@@ -111,15 +111,16 @@ void CodeEdit::changeText(int pos, int charRemoved,QString userId,QString data)
     cursor.insertText(data);
     connect(document, SIGNAL(contentsChange(int, int, int)), this, SLOT(docChange(int, int, int)));
 
-    if(userWidget.contains(userId))
+    if (userWidget.contains(userId))
     {
-        UserEditTip* wind = userWidget.find(userId).value();
+        UserEditTip *wind = userWidget.find(userId).value();
         wind->move(ui->textEdit->cursorRect(cursor).center());
         wind->showTip();
     }
-    else{
-        UserEditTip* wind = new UserEditTip(userId,this);
-        userWidget.insert(userId,wind);
+    else
+    {
+        UserEditTip *wind = new UserEditTip(userId, this);
+        userWidget.insert(userId, wind);
         wind->move(ui->textEdit->cursorRect(cursor).center());
         wind->showTip();
     }
@@ -173,6 +174,7 @@ void CodeEdit::showAssociateWidget()
             associateState = AssociateState::Showing;
             associateWidget->setCurrentRow(0, QItemSelectionModel::Select);
         }
+        associateWidget->setFocus();
     }
 }
 
@@ -189,6 +191,11 @@ QString CodeEdit::getWordCursor()
         ch = ui->textEdit->document()->characterAt(++start);
     }
     return res;
+}
+
+QString CodeEdit::getText()
+{
+    return ui->textEdit->toPlainText();
 }
 
 int CodeEdit::getAssociateWidgetX()
@@ -212,32 +219,40 @@ int CodeEdit::getAssociateWidgetX()
     return x;
 }
 
-
-void CodeEdit::keyReleaseEvent(QKeyEvent *event){
-//    if(ui->textEdit->hasFocus())
-//    {
-//        if(event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)
-//        {
-//            ui->textEdit->insertPlainText("\n");
-//            return;
-//        }
-//    }
-//    return QWidget::keyReleaseEvent(event);
+void CodeEdit::keyPressEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)
+    {
+        if (associateState == AssociateState::Showing)
+        {
+            QKeyEvent *newEvent = new QKeyEvent(QEvent::KeyPress, Qt::Key_Return, Qt::NoModifier);
+            QApplication::sendEvent(associateWidget, newEvent); // 发送模拟事�?
+            return;                                             // 不调用基类的函数，防止移动光�?
+        }
+    }
+    else if (event->key() == Qt::Key_Down)
+    {
+        if (associateState == AssociateState::Showing)
+        {
+            QKeyEvent *newEvent = new QKeyEvent(QEvent::KeyPress, Qt::Key_Return, Qt::NoModifier);
+            QApplication::sendEvent(associateWidget, newEvent); // 发送模拟事�?
+            return;                                             // 不调用基类的函数，防止移动光�?
+        }
+    }
+    else if (event->key() == Qt::Key_Up)
+    {
+        if (associateState == AssociateState::Showing)
+        {
+            QKeyEvent *newEvent = new QKeyEvent(QEvent::KeyPress, Qt::Key_Return, Qt::NoModifier);
+            QApplication::sendEvent(associateWidget, newEvent); // 发送模拟事�?
+            return;                                             // 不调用基类的函数，防止移动光�?
+        }
+    }
+    return QWidget::keyPressEvent(event); // 调用基类的函数，处理其他按键事件
 }
 
-HighLighter::HighLighter(CodeEdit* edit,QTextDocument* text):
-    QSyntaxHighlighter (text),
-    edit(edit)
-
-
-
-// void CodeEdit::keyReleaseEvent(QKeyEvent *event)
-//{
-// }
-
-
-//,HighLighter::HighLighter(CodeEdit * edit, QTextDocument * text) : QSyntaxHighlighter(text)
-
+HighLighter::HighLighter(CodeEdit *edit, QTextDocument *text) : QSyntaxHighlighter(text),
+                                                                edit(edit)
 {
     // 鍒跺畾楂樹寒瑙勫��?
     HighLighterRule rule;
@@ -453,7 +468,8 @@ void setUpAssociateList()
                   << "iostream";
 }
 
-AssociateListWidget::AssociateListWidget(QWidget *parent) : QListWidget(parent)
+AssociateListWidget::AssociateListWidget(CodeEdit *edit, QWidget *parent) : QListWidget(parent),
+                                                                            edit(edit)
 {
     p = (QPlainTextEdit *)parent;
     backgroundColor = Qt::lightGray;
@@ -496,7 +512,41 @@ int AssociateListWidget::strToInt(string str)
     return res;
 }
 
-QString CodeEdit::getText()
+void AssociateListWidget::keyPressEvent(QKeyEvent *event)
 {
-    return ui->textEdit->toPlainText();
+    if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)
+    {
+        // 获取当前选中的项
+        QListWidgetItem *item = currentItem();
+        if (item)
+        {
+            QString text = this->currentItem()->text();
+            QString word = edit->getWordCursor();
+            for (int i = 0; i < word.length(); i++)
+            {
+                edit->ui->textEdit->textCursor().deletePreviousChar();
+            }
+            edit->ui->textEdit->insertPlainText(text);
+        }
+        this->hide();
+        edit->ui->textEdit->setFocus();
+    }
+    else if (event->key() == Qt::Key_Down)
+    {
+        if (this->currentRow() < this->count() - 1)
+        {
+            this->setCurrentRow(this->currentRow() + 1);
+        }
+    }
+    else if (event->key() == Qt::Key_Up)
+    {
+        if (this->currentRow() > 0)
+        {
+            this->setCurrentRow(this->currentRow() - 1);
+        }
+    }
+    else
+    {
+        event->ignore();
+    }
 }
