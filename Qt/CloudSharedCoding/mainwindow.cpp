@@ -22,6 +22,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    settingWind = new SettingForm(this);
+    settingWind->hide();
+    settingWind->setWindowFlag(Qt::Window);
+
     encodingType->setAttribute(Qt::WA_DeleteOnClose);
 
     socket = new QTcpSocket(this);
@@ -104,6 +108,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //*************************************************************************************************
     connect(ui->actionCloud_project,SIGNAL(triggered()),this,SLOT(openCloudProj()));
     connect(ui->actionNew_cloud_project,SIGNAL(triggered()),this,SLOT(newCloudProj()));
+    connect(ui->actionSetting,SIGNAL(triggered()),this,SLOT(showSetting()));
 
     connect(ui->actionLocal_project,SIGNAL(triggered()),this,SLOT(openLocalProj()));
     connect(ui->actionSave,&QAction::triggered,this,&MainWindow::saveLocalProj);
@@ -176,6 +181,11 @@ void MainWindow::newCloudProj()
 //************************************************************************************************
 //************************************************************************************************
 //************************************************************************************************
+
+void MainWindow::showSetting()
+{
+    settingWind->show();
+}
 
 void MainWindow::deleteProFile()
 {

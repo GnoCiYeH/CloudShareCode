@@ -3,13 +3,14 @@
 #include <QKeyEvent>
 #include <QDebug>
 #include <QTimer>
+#include <QRegExp>
 #include "mainwindow.h"
 #include "package.h"
 #include "mainwindow.h"
 #include "useredittip.h"
 
 CodeEdit::CodeEdit(std::shared_ptr<FileInfo> fileptr, QWidget *parent) : QWidget(parent),
-                                                                         ui(new Ui::CodeEdit)
+ui(new Ui::CodeEdit)
 {
     ui->setupUi(this);
 
@@ -75,8 +76,14 @@ void CodeEdit::docChange(int pos, int charRemoved, int charAdded)
     QString data = QString::number(file->file_id) + "#" + QString::number(pos) + "#" + QString::number(charRemoved) + "#" + file->file_path + "#" + MainWindow::userId + "#";
     for (int var = pos; var < pos + charAdded; ++var)
     {
-        if (document->characterAt(var) == QChar(8233))
+        if (document->characterAt(var) == QChar(8233)|| document->characterAt(var) == QChar(8232))
+        {
+            if(charRemoved==1&&charAdded==1)
+            {
+                return;
+            }
             data += "\n";
+        }
         else
             data += document->characterAt(var);
     }
@@ -88,7 +95,7 @@ void CodeEdit::docChange(int pos, int charRemoved, int charAdded)
 
 void CodeEdit::addText(const QString str)
 {
-    document->disconnect(SIGNAL(contentsChange(int, int, int)));
+    document->disconnect(SIGNAL(contentsChange(int, int, int)), this, SLOT(docChange(int, int, int)));
     ui->textEdit->insertPlainText(str);
     connect(document, SIGNAL(contentsChange(int, int, int)), this, SLOT(docChange(int, int, int)));
 }
@@ -99,7 +106,7 @@ void CodeEdit::changeText(int pos, int charRemoved,QString userId,QString data)
     cursor.movePosition(QTextCursor::NextCharacter, QTextCursor::MoveAnchor, pos);
     qDebug() << ui->textEdit->toPlainText().size();
     cursor.movePosition(QTextCursor::NextCharacter, QTextCursor::KeepAnchor, charRemoved);
-    document->disconnect(SIGNAL(contentsChange(int, int, int)));
+    document->disconnect(SIGNAL(contentsChange(int, int, int)), this, SLOT(docChange(int, int, int)));
     cursor.removeSelectedText();
     cursor.insertText(data);
     connect(document, SIGNAL(contentsChange(int, int, int)), this, SLOT(docChange(int, int, int)));
@@ -108,13 +115,13 @@ void CodeEdit::changeText(int pos, int charRemoved,QString userId,QString data)
     {
         UserEditTip* wind = userWidget.find(userId).value();
         wind->move(ui->textEdit->cursorRect(cursor).center());
-        wind->show();
+        wind->showTip();
     }
     else{
         UserEditTip* wind = new UserEditTip(userId,this);
         userWidget.insert(userId,wind);
         wind->move(ui->textEdit->cursorRect(cursor).center());
-        wind->show();
+        wind->showTip();
     }
 }
 
@@ -207,7 +214,15 @@ int CodeEdit::getAssociateWidgetX()
 
 
 void CodeEdit::keyReleaseEvent(QKeyEvent *event){
-
+//    if(ui->textEdit->hasFocus())
+//    {
+//        if(event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)
+//        {
+//            ui->textEdit->insertPlainText("\n");
+//            return;
+//        }
+//    }
+//    return QWidget::keyReleaseEvent(event);
 }
 
 HighLighter::HighLighter(CodeEdit* edit,QTextDocument* text):

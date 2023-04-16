@@ -15,6 +15,7 @@
 #include"ui_mainwindow.h"
 #include"switchingencodingmode.h"
 #include "codeedit.h"
+#include "settingform.h"
 #include<QFileDialog>
 #include<QFile>
 #include<QFileInfo>
@@ -50,6 +51,7 @@ public slots:
     void newLocalProj();
     void openLocalProj();
     void projectItemPressedSlot(QTreeWidgetItem*,int);
+    void showSetting();
 
     void openProjFile();
     void newProFile();
@@ -85,6 +87,7 @@ private:
 
 
     //子窗��?
+    SettingForm* settingWind;
 
     //瀛愮獥鍙?
 

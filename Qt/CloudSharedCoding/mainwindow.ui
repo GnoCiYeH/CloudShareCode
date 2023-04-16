@@ -168,6 +168,7 @@
       <string>设置</string>
      </property>
      <addaction name="actionSwitching"/>
+     <addaction name="actionSetting"/>
     </widget>
     <addaction name="Setting"/>
    </widget>
@@ -303,6 +304,11 @@
   <action name="actionNewFile">
    <property name="text">
     <string>NewFile</string>
+   </property>
+  </action>
+  <action name="actionSetting">
+   <property name="text">
+    <string>Setting</string>
    </property>
   </action>
  </widget>
