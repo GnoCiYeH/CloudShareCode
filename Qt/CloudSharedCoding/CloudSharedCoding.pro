@@ -27,6 +27,7 @@ CONFIG += c++11
 
 SOURCES += \
     cloudsharedcoding.cpp \
+    codethemeitem.cpp \
         main.cpp \
         mainwindow.cpp \
     codeedit.cpp \
@@ -46,6 +47,7 @@ SOURCES += \
 HEADERS += \
     InfoType.h \
     cloudsharedcoding.h \
+    codethemeitem.h \
         mainwindow.h \
     myhelper.h \
     codeedit.h \
@@ -64,6 +66,7 @@ HEADERS += \
 
 FORMS += \
     cloudsharedcoding.ui \
+    codethemeitem.ui \
         mainwindow.ui \
     codeedit.ui \
     logindialog.ui \

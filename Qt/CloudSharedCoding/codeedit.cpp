@@ -8,6 +8,7 @@
 #include "package.h"
 #include "mainwindow.h"
 #include "useredittip.h"
+#include<QSettings>
 
 CodeEdit::CodeEdit(std::shared_ptr<FileInfo> fileptr, QWidget *parent) : QWidget(parent),
                                                                          ui(new Ui::CodeEdit)
@@ -254,12 +255,15 @@ void CodeEdit::keyPressEvent(QKeyEvent *event)
 HighLighter::HighLighter(CodeEdit *edit, QTextDocument *text) : QSyntaxHighlighter(text),
                                                                 edit(edit)
 {
+    QSettings settings("./configs/configs.ini",QSettings::IniFormat,this);
+    settings.beginGroup("CODETHEME");
+
     // 鍒跺畾楂樹寒瑙勫��?
     HighLighterRule rule;
     this->edit = edit;
 
     // 1.娣诲姞鍏抽敭瀛楅珮浜��??
-    keyword_format.setForeground(QColor(118, 238, 198)); // 璁剧疆鍏抽敭瀛楀墠鏅��??(blue)
+    keyword_format.setForeground(QColor(settings.value("KEYWORD","#00ffff").toString())); // 璁剧疆鍏抽敭瀛楀墠鏅��??(blue)
     keyword_format.setFontWeight(QFont::Bold);           // 璁剧疆鍏抽敭瀛楃殑瀛椾綋鏍煎紡(Bold)
     QVector<QString> keyword_pattern = {                 // \b鍦ㄨ〃绀哄崟璇嶅瓧绗﹁竟鐣岋紝闃叉渚嬪intVal涔熻璇嗗埆涓篿nt瀵艰嚧楂樹寒
                                         "\\bchar\\b", "\\bclass\\b", "\\bconst\\b", "\\bdouble\\b", "\\benum\\b", "\\bexplicit\\b",
@@ -277,7 +281,7 @@ HighLighter::HighLighter(CodeEdit *edit, QTextDocument *text) : QSyntaxHighlight
     } // 瑙勫垯闆嗗悎涓瓨鍌ㄧ潃keyword_pattern涓墍鏈夊叧閿瓧鐨勬爣璇嗙鍜屾牸��??(钃濊��? 绮椾��?)
 
     // 2.娣诲姞Qt绫婚珮浜��??
-    class_format.setForeground(Qt::darkCyan);   // 璁剧疆Qt绫诲墠鏅壊(darkCyan)
+    class_format.setForeground(QColor(settings.value("CLASS","#00ffff").toString()));   // 璁剧疆Qt绫诲墠鏅壊(darkCyan)
     class_format.setFontWeight(QFont::Bold);    // 璁剧疆Qt绫诲瓧浣撴牸��??(Bold)
     QString class_pattern = "\\bQ[a-zA-z]+\\b"; // Qt绫昏瘑鍒牸寮忎负涓よ竟鏈夊垎闅旂锛屼笖浠寮€澶寸殑鎵€鏈夎嫳鏂囧瓧绗︿��?
     rule.pattern = QRegularExpression(class_pattern);
@@ -286,14 +290,14 @@ HighLighter::HighLighter(CodeEdit *edit, QTextDocument *text) : QSyntaxHighlight
 
     // 3.娣诲姞澶存枃浠堕珮浜牸��??
     // 3.1 #寮€��??
-    headfile_format.setForeground(Qt::darkGray);
+    headfile_format.setForeground(QColor(settings.value("HEADER","#00ffff").toString()));
     headfile_format.setFontWeight(QFont::Bold);
     rule.format = headfile_format;
     rule.pattern = QRegularExpression("#.*");
     highlighterrules.push_back(rule);
 
     // 3.2 鍚勫ご鏂囦欢
-    headfile_format.setForeground(Qt::darkGreen);
+    headfile_format.setForeground(QColor(settings.value("HEADER","#00ffff").toString()));
     headfile_format.setFontWeight(QFont::Bold);
     QVector<QString> headfile_pattern = {
         "<algorithm>", "<bitset>", "<cctype>", "<cerrno>", "<cerrno>", "<cerrno>",
@@ -317,14 +321,14 @@ HighLighter::HighLighter(CodeEdit *edit, QTextDocument *text) : QSyntaxHighlight
     comment_end = QRegularExpression(comment_end_pattern);
 
     // 5.娣诲姞寮曞彿楂樹寒瑙勫垯
-    quotation_format.setForeground(Qt::cyan); // 寮曞彿鍐呭棰滆��?(cyan)
+    quotation_format.setForeground(QColor(settings.value("QUATATION","#00ffff").toString())); // 寮曞彿鍐呭棰滆��?(cyan)
     QString quotation_pattern = "\".*\"";
     rule.pattern = QRegularExpression(quotation_pattern);
     rule.format = quotation_format;
     highlighterrules.push_back(rule);
 
     // 6.娣诲姞鍑芥暟楂樹寒鏍煎紡
-    function_format.setForeground(QColor(238, 180, 180)); // 鍑芥暟瀛椾綋棰滆壊璁剧疆涓篸arkGreen
+    function_format.setForeground(QColor(settings.value("FUNCTION","#00ffff").toString())); // 鍑芥暟瀛椾綋棰滆壊璁剧疆涓篸arkGreen
     function_format.setFontWeight(QFont::Bold);           // 鍑芥暟瀛椾綋鏍煎紡璁剧疆涓築old
     QString function_pattern = "\\b[a-zA-Z0-9_]+(?=\\()"; // 鍑芥暟鍚嶅彲浠ユ槸澶у皬鍐欒嫳鏂囧瓧绗︺€佹暟瀛椼€佷笅鍒掔嚎锛屽叾涓紝(?=\\()琛ㄧず鍚庨潰蹇呴』璺熺潃涓€涓乏鎷彿锛屼絾鏄繖涓乏鎷彿涓嶄細琚尮閰嶅埌
     rule.pattern = QRegularExpression(function_pattern);
@@ -332,7 +336,7 @@ HighLighter::HighLighter(CodeEdit *edit, QTextDocument *text) : QSyntaxHighlight
     highlighterrules.push_back(rule);
 
     // 7.娣诲姞鍒嗘敮楂樹寒鏍煎紡
-    branch_format.setForeground(Qt::red);
+    branch_format.setForeground(QColor(settings.value("BRANCH","#00ffff").toString()));
     branch_format.setFontWeight(QFont::Bold);
     QVector<QString> branch_pattern = {
         "if", "else", "switch", "case", "while", "for"};
@@ -344,7 +348,7 @@ HighLighter::HighLighter(CodeEdit *edit, QTextDocument *text) : QSyntaxHighlight
     }
 
     // 8.娣诲姞杈撳叆杈撳嚭楂樹寒鏍煎��?
-    cincout_format.setForeground(Qt::darkGray);
+    cincout_format.setForeground(QColor(settings.value("STDIO","#00ffff").toString()));
     cincout_format.setFontWeight(QFont::Bold);
     QVector<QString> cincout_pattern = {
         "cin", "cout", "std", "endl", "<<", ">>"};
@@ -356,7 +360,7 @@ HighLighter::HighLighter(CodeEdit *edit, QTextDocument *text) : QSyntaxHighlight
     }
 
     // 9.娣诲姞鍗曡娉ㄩ噴楂樹寒瑙勫��?
-    singleLine_comment_format.setForeground(QColor(211, 211, 211));
+    singleLine_comment_format.setForeground(QColor(settings.value("SIGNLE_LINE_COMMENT","#00ffff").toString()));
     singleLine_comment_format.setFontWeight(QFont::Bold);
     QString singleLine_comment_pattern = "//[^\n]*"; // 鍗曡娉ㄩ噴璇嗗埆鏍煎紡涓鸿窡鍦?//鍚庯紝浣嗕笉鍖呮嫭鎹㈣绗︼紝涓斾笉闇€瑕侀棿闅旂
     rule.pattern = QRegularExpression(singleLine_comment_pattern);
@@ -364,8 +368,10 @@ HighLighter::HighLighter(CodeEdit *edit, QTextDocument *text) : QSyntaxHighlight
     highlighterrules.push_back(rule);
 
     // 澶氳娉ㄩ噴鏍煎��?
-    multiLine_comment_format.setForeground(QColor(211, 211, 211));
+    multiLine_comment_format.setForeground(QColor(settings.value("MULITLINE_COMMENT","#00ffff").toString()));
     multiLine_comment_format.setFontWeight(QFont::Bold);
+
+    settings.endGroup();
 }
 
 void HighLighter::highlightBlock(const QString &text)

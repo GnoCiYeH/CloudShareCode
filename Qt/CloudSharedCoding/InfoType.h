@@ -68,6 +68,18 @@ struct Directory
     Directory(int id,QString str,QString path,MyTreeItem* item){pro_id = id;dir_name = str;dir_item = item;dir_path = path;}
 };
 
+enum HightlightType{
+    KEYWORD,
+    CLASS,
+    SIGNLE_LINE_COMMENT,
+    MULITLINE_COMMENT,
+    QUOTATION,
+    FUNCTION,
+    HEADER,
+    STDIO,
+    BRANCH
+};
+
 Q_DECLARE_METATYPE(Directory);
 Q_DECLARE_METATYPE(Project);
 Q_DECLARE_METATYPE(FileInfo);

@@ -45,7 +45,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //设置主窗口基本属性
     this->setWindowFlags(Qt::FramelessWindowHint);
-    myHelper::setStyle("://qss/lightgray.css");
     this->setWindowTitle("CloudSharedCoding");
     QToolButton* undoButton = new QToolButton(this);
     undoButton->setIcon(QIcon("://qss/darkblack/add_left.png"));
