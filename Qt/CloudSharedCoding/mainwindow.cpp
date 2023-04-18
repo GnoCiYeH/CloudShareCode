@@ -46,14 +46,10 @@ MainWindow::MainWindow(QWidget *parent) :
     //设置主窗口基本属性
     this->setWindowFlags(Qt::FramelessWindowHint);
     this->setWindowTitle("CloudSharedCoding");
-    QToolButton* undoButton = new QToolButton(this);
-    undoButton->setIcon(QIcon("://qss/darkblack/add_left.png"));
-    undoButton->setFixedSize(20,20);
-    ui->mainToolBar->addWidget(undoButton);
-    QToolButton* forwordButton = new QToolButton(this);
-    forwordButton->setIcon(QIcon("://qss/darkblack/add_right.png"));
-    forwordButton->setFixedSize(20,20);
-    ui->mainToolBar->addWidget(forwordButton);
+    QToolButton* runbutton = new QToolButton(this);
+    runbutton->setIcon(QIcon("://qss/darkblack/add_right.png"));
+    runbutton->setFixedSize(20,20);
+    ui->mainToolBar->addWidget(runbutton);
     QVBoxLayout* layout = new QVBoxLayout(this);
     layout->setSpacing(0);
     layout->setContentsMargins(0,0,0,0);
@@ -65,6 +61,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->actionLocal_project->setText("打开本地项目");
     ui->actionNew_cloud_project->setText("新建云项目");
     ui->actionNew_local_project->setText("新建本地项目");
+
+    connect(runbutton,SIGNAL(clicked()),this,SLOT(runProject()));
 
 
     //右键菜单          
@@ -122,6 +120,12 @@ MainWindow::MainWindow(QWidget *parent) :
     projectForm = new ProjectForm(this);
     projectForm->setWindowFlag(Qt::Window);
     loginDialog=new LoginDialog(this);
+
+    dock = new QDockWidget(this);
+    dockwidget = new QTextEdit(dock);
+    dockwidget->setFocusPolicy(Qt::NoFocus);
+    dock->setWidget(dockwidget);
+    this->addDockWidget(Qt::BottomDockWidgetArea,dock);
 
     //子窗口槽
     connect(this,&MainWindow::loginAllowed,loginDialog,&LoginDialog::loginSucceed);
@@ -648,6 +652,20 @@ void MainWindow::dataProgress()
         QMessageBox::about(this,"Tips",data);
         break;
     }
+    case (int)Package::ReturnType::BUILD_INFO:
+    {
+        QString data(socket->read(packageSize));
+        dockwidget->insertPlainText(data);
+        dockwidget->verticalScrollBar()->setValue(dockwidget->verticalScrollBar()->maximum());
+        break;
+    }
+    case (int)Package::ReturnType::RUN_INFO:
+    {
+        QString data(socket->read(packageSize));
+        dockwidget->insertPlainText(data);
+        dockwidget->verticalScrollBar()->setValue(dockwidget->verticalScrollBar()->maximum());
+        break;
+    }
     default:
         break;
     }
@@ -835,4 +853,52 @@ void MainWindow::newLocalProj()
             }
         }
     });
+}
+
+//run project
+void MainWindow::runProject()
+{
+    dockwidget->clear();
+
+    auto item = (MyTreeItem*)ui->treeWidget->currentItem();
+    bool is_local = true;
+    int pro_id;
+    switch (item->getType()) {
+    case MyTreeItem::DIR:
+    {
+        if((pro_id = item->data(0,Qt::UserRole).value<std::shared_ptr<Directory>>()->pro_id)!=-1)
+        {
+            is_local = false;
+        }
+        break;
+    }
+    case MyTreeItem::FILE:
+    {
+        if((pro_id = item->data(0,Qt::UserRole).value<std::shared_ptr<FileInfo>>()->file_project)!=-1)
+        {
+            is_local = false;
+        }
+        break;
+    }
+    case MyTreeItem::PROJECT:
+    {
+        if((pro_id = item->data(0,Qt::UserRole).value<std::shared_ptr<Project>>()->pro_id)!=-1)
+        {
+            is_local = false;
+        }
+        break;
+    }
+    default:
+        break;
+    }
+
+    if(is_local)
+    {
+
+    }
+    else
+    {
+        Package pck(QString::number(pro_id).toUtf8(),(int)Package::PackageType::RUN_PROJECT);
+        socket->write(pck.getPdata(),pck.getSize());
+    }
 }

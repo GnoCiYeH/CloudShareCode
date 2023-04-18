@@ -61,6 +61,8 @@ private:
 
     static void privilegeUpdate(int sock_fd, char* data);
 
+    static void runProject(int sock_fd, char* data);
+
     struct UserInfo
     {
         std::string userId;

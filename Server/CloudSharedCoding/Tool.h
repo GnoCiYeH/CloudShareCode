@@ -194,7 +194,9 @@ static bool textChange(std::string path,int pos, int charRemoved, std::string da
     //buf.erase(pos, charRemoved);
     std::string substr0 = buf.substr(0, pos);
     substr0 += data;
-    std::string substr1 = buf.substr((size_t)(pos + charRemoved));
+    std::string substr1 = "";
+    if (pos + charRemoved < buf.length())
+        substr1 = buf.substr((size_t)(pos + charRemoved));
     buf = substr0 + substr1;
     //buf.insert(pos, data.c_str(), data.size());
     std::ofstream ofs(path);

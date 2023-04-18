@@ -10,6 +10,8 @@
 #include"uuid/uuid.h"
 #include<netinet/tcp.h>
 #include<netinet/in.h>
+#include<sys/types.h>
+#include<unistd.h>
 
 #define MAXCONNECTION 64
 #define EVENT_SIZE 20
@@ -205,6 +207,11 @@ void TcpServer::tcpStart()
                         pool->submit(privilegeUpdate, sock_fd, data);
                         break;
                     }
+                    case (int)Package::PackageType::RUN_PROJECT:
+                    {
+                        pool->submit(runProject, sock_fd, data);
+                        break;
+                    }
                     default:
                         INFO_LOG(m_logger, "UNKNOW PACKAGETYPE");
                         break;
@@ -337,6 +344,13 @@ void TcpServer::newProject(int sock_fd, char* data)
     }
     mkdir(path.c_str(),0755);
 
+    int fd = open((path + "/CMakeLists.txt").c_str(), O_RDWR | O_CREAT, 0755);
+
+    if (fd != -1) {
+        // 关闭文件描述符
+        close(fd);
+    }
+
     uuid_t uuid;
     char uuidStr[36];
     uuid_generate(uuid);
@@ -349,6 +363,9 @@ void TcpServer::newProject(int sock_fd, char* data)
     std::string str = std::string(rows[0][0]) + "\t" + std::string(rows[0][1]) + "\t" + std::string(rows[0][2]) + "\t" + std::string(rows[0][3]);
     Package pck(str.c_str(), (int)Package::ReturnType::NEW_PROJ_INFO, str.size());
     write(sock_fd, pck.getPdata(), pck.getSize());
+
+    sql->exeSql("insert into File (file_name,file_user,file_path,file_project,file_privilege) \
+        values(\"CMakeLists.txt\",\"" + userId + "\",\"" + (path + "/CMakeLists.txt") + "\", " + rows[0][0] + ", 3); ");
 
     mysql_free_result(res);
     delete[] data;
@@ -562,7 +579,7 @@ void TcpServer::sendTextChange(int sock_fd, char* data)
 
     if (!textChange(path, pos, charRemoved, list[5]))
     {
-        ERROR_LOG(m_logger, "更改文件失败");
+        ERROR_LOG(m_logger, "edit file error");
     }
 
     int num = file_map->count(file_id);
@@ -620,5 +637,127 @@ void TcpServer::privilegeUpdate(int sock_fd, char* data)
     Package pck(str.c_str(), (int)Package::ReturnType::SERVER_OK, str.size());
     write(sock_fd, pck.getPdata(), pck.getSize());
 
+    delete[] data;
+}
+
+void TcpServer::runProject(int sock_fd, char* data)
+{
+    std::string proId(data);
+
+    auto res = sql->exeSql("select pro_name,pro_owner from Project where pro_id = " + proId + ";");
+    auto rows = sql->getRows(res);
+    std::string proPath = "./" + std::string(rows[0][1]) +"/" + std::string(rows[0][0]);
+    std::string buildPath = proPath + "/bulid";
+
+    removeFile(buildPath);
+    CreateDir(buildPath);
+    
+    FILE* fp = NULL;
+    char buf[1024];
+    memset(buf, 0, sizeof(buf));
+
+    std::string cmakeCmd = "cmake " + proPath + " -B " + buildPath + " 2>&1";
+    if ((fp = popen(cmakeCmd.c_str(), "r")) != NULL)
+    {
+        while (fgets(buf,sizeof(buf),fp)!=NULL)
+        {
+            Package pck(buf, (int)Package::ReturnType::BUILD_INFO, 1024);
+            write(sock_fd, pck.getPdata(), pck.getSize());
+            memset(buf, 0, sizeof(buf));
+        }
+        pclose(fp);
+    }
+
+    std::string makeCmd = "make -C " + buildPath + " 2>&1";
+    if ((fp = popen(makeCmd.c_str(), "r")) != NULL)
+    {
+        while (fgets(buf, sizeof(buf), fp) != NULL)
+        {
+            Package pck(buf, (int)Package::ReturnType::BUILD_INFO, 1024);
+            write(sock_fd, pck.getPdata(), pck.getSize());
+            memset(buf, 0, sizeof(buf));
+        }
+        pclose(fp);
+    }
+
+    /*std::string runCmd = buildPath + "/bin/" + std::string(rows[0][0]) + std::string(" 2>&1");
+    if ((fp = popen(runCmd.c_str(), "r")) != NULL)
+    {
+        while (fgets(buf, sizeof(buf), fp) != NULL)
+        {
+            Package pck(buf, (int)Package::ReturnType::RUN_INFO, 1024);
+            write(sock_fd, pck.getPdata(), pck.getSize());
+            memset(buf, 0, sizeof(buf));
+        }
+        pclose(fp);
+    }*/
+
+    //读取进程的pipe
+    int outfd[2];
+
+    //向进程输入
+    int infd[2];
+
+    if (pipe(outfd) == -1)
+    {
+        std::string str = "Server create pipe error!";
+        Package pck(str.c_str(), (int)Package::ReturnType::SERVER_ERROR, str.size());
+        write(sock_fd, pck.getPdata(), pck.getSize());
+        ERROR_LOG(m_logger, "pipe error");
+        return;
+    }
+    int subWfd = outfd[1];
+    int mainRfd = outfd[0];
+
+    if (pipe(infd) == -1)
+    {
+        std::string str = "Server create pipe error!";
+        Package pck(str.c_str(), (int)Package::ReturnType::SERVER_ERROR, str.size());
+        write(sock_fd, pck.getPdata(), pck.getSize());
+        ERROR_LOG(m_logger, "pipe error");
+        return;
+    }
+    int mainWfd = infd[1];
+    int subRfd = infd[0];
+
+    int pid = fork();
+    if (pid == -1)
+    {
+        ERROR_LOG(m_logger, "fork error");
+    }
+    else if (pid == 0) //子进程
+    {
+        //运行用户项目代码
+
+        //重定向输入输出流
+        close(STDOUT_FILENO);
+        close(STDIN_FILENO);
+        dup2(subWfd, STDOUT_FILENO);
+        dup2(subRfd, STDIN_FILENO);
+
+        std::string exePath = buildPath + "/bin/" + std::string(rows[0][0]);
+        if (execlp(exePath.c_str(),NULL) == -1)
+        {
+            ERROR_LOG(m_logger, "run project error");
+        }
+
+        _Exit(-1);
+    }
+    else
+    {
+        //服务器代码
+        while (read(mainRfd,buf,sizeof(buf)!=0))
+        {
+            Package pck(buf, (int)Package::ReturnType::RUN_INFO, 1024);
+            write(sock_fd, pck.getPdata(), pck.getSize());
+            memset(buf, 0, sizeof(buf));
+        }
+    }
+
+    close(mainRfd);
+    close(mainWfd);
+    close(subRfd);
+    close(subWfd);
+    mysql_free_result(res);
     delete[] data;
 }

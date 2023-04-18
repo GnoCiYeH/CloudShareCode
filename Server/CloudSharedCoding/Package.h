@@ -47,7 +47,7 @@ public:
         DEL_FILE = 11,
 
         //加入项目
-        JOIN_PROJECT =12,
+        JOIN_PROJECT = 12,
 
         //心跳包
         HEART_PCK = 13,
@@ -56,7 +56,10 @@ public:
         PRIVILEGE_QUERY = 14,
 
         //项目权限管理
-        PRIVILEGE_UPDATE = 15
+        PRIVILEGE_UPDATE = 15,
+
+        //编译运行项目
+        RUN_PROJECT = 16
     };
     enum class ReturnType {
         SERVER_ALLOW = 0,
@@ -70,7 +73,9 @@ public:
         TEXT_CHANGE = 8,
         HEART_PCK = 9,
         PRIVILEGE_INFO = 10,
-        SERVER_OK = 11
+        SERVER_OK = 11,
+        BUILD_INFO = 12,
+        RUN_INFO = 13
     };
     Package(const char* data, int type, int size);
     ~Package();
