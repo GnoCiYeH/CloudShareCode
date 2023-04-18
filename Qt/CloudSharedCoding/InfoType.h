@@ -9,7 +9,7 @@
 class MyTreeItem;
 struct Project
 {
-    int pro_id;
+    int pro_id;//-1代表本地项目或非法项目
     QString pro_name;
     QString pro_owner;
     QString pro_uuid = "";
@@ -37,7 +37,7 @@ struct FileInfo
     QString file_user;
     QString file_path;
     MyTreeItem* file_item;
-    int file_project;
+    int file_project;//-1代表本地项目或非法项目
     short file_privilege;
     bool is_open = false;
     FileInfo() {}
@@ -65,6 +65,7 @@ struct Directory
     int pro_id = -1; //-1代表本地项目或非法项目
     MyTreeItem* dir_item;
     QHash<QString,std::shared_ptr<Directory>> sub_dirs = QHash<QString,std::shared_ptr<Directory>>(); //子目录容器
+    Directory(){}
     Directory(int id,QString str,QString path,MyTreeItem* item){pro_id = id;dir_name = str;dir_item = item;dir_path = path;}
 };
 

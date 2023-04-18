@@ -62,7 +62,10 @@ public:
         PRIVILEGE_QUERY = 14,
 
         //项目权限更改
-        PRIVILEGE_UPDATE = 15
+        PRIVILEGE_UPDATE = 15,
+
+        //运行项目
+        RUN_PROJECT = 16
     };
     enum class ReturnType{
         SERVER_ALLOW = 0,
@@ -76,7 +79,9 @@ public:
         TEXT_CHANGE = 8,
         HEART_PCK = 9,
         PRIVILEGE_INFO = 10,
-        SERVER_OK = 11
+        SERVER_OK = 11,
+        BUILD_INFO = 12,
+        RUN_INFO = 13
     };
 
     Package(QByteArray data,int type);

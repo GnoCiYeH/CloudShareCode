@@ -73,6 +73,7 @@ signals:
 private slots:
     void on_tabWidget_tabCloseRequested(int index);
     void selectencodingMode();
+    void runProject();
 
     void on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column);
 
@@ -90,6 +91,8 @@ private:
 
     //子窗��?
     SettingForm* settingWind;
+    QDockWidget* dock;
+    QTextEdit* dockwidget;
 
     //瀛愮獥鍙?
 
