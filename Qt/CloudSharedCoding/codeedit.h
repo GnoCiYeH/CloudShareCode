@@ -64,7 +64,6 @@ public slots:
 
 protected:
     void keyPressEvent(QKeyEvent *event) override;
-
 private:
     Ui::CodeEdit *ui;
 

@@ -73,6 +73,19 @@ CodeEdit::~CodeEdit()
 void CodeEdit::docChange(int pos, int charRemoved, int charAdded)
 {
     showAssociateWidget();
+    //�Զ�����������
+    QMap<QChar,QChar>map;
+    map['(']=')';
+    map['[']=']';
+    map['{']='}';
+    map['\"']='\"';
+    int preCharIndex=ui->textEdit->textCursor().position()-1;
+    QChar preChar=document->characterAt(preCharIndex);
+    if(preChar=='('||preChar=='['||preChar=='{'||preChar=='\"'){
+        ui->textEdit->insertPlainText(map[preChar]);
+        ui->textEdit->moveCursor(QTextCursor::PreviousCharacter);
+    }
+
     qDebug() << pos << " " << charRemoved << " " << charAdded;
     QString data = QString::number(file->file_id) + "#" + QString::number(pos) + "#" + QString::number(charRemoved) + "#" + file->file_path + "#" + MainWindow::userId + "#";
     for (int var = pos; var < pos + charAdded; ++var)
@@ -249,7 +262,6 @@ void CodeEdit::keyPressEvent(QKeyEvent *event)
             return;                                             // 不调用基类的函数，防止移动光�?
         }
     }
-    return QWidget::keyPressEvent(event); // 调用基类的函数，处理其他按键事件
 }
 
 HighLighter::HighLighter(CodeEdit *edit, QTextDocument *text) : QSyntaxHighlighter(text),
@@ -468,9 +480,9 @@ void setUpAssociateList()
                   << "extren"
                   << "this"
                   << "switch"
-                  << "#include <>"
-                  << "#include \"\""
-                  << "#define"
+                  << "include <>"
+                  << "include \"\""
+                  << "define"
                   << "iostream";
 }
 
