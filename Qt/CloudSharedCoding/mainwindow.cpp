@@ -49,7 +49,9 @@ MainWindow::MainWindow(QWidget *parent) :
     QToolButton* runbutton = new QToolButton(this);
     runbutton->setIcon(QIcon("://qss/darkblack/add_right.png"));
     runbutton->setFixedSize(20,20);
-    ui->mainToolBar->addWidget(runbutton);
+    QToolBar* toolbar = new QToolBar(this);
+    toolbar->addWidget(runbutton);
+    this->addToolBar(Qt::RightToolBarArea,toolbar);
     QVBoxLayout* layout = new QVBoxLayout(this);
     layout->setSpacing(0);
     layout->setContentsMargins(0,0,0,0);
@@ -121,12 +123,26 @@ MainWindow::MainWindow(QWidget *parent) :
     projectForm->setWindowFlag(Qt::Window);
     loginDialog=new LoginDialog(this);
 
-    dock = new QDockWidget(this);
-    dockwidget = new QTextEdit(dock);
-    dockwidget->setFocusPolicy(Qt::NoFocus);
-    dock->setWidget(dockwidget);
-    this->addDockWidget(Qt::BottomDockWidgetArea,dock);
-    connect(dockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int,int,int)));
+    buildDock = new QDockWidget(this);
+    buildDockwidget = new QTextEdit(buildDock);
+    buildDockwidget->setFocusPolicy(Qt::NoFocus);
+    buildDock->setWidget(buildDockwidget);
+    this->addDockWidget(Qt::BottomDockWidgetArea,buildDock);
+
+    runDock = new QDockWidget(this);
+    QToolBar* runToolBar = new QToolBar(runDock);
+    QToolButton* stopRun = new QToolButton(runToolBar);
+    stopRun->setIcon(QIcon(":/qss_icons/light/rc/window_close_focus@2x.png"));
+    stopRun->setFixedSize(20,20);
+    stopRun->setWhatsThis("停止运行");
+    runToolBar->addWidget(stopRun);
+    runDock->setTitleBarWidget(runToolBar);
+    runDock->setWindowTitle("运行");
+    runDockwidget = new QTextEdit(runDock);
+    runDockwidget->setFocusPolicy(Qt::NoFocus);
+    runDock->setWidget(runDockwidget);
+    this->addDockWidget(Qt::BottomDockWidgetArea,runDock);
+    connect(runDockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int,int,int)));
 
     //子窗口槽
     connect(this,&MainWindow::loginAllowed,loginDialog,&LoginDialog::loginSucceed);
@@ -165,7 +181,7 @@ void MainWindow::cmdStdin(int pos,int charRemoved,int charAdded)
     }
     for (int var = pos; var < pos + charAdded; ++var)
     {
-        if (dockwidget->document()->characterAt(var) == QChar(8233) || dockwidget->document()->characterAt(var) == QChar(8232))
+        if (runDockwidget->document()->characterAt(var) == QChar(8233) || runDockwidget->document()->characterAt(var) == QChar(8232))
         {
             if (charRemoved == 1 && charAdded == 1)
             {
@@ -174,7 +190,7 @@ void MainWindow::cmdStdin(int pos,int charRemoved,int charAdded)
             data += "\n";
         }
         else
-            data += dockwidget->document()->characterAt(var);
+            data += runDockwidget->document()->characterAt(var);
     }
     qDebug() << data;
     Package pck(data.toUtf8(), (int)Package::PackageType::POST_STDIN);
@@ -683,20 +699,20 @@ void MainWindow::dataProgress()
     case (int)Package::ReturnType::BUILD_INFO:
     {
         QString data(socket->read(packageSize));
-        disconnect(dockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int,int,int)));
-        dockwidget->insertPlainText(data);
-        connect(dockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int,int,int)));
-        dockwidget->verticalScrollBar()->setValue(dockwidget->verticalScrollBar()->maximum());
+        disconnect(buildDockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int,int,int)));
+        buildDockwidget->insertPlainText(data);
+        connect(buildDockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int,int,int)));
+        buildDockwidget->verticalScrollBar()->setValue(buildDockwidget->verticalScrollBar()->maximum());
         break;
     }
     case (int)Package::ReturnType::RUN_INFO:
     {
-        dockwidget->setFocusPolicy(Qt::StrongFocus);
+        runDockwidget->setFocusPolicy(Qt::StrongFocus);
         QString data(socket->read(packageSize));
-        disconnect(dockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int,int,int)));
-        dockwidget->insertPlainText(data);
-        connect(dockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int,int,int)));
-        dockwidget->verticalScrollBar()->setValue(dockwidget->verticalScrollBar()->maximum());
+        disconnect(runDockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int,int,int)));
+        runDockwidget->insertPlainText(data);
+        connect(runDockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int,int,int)));
+        runDockwidget->verticalScrollBar()->setValue(runDockwidget->verticalScrollBar()->maximum());
         break;
     }
     default:
@@ -891,9 +907,9 @@ void MainWindow::newLocalProj()
 //run project
 void MainWindow::runProject()
 {
-    disconnect(dockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int,int,int)));
-    dockwidget->clear();
-    connect(dockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int,int,int)));
+    disconnect(runDockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int,int,int)));
+    runDockwidget->clear();
+    connect(runDockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int,int,int)));
 
 //    auto item = (MyTreeItem*)ui->treeWidget->currentItem();
 //    bool is_local = true;

@@ -55,7 +55,7 @@
         </property>
         <property name="icon">
          <iconset resource="src.qrc">
-          <normaloff>:/images/filebrowser/add.png</normaloff>:/images/filebrowser/add.png</iconset>
+          <normaloff>:/qss/flatblack/branch_open.png</normaloff>:/qss/flatblack/branch_open.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -74,7 +74,7 @@
          <string>...</string>
         </property>
         <property name="icon">
-         <iconset resource="src.qrc">
+         <iconset>
           <normaloff>:/images/files/file_folder.png</normaloff>:/images/files/file_folder.png</iconset>
         </property>
         <property name="iconSize">
@@ -94,8 +94,8 @@
          <string>...</string>
         </property>
         <property name="icon">
-         <iconset resource="src.qrc">
-          <normaloff>:/images/svg/cloud.svg</normaloff>:/images/svg/cloud.svg</iconset>
+         <iconset resource="qdarkstyle/light/lightstyle.qrc">
+          <normaloff>:/qss_icons/light/rc/arrow_up_disabled.png</normaloff>:/qss_icons/light/rc/arrow_up_disabled.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -301,6 +301,7 @@
   </layout>
  </widget>
  <resources>
+  <include location="qdarkstyle/light/lightstyle.qrc"/>
   <include location="src.qrc"/>
  </resources>
  <connections/>

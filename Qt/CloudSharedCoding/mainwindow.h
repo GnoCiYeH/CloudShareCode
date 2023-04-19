@@ -94,8 +94,10 @@ private:
 
     //子窗��?
     SettingForm* settingWind;
-    QDockWidget* dock;
-    QTextEdit* dockwidget;
+    QDockWidget* buildDock;
+    QTextEdit* buildDockwidget;
+    QDockWidget* runDock;
+    QTextEdit* runDockwidget;
 
     //瀛愮獥鍙?
 

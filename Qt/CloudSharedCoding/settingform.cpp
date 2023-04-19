@@ -23,32 +23,16 @@ SettingForm::SettingForm(QWidget *parent) :
     ui->listWidget->addItem(environment);
 
     QVariant var;
-    var.setValue(QString("://qss/black.css"));
-    ui->comboBox->addItem("black",var);
-    var.setValue(QString("://qss/blue.css"));
-    ui->comboBox->addItem("blue",var);
-    var.setValue(QString("://qss/darkblack.css"));
-    ui->comboBox->addItem("darkblack",var);
-    var.setValue(QString("://qss/darkblue.css"));
-    ui->comboBox->addItem("darkblue",var);
-    var.setValue(QString("://qss/darkgray.css"));
-    ui->comboBox->addItem("darkgray",var);
-    var.setValue(QString("://qss/flatblack.css"));
-    ui->comboBox->addItem("flatblack",var);
-    var.setValue(QString("://qss/flatwhite.css"));
-    ui->comboBox->addItem("flatwhite",var);
-    var.setValue(QString("://qss/gray.css"));
-    ui->comboBox->addItem("gray",var);
-    var.setValue(QString("://qss/lightblack.css"));
-    ui->comboBox->addItem("lightblack",var);
-    var.setValue(QString("://qss/lightblue.css"));
-    ui->comboBox->addItem("lightblue",var);
-    var.setValue(QString("://qss/lightgray.css"));
-    ui->comboBox->addItem("lightgray",var);
-    var.setValue(QString("://qss/psblack.css"));
-    ui->comboBox->addItem("psblack",var);
-    var.setValue(QString("://qss/silvery.css"));
-    ui->comboBox->addItem("silvery",var);
+    var.setValue(QString(":/qdarkstyle/dark/darkstyle.qss"));
+    ui->comboBox->addItem("dark",var);
+    var.setValue(QString(":/qdarkstyle/light/lightstyle.qss"));
+    ui->comboBox->addItem("light",var);
+    var.setValue(QString("://vsDark/vsDark.css"));
+    ui->comboBox->addItem("vsDark",var);
+    var.setValue(QString("://DarkStyle/darkStyle.css"));
+    ui->comboBox->addItem("dark2",var);
+    var.setValue(QString("://materialStyle/materialStyle.css"));
+    ui->comboBox->addItem("material",var);
     connect(ui->comboBox,SIGNAL(currentIndexChanged (int)),this,SLOT(themeChanged(int)));
 
     //text editer
@@ -104,7 +88,7 @@ SettingForm::SettingForm(QWidget *parent) :
 
     //init
     settings->beginGroup("ENVIRONMENT");
-    QString theme = settings->value("THEME","://qss/lightgray.css").toString();
+    QString theme = settings->value("THEME",":/qdarkstyle/light/lightstyle.qss").toString();
     myHelper::setStyle(theme);
     int num = ui->comboBox->count();
     for (int var = 0; var < num; ++var) {
