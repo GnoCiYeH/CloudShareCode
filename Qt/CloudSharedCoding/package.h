@@ -65,7 +65,10 @@ public:
         PRIVILEGE_UPDATE = 15,
 
         //运行项目
-        RUN_PROJECT = 16
+        RUN_PROJECT = 16,
+
+        //输入数据至运行中项目
+        POST_STDIN = 17
     };
     enum class ReturnType{
         SERVER_ALLOW = 0,

@@ -126,6 +126,7 @@ MainWindow::MainWindow(QWidget *parent) :
     dockwidget->setFocusPolicy(Qt::NoFocus);
     dock->setWidget(dockwidget);
     this->addDockWidget(Qt::BottomDockWidgetArea,dock);
+    connect(dockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int,int,int)));
 
     //子窗口槽
     connect(this,&MainWindow::loginAllowed,loginDialog,&LoginDialog::loginSucceed);
@@ -153,6 +154,32 @@ MainWindow::~MainWindow()
     socket->close();
     socket->deleteLater();
     delete userProjs;
+}
+
+void MainWindow::cmdStdin(int pos,int charRemoved,int charAdded)
+{
+    qDebug() << pos << " " << charRemoved << " " << charAdded;
+    QString data = Package::intToByteArr(currentProject);
+    for (int var = 0; var < charRemoved; ++var) {
+        data+="\b \b";
+    }
+    for (int var = pos; var < pos + charAdded; ++var)
+    {
+        if (dockwidget->document()->characterAt(var) == QChar(8233) || dockwidget->document()->characterAt(var) == QChar(8232))
+        {
+            if (charRemoved == 1 && charAdded == 1)
+            {
+                return;
+            }
+            data += "\n";
+        }
+        else
+            data += dockwidget->document()->characterAt(var);
+    }
+    qDebug() << data;
+    Package pck(data.toUtf8(), (int)Package::PackageType::POST_STDIN);
+    MainWindow::socket->write(pck.getPdata(), pck.getSize());
+    MainWindow::socket->flush();
 }
 
 //************************************************************************************************
@@ -377,6 +404,7 @@ void MainWindow::Login()
 
 void MainWindow::openProj(int id)
 {
+    this->currentProject=id;
     Package pck(QString::number(id).toUtf8(),(int)Package::PackageType::GET_PROJECT);
     socket->write(pck.getPdata(),pck.getSize());
 }
@@ -655,14 +683,19 @@ void MainWindow::dataProgress()
     case (int)Package::ReturnType::BUILD_INFO:
     {
         QString data(socket->read(packageSize));
+        disconnect(dockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int,int,int)));
         dockwidget->insertPlainText(data);
+        connect(dockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int,int,int)));
         dockwidget->verticalScrollBar()->setValue(dockwidget->verticalScrollBar()->maximum());
         break;
     }
     case (int)Package::ReturnType::RUN_INFO:
     {
+        dockwidget->setFocusPolicy(Qt::StrongFocus);
         QString data(socket->read(packageSize));
+        disconnect(dockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int,int,int)));
         dockwidget->insertPlainText(data);
+        connect(dockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int,int,int)));
         dockwidget->verticalScrollBar()->setValue(dockwidget->verticalScrollBar()->maximum());
         break;
     }
@@ -858,47 +891,49 @@ void MainWindow::newLocalProj()
 //run project
 void MainWindow::runProject()
 {
+    disconnect(dockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int,int,int)));
     dockwidget->clear();
+    connect(dockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int,int,int)));
 
-    auto item = (MyTreeItem*)ui->treeWidget->currentItem();
-    bool is_local = true;
-    int pro_id;
-    switch (item->getType()) {
-    case MyTreeItem::DIR:
-    {
-        if((pro_id = item->data(0,Qt::UserRole).value<std::shared_ptr<Directory>>()->pro_id)!=-1)
-        {
-            is_local = false;
-        }
-        break;
-    }
-    case MyTreeItem::FILE:
-    {
-        if((pro_id = item->data(0,Qt::UserRole).value<std::shared_ptr<FileInfo>>()->file_project)!=-1)
-        {
-            is_local = false;
-        }
-        break;
-    }
-    case MyTreeItem::PROJECT:
-    {
-        if((pro_id = item->data(0,Qt::UserRole).value<std::shared_ptr<Project>>()->pro_id)!=-1)
-        {
-            is_local = false;
-        }
-        break;
-    }
-    default:
-        break;
-    }
+//    auto item = (MyTreeItem*)ui->treeWidget->currentItem();
+//    bool is_local = true;
+//    int pro_id;
+//    switch (item->getType()) {
+//    case MyTreeItem::DIR:
+//    {
+//        if((pro_id = item->data(0,Qt::UserRole).value<std::shared_ptr<Directory>>()->pro_id)!=-1)
+//        {
+//            is_local = false;
+//        }
+//        break;
+//    }
+//    case MyTreeItem::FILE:
+//    {
+//        if((pro_id = item->data(0,Qt::UserRole).value<std::shared_ptr<FileInfo>>()->file_project)!=-1)
+//        {
+//            is_local = false;
+//        }
+//        break;
+//    }
+//    case MyTreeItem::PROJECT:
+//    {
+//        if((pro_id = item->data(0,Qt::UserRole).value<std::shared_ptr<Project>>()->pro_id)!=-1)
+//        {
+//            is_local = false;
+//        }
+//        break;
+//    }
+//    default:
+//        break;
+//    }
 
-    if(is_local)
+    if(currentProject<0)
     {
 
     }
     else
     {
-        Package pck(QString::number(pro_id).toUtf8(),(int)Package::PackageType::RUN_PROJECT);
+        Package pck(QString::number(currentProject).toUtf8(),(int)Package::PackageType::RUN_PROJECT);
         socket->write(pck.getPdata(),pck.getSize());
     }
 }

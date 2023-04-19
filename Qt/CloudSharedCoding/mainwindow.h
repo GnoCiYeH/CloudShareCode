@@ -74,6 +74,7 @@ private slots:
     void on_tabWidget_tabCloseRequested(int index);
     void selectencodingMode();
     void runProject();
+    void cmdStdin(int,int,int);
 
     void on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column);
 
@@ -81,6 +82,8 @@ private:
     Ui::MainWindow *ui;
 
     QString userName;
+
+    int currentProject;
 
     static bool isLogin;
 

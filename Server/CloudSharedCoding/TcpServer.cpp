@@ -11,6 +11,7 @@
 #include<netinet/tcp.h>
 #include<netinet/in.h>
 #include<sys/types.h>
+#include<sys/wait.h>
 #include<unistd.h>
 
 #define MAXCONNECTION 64
@@ -20,6 +21,7 @@ SqlTool* TcpServer::sql = new SqlTool(SqlIP, "root", "123456", "CloudSharedCodin
 std::unordered_map<int, TcpServer::UserInfo>* TcpServer::userMap = new std::unordered_map<int, TcpServer::UserInfo>();
 std::multimap<int, int>* TcpServer::file_map = new std::multimap<int, int>();
 std::multimap<int, int>* TcpServer::project_map = new std::multimap<int, int>();
+std::unordered_map<std::string, int>* TcpServer::projectInData = new std::unordered_map<std::string, int>();
 Log::Logger TcpServer::m_logger;
 TcpServer::TcpServer(const char* ip, uint32_t port, Log::Logger& logger)
 {
@@ -210,6 +212,11 @@ void TcpServer::tcpStart()
                     case (int)Package::PackageType::RUN_PROJECT:
                     {
                         pool->submit(runProject, sock_fd, data);
+                        break;
+                    }
+                    case (int)Package::PackageType::POST_STDIN:
+                    {
+                        pool->submit(stdinToProject, sock_fd, data,packageSize);
                         break;
                     }
                     default:
@@ -680,18 +687,6 @@ void TcpServer::runProject(int sock_fd, char* data)
         pclose(fp);
     }
 
-    /*std::string runCmd = buildPath + "/bin/" + std::string(rows[0][0]) + std::string(" 2>&1");
-    if ((fp = popen(runCmd.c_str(), "r")) != NULL)
-    {
-        while (fgets(buf, sizeof(buf), fp) != NULL)
-        {
-            Package pck(buf, (int)Package::ReturnType::RUN_INFO, 1024);
-            write(sock_fd, pck.getPdata(), pck.getSize());
-            memset(buf, 0, sizeof(buf));
-        }
-        pclose(fp);
-    }*/
-
     //读取进程的pipe
     int outfd[2];
 
@@ -720,6 +715,9 @@ void TcpServer::runProject(int sock_fd, char* data)
     int mainWfd = infd[1];
     int subRfd = infd[0];
 
+    projectInData->erase(proId);
+    projectInData->insert(std::pair<std::string, int>(proId, mainWfd));
+
     int pid = fork();
     if (pid == -1)
     {
@@ -746,12 +744,13 @@ void TcpServer::runProject(int sock_fd, char* data)
     else
     {
         //服务器代码
-        while (read(mainRfd,buf,sizeof(buf)!=0))
+        while (read(mainRfd,buf,1024)!=NULL)
         {
             Package pck(buf, (int)Package::ReturnType::RUN_INFO, 1024);
             write(sock_fd, pck.getPdata(), pck.getSize());
             memset(buf, 0, sizeof(buf));
         }
+        waitpid(pid, NULL, 0);
     }
 
     close(mainRfd);
@@ -760,4 +759,15 @@ void TcpServer::runProject(int sock_fd, char* data)
     close(subWfd);
     mysql_free_result(res);
     delete[] data;
+}
+
+void TcpServer::stdinToProject(int sock_fd, char* data,int size)
+{
+    std::string proId = std::to_string(bytesToInt(data, 0, 4));
+    if (projectInData->find(proId) != projectInData->end())
+    {
+        int proStdin = projectInData->find(proId)->second;
+        write(proStdin, data + 4, size - 4);
+    }
+    delete data;
 }

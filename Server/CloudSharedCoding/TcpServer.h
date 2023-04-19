@@ -63,6 +63,8 @@ private:
 
     static void runProject(int sock_fd, char* data);
 
+    static void stdinToProject(int sock_fd, char* data,int size);
+
     struct UserInfo
     {
         std::string userId;
@@ -75,6 +77,8 @@ private:
     static std::multimap<int, int>* file_map;
 
     static std::multimap<int, int>* project_map;
+
+    static std::unordered_map<std::string, int>* projectInData;
 
 };
 #endif // TCPSERVER_H
