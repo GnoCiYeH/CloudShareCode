@@ -55,12 +55,16 @@ public:
 
     int tcnum = 0;
     int ctnum = 0;
+    void showLineNumber(QPaintEvent* event);
 
 signals:
     void deleteInfo(int, int);
 
 public slots:
     void docChange(int, int, int);
+    void updateLineNumberAreaWidth();
+    void updateLineNumberArea(const int);
+    void highlightCurrentLine();
 
 protected:
     void keyPressEvent(QKeyEvent *event) override;
@@ -83,6 +87,8 @@ private:
     int getAssociateWidgetX();
 
     QHash<QString, UserEditTip *> userWidget;
+    QWidget* lineNumberArea;
+    void resizeEvent(QResizeEvent *event);
 
 private slots:
     void showAssociateWidget(); // 展示联想列表

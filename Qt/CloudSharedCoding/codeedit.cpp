@@ -1,4 +1,6 @@
 #include "codeedit.h"
+#include "qpainter.h"
+#include "qscrollbar.h"
 #include "ui_codeedit.h"
 #include <QKeyEvent>
 #include <QDebug>
@@ -10,14 +12,27 @@
 #include "useredittip.h"
 #include<QSettings>
 
-CodeEdit::CodeEdit(std::shared_ptr<FileInfo> fileptr, QWidget *parent) : QWidget(parent),
-                                                                         ui(new Ui::CodeEdit)
+CodeEdit::CodeEdit(std::shared_ptr<FileInfo> fileptr, QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::CodeEdit),
+    lineNumberArea(new QWidget(this))
 {
     ui->setupUi(this);
 
     document = ui->textEdit->document();
     ui->textEdit->setFont(QFont("Consolas"));
     HighLighter *highLighter = new HighLighter(this, document);
+
+    QHBoxLayout *layout=new QHBoxLayout;
+    layout->addWidget(lineNumberArea);
+    layout->addWidget(ui->textEdit);
+    setLayout(layout);
+
+    connect(document, &QTextDocument::blockCountChanged, this, &CodeEdit::updateLineNumberAreaWidth);
+    connect(ui->textEdit->verticalScrollBar(), &QScrollBar::valueChanged, this, &CodeEdit::updateLineNumberArea);
+    connect(ui->textEdit, &QPlainTextEdit::cursorPositionChanged, this, &CodeEdit::highlightCurrentLine);
+
+    updateLineNumberAreaWidth();
 
     this->file = fileptr;
 
@@ -285,6 +300,49 @@ void CodeEdit::keyPressEvent(QKeyEvent *event)
     }
 }
 
+void CodeEdit::updateLineNumberAreaWidth(){
+    int digits=1;
+    int max=1;
+    if(document->blockCount()>1){
+        max=document->blockCount();
+    }
+    while(max>=10){
+        max/=10;
+        digits++;
+    }
+    int width = 8 + fontMetrics().horizontalAdvance(QLatin1Char('9')) * digits;
+    lineNumberArea->setMinimumWidth(width);
+    lineNumberArea->setMaximumWidth(width);
+}
+
+void CodeEdit::updateLineNumberArea(const int) {
+    // �����к�����Ĵ�ֱ����λ��
+    lineNumberArea->scroll(0, ui->textEdit->verticalScrollBar()->value());
+    // �ػ��к�����
+    lineNumberArea->update();
+}
+
+void CodeEdit::highlightCurrentLine() {
+    QList<QTextEdit::ExtraSelection> extraSelections;
+
+    if (!ui->textEdit->isReadOnly()) {
+        QTextEdit::ExtraSelection selection;
+        QColor lineColor = QColor(Qt::yellow).lighter(160);
+
+        selection.format.setBackground(lineColor);
+        selection.format.setProperty(QTextFormat::FullWidthSelection, true);
+        selection.cursor = ui->textEdit->textCursor();
+        selection.cursor.clearSelection();
+        extraSelections.append(selection);
+    }
+
+    ui->textEdit->setExtraSelections(extraSelections);
+}
+
+void CodeEdit::resizeEvent(QResizeEvent *event) {
+    QWidget::resizeEvent(event);
+}
+
 HighLighter::HighLighter(CodeEdit *edit, QTextDocument *text) : QSyntaxHighlighter(text),
                                                                 edit(edit)
 {
@@ -304,7 +362,7 @@ HighLighter::HighLighter(CodeEdit *edit, QTextDocument *text) : QSyntaxHighlight
                                         "\\bprivate\\b", "\\bprotected\\b", "\\bpublic\\b", "\\bshort\\b", "\\bsignals\\b", "\\bsigned\\b",
                                         "\\bslots\\b", "\\bstatic\\b", "\\bstruct\\b", "\\btemplate\\b", "\\btypedef\\b", "\\btypename\\b",
                                         "\\bunion\\b", "\\bunsigned\\b", "\\bvirtual\\b", "\\bvoid\\b", "\\bvolatile\\b", "\\bbool\\b",
-                                        "\\busing\\b", "vector", "return"}; // 鍏抽敭瀛楅泦鍚?
+                                        "\\busing\\b", "\\bvector\\b", "\\breturn\\b","\\btrue\\b","\\bfalse\\b"}; // 鍏抽敭瀛楅泦鍚?
     // 閬嶅巻鍏抽敭瀛楅泦鍚堬紝閫氳繃姝ｅ垯琛ㄨ揪寮忚瘑鍒瓧绗︿覆銆傚苟璁惧畾涓簉ule鐨刾attern锛屼唬琛ㄥ綋鍓嶅叧閿瓧鐨勬爣璇嗙锛涘啀璁惧畾rule鐨勬牸寮忥紝鏈€缁堝姞鍏ヨ鍒欓泦鍚堜腑
     for (auto &keyword : keyword_pattern)
     {
