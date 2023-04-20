@@ -13,8 +13,7 @@
 #include <QSettings>
 
 CodeEdit::CodeEdit(std::shared_ptr<FileInfo> fileptr, QWidget *parent) : QWidget(parent),
-                                                                         ui(new Ui::CodeEdit),
-                                                                         lineNumberArea(new QWidget(this))
+                                                                         ui(new Ui::CodeEdit)
 {
     ui->setupUi(this);
 
@@ -22,9 +21,7 @@ CodeEdit::CodeEdit(std::shared_ptr<FileInfo> fileptr, QWidget *parent) : QWidget
     ui->textEdit->setFont(QFont("Consolas"));
     HighLighter *highLighter = new HighLighter(this, document);
 
-    QHBoxLayout *layout = new QHBoxLayout;
-    layout->addWidget(lineNumberArea);
-    layout->addWidget(ui->textEdit);
+    QHBoxLayout *layout = (QHBoxLayout*)this->layout();
     setLayout(layout);
 
     connect(document, &QTextDocument::blockCountChanged, this, &CodeEdit::updateLineNumberAreaWidth);
@@ -87,43 +84,6 @@ CodeEdit::~CodeEdit()
 void CodeEdit::docChange(int pos, int charRemoved, int charAdded)
 {
     showAssociateWidget();
-    // 自动补充右括号
-    QMap<QChar, QChar> map;
-    map['('] = ')';
-    map['['] = ']';
-    map['{'] = '}';
-    map['\"'] = '\"';
-    map['<'] = '>';
-    int preCharIndex = ui->textEdit->textCursor().position() - 1;
-    QChar preChar = document->characterAt(preCharIndex);
-    QString text = ui->textEdit->textCursor().block().text();
-    if (preChar == '(' || preChar == '[' || preChar == '{' || preChar == '\"' || (text.contains("#include") && preChar == '<'))
-    {
-        ui->textEdit->insertPlainText(map[preChar]);
-        ui->textEdit->moveCursor(QTextCursor::PreviousCharacter);
-        if (preChar == '{')
-        {
-            QTextCursor cursor = ui->textEdit->textCursor();
-            int startPos = cursor.block().position();
-            int spaceCount = 0;
-            while (document->characterAt(startPos) == ' ')
-            {
-                spaceCount++;
-                startPos++;
-            }
-            ui->textEdit->insertPlainText("\n");
-            ui->textEdit->insertPlainText(QString(spaceCount + 4, ' '));
-            QTextBlock middleBlock = document->findBlockByLineNumber(ui->textEdit->textCursor().blockNumber());
-            QTextCursor middleCursor(middleBlock);
-            cursor.deleteChar();
-            ui->textEdit->insertPlainText("\n");
-            ui->textEdit->insertPlainText(QString(spaceCount, ' '));
-            ui->textEdit->insertPlainText("}");
-            middleCursor.setPosition(middleBlock.position() + spaceCount + 4);
-            ui->textEdit->setTextCursor(middleCursor);
-        }
-    }
-
     //*********************************
     QTextCursor cursor(document);
     cursor.setPosition(pos);
@@ -156,13 +116,41 @@ void CodeEdit::docChange(int pos, int charRemoved, int charAdded)
     map['['] = ']';
     map['{'] = '}';
     map['\"'] = '\"';
+    map['<'] = '>';
     int preCharIndex = ui->textEdit->textCursor().position() - 1;
     QChar preChar = document->characterAt(preCharIndex);
-    if (preChar == '(' || preChar == '[' || preChar == '{' || preChar == '\"')
+    QString text = ui->textEdit->textCursor().block().text();
+    if (preChar == '(' || preChar == '[' || preChar == '{' || preChar == '\"' || (text.contains("#include") && preChar == '<'))
     {
         ui->textEdit->insertPlainText(map[preChar]);
-        data += map[preChar];
+        data+=map[preChar];
         ui->textEdit->moveCursor(QTextCursor::PreviousCharacter);
+        if (preChar == '{')
+        {
+            QTextCursor cursor = ui->textEdit->textCursor();
+            int startPos = cursor.block().position();
+            int spaceCount = 0;
+            while (document->characterAt(startPos) == ' ')
+            {
+                spaceCount++;
+                startPos++;
+            }
+            ui->textEdit->insertPlainText("\n");
+            data+="\n";
+            ui->textEdit->insertPlainText(QString(spaceCount + 4, ' '));
+            data+=QString(spaceCount + 4, ' ');
+            QTextBlock middleBlock = document->findBlockByLineNumber(ui->textEdit->textCursor().blockNumber());
+            QTextCursor middleCursor(middleBlock);
+            cursor.deleteChar();
+            ui->textEdit->insertPlainText("\n");
+            data+="\n";
+            ui->textEdit->insertPlainText(QString(spaceCount, ' '));
+            data+=QString(spaceCount + 4, ' ');
+            ui->textEdit->insertPlainText("}");
+            data+="}";
+            middleCursor.setPosition(middleBlock.position() + spaceCount + 4);
+            ui->textEdit->setTextCursor(middleCursor);
+        }
     }
 
     qDebug() << data;
@@ -342,16 +330,16 @@ void CodeEdit::updateLineNumberAreaWidth()
         digits++;
     }
     int width = 8 + fontMetrics().horizontalAdvance(QLatin1Char('9')) * digits;
-    lineNumberArea->setMinimumWidth(width);
-    lineNumberArea->setMaximumWidth(width);
+    ui->lineNumberArea->setMinimumWidth(width);
+    ui->lineNumberArea->setMaximumWidth(width);
 }
 
 void CodeEdit::updateLineNumberArea(const int)
 {
     // 更新行号区域的垂直滚动位置
-    lineNumberArea->scroll(0, ui->textEdit->verticalScrollBar()->value());
+    ui->lineNumberArea->scroll(0, ui->textEdit->verticalScrollBar()->value());
     // 重绘行号区域
-    lineNumberArea->update();
+    ui->lineNumberArea->update();
 }
 
 void CodeEdit::highlightCurrentLine()

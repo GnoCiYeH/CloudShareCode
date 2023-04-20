@@ -87,7 +87,6 @@ private:
     int getAssociateWidgetX();
 
     QHash<QString, UserEditTip *> userWidget;
-    QWidget* lineNumberArea;
     void resizeEvent(QResizeEvent *event);
 
 private slots:
