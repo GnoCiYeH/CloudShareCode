@@ -79,11 +79,32 @@ void CodeEdit::docChange(int pos, int charRemoved, int charAdded)
     map['[']=']';
     map['{']='}';
     map['\"']='\"';
+    map['<']='>';
     int preCharIndex=ui->textEdit->textCursor().position()-1;
     QChar preChar=document->characterAt(preCharIndex);
-    if(preChar=='('||preChar=='['||preChar=='{'||preChar=='\"'){
+    QString text=ui->textEdit->textCursor().block().text();
+    if(preChar=='('||preChar=='['||preChar=='{'||preChar=='\"'||(text.contains("#include")&&preChar=='<')){
         ui->textEdit->insertPlainText(map[preChar]);
         ui->textEdit->moveCursor(QTextCursor::PreviousCharacter);
+        if(preChar=='{'){
+            QTextCursor cursor = ui->textEdit->textCursor();
+            int startPos = cursor.block().position();
+            int spaceCount=0;
+            while(document->characterAt(startPos)==' '){
+                spaceCount++;
+                startPos++;
+            }
+            ui->textEdit->insertPlainText("\n");
+            ui->textEdit->insertPlainText(QString(spaceCount+4,' '));
+            QTextBlock middleBlock=document->findBlockByLineNumber(ui->textEdit->textCursor().blockNumber());
+            QTextCursor middleCursor(middleBlock);
+            cursor.deleteChar();
+            ui->textEdit->insertPlainText("\n");
+            ui->textEdit->insertPlainText(QString(spaceCount,' '));
+            ui->textEdit->insertPlainText("}");
+            middleCursor.setPosition(middleBlock.position()+spaceCount+4);
+            ui->textEdit->setTextCursor(middleCursor);
+        }
     }
 
     qDebug() << pos << " " << charRemoved << " " << charAdded;
