@@ -10,6 +10,18 @@ ProjectForm::ProjectForm(QWidget *parent) :
     ui(new Ui::ProjectForm)
 {
     ui->setupUi(this);
+
+    ui->scrollArea->setContentsMargins(0,0,0,0);
+    ui->scrollAreaWidgetContents->setContentsMargins(0,0,0,0);
+    ui->scrollAreaWidgetContents_2->setContentsMargins(0,0,0,0);
+    ui->scrollAreaWidgetContents_3->setContentsMargins(0,0,0,0);
+    ui->scrollAreaWidgetContents_4->setContentsMargins(0,0,0,0);
+    ui->scrollArea_2->setContentsMargins(0,0,0,0);
+    ui->scrollArea_3->setContentsMargins(0,0,0,0);
+    ui->scrollArea_4->setContentsMargins(0,0,0,0);
+    ui->tab->setContentsMargins(0,0,0,0);;
+    ui->tab_2->setContentsMargins(0,0,0,0);
+    ui->tabWidget->setContentsMargins(0,0,0,0);
 }
 
 ProjectForm::~ProjectForm()

@@ -65,6 +65,8 @@ private:
 
     static void stdinToProject(int sock_fd, char* data,int size);
 
+    static void compileProject();
+
     struct UserInfo
     {
         std::string userId;

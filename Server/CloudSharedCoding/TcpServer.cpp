@@ -730,13 +730,15 @@ void TcpServer::runProject(int sock_fd, char* data)
         //重定向输入输出流
         close(STDOUT_FILENO);
         close(STDIN_FILENO);
-        dup2(subWfd, STDOUT_FILENO);
-        dup2(subRfd, STDIN_FILENO);
+        int saveOutfd = dup2(subWfd, STDOUT_FILENO);
+        int saveInfd = dup2(subRfd, STDIN_FILENO);
 
         std::string exePath = buildPath + "/bin/" + std::string(rows[0][0]);
         if (execlp(exePath.c_str(),NULL) == -1)
         {
-            ERROR_LOG(m_logger, "run project error");
+            std::string str = "run project error";
+            Package pck(str.c_str(), (int)Package::ReturnType::SERVER_ERROR, str.size());
+            write(sock_fd, pck.getPdata(), pck.getSize());
         }
 
         _Exit(-1);
@@ -744,9 +746,10 @@ void TcpServer::runProject(int sock_fd, char* data)
     else
     {
         //服务器代码
-        while (read(mainRfd,buf,1024)!=NULL)
+        int ret = 0;
+        while ((ret = read(mainRfd, buf, 1024)) != NULL)
         {
-            Package pck(buf, (int)Package::ReturnType::RUN_INFO, 1024);
+            Package pck(buf, (int)Package::ReturnType::RUN_INFO, ret);
             write(sock_fd, pck.getPdata(), pck.getSize());
             memset(buf, 0, sizeof(buf));
         }

@@ -191,14 +191,24 @@ static bool textChange(std::string path,int pos, int charRemoved, std::string da
     fileStream.close();
     buffer[length] = '\0';
     std::string buf(buffer);
-    //buf.erase(pos, charRemoved);
     std::string substr0 = buf.substr(0, pos);
     substr0 += data;
     std::string substr1 = "";
+
+    for (int i = pos; i < pos + charRemoved; i++)
+    {
+        if (buf[i] < 0) 
+        {
+            charRemoved += 2;
+            i ++;
+        }
+    }
+
     if (pos + charRemoved < buf.length())
+    {
         substr1 = buf.substr((size_t)(pos + charRemoved));
+    }
     buf = substr0 + substr1;
-    //buf.insert(pos, data.c_str(), data.size());
     std::ofstream ofs(path);
     ofs.write(buf.c_str(), buf.size());
     ofs.close();

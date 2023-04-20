@@ -62,5 +62,26 @@
         <file>res/svg/radio_unchecked_disabled.svg</file>
         <file>res/svg/radio_unchecked_focus.svg</file>
         <file>res/svg/remove.svg</file>
+        <file>qss/black.qss</file>
+        <file>qss/carbon.qss</file>
+        <file>qss/coffee.qss</file>
+        <file>qss/default.qss</file>
+        <file>qss/default_macos.qss</file>
+        <file>qss/detroit-future.qss</file>
+        <file>qss/evilworks.qss</file>
+        <file>qss/gray.qss</file>
+        <file>qss/one-dark.qss</file>
+        <file>qss/sublime.qss</file>
+        <file>qss/vs-dark.qss</file>
+        <file>qss/vs-dark-hdpi.qss</file>
+        <file>icon/cpp.png</file>
+        <file>icon/debug-.png</file>
+        <file>icon/Directory-tree.png</file>
+        <file>icon/H-.png</file>
+        <file>icon/kaishi_yunhang.png</file>
+        <file>icon/PROJECT.png</file>
+        <file>icon/yunhang.png</file>
+        <file>icon/debug.png</file>
+        <file>icon/24gl-fileEmpty.png</file>
     </qresource>
 </RCC>

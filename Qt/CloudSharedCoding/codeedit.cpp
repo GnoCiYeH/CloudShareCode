@@ -73,21 +73,19 @@ CodeEdit::~CodeEdit()
 void CodeEdit::docChange(int pos, int charRemoved, int charAdded)
 {
     showAssociateWidget();
-    //◊‘∂Ø≤π≥‰”“¿®∫≈
-    QMap<QChar,QChar>map;
-    map['(']=')';
-    map['[']=']';
-    map['{']='}';
-    map['\"']='\"';
-    int preCharIndex=ui->textEdit->textCursor().position()-1;
-    QChar preChar=document->characterAt(preCharIndex);
-    if(preChar=='('||preChar=='['||preChar=='{'||preChar=='\"'){
-        ui->textEdit->insertPlainText(map[preChar]);
-        ui->textEdit->moveCursor(QTextCursor::PreviousCharacter);
-    }
 
+    //*********************************
+    QTextCursor cursor(document);
+    cursor.setPosition(pos);
+    cursor.setPosition(0,QTextCursor::KeepAnchor);
+    QString str = cursor.selectedText();
+    str.replace(QChar(8233),'\n');
+    str.replace(QChar(8232),'\n');
+    int size = str.toStdString().size();
+    //*********************************
+
+    QString data = QString::number(file->file_id) + "#" + QString::number(size) + "#" + QString::number(charRemoved) + "#" + file->file_path + "#" + MainWindow::userId + "#";
     qDebug() << pos << " " << charRemoved << " " << charAdded;
-    QString data = QString::number(file->file_id) + "#" + QString::number(pos) + "#" + QString::number(charRemoved) + "#" + file->file_path + "#" + MainWindow::userId + "#";
     for (int var = pos; var < pos + charAdded; ++var)
     {
         if (document->characterAt(var) == QChar(8233) || document->characterAt(var) == QChar(8232))
@@ -101,6 +99,21 @@ void CodeEdit::docChange(int pos, int charRemoved, int charAdded)
         else
             data += document->characterAt(var);
     }
+
+    //◊‘∂Ø≤π≥‰”“¿®∫≈
+    QMap<QChar,QChar>map;
+    map['(']=')';
+    map['[']=']';
+    map['{']='}';
+    map['\"']='\"';
+    int preCharIndex=ui->textEdit->textCursor().position()-1;
+    QChar preChar=document->characterAt(preCharIndex);
+    if(preChar=='('||preChar=='['||preChar=='{'||preChar=='\"'){
+        ui->textEdit->insertPlainText(map[preChar]);
+        data+=map[preChar];
+        ui->textEdit->moveCursor(QTextCursor::PreviousCharacter);
+    }
+
     qDebug() << data;
     Package pck(data.toUtf8(), (int)Package::PackageType::TEXT_CHANGE);
     MainWindow::socket->write(pck.getPdata(), pck.getSize());

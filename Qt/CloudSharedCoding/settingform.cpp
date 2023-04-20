@@ -33,6 +33,30 @@ SettingForm::SettingForm(QWidget *parent) :
     ui->comboBox->addItem("dark2",var);
     var.setValue(QString("://materialStyle/materialStyle.css"));
     ui->comboBox->addItem("material",var);
+    var.setValue(QString("://qss/one-dark.qss"));
+    ui->comboBox->addItem("one-dark",var);
+    var.setValue(QString("://qss/black.qss"));
+    ui->comboBox->addItem("black",var);
+    var.setValue(QString("://qss/carbon.qss"));
+    ui->comboBox->addItem("carbon",var);
+    var.setValue(QString("://qss/coffee.qss"));
+    ui->comboBox->addItem("coffee",var);
+    var.setValue(QString("://qss/default.qss"));
+    ui->comboBox->addItem("default",var);
+    var.setValue(QString("://qss/default_macos.qss"));
+    ui->comboBox->addItem("default_macos",var);
+    var.setValue(QString("://qss/detroit-future.qss"));
+    ui->comboBox->addItem("detroit-future",var);
+    var.setValue(QString("://qss/evilworks.qss"));
+    ui->comboBox->addItem("evilworks",var);
+    var.setValue(QString("://qss/gray.qss"));
+    ui->comboBox->addItem("gray",var);
+    var.setValue(QString("://qss/sublime.qss"));
+    ui->comboBox->addItem("sublime",var);
+    var.setValue(QString("://qss/vs-dark-hdpi.qss"));
+    ui->comboBox->addItem("vs-dark-hdpi",var);
+    var.setValue(QString("://qss/vs-dark.qss"));
+    ui->comboBox->addItem("vs-dark",var);
     connect(ui->comboBox,SIGNAL(currentIndexChanged (int)),this,SLOT(themeChanged(int)));
 
     //text editer

@@ -47,10 +47,22 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setWindowFlags(Qt::FramelessWindowHint);
     this->setWindowTitle("CloudSharedCoding");
     QToolButton* runbutton = new QToolButton(this);
-    runbutton->setIcon(QIcon("://qss/darkblack/add_right.png"));
-    runbutton->setFixedSize(20,20);
+    runbutton->setIcon(QIcon("://icon/kaishi_yunhang.png"));
+    runbutton->setFixedSize(40,40);
+    runbutton->setToolTip("Run");
+    QToolButton* debugbutton = new QToolButton(this);
+    debugbutton->setIcon(QIcon("://icon/debug.png"));
+    debugbutton->setFixedSize(40,40);
+    debugbutton->setToolTip("Debug");
+    QToolButton* stopRun = new QToolButton(this);
+    stopRun->setIcon(QIcon(":/qss_icons/light/rc/window_close_focus@2x.png"));
+    stopRun->setFixedSize(40,40);
+    stopRun->setToolTip("Stop");
+
     QToolBar* toolbar = new QToolBar(this);
     toolbar->addWidget(runbutton);
+    toolbar->addWidget(debugbutton);
+    toolbar->addWidget(stopRun);
     this->addToolBar(Qt::RightToolBarArea,toolbar);
     QVBoxLayout* layout = new QVBoxLayout(this);
     layout->setSpacing(0);
@@ -127,17 +139,11 @@ MainWindow::MainWindow(QWidget *parent) :
     buildDockwidget = new QTextEdit(buildDock);
     buildDockwidget->setFocusPolicy(Qt::NoFocus);
     buildDock->setWidget(buildDockwidget);
+    buildDock->setWindowTitle("构建");
     this->addDockWidget(Qt::BottomDockWidgetArea,buildDock);
 
     runDock = new QDockWidget(this);
-    QToolBar* runToolBar = new QToolBar(runDock);
-    QToolButton* stopRun = new QToolButton(runToolBar);
-    stopRun->setIcon(QIcon(":/qss_icons/light/rc/window_close_focus@2x.png"));
-    stopRun->setFixedSize(20,20);
-    stopRun->setWhatsThis("停止运行");
-    runToolBar->addWidget(stopRun);
-    runDock->setTitleBarWidget(runToolBar);
-    runDock->setWindowTitle("运行");
+    runDock->setWindowTitle("控制台");
     runDockwidget = new QTextEdit(runDock);
     runDockwidget->setFocusPolicy(Qt::NoFocus);
     runDock->setWidget(runDockwidget);
@@ -492,6 +498,7 @@ void MainWindow::dataProgress()
         QVariant var;
         var.setValue(mainDir);
         item->setData(0,Qt::UserRole,var);
+        item->setIcon(0,QIcon("://icon/PROJECT.png"));
         ui->treeWidget->addTopLevelItem(item);
 
         mainDirMap.insert(i.pro_id,mainDir);
@@ -541,11 +548,24 @@ void MainWindow::dataProgress()
                     QVariant var;
                     var.setValue(subDir);
                     item->setData(0,Qt::UserRole,var);
+                    item->setIcon(0,QIcon("://icon/Directory-tree.png"));
                 }
                 else
                 {
                     MyTreeItem* item = new MyTreeItem(MyTreeItem::Type::FILE);
                     item->setText(0,file->file_name);
+                    if(file->file_name.mid(file->file_name.lastIndexOf('.'))==".cpp")
+                    {
+                        item->setIcon(0,QIcon("://icon/cpp.png"));
+                    }
+                    else if(file->file_name.mid(file->file_name.lastIndexOf('.'))==".h")
+                    {
+                        item->setIcon(0,QIcon("://icon/H-.png"));
+                    }
+                    else
+                    {
+                        item->setIcon(0,QIcon("://icon/24gl-fileEmpty.png"));
+                    }
                     QVariant var;
                     var.setValue(file);
                     item->setData(0,Qt::UserRole,var);
@@ -626,6 +646,18 @@ void MainWindow::dataProgress()
         var.setValue(file);
         file_item->setData(0,Qt::UserRole,var);
         file_item->setText(0,file->file_name);
+        if(file->file_name.mid(file->file_name.lastIndexOf('.'))==".cpp")
+        {
+            file_item->setIcon(0,QIcon("://icon/cpp.png"));
+        }
+        else if(file->file_name.mid(file->file_name.lastIndexOf('.'))==".h")
+        {
+            file_item->setIcon(0,QIcon("://icon/H-.png"));
+        }
+        else
+        {
+            file_item->setIcon(0,QIcon("://icon/24gl-fileEmpty.png"));
+        }
         item->addChild(file_item);
         file->file_item = file_item;
 
