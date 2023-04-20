@@ -1,4 +1,6 @@
 #include "codeedit.h"
+#include "qpainter.h"
+#include "qscrollbar.h"
 #include "ui_codeedit.h"
 #include <QKeyEvent>
 #include <QDebug>
@@ -8,16 +10,28 @@
 #include "package.h"
 #include "mainwindow.h"
 #include "useredittip.h"
-#include<QSettings>
+#include <QSettings>
 
 CodeEdit::CodeEdit(std::shared_ptr<FileInfo> fileptr, QWidget *parent) : QWidget(parent),
-                                                                         ui(new Ui::CodeEdit)
+                                                                         ui(new Ui::CodeEdit),
+                                                                         lineNumberArea(new QWidget(this))
 {
     ui->setupUi(this);
 
     document = ui->textEdit->document();
     ui->textEdit->setFont(QFont("Consolas"));
     HighLighter *highLighter = new HighLighter(this, document);
+
+    QHBoxLayout *layout = new QHBoxLayout;
+    layout->addWidget(lineNumberArea);
+    layout->addWidget(ui->textEdit);
+    setLayout(layout);
+
+    connect(document, &QTextDocument::blockCountChanged, this, &CodeEdit::updateLineNumberAreaWidth);
+    connect(ui->textEdit->verticalScrollBar(), &QScrollBar::valueChanged, this, &CodeEdit::updateLineNumberArea);
+    connect(ui->textEdit, &QPlainTextEdit::cursorPositionChanged, this, &CodeEdit::highlightCurrentLine);
+
+    updateLineNumberAreaWidth();
 
     this->file = fileptr;
 
@@ -73,14 +87,50 @@ CodeEdit::~CodeEdit()
 void CodeEdit::docChange(int pos, int charRemoved, int charAdded)
 {
     showAssociateWidget();
+    // �Զ�����������
+    QMap<QChar, QChar> map;
+    map['('] = ')';
+    map['['] = ']';
+    map['{'] = '}';
+    map['\"'] = '\"';
+    map['<'] = '>';
+    int preCharIndex = ui->textEdit->textCursor().position() - 1;
+    QChar preChar = document->characterAt(preCharIndex);
+    QString text = ui->textEdit->textCursor().block().text();
+    if (preChar == '(' || preChar == '[' || preChar == '{' || preChar == '\"' || (text.contains("#include") && preChar == '<'))
+    {
+        ui->textEdit->insertPlainText(map[preChar]);
+        ui->textEdit->moveCursor(QTextCursor::PreviousCharacter);
+        if (preChar == '{')
+        {
+            QTextCursor cursor = ui->textEdit->textCursor();
+            int startPos = cursor.block().position();
+            int spaceCount = 0;
+            while (document->characterAt(startPos) == ' ')
+            {
+                spaceCount++;
+                startPos++;
+            }
+            ui->textEdit->insertPlainText("\n");
+            ui->textEdit->insertPlainText(QString(spaceCount + 4, ' '));
+            QTextBlock middleBlock = document->findBlockByLineNumber(ui->textEdit->textCursor().blockNumber());
+            QTextCursor middleCursor(middleBlock);
+            cursor.deleteChar();
+            ui->textEdit->insertPlainText("\n");
+            ui->textEdit->insertPlainText(QString(spaceCount, ' '));
+            ui->textEdit->insertPlainText("}");
+            middleCursor.setPosition(middleBlock.position() + spaceCount + 4);
+            ui->textEdit->setTextCursor(middleCursor);
+        }
+    }
 
     //*********************************
     QTextCursor cursor(document);
     cursor.setPosition(pos);
-    cursor.setPosition(0,QTextCursor::KeepAnchor);
+    cursor.setPosition(0, QTextCursor::KeepAnchor);
     QString str = cursor.selectedText();
-    str.replace(QChar(8233),'\n');
-    str.replace(QChar(8232),'\n');
+    str.replace(QChar(8233), '\n');
+    str.replace(QChar(8232), '\n');
     int size = str.toStdString().size();
     //*********************************
 
@@ -100,17 +150,18 @@ void CodeEdit::docChange(int pos, int charRemoved, int charAdded)
             data += document->characterAt(var);
     }
 
-    //�Զ�����������
-    QMap<QChar,QChar>map;
-    map['(']=')';
-    map['[']=']';
-    map['{']='}';
-    map['\"']='\"';
-    int preCharIndex=ui->textEdit->textCursor().position()-1;
-    QChar preChar=document->characterAt(preCharIndex);
-    if(preChar=='('||preChar=='['||preChar=='{'||preChar=='\"'){
+    // �Զ�����������
+    QMap<QChar, QChar> map;
+    map['('] = ')';
+    map['['] = ']';
+    map['{'] = '}';
+    map['\"'] = '\"';
+    int preCharIndex = ui->textEdit->textCursor().position() - 1;
+    QChar preChar = document->characterAt(preCharIndex);
+    if (preChar == '(' || preChar == '[' || preChar == '{' || preChar == '\"')
+    {
         ui->textEdit->insertPlainText(map[preChar]);
-        data+=map[preChar];
+        data += map[preChar];
         ui->textEdit->moveCursor(QTextCursor::PreviousCharacter);
     }
 
@@ -277,10 +328,60 @@ void CodeEdit::keyPressEvent(QKeyEvent *event)
     }
 }
 
+void CodeEdit::updateLineNumberAreaWidth()
+{
+    int digits = 1;
+    int max = 1;
+    if (document->blockCount() > 1)
+    {
+        max = document->blockCount();
+    }
+    while (max >= 10)
+    {
+        max /= 10;
+        digits++;
+    }
+    int width = 8 + fontMetrics().horizontalAdvance(QLatin1Char('9')) * digits;
+    lineNumberArea->setMinimumWidth(width);
+    lineNumberArea->setMaximumWidth(width);
+}
+
+void CodeEdit::updateLineNumberArea(const int)
+{
+    // �����к�����Ĵ�ֱ����λ��
+    lineNumberArea->scroll(0, ui->textEdit->verticalScrollBar()->value());
+    // �ػ��к�����
+    lineNumberArea->update();
+}
+
+void CodeEdit::highlightCurrentLine()
+{
+    QList<QTextEdit::ExtraSelection> extraSelections;
+
+    if (!ui->textEdit->isReadOnly())
+    {
+        QTextEdit::ExtraSelection selection;
+        QColor lineColor = QColor(Qt::yellow).lighter(160);
+
+        selection.format.setBackground(lineColor);
+        selection.format.setProperty(QTextFormat::FullWidthSelection, true);
+        selection.cursor = ui->textEdit->textCursor();
+        selection.cursor.clearSelection();
+        extraSelections.append(selection);
+    }
+
+    ui->textEdit->setExtraSelections(extraSelections);
+}
+
+void CodeEdit::resizeEvent(QResizeEvent *event)
+{
+    QWidget::resizeEvent(event);
+}
+
 HighLighter::HighLighter(CodeEdit *edit, QTextDocument *text) : QSyntaxHighlighter(text),
                                                                 edit(edit)
 {
-    QSettings settings("./configs/configs.ini",QSettings::IniFormat,this);
+    QSettings settings("./configs/configs.ini", QSettings::IniFormat, this);
     settings.beginGroup("CODETHEME");
 
     // 鍒跺畾楂樹寒瑙勫��?
@@ -288,15 +389,15 @@ HighLighter::HighLighter(CodeEdit *edit, QTextDocument *text) : QSyntaxHighlight
     this->edit = edit;
 
     // 1.娣诲姞鍏抽敭瀛楅珮浜��??
-    keyword_format.setForeground(QColor(settings.value("KEYWORD","#00ffff").toString())); // 璁剧疆鍏抽敭瀛楀墠鏅��??(blue)
-    keyword_format.setFontWeight(QFont::Bold);           // 璁剧疆鍏抽敭瀛楃殑瀛椾綋鏍煎紡(Bold)
-    QVector<QString> keyword_pattern = {                 // \b鍦ㄨ〃绀哄崟璇嶅瓧绗﹁竟鐣岋紝闃叉渚嬪intVal涔熻璇嗗埆涓篿nt瀵艰嚧楂樹寒
+    keyword_format.setForeground(QColor(settings.value("KEYWORD", "#00ffff").toString())); // 璁剧疆鍏抽敭瀛楀墠鏅��??(blue)
+    keyword_format.setFontWeight(QFont::Bold);                                             // 璁剧疆鍏抽敭瀛楃殑瀛椾綋鏍煎紡(Bold)
+    QVector<QString> keyword_pattern = {                                                   // \b鍦ㄨ〃绀哄崟璇嶅瓧绗﹁竟鐣岋紝闃叉渚嬪intVal涔熻璇嗗埆涓篿nt瀵艰嚧楂樹寒
                                         "\\bchar\\b", "\\bclass\\b", "\\bconst\\b", "\\bdouble\\b", "\\benum\\b", "\\bexplicit\\b",
                                         "\\bfriend\\b", "\\binline\\b", "\\bint\\b", "\\blong\\b", "\\bnamespace\\b", "\\boperator\\b",
                                         "\\bprivate\\b", "\\bprotected\\b", "\\bpublic\\b", "\\bshort\\b", "\\bsignals\\b", "\\bsigned\\b",
                                         "\\bslots\\b", "\\bstatic\\b", "\\bstruct\\b", "\\btemplate\\b", "\\btypedef\\b", "\\btypename\\b",
                                         "\\bunion\\b", "\\bunsigned\\b", "\\bvirtual\\b", "\\bvoid\\b", "\\bvolatile\\b", "\\bbool\\b",
-                                        "\\busing\\b", "vector", "return"}; // 鍏抽敭瀛楅泦鍚?
+                                        "\\busing\\b", "\\bvector\\b", "\\breturn\\b", "\\btrue\\b", "\\bfalse\\b"}; // 鍏抽敭瀛楅泦鍚?
     // 閬嶅巻鍏抽敭瀛楅泦鍚堬紝閫氳繃姝ｅ垯琛ㄨ揪寮忚瘑鍒瓧绗︿覆銆傚苟璁惧畾涓簉ule鐨刾attern锛屼唬琛ㄥ綋鍓嶅叧閿瓧鐨勬爣璇嗙锛涘啀璁惧畾rule鐨勬牸寮忥紝鏈€缁堝姞鍏ヨ鍒欓泦鍚堜腑
     for (auto &keyword : keyword_pattern)
     {
@@ -306,23 +407,23 @@ HighLighter::HighLighter(CodeEdit *edit, QTextDocument *text) : QSyntaxHighlight
     } // 瑙勫垯闆嗗悎涓瓨鍌ㄧ潃keyword_pattern涓墍鏈夊叧閿瓧鐨勬爣璇嗙鍜屾牸��??(钃濊��? 绮椾��?)
 
     // 2.娣诲姞Qt绫婚珮浜��??
-    class_format.setForeground(QColor(settings.value("CLASS","#00ffff").toString()));   // 璁剧疆Qt绫诲墠鏅壊(darkCyan)
-    class_format.setFontWeight(QFont::Bold);    // 璁剧疆Qt绫诲瓧浣撴牸��??(Bold)
-    QString class_pattern = "\\bQ[a-zA-z]+\\b"; // Qt绫昏瘑鍒牸寮忎负涓よ竟鏈夊垎闅旂锛屼笖浠寮€澶寸殑鎵€鏈夎嫳鏂囧瓧绗︿��?
+    class_format.setForeground(QColor(settings.value("CLASS", "#00ffff").toString())); // 璁剧疆Qt绫诲墠鏅壊(darkCyan)
+    class_format.setFontWeight(QFont::Bold);                                           // 璁剧疆Qt绫诲瓧浣撴牸��??(Bold)
+    QString class_pattern = "\\bQ[a-zA-z]+\\b";                                        // Qt绫昏瘑鍒牸寮忎负涓よ竟鏈夊垎闅旂锛屼笖浠寮€澶寸殑鎵€鏈夎嫳鏂囧瓧绗︿��?
     rule.pattern = QRegularExpression(class_pattern);
     rule.format = class_format;
     highlighterrules.push_back(rule);
 
     // 3.娣诲姞澶存枃浠堕珮浜牸��??
     // 3.1 #寮€��??
-    headfile_format.setForeground(QColor(settings.value("HEADER","#00ffff").toString()));
+    headfile_format.setForeground(QColor(settings.value("HEADER", "#00ffff").toString()));
     headfile_format.setFontWeight(QFont::Bold);
     rule.format = headfile_format;
     rule.pattern = QRegularExpression("#.*");
     highlighterrules.push_back(rule);
 
     // 3.2 鍚勫ご鏂囦欢
-    headfile_format.setForeground(QColor(settings.value("HEADER","#00ffff").toString()));
+    headfile_format.setForeground(QColor(settings.value("HEADER", "#00ffff").toString()));
     headfile_format.setFontWeight(QFont::Bold);
     QVector<QString> headfile_pattern = {
         "<algorithm>", "<bitset>", "<cctype>", "<cerrno>", "<cerrno>", "<cerrno>",
@@ -346,22 +447,22 @@ HighLighter::HighLighter(CodeEdit *edit, QTextDocument *text) : QSyntaxHighlight
     comment_end = QRegularExpression(comment_end_pattern);
 
     // 5.娣诲姞寮曞彿楂樹寒瑙勫垯
-    quotation_format.setForeground(QColor(settings.value("QUATATION","#00ffff").toString())); // 寮曞彿鍐呭棰滆��?(cyan)
+    quotation_format.setForeground(QColor(settings.value("QUATATION", "#00ffff").toString())); // 寮曞彿鍐呭棰滆��?(cyan)
     QString quotation_pattern = "\".*\"";
     rule.pattern = QRegularExpression(quotation_pattern);
     rule.format = quotation_format;
     highlighterrules.push_back(rule);
 
     // 6.娣诲姞鍑芥暟楂樹寒鏍煎紡
-    function_format.setForeground(QColor(settings.value("FUNCTION","#00ffff").toString())); // 鍑芥暟瀛椾綋棰滆壊璁剧疆涓篸arkGreen
-    function_format.setFontWeight(QFont::Bold);           // 鍑芥暟瀛椾綋鏍煎紡璁剧疆涓築old
-    QString function_pattern = "\\b[a-zA-Z0-9_]+(?=\\()"; // 鍑芥暟鍚嶅彲浠ユ槸澶у皬鍐欒嫳鏂囧瓧绗︺€佹暟瀛椼€佷笅鍒掔嚎锛屽叾涓紝(?=\\()琛ㄧず鍚庨潰蹇呴』璺熺潃涓€涓乏鎷彿锛屼絾鏄繖涓乏鎷彿涓嶄細琚尮閰嶅埌
+    function_format.setForeground(QColor(settings.value("FUNCTION", "#00ffff").toString())); // 鍑芥暟瀛椾綋棰滆壊璁剧疆涓篸arkGreen
+    function_format.setFontWeight(QFont::Bold);                                              // 鍑芥暟瀛椾綋鏍煎紡璁剧疆涓築old
+    QString function_pattern = "\\b[a-zA-Z0-9_]+(?=\\()";                                    // 鍑芥暟鍚嶅彲浠ユ槸澶у皬鍐欒嫳鏂囧瓧绗︺€佹暟瀛椼€佷笅鍒掔嚎锛屽叾涓紝(?=\\()琛ㄧず鍚庨潰蹇呴』璺熺潃涓€涓乏鎷彿锛屼絾鏄繖涓乏鎷彿涓嶄細琚尮閰嶅埌
     rule.pattern = QRegularExpression(function_pattern);
     rule.format = function_format;
     highlighterrules.push_back(rule);
 
     // 7.娣诲姞鍒嗘敮楂樹寒鏍煎紡
-    branch_format.setForeground(QColor(settings.value("BRANCH","#00ffff").toString()));
+    branch_format.setForeground(QColor(settings.value("BRANCH", "#00ffff").toString()));
     branch_format.setFontWeight(QFont::Bold);
     QVector<QString> branch_pattern = {
         "if", "else", "switch", "case", "while", "for"};
@@ -373,7 +474,7 @@ HighLighter::HighLighter(CodeEdit *edit, QTextDocument *text) : QSyntaxHighlight
     }
 
     // 8.娣诲姞杈撳叆杈撳嚭楂樹寒鏍煎��?
-    cincout_format.setForeground(QColor(settings.value("STDIO","#00ffff").toString()));
+    cincout_format.setForeground(QColor(settings.value("STDIO", "#00ffff").toString()));
     cincout_format.setFontWeight(QFont::Bold);
     QVector<QString> cincout_pattern = {
         "cin", "cout", "std", "endl", "<<", ">>"};
@@ -385,7 +486,7 @@ HighLighter::HighLighter(CodeEdit *edit, QTextDocument *text) : QSyntaxHighlight
     }
 
     // 9.娣诲姞鍗曡娉ㄩ噴楂樹寒瑙勫��?
-    singleLine_comment_format.setForeground(QColor(settings.value("SIGNLE_LINE_COMMENT","#00ffff").toString()));
+    singleLine_comment_format.setForeground(QColor(settings.value("SIGNLE_LINE_COMMENT", "#00ffff").toString()));
     singleLine_comment_format.setFontWeight(QFont::Bold);
     QString singleLine_comment_pattern = "//[^\n]*"; // 鍗曡娉ㄩ噴璇嗗埆鏍煎紡涓鸿窡鍦?//鍚庯紝浣嗕笉鍖呮嫭鎹㈣绗︼紝涓斾笉闇€瑕侀棿闅旂
     rule.pattern = QRegularExpression(singleLine_comment_pattern);
@@ -393,7 +494,7 @@ HighLighter::HighLighter(CodeEdit *edit, QTextDocument *text) : QSyntaxHighlight
     highlighterrules.push_back(rule);
 
     // 澶氳娉ㄩ噴鏍煎��?
-    multiLine_comment_format.setForeground(QColor(settings.value("MULITLINE_COMMENT","#00ffff").toString()));
+    multiLine_comment_format.setForeground(QColor(settings.value("MULITLINE_COMMENT", "#00ffff").toString()));
     multiLine_comment_format.setFontWeight(QFont::Bold);
 
     settings.endGroup();
