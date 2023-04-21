@@ -61,8 +61,11 @@ public:
         //编译运行项目
         RUN_PROJECT = 16,
 
-        //
-        POST_STDIN = 17
+        //项目交互信号
+        POST_STDIN = 17,
+
+        //终止程序
+        KILL_PROJECT = 18
     };
     enum class ReturnType {
         SERVER_ALLOW = 0,
@@ -78,7 +81,9 @@ public:
         PRIVILEGE_INFO = 10,
         SERVER_OK = 11,
         BUILD_INFO = 12,
-        RUN_INFO = 13
+        RUN_INFO = 13,
+        BUILD_FINISH = 14,
+        RUN_FINISH = 15
     };
     Package(const char* data, int type, int size);
     ~Package();

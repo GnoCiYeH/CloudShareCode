@@ -68,7 +68,10 @@ public:
         RUN_PROJECT = 16,
 
         //输入数据至运行中项目
-        POST_STDIN = 17
+        POST_STDIN = 17,
+
+        //终止运行中程序
+        KILL_PROJECT = 18
     };
     enum class ReturnType{
         SERVER_ALLOW = 0,
@@ -84,7 +87,9 @@ public:
         PRIVILEGE_INFO = 10,
         SERVER_OK = 11,
         BUILD_INFO = 12,
-        RUN_INFO = 13
+        RUN_INFO = 13,
+        BUILD_FINISH = 14,
+        RUN_FINISH = 15
     };
 
     Package(QByteArray data,int type);

@@ -13,6 +13,8 @@
 #include<sys/types.h>
 #include<sys/wait.h>
 #include<unistd.h>
+#include<signal.h>
+#include<string.h>
 
 #define MAXCONNECTION 64
 #define EVENT_SIZE 20
@@ -22,6 +24,7 @@ std::unordered_map<int, TcpServer::UserInfo>* TcpServer::userMap = new std::unor
 std::multimap<int, int>* TcpServer::file_map = new std::multimap<int, int>();
 std::multimap<int, int>* TcpServer::project_map = new std::multimap<int, int>();
 std::unordered_map<std::string, int>* TcpServer::projectInData = new std::unordered_map<std::string, int>();
+std::unordered_map<std::string, std::vector<int>>* TcpServer::projectPidMap = new std::unordered_map<std::string, std::vector<int>>();
 Log::Logger TcpServer::m_logger;
 TcpServer::TcpServer(const char* ip, uint32_t port, Log::Logger& logger)
 {
@@ -135,6 +138,11 @@ void TcpServer::tcpStart()
                     int type = bytesToInt(buf, 0, sizeof(buf));
                     int packageSize = bytesToInt(buf, 4, sizeof(buf));
 
+                    if (type == 0 && packageSize == 0)
+                    {
+                        continue;
+                    }
+
                     char* data = new char[packageSize + 1];
                     data[packageSize] = '\0';
                     read(sock_fd, data, packageSize);
@@ -217,6 +225,11 @@ void TcpServer::tcpStart()
                     case (int)Package::PackageType::POST_STDIN:
                     {
                         pool->submit(stdinToProject, sock_fd, data,packageSize);
+                        break;
+                    }
+                    case (int)Package::PackageType::KILL_PROJECT:
+                    {
+                        pool->submit(killProjectP, sock_fd, data);
                         break;
                     }
                     default:
@@ -656,37 +669,10 @@ void TcpServer::runProject(int sock_fd, char* data)
     std::string proPath = "./" + std::string(rows[0][1]) +"/" + std::string(rows[0][0]);
     std::string buildPath = proPath + "/bulid";
 
-    removeFile(buildPath);
-    CreateDir(buildPath);
-    
-    FILE* fp = NULL;
-    char buf[1024];
-    memset(buf, 0, sizeof(buf));
+    compileProject(sock_fd, proPath, buildPath);
 
-    std::string cmakeCmd = "cmake " + proPath + " -B " + buildPath + " 2>&1";
-    if ((fp = popen(cmakeCmd.c_str(), "r")) != NULL)
-    {
-        while (fgets(buf,sizeof(buf),fp)!=NULL)
-        {
-            Package pck(buf, (int)Package::ReturnType::BUILD_INFO, 1024);
-            write(sock_fd, pck.getPdata(), pck.getSize());
-            memset(buf, 0, sizeof(buf));
-        }
-        pclose(fp);
-    }
-
-    std::string makeCmd = "make -C " + buildPath + " 2>&1";
-    if ((fp = popen(makeCmd.c_str(), "r")) != NULL)
-    {
-        while (fgets(buf, sizeof(buf), fp) != NULL)
-        {
-            Package pck(buf, (int)Package::ReturnType::BUILD_INFO, 1024);
-            write(sock_fd, pck.getPdata(), pck.getSize());
-            memset(buf, 0, sizeof(buf));
-        }
-        pclose(fp);
-    }
-
+    Package pck("", (int)Package::ReturnType::BUILD_FINISH, 0);
+    write(sock_fd, pck.getPdata(), pck.getSize());
     //读取进程的pipe
     int outfd[2];
 
@@ -715,6 +701,9 @@ void TcpServer::runProject(int sock_fd, char* data)
     int mainWfd = infd[1];
     int subRfd = infd[0];
 
+    char buf[1024];
+    memset(buf, 0, sizeof(buf));
+
     projectInData->erase(proId);
     projectInData->insert(std::pair<std::string, int>(proId, mainWfd));
 
@@ -725,6 +714,7 @@ void TcpServer::runProject(int sock_fd, char* data)
     }
     else if (pid == 0) //子进程
     {
+        setpgrp();
         //运行用户项目代码
 
         //重定向输入输出流
@@ -734,32 +724,50 @@ void TcpServer::runProject(int sock_fd, char* data)
         int saveInfd = dup2(subRfd, STDIN_FILENO);
 
         std::string exePath = buildPath + "/bin/" + std::string(rows[0][0]);
-        if (execlp(exePath.c_str(),NULL) == -1)
+        std::string cmdstr = "find -iname " + std::string(rows[0][0]) + " -exec {} \\;";
+        std::cout << cmdstr;
+        /*if (execlp(exePath.c_str(),NULL) == -1)
         {
             std::string str = "run project error";
             Package pck(str.c_str(), (int)Package::ReturnType::SERVER_ERROR, str.size());
             write(sock_fd, pck.getPdata(), pck.getSize());
-        }
+        }*/
+        int ret = system(cmdstr.c_str());
+        std::string str = "Program exited with code "+ std::to_string(ret);
+        Package pck(str.c_str(), (int)Package::ReturnType::RUN_FINISH, str.size());
+        write(sock_fd, pck.getPdata(), pck.getSize());
 
+        projectPidMap->erase(proId); 
+        close(mainRfd);
+        close(subWfd);
         _Exit(-1);
     }
     else
     {
         //服务器代码
+        std::vector<int> vec = { pid,subWfd,mainRfd };
+        projectPidMap->insert(std::pair<std::string, std::vector<int>>(proId, vec));
         int ret = 0;
+
         while ((ret = read(mainRfd, buf, 1024)) != NULL)
         {
-            Package pck(buf, (int)Package::ReturnType::RUN_INFO, ret);
-            write(sock_fd, pck.getPdata(), pck.getSize());
-            memset(buf, 0, sizeof(buf));
+            if (projectPidMap->find(proId) != projectPidMap->end())
+            {
+                Package pck(buf, (int)Package::ReturnType::RUN_INFO, ret);
+                write(sock_fd, pck.getPdata(), pck.getSize());
+                memset(buf, 0, sizeof(buf));
+            }
+            else
+                break;
         }
-        waitpid(pid, NULL, 0);
+
+        //waitpid(pid, &ret, 0);
+        wait(&ret);
+        projectPidMap->erase(proId);
     }
 
-    close(mainRfd);
-    close(mainWfd);
     close(subRfd);
-    close(subWfd);
+    close(mainWfd);
     mysql_free_result(res);
     delete[] data;
 }
@@ -773,4 +781,64 @@ void TcpServer::stdinToProject(int sock_fd, char* data,int size)
         write(proStdin, data + 4, size - 4);
     }
     delete data;
+}
+
+void TcpServer::compileProject(int sock_fd,std::string proPath, std::string buildPath)
+{
+    removeFile(buildPath);
+    CreateDir(buildPath);
+
+    FILE* fp = NULL;
+    char buf[1024];
+    memset(buf, 0, sizeof(buf));
+
+    std::string cmakeCmd = "cmake " + proPath + " -B " + buildPath + " 2>&1";
+    if ((fp = popen(cmakeCmd.c_str(), "r")) != NULL)
+    {
+        while (fgets(buf, sizeof(buf), fp) != NULL)
+        {
+            Package pck(buf, (int)Package::ReturnType::BUILD_INFO, 1024);
+            write(sock_fd, pck.getPdata(), pck.getSize());
+            memset(buf, 0, sizeof(buf));
+        }
+        pclose(fp);
+    }
+
+    std::string makeCmd = "make -C " + buildPath + " 2>&1";
+    if ((fp = popen(makeCmd.c_str(), "r")) != NULL)
+    {
+        while (fgets(buf, sizeof(buf), fp) != NULL)
+        {
+            Package pck(buf, (int)Package::ReturnType::BUILD_INFO, 1024);
+            write(sock_fd, pck.getPdata(), pck.getSize());
+            memset(buf, 0, sizeof(buf));
+        }
+        pclose(fp);
+    }
+}
+
+void TcpServer::killProjectP(int sock_fd, char* data)
+{
+    std::string proId(data);
+    if (projectPidMap->find(proId) != projectPidMap->end())
+    {
+        
+        auto res = projectPidMap->find(proId)->second;
+        close(projectPidMap->find(proId)->second[1]);
+        close(projectPidMap->find(proId)->second[2]);
+        if (killpg(projectPidMap->find(proId)->second[0], SIGKILL) == -1)
+        {
+            ERROR_LOG(m_logger, "kill p error");
+        }
+
+        int ret = 0;
+        waitpid(projectPidMap->find(proId)->second[0],&ret,0);
+        std::string str = "Program exited with code " + std::to_string(ret);
+        Package pck(str.c_str(), (int)Package::ReturnType::RUN_FINISH, str.size());
+        write(sock_fd, pck.getPdata(), pck.getSize());
+
+        projectPidMap->erase(proId);
+    }
+
+    delete[] data;
 }
