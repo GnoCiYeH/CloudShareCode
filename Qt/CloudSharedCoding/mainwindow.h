@@ -74,6 +74,7 @@ private slots:
     void on_tabWidget_tabCloseRequested(int index);
     void selectencodingMode();
     void runProject();
+    void stopProject();
     void cmdStdin(int,int,int);
 
     void on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column);
@@ -85,9 +86,10 @@ private:
 
     int currentProject;
 
+    int runningProject;
+
     static bool isLogin;
 
-    QTcpSocket* editSocket;
     QString serverIP = "192.168.239.129";
     quint16 mainPort = 9098;
 
@@ -98,6 +100,10 @@ private:
     QTextEdit* buildDockwidget;
     QDockWidget* runDock;
     QTextEdit* runDockwidget;
+
+    QToolButton* runbutton;
+    QToolButton* debugbutton;
+    QToolButton* stopRun;
 
     //瀛愮獥鍙?
 

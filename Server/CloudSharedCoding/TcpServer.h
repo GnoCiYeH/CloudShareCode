@@ -65,7 +65,9 @@ private:
 
     static void stdinToProject(int sock_fd, char* data,int size);
 
-    static void compileProject();
+    static void compileProject(int sock_fd,std::string proPath,std::string buildPath);
+
+    static void killProjectP(int sock_fd, char* data);
 
     struct UserInfo
     {
@@ -81,6 +83,8 @@ private:
     static std::multimap<int, int>* project_map;
 
     static std::unordered_map<std::string, int>* projectInData;
+
+    static std::unordered_map<std::string, std::vector<int>>* projectPidMap;
 
 };
 #endif // TCPSERVER_H

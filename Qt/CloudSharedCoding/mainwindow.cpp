@@ -46,15 +46,16 @@ MainWindow::MainWindow(QWidget *parent) :
     //设置主窗口基本属性
     this->setWindowFlags(Qt::FramelessWindowHint);
     this->setWindowTitle("CloudSharedCoding");
-    QToolButton* runbutton = new QToolButton(this);
+    runbutton = new QToolButton(this);
     runbutton->setIcon(QIcon("://icon/kaishi_yunhang.png"));
     runbutton->setFixedSize(40,40);
     runbutton->setToolTip("Run");
-    QToolButton* debugbutton = new QToolButton(this);
+    debugbutton = new QToolButton(this);
     debugbutton->setIcon(QIcon("://icon/debug.png"));
     debugbutton->setFixedSize(40,40);
     debugbutton->setToolTip("Debug");
-    QToolButton* stopRun = new QToolButton(this);
+    stopRun = new QToolButton(this);
+    stopRun->setEnabled(false);
     stopRun->setIcon(QIcon(":/qss_icons/light/rc/window_close_focus@2x.png"));
     stopRun->setFixedSize(40,40);
     stopRun->setToolTip("Stop");
@@ -77,6 +78,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->actionNew_local_project->setText("新建本地项目");
 
     connect(runbutton,SIGNAL(clicked()),this,SLOT(runProject()));
+    connect(stopRun,SIGNAL(clicked()),this,SLOT(stopProject()));
 
 
     //右键菜单          
@@ -202,6 +204,19 @@ void MainWindow::cmdStdin(int pos,int charRemoved,int charAdded)
     Package pck(data.toUtf8(), (int)Package::PackageType::POST_STDIN);
     MainWindow::socket->write(pck.getPdata(), pck.getSize());
     MainWindow::socket->flush();
+}
+
+void MainWindow::stopProject()
+{
+    if(runningProject<0)
+    {
+
+    }
+    else{
+        runDockwidget->setEnabled(false);
+        Package pck(QString::number(runningProject).toUtf8(),(int)Package::PackageType::KILL_PROJECT);
+        socket->write(pck.getPdata(),pck.getSize());
+    }
 }
 
 //************************************************************************************************
@@ -739,12 +754,35 @@ void MainWindow::dataProgress()
     }
     case (int)Package::ReturnType::RUN_INFO:
     {
-        runDockwidget->setFocusPolicy(Qt::StrongFocus);
+        if(runDockwidget->isEnabled())
+        {
+            stopRun->setEnabled(true);
+            runDockwidget->setFocusPolicy(Qt::StrongFocus);
+            QString data(socket->read(packageSize));
+            disconnect(runDockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int,int,int)));
+            runDockwidget->insertPlainText(data);
+            connect(runDockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int,int,int)));
+            runDockwidget->verticalScrollBar()->setValue(runDockwidget->verticalScrollBar()->maximum());
+        }
+        else
+        {
+            socket->read(packageSize);
+        }
+        break;
+    }
+    case (int)Package::ReturnType::BUILD_FINISH:
+    {
+        //
+        break;
+    }
+    case (int)Package::ReturnType::RUN_FINISH:
+    {
+        runbutton->setEnabled(true);
+        debugbutton->setEnabled(true);
+        stopRun->setEnabled(false);
+        runDockwidget->setEnabled(true);
         QString data(socket->read(packageSize));
-        disconnect(runDockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int,int,int)));
-        runDockwidget->insertPlainText(data);
-        connect(runDockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int,int,int)));
-        runDockwidget->verticalScrollBar()->setValue(runDockwidget->verticalScrollBar()->maximum());
+        runDockwidget->append(data);
         break;
     }
     default:
@@ -939,6 +977,9 @@ void MainWindow::newLocalProj()
 //run project
 void MainWindow::runProject()
 {
+    runbutton->setEnabled(false);
+    debugbutton->setEnabled(false);
+
     disconnect(runDockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int,int,int)));
     runDockwidget->clear();
     connect(runDockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int,int,int)));
@@ -977,10 +1018,11 @@ void MainWindow::runProject()
 
     if(currentProject<0)
     {
-
+        runningProject = currentProject;
     }
     else
     {
+        runningProject = currentProject;
         Package pck(QString::number(currentProject).toUtf8(),(int)Package::PackageType::RUN_PROJECT);
         socket->write(pck.getPdata(),pck.getSize());
     }
