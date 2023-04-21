@@ -30,6 +30,8 @@ namespace Ui
 }
 class AssociateListWidget;
 class HighLighter;
+class QP;
+
 static void setUpAssociateList();
 static QStringList associateList;
 
@@ -55,8 +57,8 @@ public:
 
     int tcnum = 0;
     int ctnum = 0;
-    void showLineNumber(QPaintEvent* event);
-
+    void lineNumberAreaPaintEvent(QPaintEvent *event);
+    int lineNumberAreaWidth();
 signals:
     void deleteInfo(int, int);
 
@@ -68,6 +70,7 @@ public slots:
 
 protected:
     void keyPressEvent(QKeyEvent *event) override;
+    void resizeEvent(QResizeEvent *event)override;
 private:
     Ui::CodeEdit *ui;
 
@@ -87,7 +90,8 @@ private:
     int getAssociateWidgetX();
 
     QHash<QString, UserEditTip *> userWidget;
-    void resizeEvent(QResizeEvent *event);
+
+    QWidget*lineNumberArea;
 
 private slots:
     void showAssociateWidget(); // 展示联想列表
@@ -152,6 +156,25 @@ private:
     QColor backgroundColor; // 联想列表背景�?
     QColor highlightColor;
     CodeEdit *edit;
+};
+
+class LineNumberArea : public QWidget{
+public:
+    LineNumberArea(CodeEdit *codeEdit) : QWidget(codeEdit) {
+        this->codeEdit = codeEdit;
+    }
+
+    QSize sizeHint() const override {
+        return QSize(codeEdit->lineNumberAreaWidth(), 0);
+    }
+
+protected:
+    void paintEvent(QPaintEvent *event) override {
+        codeEdit->lineNumberAreaPaintEvent(event);
+    }
+
+private:
+    CodeEdit *codeEdit;
 };
 
 #endif // CODEEDIT_H

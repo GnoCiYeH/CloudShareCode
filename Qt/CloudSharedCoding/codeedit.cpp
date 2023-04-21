@@ -366,6 +366,48 @@ void CodeEdit::resizeEvent(QResizeEvent *event)
     QWidget::resizeEvent(event);
 }
 
+int CodeEdit::lineNumberAreaWidth()
+{
+    int digits = 1;//行数数字的位数
+    int max = qMax(1, ui->textEdit->blockCount());
+    while (max >= 10) {
+        max /= 10;
+        ++digits;
+    }
+    if(digits<3)digits=3;
+
+    int space = 3 + ui->textEdit->fontMetrics().averageCharWidth()*digits;
+
+    return space;
+}
+
+void CodeEdit::lineNumberAreaPaintEvent(QPaintEvent *event)
+{
+    QPainter painter(lineNumberArea);
+    painter.fillRect(event->rect(), Qt::darkGray);
+
+    QTextBlock block = ui->textEdit->firstVBlock();
+    int blockNumber = block.blockNumber();
+    int top = (int) ui->textEdit->blockBGeometry(block).translated(ui->textEdit->contentOset()).top();
+    int bottom = top + (int) ui->textEdit->blockBRect(block).height();
+    //![extraAreaPaintEvent_1]
+
+    //![extraAreaPaintEvent_2]
+    while (block.isValid() && top <= event->rect().bottom()) {
+        if (block.isVisible() && bottom >= event->rect().top()) {
+            QString number = QString::number(blockNumber + 1);
+            painter.setPen(Qt::lightGray);
+            painter.drawText(0, top, lineNumberArea->width(), fontMetrics().height(),
+                             Qt::AlignCenter, number);
+        }
+
+        block = block.next();
+        top = bottom;
+        bottom = top + (int) ui->textEdit->blockBRect(block).height();
+        ++blockNumber;
+    }
+}
+
 HighLighter::HighLighter(CodeEdit *edit, QTextDocument *text) : QSyntaxHighlighter(text),
                                                                 edit(edit)
 {

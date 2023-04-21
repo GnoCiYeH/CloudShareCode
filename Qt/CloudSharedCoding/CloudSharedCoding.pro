@@ -39,6 +39,7 @@ SOURCES += \
     privilegelistitem.cpp \
     privilegemanager.cpp \
     projectform.cpp \
+    qp.cpp \
     settingform.cpp \
     switchingencodingmode.cpp \
     useredittip.cpp \
@@ -59,6 +60,7 @@ HEADERS += \
     privilegelistitem.h \
     privilegemanager.h \
     projectform.h \
+    qp.h \
     settingform.h \
     switchingencodingmode.h \
     useredittip.h \
