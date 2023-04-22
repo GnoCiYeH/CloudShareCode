@@ -27,6 +27,7 @@ CONFIG += c++11
 
 SOURCES += \
     cloudsharedcoding.cpp \
+    codedocedit.cpp \
     codethemeitem.cpp \
         main.cpp \
         mainwindow.cpp \
@@ -39,7 +40,6 @@ SOURCES += \
     privilegelistitem.cpp \
     privilegemanager.cpp \
     projectform.cpp \
-    qp.cpp \
     settingform.cpp \
     switchingencodingmode.cpp \
     useredittip.cpp \
@@ -48,6 +48,7 @@ SOURCES += \
 HEADERS += \
     InfoType.h \
     cloudsharedcoding.h \
+    codedocedit.h \
     codethemeitem.h \
         mainwindow.h \
     myhelper.h \
@@ -60,7 +61,6 @@ HEADERS += \
     privilegelistitem.h \
     privilegemanager.h \
     projectform.h \
-    qp.h \
     settingform.h \
     switchingencodingmode.h \
     useredittip.h \

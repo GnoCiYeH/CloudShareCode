@@ -27,18 +27,15 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="QWidget" name="lineNumberArea" native="true"/>
-   </item>
-   <item>
-    <widget class="QP" name="textEdit"/>
+    <widget class="CodeDocEdit" name="textEdit"/>
    </item>
   </layout>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>QP</class>
+   <class>CodeDocEdit</class>
    <extends>QPlainTextEdit</extends>
-   <header>qp.h</header>
+   <header>codedocedit.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

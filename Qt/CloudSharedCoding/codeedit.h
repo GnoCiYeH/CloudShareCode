@@ -30,7 +30,6 @@ namespace Ui
 }
 class AssociateListWidget;
 class HighLighter;
-class QP;
 
 static void setUpAssociateList();
 static QStringList associateList;
@@ -45,7 +44,7 @@ public:
     friend class AssociateListWidget;
 
 public:
-    explicit CodeEdit(std::shared_ptr<FileInfo> fileptr = nullptr, QWidget *parent = nullptr);
+    explicit CodeEdit(std::shared_ptr<FileInfo> fileptr = std::shared_ptr<FileInfo>(new FileInfo()), QWidget *parent = nullptr);
     ~CodeEdit() override;
 
     void addText(const QString str);
@@ -64,10 +63,6 @@ signals:
 
 public slots:
     void docChange(int, int, int);
-    void updateLineNumberAreaWidth();
-    void updateLineNumberArea(const int);
-    void highlightCurrentLine();
-
 protected:
     void keyPressEvent(QKeyEvent *event) override;
     void resizeEvent(QResizeEvent *event)override;
@@ -90,8 +85,6 @@ private:
     int getAssociateWidgetX();
 
     QHash<QString, UserEditTip *> userWidget;
-
-    QWidget*lineNumberArea;
 
 private slots:
     void showAssociateWidget(); // 展示联想列表
@@ -156,25 +149,6 @@ private:
     QColor backgroundColor; // 联想列表背景�?
     QColor highlightColor;
     CodeEdit *edit;
-};
-
-class LineNumberArea : public QWidget{
-public:
-    LineNumberArea(CodeEdit *codeEdit) : QWidget(codeEdit) {
-        this->codeEdit = codeEdit;
-    }
-
-    QSize sizeHint() const override {
-        return QSize(codeEdit->lineNumberAreaWidth(), 0);
-    }
-
-protected:
-    void paintEvent(QPaintEvent *event) override {
-        codeEdit->lineNumberAreaPaintEvent(event);
-    }
-
-private:
-    CodeEdit *codeEdit;
 };
 
 #endif // CODEEDIT_H

@@ -20,15 +20,9 @@ CodeEdit::CodeEdit(std::shared_ptr<FileInfo> fileptr, QWidget *parent) : QWidget
     document = ui->textEdit->document();
     ui->textEdit->setFont(QFont("Consolas"));
     HighLighter *highLighter = new HighLighter(this, document);
-
     QHBoxLayout *layout = (QHBoxLayout*)this->layout();
     setLayout(layout);
-
-    connect(document, &QTextDocument::blockCountChanged, this, &CodeEdit::updateLineNumberAreaWidth);
-    connect(ui->textEdit->verticalScrollBar(), &QScrollBar::valueChanged, this, &CodeEdit::updateLineNumberArea);
-    connect(ui->textEdit, &QPlainTextEdit::cursorPositionChanged, this, &CodeEdit::highlightCurrentLine);
-
-    updateLineNumberAreaWidth();
+    ((CodeDocEdit*)ui->textEdit)->setFile(fileptr);
 
     this->file = fileptr;
 
@@ -316,51 +310,6 @@ void CodeEdit::keyPressEvent(QKeyEvent *event)
     }
 }
 
-void CodeEdit::updateLineNumberAreaWidth()
-{
-    int digits = 1;
-    int max = 1;
-    if (document->blockCount() > 1)
-    {
-        max = document->blockCount();
-    }
-    while (max >= 10)
-    {
-        max /= 10;
-        digits++;
-    }
-    int width = 8 + fontMetrics().horizontalAdvance(QLatin1Char('9')) * digits;
-    ui->lineNumberArea->setMinimumWidth(width);
-    ui->lineNumberArea->setMaximumWidth(width);
-}
-
-void CodeEdit::updateLineNumberArea(const int)
-{
-    // 更新行号区域的垂直滚动位置
-    ui->lineNumberArea->scroll(0, ui->textEdit->verticalScrollBar()->value());
-    // 重绘行号区域
-    ui->lineNumberArea->update();
-}
-
-void CodeEdit::highlightCurrentLine()
-{
-    QList<QTextEdit::ExtraSelection> extraSelections;
-
-    if (!ui->textEdit->isReadOnly())
-    {
-        QTextEdit::ExtraSelection selection;
-        QColor lineColor = QColor(Qt::darkGray).lighter(10);
-
-        selection.format.setBackground(lineColor);
-        selection.format.setProperty(QTextFormat::FullWidthSelection, true);
-        selection.cursor = ui->textEdit->textCursor();
-        selection.cursor.clearSelection();
-        extraSelections.append(selection);
-    }
-
-    ui->textEdit->setExtraSelections(extraSelections);
-}
-
 void CodeEdit::resizeEvent(QResizeEvent *event)
 {
     QWidget::resizeEvent(event);
@@ -379,33 +328,6 @@ int CodeEdit::lineNumberAreaWidth()
     int space = 3 + ui->textEdit->fontMetrics().averageCharWidth()*digits;
 
     return space;
-}
-
-void CodeEdit::lineNumberAreaPaintEvent(QPaintEvent *event)
-{
-    QPainter painter(lineNumberArea);
-    painter.fillRect(event->rect(), Qt::darkGray);
-
-    QTextBlock block = ui->textEdit->firstVBlock();
-    int blockNumber = block.blockNumber();
-    int top = (int) ui->textEdit->blockBGeometry(block).translated(ui->textEdit->contentOset()).top();
-    int bottom = top + (int) ui->textEdit->blockBRect(block).height();
-    //![extraAreaPaintEvent_1]
-
-    //![extraAreaPaintEvent_2]
-    while (block.isValid() && top <= event->rect().bottom()) {
-        if (block.isVisible() && bottom >= event->rect().top()) {
-            QString number = QString::number(blockNumber + 1);
-            painter.setPen(Qt::lightGray);
-            painter.drawText(0, top, lineNumberArea->width(), fontMetrics().height(),
-                             Qt::AlignCenter, number);
-        }
-
-        block = block.next();
-        top = bottom;
-        bottom = top + (int) ui->textEdit->blockBRect(block).height();
-        ++blockNumber;
-    }
 }
 
 HighLighter::HighLighter(CodeEdit *edit, QTextDocument *text) : QSyntaxHighlighter(text),

@@ -22,6 +22,7 @@
 #include<map>
 #include<algorithm>
 #include<QDir>
+#include<QMultiHash>
 #include"newlocalfile.h"
 
 namespace Ui {
@@ -40,6 +41,8 @@ public:
     static QHash<int,Project>* userProjs;
 
     static QString userId;
+
+    static QHash<int,QMultiHash<QString,int>>* debugInfo;
 
     std::map<QString,CodeEdit*>mp;//存放路径名字和CodeEdit指针的相互映射
 
@@ -75,6 +78,7 @@ private slots:
     void selectencodingMode();
     void runProject();
     void stopProject();
+    void debugProject();
     void cmdStdin(int,int,int);
 
     void on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column);

@@ -2,6 +2,7 @@
 #include<QVariant>
 #include<QTreeWidgetItem>
 #include<memory>
+#include <QSet>
 
 #ifndef INFOTYPE_H
 #define INFOTYPE_H

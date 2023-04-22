@@ -15,6 +15,7 @@
 QTcpSocket* MainWindow::socket = new QTcpSocket();
 QHash<int,Project>* MainWindow::userProjs = new QHash<int,Project>();
 QString MainWindow::userId = "";
+QHash<int,QMultiHash<QString,int>>* MainWindow::debugInfo = new QHash<int,QMultiHash<QString,int>>();
 bool MainWindow::isLogin = false;
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -79,6 +80,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(runbutton,SIGNAL(clicked()),this,SLOT(runProject()));
     connect(stopRun,SIGNAL(clicked()),this,SLOT(stopProject()));
+    connect(debugbutton,SIGNAL(clicked()),this,SLOT(debugProject()));
 
 
     //右键菜单          
@@ -178,6 +180,7 @@ MainWindow::~MainWindow()
     socket->close();
     socket->deleteLater();
     delete userProjs;
+    delete debugInfo;
 }
 
 void MainWindow::cmdStdin(int pos,int charRemoved,int charAdded)
@@ -217,6 +220,11 @@ void MainWindow::stopProject()
         Package pck(QString::number(runningProject).toUtf8(),(int)Package::PackageType::KILL_PROJECT);
         socket->write(pck.getPdata(),pck.getSize());
     }
+}
+
+void MainWindow::debugProject()
+{
+
 }
 
 //************************************************************************************************
