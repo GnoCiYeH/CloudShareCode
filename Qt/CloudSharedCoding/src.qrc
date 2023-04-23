@@ -83,5 +83,10 @@
         <file>icon/yunhang.png</file>
         <file>icon/debug.png</file>
         <file>icon/24gl-fileEmpty.png</file>
+        <file>icon/continue.png</file>
+        <file>icon/next.png</file>
+        <file>icon/stepinto.png</file>
+        <file>icon/stepout.png</file>
+        <file>icon/stop.png</file>
     </qresource>
 </RCC>

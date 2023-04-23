@@ -55,7 +55,7 @@ void CodeDocEdit::lineNumberAreaPainterEvent(QPaintEvent *event)
         if(block.isVisible() && bottom >= event->rect().top()){
             QString number = QString::number(blockNumber + 1);
             auto breakPointSet = MainWindow::debugInfo->value(file->file_project);
-            auto list = breakPointSet.values(file->file_name);
+            auto list = breakPointSet->values(file->file_name);
             for(auto it:list)
             {
                 if(it==blockNumber+1)
@@ -166,20 +166,20 @@ void CodeDocEdit::setBreakPoint(QMouseEvent* event)
     while(block.isValid() && top <= event->pos().y()) {
         if(block.isVisible() && bottom >= event->pos().y()){
             auto breakPointSet = MainWindow::debugInfo->value(file->file_project);
-            auto list = breakPointSet.values(file->file_name);
+            auto list = breakPointSet->values(file->file_name);
             bool flag = true;
             for(auto it:list)
             {
                 if(it == blockNumber+1)
                 {
-                    breakPointSet.remove(file->file_name,blockNumber+1);
+                    breakPointSet->remove(file->file_name,blockNumber+1);
                     flag = false;
                     break;
                 }
             }
             if(flag)
             {
-                breakPointSet.insert(file->file_name,blockNumber+1);
+                breakPointSet->insert(file->file_name,blockNumber+1);
             }
             break;
         }

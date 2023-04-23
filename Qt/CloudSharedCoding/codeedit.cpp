@@ -89,7 +89,6 @@ void CodeEdit::docChange(int pos, int charRemoved, int charAdded)
     //*********************************
 
     QString data = QString::number(file->file_id) + "#" + QString::number(size) + "#" + QString::number(charRemoved) + "#" + file->file_path + "#" + MainWindow::userId + "#";
-    qDebug() << pos << " " << charRemoved << " " << charAdded;
     for (int var = pos; var < pos + charAdded; ++var)
     {
         if (document->characterAt(var) == QChar(8233) || document->characterAt(var) == QChar(8232))
@@ -147,7 +146,6 @@ void CodeEdit::docChange(int pos, int charRemoved, int charAdded)
         }
     }
 
-    qDebug() << data;
     Package pck(data.toUtf8(), (int)Package::PackageType::TEXT_CHANGE);
     MainWindow::socket->write(pck.getPdata(), pck.getSize());
     MainWindow::socket->flush();
@@ -164,7 +162,6 @@ void CodeEdit::changeText(int pos, int charRemoved, QString userId, QString data
 {
     QTextCursor cursor(document);
     cursor.movePosition(QTextCursor::NextCharacter, QTextCursor::MoveAnchor, pos);
-    qDebug() << ui->textEdit->toPlainText().size();
     cursor.movePosition(QTextCursor::NextCharacter, QTextCursor::KeepAnchor, charRemoved);
     document->disconnect(SIGNAL(contentsChange(int, int, int)), this, SLOT(docChange(int, int, int)));
     cursor.removeSelectedText();

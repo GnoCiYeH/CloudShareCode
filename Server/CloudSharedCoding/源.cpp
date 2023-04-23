@@ -7,8 +7,6 @@ int main()
 	TcpServer server("172.30.130.144", 9098, logger);
 	server.tcpStart();
 
-
-
 	/*std::cout << (int)(int)(int)Package::PackageType::LOGIN << std::endl;
 	std::cout << (int)(int)(int)Package::PackageType::REGISTER << std::endl;
 	std::cout << (int)(int)(int)Package::PackageType::TEXT_CHANGE << std::endl;

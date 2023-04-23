@@ -71,7 +71,10 @@ public:
         POST_STDIN = 17,
 
         //终止运行中程序
-        KILL_PROJECT = 18
+        KILL_PROJECT = 18,
+
+        //调试
+        DEBUG_PROJECT = 19
     };
     enum class ReturnType{
         SERVER_ALLOW = 0,
@@ -89,7 +92,8 @@ public:
         BUILD_INFO = 12,
         RUN_INFO = 13,
         BUILD_FINISH = 14,
-        RUN_FINISH = 15
+        RUN_FINISH = 15,
+        DEBUG_INFO = 16
     };
 
     Package(QByteArray data,int type);

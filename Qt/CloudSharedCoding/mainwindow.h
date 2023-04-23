@@ -42,7 +42,7 @@ public:
 
     static QString userId;
 
-    static QHash<int,QMultiHash<QString,int>>* debugInfo;
+    static QHash<int,QMultiHash<QString,int>*>* debugInfo;
 
     std::map<QString,CodeEdit*>mp;//存放路径名字和CodeEdit指针的相互映射
 
@@ -84,6 +84,23 @@ private slots:
     void on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column);
 
 private:
+
+    enum class ProjectWorkState{
+        NONE,
+        BUILDING,
+        RUNNING,
+        DEBUGING,
+    } workState = ProjectWorkState::NONE;
+
+    enum class DebugState{
+        NONE,
+        START,
+        WAIT_BREAKPOINT_INFO,
+        WAIT_DEBUG_INFO
+    } debugState = DebugState::NONE;
+
+    void disposeDebugInfo(QString);
+
     Ui::MainWindow *ui;
 
     QString userName;
@@ -104,6 +121,13 @@ private:
     QTextEdit* buildDockwidget;
     QDockWidget* runDock;
     QTextEdit* runDockwidget;
+    QToolBar* debugToolBar;
+
+    QToolButton* continueDebugButton;
+    QToolButton* stopDebugButton;
+    QToolButton* nextDebugButton;
+    QToolButton* stepIntoDubugButton;
+    QToolButton* stepOutDebugButton;
 
     QToolButton* runbutton;
     QToolButton* debugbutton;

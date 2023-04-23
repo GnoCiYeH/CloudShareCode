@@ -217,4 +217,20 @@ static bool textChange(std::string path,int pos, int charRemoved, std::string da
     return true;
 }
 
+static std::string readLine(int fd)
+{
+    std::string ret;
+    char p;
+    while ((read(fd,&p,1))!=NULL)
+    {
+        if (p == '\n' || p == EOF)
+        {
+            break;
+        }
+        ret += p;
+    }
+
+    return ret;
+}
+
 #endif // TOOL_H_INCLUDED
