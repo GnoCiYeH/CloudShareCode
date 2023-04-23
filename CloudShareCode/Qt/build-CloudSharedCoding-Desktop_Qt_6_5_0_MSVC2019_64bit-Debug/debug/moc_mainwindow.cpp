@@ -61,6 +61,7 @@ static constexpr auto qt_meta_stringdata_CLASSMainWindowENDCLASS = QtMocHelpers:
     "addLocalFile",
     "addFile",
     "file_path",
+    "openFileAndAddTab",
     "loginState",
     "on_tabWidget_tabCloseRequested",
     "index",
@@ -75,7 +76,7 @@ static constexpr auto qt_meta_stringdata_CLASSMainWindowENDCLASS = QtMocHelpers:
 );
 #else  // !QT_MOC_HAS_STRING_DATA
 struct qt_meta_stringdata_CLASSMainWindowENDCLASS_t {
-    uint offsetsAndSizes[66];
+    uint offsetsAndSizes[68];
     char stringdata0[11];
     char stringdata1[13];
     char stringdata2[1];
@@ -98,17 +99,18 @@ struct qt_meta_stringdata_CLASSMainWindowENDCLASS_t {
     char stringdata19[13];
     char stringdata20[8];
     char stringdata21[10];
-    char stringdata22[11];
-    char stringdata23[31];
-    char stringdata24[6];
-    char stringdata25[19];
-    char stringdata26[11];
-    char stringdata27[12];
-    char stringdata28[13];
-    char stringdata29[9];
-    char stringdata30[32];
-    char stringdata31[5];
-    char stringdata32[7];
+    char stringdata22[18];
+    char stringdata23[11];
+    char stringdata24[31];
+    char stringdata25[6];
+    char stringdata26[19];
+    char stringdata27[11];
+    char stringdata28[12];
+    char stringdata29[13];
+    char stringdata30[9];
+    char stringdata31[32];
+    char stringdata32[5];
+    char stringdata33[7];
 };
 #define QT_MOC_LITERAL(ofs, len) \
     uint(sizeof(qt_meta_stringdata_CLASSMainWindowENDCLASS_t::offsetsAndSizes) + ofs), len 
@@ -136,17 +138,18 @@ Q_CONSTINIT static const qt_meta_stringdata_CLASSMainWindowENDCLASS_t qt_meta_st
         QT_MOC_LITERAL(234, 12),  // "addLocalFile"
         QT_MOC_LITERAL(247, 7),  // "addFile"
         QT_MOC_LITERAL(255, 9),  // "file_path"
-        QT_MOC_LITERAL(265, 10),  // "loginState"
-        QT_MOC_LITERAL(276, 30),  // "on_tabWidget_tabCloseRequested"
-        QT_MOC_LITERAL(307, 5),  // "index"
-        QT_MOC_LITERAL(313, 18),  // "selectencodingMode"
-        QT_MOC_LITERAL(332, 10),  // "runProject"
-        QT_MOC_LITERAL(343, 11),  // "stopProject"
-        QT_MOC_LITERAL(355, 12),  // "debugProject"
-        QT_MOC_LITERAL(368, 8),  // "cmdStdin"
-        QT_MOC_LITERAL(377, 31),  // "on_treeWidget_itemDoubleClicked"
-        QT_MOC_LITERAL(409, 4),  // "item"
-        QT_MOC_LITERAL(414, 6)   // "column"
+        QT_MOC_LITERAL(265, 17),  // "openFileAndAddTab"
+        QT_MOC_LITERAL(283, 10),  // "loginState"
+        QT_MOC_LITERAL(294, 30),  // "on_tabWidget_tabCloseRequested"
+        QT_MOC_LITERAL(325, 5),  // "index"
+        QT_MOC_LITERAL(331, 18),  // "selectencodingMode"
+        QT_MOC_LITERAL(350, 10),  // "runProject"
+        QT_MOC_LITERAL(361, 11),  // "stopProject"
+        QT_MOC_LITERAL(373, 12),  // "debugProject"
+        QT_MOC_LITERAL(386, 8),  // "cmdStdin"
+        QT_MOC_LITERAL(395, 31),  // "on_treeWidget_itemDoubleClicked"
+        QT_MOC_LITERAL(427, 4),  // "item"
+        QT_MOC_LITERAL(432, 6)   // "column"
     },
     "MainWindow",
     "loginAllowed",
@@ -170,6 +173,7 @@ Q_CONSTINIT static const qt_meta_stringdata_CLASSMainWindowENDCLASS_t qt_meta_st
     "addLocalFile",
     "addFile",
     "file_path",
+    "openFileAndAddTab",
     "loginState",
     "on_tabWidget_tabCloseRequested",
     "index",
@@ -192,7 +196,7 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSMainWindowENDCLASS[] = {
       11,       // revision
        0,       // classname
        0,    0, // classinfo
-      26,   14, // methods
+      27,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -200,34 +204,35 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSMainWindowENDCLASS[] = {
        3,       // signalCount
 
  // signals: name, argc, parameters, tag, flags, initial metatype offsets
-       1,    0,  170,    2, 0x06,    1 /* Public */,
-       3,    0,  171,    2, 0x06,    2 /* Public */,
-       4,    0,  172,    2, 0x06,    3 /* Public */,
+       1,    0,  176,    2, 0x06,    1 /* Public */,
+       3,    0,  177,    2, 0x06,    2 /* Public */,
+       4,    0,  178,    2, 0x06,    3 /* Public */,
 
  // slots: name, argc, parameters, tag, flags, initial metatype offsets
-       5,    0,  173,    2, 0x0a,    4 /* Public */,
-       6,    0,  174,    2, 0x0a,    5 /* Public */,
-       7,    0,  175,    2, 0x0a,    6 /* Public */,
-       8,    1,  176,    2, 0x0a,    7 /* Public */,
-       9,    0,  179,    2, 0x0a,    9 /* Public */,
-      10,    0,  180,    2, 0x0a,   10 /* Public */,
-      11,    2,  181,    2, 0x0a,   11 /* Public */,
-      13,    0,  186,    2, 0x0a,   14 /* Public */,
-      14,    0,  187,    2, 0x0a,   15 /* Public */,
-      15,    0,  188,    2, 0x0a,   16 /* Public */,
-      16,    0,  189,    2, 0x0a,   17 /* Public */,
-      17,    0,  190,    2, 0x0a,   18 /* Public */,
-      18,    0,  191,    2, 0x0a,   19 /* Public */,
-      19,    0,  192,    2, 0x0a,   20 /* Public */,
-      20,    1,  193,    2, 0x0a,   21 /* Public */,
-      22,    0,  196,    2, 0x0a,   23 /* Public */,
-      23,    1,  197,    2, 0x08,   24 /* Private */,
-      25,    0,  200,    2, 0x08,   26 /* Private */,
-      26,    0,  201,    2, 0x08,   27 /* Private */,
-      27,    0,  202,    2, 0x08,   28 /* Private */,
-      28,    0,  203,    2, 0x08,   29 /* Private */,
-      29,    3,  204,    2, 0x08,   30 /* Private */,
-      30,    2,  211,    2, 0x08,   34 /* Private */,
+       5,    0,  179,    2, 0x0a,    4 /* Public */,
+       6,    0,  180,    2, 0x0a,    5 /* Public */,
+       7,    0,  181,    2, 0x0a,    6 /* Public */,
+       8,    1,  182,    2, 0x0a,    7 /* Public */,
+       9,    0,  185,    2, 0x0a,    9 /* Public */,
+      10,    0,  186,    2, 0x0a,   10 /* Public */,
+      11,    2,  187,    2, 0x0a,   11 /* Public */,
+      13,    0,  192,    2, 0x0a,   14 /* Public */,
+      14,    0,  193,    2, 0x0a,   15 /* Public */,
+      15,    0,  194,    2, 0x0a,   16 /* Public */,
+      16,    0,  195,    2, 0x0a,   17 /* Public */,
+      17,    0,  196,    2, 0x0a,   18 /* Public */,
+      18,    0,  197,    2, 0x0a,   19 /* Public */,
+      19,    0,  198,    2, 0x0a,   20 /* Public */,
+      20,    1,  199,    2, 0x0a,   21 /* Public */,
+      22,    1,  202,    2, 0x0a,   23 /* Public */,
+      23,    0,  205,    2, 0x0a,   25 /* Public */,
+      24,    1,  206,    2, 0x08,   26 /* Private */,
+      26,    0,  209,    2, 0x08,   28 /* Private */,
+      27,    0,  210,    2, 0x08,   29 /* Private */,
+      28,    0,  211,    2, 0x08,   30 /* Private */,
+      29,    0,  212,    2, 0x08,   31 /* Private */,
+      30,    3,  213,    2, 0x08,   32 /* Private */,
+      31,    2,  220,    2, 0x08,   36 /* Private */,
 
  // signals: parameters
     QMetaType::Void,
@@ -250,14 +255,15 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSMainWindowENDCLASS[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void, QMetaType::QString,   21,
+    QMetaType::Void, QMetaType::QString,   21,
     QMetaType::Bool,
-    QMetaType::Void, QMetaType::Int,   24,
+    QMetaType::Void, QMetaType::Int,   25,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void, QMetaType::Int, QMetaType::Int, QMetaType::Int,    2,    2,    2,
-    QMetaType::Void, 0x80000000 | 12, QMetaType::Int,   31,   32,
+    QMetaType::Void, 0x80000000 | 12, QMetaType::Int,   32,   33,
 
        0        // eod
 };
@@ -311,6 +317,9 @@ Q_CONSTINIT const QMetaObject MainWindow::staticMetaObject = { {
         // method 'addFile'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         QtPrivate::TypeAndForceComplete<QString, std::false_type>,
+        // method 'openFileAndAddTab'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        QtPrivate::TypeAndForceComplete<QString, std::false_type>,
         // method 'loginState'
         QtPrivate::TypeAndForceComplete<bool, std::false_type>,
         // method 'on_tabWidget_tabCloseRequested'
@@ -361,15 +370,16 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 15: _t->saveLocalProj(); break;
         case 16: _t->addLocalFile(); break;
         case 17: _t->addFile((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
-        case 18: { bool _r = _t->loginState();
+        case 18: _t->openFileAndAddTab((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
+        case 19: { bool _r = _t->loginState();
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = std::move(_r); }  break;
-        case 19: _t->on_tabWidget_tabCloseRequested((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
-        case 20: _t->selectencodingMode(); break;
-        case 21: _t->runProject(); break;
-        case 22: _t->stopProject(); break;
-        case 23: _t->debugProject(); break;
-        case 24: _t->cmdStdin((*reinterpret_cast< std::add_pointer_t<int>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[2])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[3]))); break;
-        case 25: _t->on_treeWidget_itemDoubleClicked((*reinterpret_cast< std::add_pointer_t<QTreeWidgetItem*>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[2]))); break;
+        case 20: _t->on_tabWidget_tabCloseRequested((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
+        case 21: _t->selectencodingMode(); break;
+        case 22: _t->runProject(); break;
+        case 23: _t->stopProject(); break;
+        case 24: _t->debugProject(); break;
+        case 25: _t->cmdStdin((*reinterpret_cast< std::add_pointer_t<int>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[2])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[3]))); break;
+        case 26: _t->on_treeWidget_itemDoubleClicked((*reinterpret_cast< std::add_pointer_t<QTreeWidgetItem*>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[2]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -417,13 +427,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 26)
+        if (_id < 27)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 26;
+        _id -= 27;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 26)
+        if (_id < 27)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 26;
+        _id -= 27;
     }
     return _id;
 }
