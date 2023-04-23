@@ -15,7 +15,7 @@
 QTcpSocket* MainWindow::socket = new QTcpSocket();
 QHash<int,Project>* MainWindow::userProjs = new QHash<int,Project>();
 QString MainWindow::userId = "";
-QHash<int,QMultiHash<QString,int>>* MainWindow::debugInfo = new QHash<int,QMultiHash<QString,int>>();
+QHash<int,QMultiHash<QString,int>*>* MainWindow::debugInfo = new QHash<int,QMultiHash<QString,int>*>();
 bool MainWindow::isLogin = false;
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -159,6 +159,66 @@ MainWindow::MainWindow(QWidget *parent) :
     this->addDockWidget(Qt::BottomDockWidgetArea,runDock);
     connect(runDockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int,int,int)));
 
+    debugToolBar = new QToolBar(this);
+    this->addToolBar(Qt::ToolBarArea::RightToolBarArea,debugToolBar);
+    debugToolBar->setHidden(true);
+
+    continueDebugButton = new QToolButton(debugToolBar);
+    continueDebugButton->setIcon(QIcon("://icon/continue.png"));
+    continueDebugButton->setDisabled(true);
+    connect(continueDebugButton,&QToolButton::clicked,this,[=](){
+        QString data = Package::intToByteArr(currentProject);
+        data+="c\n";
+        Package pck(data.toUtf8(),(int)Package::PackageType::POST_STDIN);
+        socket->write(pck.getPdata(),pck.getSize());
+    });
+
+    stopDebugButton = new QToolButton(debugToolBar);
+    stopDebugButton->setIcon(QIcon("://icon/stop.png"));
+    stopDebugButton->setDisabled(true);
+    connect(stopDebugButton,&QToolButton::clicked,this,[=](){
+        QString data = Package::intToByteArr(currentProject);
+        data+="q\ny\n";
+        Package pck(data.toUtf8(),(int)Package::PackageType::POST_STDIN);
+        socket->write(pck.getPdata(),pck.getSize());
+    });
+
+    nextDebugButton = new QToolButton(debugToolBar);
+    nextDebugButton->setIcon(QIcon("://icon/next.png"));
+    nextDebugButton->setDisabled(true);
+    connect(nextDebugButton,&QToolButton::clicked,this,[=](){
+        QString data = Package::intToByteArr(currentProject);
+        data+="n\n";
+        Package pck(data.toUtf8(),(int)Package::PackageType::POST_STDIN);
+        socket->write(pck.getPdata(),pck.getSize());
+    });
+
+    stepIntoDubugButton = new QToolButton(debugToolBar);
+    stepIntoDubugButton->setIcon(QIcon("://icon/stepinto.png"));
+    stepIntoDubugButton->setDisabled(true);
+    connect(stepIntoDubugButton,&QToolButton::clicked,this,[=](){
+        QString data = Package::intToByteArr(currentProject);
+        data+="step\n";
+        Package pck(data.toUtf8(),(int)Package::PackageType::POST_STDIN);
+        socket->write(pck.getPdata(),pck.getSize());
+    });
+
+    stepOutDebugButton = new QToolButton(debugToolBar);
+    stepOutDebugButton->setIcon(QIcon("://icon/stepout.png"));
+    stepOutDebugButton->setDisabled(true);
+    connect(stepOutDebugButton,&QToolButton::clicked,this,[=](){
+        QString data = Package::intToByteArr(currentProject);
+        data+="finish\n";
+        Package pck(data.toUtf8(),(int)Package::PackageType::POST_STDIN);
+        socket->write(pck.getPdata(),pck.getSize());
+    });
+
+    debugToolBar->addWidget(continueDebugButton);
+    debugToolBar->addWidget(stopDebugButton);
+    debugToolBar->addWidget(nextDebugButton);
+    debugToolBar->addWidget(stepIntoDubugButton);
+    debugToolBar->addWidget(stepOutDebugButton);
+
     //子窗口槽
     connect(this,&MainWindow::loginAllowed,loginDialog,&LoginDialog::loginSucceed);
     connect(this,SIGNAL(projInited()),projectForm,SLOT(init()));
@@ -175,7 +235,13 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->new_file_action,&QAction::triggered,this,[=](){QFileDialog::getOpenFileName(this,"新建文件","C:/Users");});
 
     //添加文件
+<<<<<<< HEAD
     connect(ui->actionAdd_Cloud_File,&QAction::triggered,this,[=](){QFileDialog::getOpenFileName(this,"添加文件","C:/Users");});
+=======
+    connect(ui->add_file_action,&QAction::triggered,this,[=](){QFileDialog::getOpenFileName(this,"添加文件","C:/Users");});
+
+    compile();
+>>>>>>> adabae4897384a9c22733b6526246d19bd602086
 }
 
 MainWindow::~MainWindow()
@@ -194,7 +260,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::cmdStdin(int pos,int charRemoved,int charAdded)
 {
-    qDebug() << pos << " " << charRemoved << " " << charAdded;
     QString data = Package::intToByteArr(currentProject);
     for (int var = 0; var < charRemoved; ++var) {
         data+="\b \b";
@@ -212,7 +277,6 @@ void MainWindow::cmdStdin(int pos,int charRemoved,int charAdded)
         else
             data += runDockwidget->document()->characterAt(var);
     }
-    qDebug() << data;
     Package pck(data.toUtf8(), (int)Package::PackageType::POST_STDIN);
     MainWindow::socket->write(pck.getPdata(), pck.getSize());
     MainWindow::socket->flush();
@@ -233,7 +297,11 @@ void MainWindow::stopProject()
 
 void MainWindow::debugProject()
 {
-
+    debugToolBar->setHidden(false);
+    workState = ProjectWorkState::DEBUGING;
+    QString data = QString::number(userProjs->value(currentProject).pro_id);
+    Package pck(data.toUtf8(),(int)Package::PackageType::DEBUG_PROJECT);
+    socket->write(pck.getPdata(),pck.getSize());
 }
 
 void MainWindow::newCloudProj()
@@ -454,6 +522,7 @@ void MainWindow::Login()
 void MainWindow::openProj(int id)
 {
     this->currentProject=id;
+    debugInfo->insert(id,new QMultiHash<QString,int>());
     Package pck(QString::number(id).toUtf8(),(int)Package::PackageType::GET_PROJECT);
     socket->write(pck.getPdata(),pck.getSize());
 }
@@ -785,6 +854,19 @@ void MainWindow::dataProgress()
     case (int)Package::ReturnType::BUILD_FINISH:
     {
         //
+        debugState = DebugState::START;
+        if(workState==ProjectWorkState::DEBUGING)
+        {
+            auto breakPoints = debugInfo->value(currentProject);
+            QString data = Package::intToByteArr(currentProject);
+            for(auto it = breakPoints->constBegin();it!=breakPoints->constEnd();it++)
+            {
+                data+= "b " + it.key()+":"+QString::number(it.value())+"\n";
+            }
+            data+="r\n";
+            Package pck(data.toUtf8(),(int)Package::PackageType::POST_STDIN);
+            socket->write(pck.getPdata(),pck.getSize());
+        }
         break;
     }
     case (int)Package::ReturnType::RUN_FINISH:
@@ -797,20 +879,66 @@ void MainWindow::dataProgress()
         runDockwidget->append(data);
         break;
     }
+    case (int)Package::ReturnType::DEBUG_INFO:
+    {
+        QString data(socket->read(packageSize));
+        disposeDebugInfo(data);
+        break;
+    }
     default:
         break;
     }
 }
 
+void MainWindow::disposeDebugInfo(QString buf)
+{
+    qDebug()<<"buf:"<<buf;
+    QStringList list = buf.split("\n",Qt::SkipEmptyParts);
+    for(auto data : list)
+    {
+        if(data.startsWith("(gdb)"))
+        {
+            //命令行
+            if(data == "(gdb) ")
+            {
 
+            }
+            else
+            {
+                data = data.mid(6);
+            }
+        }
+        else if(data.startsWith("Breakpoint ")&&debugState==DebugState::WAIT_BREAKPOINT_INFO)
+        {
+            //生成
+            qDebug()<<"Breakpoint:"<<data;
+
+            debugState = DebugState::WAIT_DEBUG_INFO;
+        }
+        else if(data.startsWith("Reading symbols from ")&&debugState==DebugState::START)
+        {
+            qDebug()<<"Reading:"<<data;
+            debugState = DebugState::WAIT_BREAKPOINT_INFO;
+        }
+
+        buildDockwidget->insertPlainText(data);
+    }
+}
 
 void MainWindow::on_tabWidget_tabCloseRequested(int index)
 {
     CodeEdit* wind = (CodeEdit*)ui->tabWidget->widget(index);
-    fileWidgets.remove(wind->getFile()->file_id);
+    if(wind->getFile().get())
+    {
+        fileWidgets.remove(wind->getFile()->file_id);
+        wind->getFile()->is_open=false;
+        wind->deleteLater();
+    }
+    else
+    {
+        ui->tabWidget->widget(index)->deleteLater();
+    }
     ui->tabWidget->removeTab(index);
-    wind->getFile()->is_open=false;
-    wind->deleteLater();
 }
 
 void MainWindow::selectencodingMode()
@@ -1137,3 +1265,25 @@ void MainWindow::runProject()
         socket->write(pck.getPdata(),pck.getSize());
     }
 }
+
+QString MainWindow::runCompilerAndGetOutput(QString pro_Path){
+    QProcess* process=new QProcess(this);
+    process->setProgram("cmake");
+    process->setNativeArguments(pro_Path+" -B "+pro_Path+"\\build -G \"Unix Makefiles\"");
+    process->start();
+    process->waitForStarted();
+    process->waitForFinished();
+
+    process->setProgram("mingw32-make");
+    process->setNativeArguments(" -C "+pro_Path+"\\build");
+    process->start();
+    process->waitForStarted();
+    process->waitForFinished();
+    auto data=process->readAllStandardOutput();
+    auto error=process->readAllStandardError();
+    QString data_text=QString::fromLocal8Bit(data);
+    QString error_text=QString::fromLocal8Bit(error);
+    buildDockwidget->insertPlainText(data_text+error_text);
+    return error_text;
+}
+

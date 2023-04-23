@@ -65,7 +65,10 @@ public:
         POST_STDIN = 17,
 
         //÷’÷π≥Ã–Ú
-        KILL_PROJECT = 18
+        KILL_PROJECT = 18,
+
+        //µ˜ ‘≥Ã–Ú
+        DUBUG_PROJECT = 19
     };
     enum class ReturnType {
         SERVER_ALLOW = 0,
@@ -83,7 +86,8 @@ public:
         BUILD_INFO = 12,
         RUN_INFO = 13,
         BUILD_FINISH = 14,
-        RUN_FINISH = 15
+        RUN_FINISH = 15,
+        DUBUG_INFO = 16,
     };
     Package(const char* data, int type, int size);
     ~Package();

@@ -232,6 +232,11 @@ void TcpServer::tcpStart()
                         pool->submit(killProjectP, sock_fd, data);
                         break;
                     }
+                    case (int)Package::PackageType::DUBUG_PROJECT:
+                    {
+                        pool->submit(debugProject, sock_fd, data);
+                        break;
+                    }
                     default:
                         INFO_LOG(m_logger, "UNKNOW PACKAGETYPE");
                         break;
@@ -667,7 +672,7 @@ void TcpServer::runProject(int sock_fd, char* data)
     auto res = sql->exeSql("select pro_name,pro_owner from Project where pro_id = " + proId + ";");
     auto rows = sql->getRows(res);
     std::string proPath = "./" + std::string(rows[0][1]) +"/" + std::string(rows[0][0]);
-    std::string buildPath = proPath + "/bulid";
+    std::string buildPath = proPath + "/build";
 
     compileProject(sock_fd, proPath, buildPath);
 
@@ -724,8 +729,7 @@ void TcpServer::runProject(int sock_fd, char* data)
         int saveInfd = dup2(subRfd, STDIN_FILENO);
 
         std::string exePath = buildPath + "/bin/" + std::string(rows[0][0]);
-        std::string cmdstr = "find -iname " + std::string(rows[0][0]) + " -exec {} \\;";
-        std::cout << cmdstr;
+        std::string cmdstr = "find "+ buildPath + " -iname " + std::string(rows[0][0]) + " -exec{} \\; ";
         /*if (execlp(exePath.c_str(),NULL) == -1)
         {
             std::string str = "run project error";
@@ -839,6 +843,125 @@ void TcpServer::killProjectP(int sock_fd, char* data)
 
         projectPidMap->erase(proId);
     }
+
+    delete[] data;
+}
+
+void TcpServer::debugProject(int sock_fd, char* data)
+{
+    std::string proId = std::string(data);
+
+    auto res = sql->exeSql("select pro_name,pro_owner from Project where pro_id = " + proId + ";");
+    auto rows = sql->getRows(res);
+    std::string proPath = "./" + std::string(rows[0][1]) + "/" + std::string(rows[0][0]);
+    std::string buildPath = proPath + "/build";
+
+    compileProject(sock_fd,proPath,buildPath);
+
+    Package pck("", (int)Package::ReturnType::BUILD_FINISH, 0);
+    write(sock_fd, pck.getPdata(), pck.getSize());
+    //读取进程的pipe
+    int outfd[2];
+
+    //向进程输入
+    int infd[2];
+
+    if (pipe(outfd) == -1)
+    {
+        std::string str = "Server create pipe error!";
+        Package pck(str.c_str(), (int)Package::ReturnType::SERVER_ERROR, str.size());
+        write(sock_fd, pck.getPdata(), pck.getSize());
+        ERROR_LOG(m_logger, "pipe error");
+        return;
+    }
+    int subWfd = outfd[1];
+    int mainRfd = outfd[0];
+
+    if (pipe(infd) == -1)
+    {
+        std::string str = "Server create pipe error!";
+        Package pck(str.c_str(), (int)Package::ReturnType::SERVER_ERROR, str.size());
+        write(sock_fd, pck.getPdata(), pck.getSize());
+        ERROR_LOG(m_logger, "pipe error");
+        return;
+    }
+    int mainWfd = infd[1];
+    int subRfd = infd[0];
+
+    char buf[4096];
+    memset(buf, 0, sizeof(buf));
+
+    projectInData->erase(proId);
+    projectInData->insert(std::pair<std::string, int>(proId, mainWfd));
+
+    int pid = fork();
+    if (pid == -1)
+    {
+        ERROR_LOG(m_logger, "fork error");
+    }
+    else if (pid == 0) //子进程
+    {
+        setpgrp();
+        //运行用户项目代码
+
+        //重定向输入输出流
+        close(STDOUT_FILENO);
+        close(STDIN_FILENO);
+        int saveOutfd = dup2(subWfd, STDOUT_FILENO);
+        int saveInfd = dup2(subRfd, STDIN_FILENO);
+
+        std::string cmdstr = "find " + buildPath + " -iname " + std::string(rows[0][0]) + " -exec gdb {} -silent \\; ";
+        /*if (execlp(exePath.c_str(),NULL) == -1)
+        {
+            std::string str = "run project error";
+            Package pck(str.c_str(), (int)Package::ReturnType::SERVER_ERROR, str.size());
+            write(sock_fd, pck.getPdata(), pck.getSize());
+        }*/
+        int ret = system(cmdstr.c_str());
+        std::string str = "debug exited with code " + std::to_string(ret);
+        Package pck(str.c_str(), (int)Package::ReturnType::RUN_FINISH, str.size());
+        write(sock_fd, pck.getPdata(), pck.getSize());
+
+        close(mainRfd);
+        close(subWfd);
+        _Exit(-1);
+    }
+    else
+    {
+        //服务器代码
+        std::vector<int> vec = { pid,subWfd,mainRfd };
+        projectPidMap->insert(std::pair<std::string, std::vector<int>>(proId, vec));
+        int ret = 0;
+        //read(mainRfd, buf, 4096);
+        //for (int i = 0; i < bpNum; i++)
+        //{
+        //    std::string cmd = "b " + list[i+1] + "\n";
+        //    write(mainWfd, cmd.c_str(), cmd.size());
+        //    ret = read(mainRfd, buf, 4096);
+        //    Package pck(buf, (int)Package::ReturnType::BREAK_POINTS_INFO, ret);
+        //    write(sock_fd, pck.getPdata(), pck.getSize());
+        //    memset(buf, 0, sizeof(buf));
+        //}
+
+        while ((ret = read(mainRfd, buf, 4096)) != NULL)
+        {
+            if (projectPidMap->find(proId) != projectPidMap->end())
+            {
+                Package pck(buf, (int)Package::ReturnType::DUBUG_INFO, ret);
+                write(sock_fd, pck.getPdata(), pck.getSize());
+                memset(buf, 0, sizeof(buf));
+            }
+            else
+                break;
+        }
+
+        //waitpid(pid, &ret, 0);
+        wait(&ret);
+        projectPidMap->erase(proId);
+    }
+
+    close(subRfd);
+    close(mainWfd);
 
     delete[] data;
 }

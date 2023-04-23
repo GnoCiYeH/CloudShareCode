@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1021</width>
-    <height>619</height>
+    <width>1068</width>
+    <height>653</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -50,20 +50,6 @@
       <property name="bottomMargin">
        <number>0</number>
       </property>
-      <item row="3" column="0" rowspan="2" colspan="2">
-       <widget class="QLabel" name="label_3">
-        <property name="font">
-         <font>
-          <family>Microsoft JhengHei UI</family>
-          <pointsize>16</pointsize>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>                                            最近访问</string>
-        </property>
-       </widget>
-      </item>
       <item row="5" column="0" rowspan="3">
        <widget class="QWidget" name="widget_2" native="true">
         <layout class="QVBoxLayout" name="verticalLayout">
@@ -132,17 +118,14 @@
           </widget>
          </item>
          <item>
-          <spacer name="verticalSpacer_2">
+          <spacer name="verticalSpacer">
            <property name="orientation">
             <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Expanding</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
              <width>20</width>
-             <height>400</height>
+             <height>40</height>
             </size>
            </property>
           </spacer>
@@ -217,28 +200,27 @@
       <item row="5" column="1" rowspan="3">
        <widget class="QListWidget" name="listWidget">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
        </widget>
       </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_2">
-        <property name="font">
-         <font>
-          <family>Microsoft JhengHei UI</family>
-          <pointsize>20</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>   Welcome to</string>
-        </property>
-       </widget>
-      </item>
       <item row="1" column="0" colspan="2">
        <widget class="QLabel" name="label">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>80</height>
+         </size>
+        </property>
         <property name="font">
          <font>
           <family>Matura MT Script Capitals</family>
@@ -247,6 +229,51 @@
         </property>
         <property name="text">
          <string>        CloudSharedCoding</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="2">
+       <widget class="QLabel" name="label_3">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>80</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Microsoft JhengHei UI</family>
+          <pointsize>16</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>                                            最近访问</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>80</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Microsoft JhengHei UI</family>
+          <pointsize>20</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>   Welcome to</string>
         </property>
        </widget>
       </item>

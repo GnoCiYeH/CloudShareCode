@@ -59,7 +59,7 @@
             <number>0</number>
            </property>
            <item>
-            <widget class="CodeEdit" name="widget" native="true"/>
+            <widget class="WelcomeWind" name="widget" native="true"/>
            </item>
           </layout>
          </widget>
@@ -311,9 +311,9 @@
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>CodeEdit</class>
+   <class>WelcomeWind</class>
    <extends>QWidget</extends>
-   <header>codeedit.h</header>
+   <header>welcomewind.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

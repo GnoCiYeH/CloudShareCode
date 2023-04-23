@@ -6,7 +6,6 @@
 #include <QDebug>
 #include <QTimer>
 #include <QRegExp>
-#include "mainwindow.h"
 #include "package.h"
 #include "mainwindow.h"
 #include "useredittip.h"
@@ -55,7 +54,7 @@ CodeEdit::CodeEdit(std::shared_ptr<FileInfo> fileptr, QWidget *parent) : QWidget
         }
     }
 
-    // 鍒濆鍖栬仈鎯冲垪琛?
+    // 初始化联想列�?
     setUpAssociateList();
     associateWidget = new AssociateListWidget(this, ui->textEdit);
     associateWidget->hide();
@@ -89,7 +88,6 @@ void CodeEdit::docChange(int pos, int charRemoved, int charAdded)
     //*********************************
 
     QString data = QString::number(file->file_id) + "#" + QString::number(size) + "#" + QString::number(charRemoved) + "#" + file->file_path + "#" + MainWindow::userId + "#";
-    qDebug() << pos << " " << charRemoved << " " << charAdded;
     for (int var = pos; var < pos + charAdded; ++var)
     {
         if (document->characterAt(var) == QChar(8233) || document->characterAt(var) == QChar(8232))
@@ -104,7 +102,7 @@ void CodeEdit::docChange(int pos, int charRemoved, int charAdded)
             data += document->characterAt(var);
     }
 
-    // �Զ�����������
+    // ?????????????
     QMap<QChar, QChar> map;
     map['('] = ')';
     map['['] = ']';
@@ -147,7 +145,6 @@ void CodeEdit::docChange(int pos, int charRemoved, int charAdded)
         }
     }
 
-    qDebug() << data;
     Package pck(data.toUtf8(), (int)Package::PackageType::TEXT_CHANGE);
     MainWindow::socket->write(pck.getPdata(), pck.getSize());
     MainWindow::socket->flush();
@@ -164,7 +161,6 @@ void CodeEdit::changeText(int pos, int charRemoved, QString userId, QString data
 {
     QTextCursor cursor(document);
     cursor.movePosition(QTextCursor::NextCharacter, QTextCursor::MoveAnchor, pos);
-    qDebug() << ui->textEdit->toPlainText().size();
     cursor.movePosition(QTextCursor::NextCharacter, QTextCursor::KeepAnchor, charRemoved);
     document->disconnect(SIGNAL(contentsChange(int, int, int)), this, SLOT(docChange(int, int, int)));
     cursor.removeSelectedText();
@@ -189,7 +185,7 @@ void CodeEdit::changeText(int pos, int charRemoved, QString userId, QString data
 void CodeEdit::showAssociateWidget()
 {
     if (associateState == AssociateState::Ignore)
-        return; // 瀵逛簬鍏夋爣鍜屾枃鏈彉鍖栦笉鍋氫换浣曠浉搴旓紝閬垮厤闄峰叆姝诲惊��??
+        return; // 对于光标和文本变化不做任何相应，避免陷入死循????
     associateWidget->hide();
     associateState = AssociateState::Hide;
     QString word = this->getWordCursor();
@@ -202,17 +198,17 @@ void CodeEdit::showAssociateWidget()
         foreach (const QString &keyword, associateList)
         {
             if (keyword.contains(word))
-            { // 濡傛灉褰撳墠杈撳叆瀛楃灞炰簬鑱旀兂琛ㄤ腑鐨勫瓧绗︿覆
+            { // 如果当前输入字符属于联想表中的字符串
                 itemVec.push_back(keyword);
                 differenceRecord[keyword] = associateWidget->letterDifference(keyword.toStdString(), word.toStdString());
                 if (keyword.length() > maxSize)
-                    maxSize = keyword.length(); // 鎵惧埌鑱旀兂鍒楄〃涓渶闀跨殑涓€涓紝濂借缃仈鎯冲垪琛ㄥ搴?
+                    maxSize = keyword.length(); // 找到联想列表中最长的一个，好设置联想列表宽�?
             }
         }
 
         if (itemVec.size() > 0)
-        { // 鏈夊尮閰嶅瓧��??
-            // 鎸夊樊寮傚害浠庡皬鍒板ぇ鎺掞紝鏈€鍖归厤鐨勫湪鏈€鍓嶉潰
+        { // 有匹配字????
+            // 按差异度从小到大排，最匹配的在最前面
             sort(itemVec.begin(), itemVec.end(), [&](const QString &s1, const QString &s2) -> bool
                  { return differenceRecord[s1] < differenceRecord[s2]; });
             foreach (const QString &item, itemVec)
@@ -223,8 +219,8 @@ void CodeEdit::showAssociateWidget()
             int x = this->getAssociateWidgetX();
             int y = ui->textEdit->cursorRect().y() + fontMetrics().height();
 
-            associateWidget->move(x, y); // 璁剧疆鑱旀兂鍒楄〃鐨勪綅��??
-            // 璁剧疆鑱旀兂鍒楄〃鍚堥€傜殑澶у皬
+            associateWidget->move(x, y); // 设置联想列表的位????
+            // 设置联想列表合适的大小
             if (associateWidget->count() > 5)
                 associateWidget->setFixedHeight(fontMetrics().height() * 6);
             else
@@ -286,8 +282,8 @@ void CodeEdit::keyPressEvent(QKeyEvent *event)
         if (associateState == AssociateState::Showing)
         {
             QKeyEvent *newEvent = new QKeyEvent(QEvent::KeyPress, Qt::Key_Return, Qt::NoModifier);
-            QApplication::sendEvent(associateWidget, newEvent); // 发送模拟事�?
-            return;                                             // 不调用基类的函数，防止移动光�?
+            QApplication::sendEvent(associateWidget, newEvent); // ����ģ����???
+            return;                                             // �����û���ĺ�������ֹ�ƶ���???
         }
     }
     else if (event->key() == Qt::Key_Down)
@@ -295,8 +291,8 @@ void CodeEdit::keyPressEvent(QKeyEvent *event)
         if (associateState == AssociateState::Showing)
         {
             QKeyEvent *newEvent = new QKeyEvent(QEvent::KeyPress, Qt::Key_Return, Qt::NoModifier);
-            QApplication::sendEvent(associateWidget, newEvent); // 发送模拟事�?
-            return;                                             // 不调用基类的函数，防止移动光�?
+            QApplication::sendEvent(associateWidget, newEvent); // ����ģ����???
+            return;                                             // �����û���ĺ�������ֹ�ƶ���???
         }
     }
     else if (event->key() == Qt::Key_Up)
@@ -304,8 +300,8 @@ void CodeEdit::keyPressEvent(QKeyEvent *event)
         if (associateState == AssociateState::Showing)
         {
             QKeyEvent *newEvent = new QKeyEvent(QEvent::KeyPress, Qt::Key_Return, Qt::NoModifier);
-            QApplication::sendEvent(associateWidget, newEvent); // 发送模拟事�?
-            return;                                             // 不调用基类的函数，防止移动光�?
+            QApplication::sendEvent(associateWidget, newEvent); // ����ģ����???
+            return;                                             // �����û���ĺ�������ֹ�ƶ���???
         }
     }
 }
@@ -317,7 +313,7 @@ void CodeEdit::resizeEvent(QResizeEvent *event)
 
 int CodeEdit::lineNumberAreaWidth()
 {
-    int digits = 1;//�������ֵ�λ��
+    int digits = 1;//?????????��??
     int max = qMax(1, ui->textEdit->blockCount());
     while (max >= 10) {
         max /= 10;
@@ -336,45 +332,45 @@ HighLighter::HighLighter(CodeEdit *edit, QTextDocument *text) : QSyntaxHighlight
     QSettings settings("./configs/configs.ini", QSettings::IniFormat, this);
     settings.beginGroup("CODETHEME");
 
-    // 鍒跺畾楂樹寒瑙勫��?
+    // 制定高亮规�???
     HighLighterRule rule;
     this->edit = edit;
 
-    // 1.娣诲姞鍏抽敭瀛楅珮浜��??
-    keyword_format.setForeground(QColor(settings.value("KEYWORD", "#00ffff").toString())); // 璁剧疆鍏抽敭瀛楀墠鏅��??(blue)
-    keyword_format.setFontWeight(QFont::Bold);                                             // 璁剧疆鍏抽敭瀛楃殑瀛椾綋鏍煎紡(Bold)
-    QVector<QString> keyword_pattern = {                                                   // \b鍦ㄨ〃绀哄崟璇嶅瓧绗﹁竟鐣岋紝闃叉渚嬪intVal涔熻璇嗗埆涓篿nt瀵艰嚧楂樹寒
+    // 1.添加关键字高亮规????
+    keyword_format.setForeground(QColor(settings.value("KEYWORD", "#00ffff").toString())); // 设置关键字前景颜????(blue)
+    keyword_format.setFontWeight(QFont::Bold);                                             // 设置关键字的字体格式(Bold)
+    QVector<QString> keyword_pattern = {                                                   // \b在表示单词字符边界，防止例如intVal也被识别为int导致高亮
                                         "\\bchar\\b", "\\bclass\\b", "\\bconst\\b", "\\bdouble\\b", "\\benum\\b", "\\bexplicit\\b",
                                         "\\bfriend\\b", "\\binline\\b", "\\bint\\b", "\\blong\\b", "\\bnamespace\\b", "\\boperator\\b",
                                         "\\bprivate\\b", "\\bprotected\\b", "\\bpublic\\b", "\\bshort\\b", "\\bsignals\\b", "\\bsigned\\b",
                                         "\\bslots\\b", "\\bstatic\\b", "\\bstruct\\b", "\\btemplate\\b", "\\btypedef\\b", "\\btypename\\b",
                                         "\\bunion\\b", "\\bunsigned\\b", "\\bvirtual\\b", "\\bvoid\\b", "\\bvolatile\\b", "\\bbool\\b",
-                                        "\\busing\\b", "\\bvector\\b", "\\breturn\\b", "\\btrue\\b", "\\bfalse\\b"}; // 鍏抽敭瀛楅泦鍚?
-    // 閬嶅巻鍏抽敭瀛楅泦鍚堬紝閫氳繃姝ｅ垯琛ㄨ揪寮忚瘑鍒瓧绗︿覆銆傚苟璁惧畾涓簉ule鐨刾attern锛屼唬琛ㄥ綋鍓嶅叧閿瓧鐨勬爣璇嗙锛涘啀璁惧畾rule鐨勬牸寮忥紝鏈€缁堝姞鍏ヨ鍒欓泦鍚堜腑
+                                        "\\busing\\b", "\\bvector\\b", "\\breturn\\b", "\\btrue\\b", "\\bfalse\\b"}; // 关键字集�?
+    // 遍历关键字集合，通过正则表达式识别字符串。并设定为rule的pattern，代表当前关键字的标识符；再设定rule的格式，最终加入规则集合中
     for (auto &keyword : keyword_pattern)
     {
         rule.pattern = QRegularExpression(keyword);
         rule.format = keyword_format;
         highlighterrules.push_back(rule);
-    } // 瑙勫垯闆嗗悎涓瓨鍌ㄧ潃keyword_pattern涓墍鏈夊叧閿瓧鐨勬爣璇嗙鍜屾牸��??(钃濊��? 绮椾��?)
+    } // 规则集合中存储着keyword_pattern中所有关键字的标识符和格????(蓝�??? 粗�???)
 
-    // 2.娣诲姞Qt绫婚珮浜��??
-    class_format.setForeground(QColor(settings.value("CLASS", "#00ffff").toString())); // 璁剧疆Qt绫诲墠鏅壊(darkCyan)
-    class_format.setFontWeight(QFont::Bold);                                           // 璁剧疆Qt绫诲瓧浣撴牸��??(Bold)
-    QString class_pattern = "\\bQ[a-zA-z]+\\b";                                        // Qt绫昏瘑鍒牸寮忎负涓よ竟鏈夊垎闅旂锛屼笖浠寮€澶寸殑鎵€鏈夎嫳鏂囧瓧绗︿��?
+    // 2.添加Qt类高亮规????
+    class_format.setForeground(QColor(settings.value("CLASS", "#00ffff").toString())); // 设置Qt类前景色(darkCyan)
+    class_format.setFontWeight(QFont::Bold);                                           // 设置Qt类字体格????(Bold)
+    QString class_pattern = "\\bQ[a-zA-z]+\\b";                                        // Qt类识别格式为两边有分隔符，且以Q开头的所有英文字符�???
     rule.pattern = QRegularExpression(class_pattern);
     rule.format = class_format;
     highlighterrules.push_back(rule);
 
-    // 3.娣诲姞澶存枃浠堕珮浜牸��??
-    // 3.1 #寮€��??
+    // 3.添加头文件高亮格????
+    // 3.1 #开????
     headfile_format.setForeground(QColor(settings.value("HEADER", "#00ffff").toString()));
     headfile_format.setFontWeight(QFont::Bold);
     rule.format = headfile_format;
     rule.pattern = QRegularExpression("#.*");
     highlighterrules.push_back(rule);
 
-    // 3.2 鍚勫ご鏂囦欢
+    // 3.2 各头文件
     headfile_format.setForeground(QColor(settings.value("HEADER", "#00ffff").toString()));
     headfile_format.setFontWeight(QFont::Bold);
     QVector<QString> headfile_pattern = {
@@ -391,29 +387,29 @@ HighLighter::HighLighter(CodeEdit *edit, QTextDocument *text) : QSyntaxHighlight
         highlighterrules.push_back(rule);
     }
 
-    // 4.娣诲姞澶氳娉ㄩ噴楂樹寒瑙勫��?
-    // 澶氳娉ㄩ噴鐨勫尮閰嶆鍒欒〃杈惧紡
-    QString comment_start_pattern = "/\\*"; // 寮€濮嬩綅缃��?*锛屽洜涓烘鍒欒〃杈惧紡��??*闇€瑕佺敤\*琛ㄨ揪锛岃€��?*闇€瑕佸瓧绗︿覆鐢╘\*琛ㄨ��?
+    // 4.添加多行注释高亮规�???
+    // 多行注释的匹配正则表达式
+    QString comment_start_pattern = "/\\*"; // 开始位�???*，因为正则表达式????*需要用\*表达，�???*需要字符串用\\*表�???
     comment_start = QRegularExpression(comment_start_pattern);
-    QString comment_end_pattern = "\\*/"; // 缁撴潫浣嶇疆
+    QString comment_end_pattern = "\\*/"; // 结束位置
     comment_end = QRegularExpression(comment_end_pattern);
 
-    // 5.娣诲姞寮曞彿楂樹寒瑙勫垯
-    quotation_format.setForeground(QColor(settings.value("QUATATION", "#00ffff").toString())); // 寮曞彿鍐呭棰滆��?(cyan)
+    // 5.添加引号高亮规则
+    quotation_format.setForeground(QColor(settings.value("QUATATION", "#00ffff").toString())); // 引号内容颜�???(cyan)
     QString quotation_pattern = "\".*\"";
     rule.pattern = QRegularExpression(quotation_pattern);
     rule.format = quotation_format;
     highlighterrules.push_back(rule);
 
-    // 6.娣诲姞鍑芥暟楂樹寒鏍煎紡
-    function_format.setForeground(QColor(settings.value("FUNCTION", "#00ffff").toString())); // 鍑芥暟瀛椾綋棰滆壊璁剧疆涓篸arkGreen
-    function_format.setFontWeight(QFont::Bold);                                              // 鍑芥暟瀛椾綋鏍煎紡璁剧疆涓築old
-    QString function_pattern = "\\b[a-zA-Z0-9_]+(?=\\()";                                    // 鍑芥暟鍚嶅彲浠ユ槸澶у皬鍐欒嫳鏂囧瓧绗︺€佹暟瀛椼€佷笅鍒掔嚎锛屽叾涓紝(?=\\()琛ㄧず鍚庨潰蹇呴』璺熺潃涓€涓乏鎷彿锛屼絾鏄繖涓乏鎷彿涓嶄細琚尮閰嶅埌
+    // 6.添加函数高亮格式
+    function_format.setForeground(QColor(settings.value("FUNCTION", "#00ffff").toString())); // 函数字体颜色设置为darkGreen
+    function_format.setFontWeight(QFont::Bold);                                              // 函数字体格式设置为Bold
+    QString function_pattern = "\\b[a-zA-Z0-9_]+(?=\\()";                                    // 函数名可以是大小写英文字符、数字、下划线，其中，(?=\\()表示后面必须跟着一个左括号，但是这个左括号不会被匹配到
     rule.pattern = QRegularExpression(function_pattern);
     rule.format = function_format;
     highlighterrules.push_back(rule);
 
-    // 7.娣诲姞鍒嗘敮楂樹寒鏍煎紡
+    // 7.添加分支高亮格式
     branch_format.setForeground(QColor(settings.value("BRANCH", "#00ffff").toString()));
     branch_format.setFontWeight(QFont::Bold);
     QVector<QString> branch_pattern = {
@@ -425,7 +421,7 @@ HighLighter::HighLighter(CodeEdit *edit, QTextDocument *text) : QSyntaxHighlight
         highlighterrules.push_back(rule);
     }
 
-    // 8.娣诲姞杈撳叆杈撳嚭楂樹寒鏍煎��?
+    // 8.添加输入输出高亮格�???
     cincout_format.setForeground(QColor(settings.value("STDIO", "#00ffff").toString()));
     cincout_format.setFontWeight(QFont::Bold);
     QVector<QString> cincout_pattern = {
@@ -437,15 +433,15 @@ HighLighter::HighLighter(CodeEdit *edit, QTextDocument *text) : QSyntaxHighlight
         highlighterrules.push_back(rule);
     }
 
-    // 9.娣诲姞鍗曡娉ㄩ噴楂樹寒瑙勫��?
+    // 9.添加单行注释高亮规�???
     singleLine_comment_format.setForeground(QColor(settings.value("SIGNLE_LINE_COMMENT", "#00ffff").toString()));
     singleLine_comment_format.setFontWeight(QFont::Bold);
-    QString singleLine_comment_pattern = "//[^\n]*"; // 鍗曡娉ㄩ噴璇嗗埆鏍煎紡涓鸿窡鍦?//鍚庯紝浣嗕笉鍖呮嫭鎹㈣绗︼紝涓斾笉闇€瑕侀棿闅旂
+    QString singleLine_comment_pattern = "//[^\n]*"; // 单行注释识别格式为跟�?//后，但不包括换行符，且不需要间隔符
     rule.pattern = QRegularExpression(singleLine_comment_pattern);
     rule.format = singleLine_comment_format;
     highlighterrules.push_back(rule);
 
-    // 澶氳娉ㄩ噴鏍煎��?
+    // 多行注释格�???
     multiLine_comment_format.setForeground(QColor(settings.value("MULITLINE_COMMENT", "#00ffff").toString()));
     multiLine_comment_format.setFontWeight(QFont::Bold);
 
@@ -453,40 +449,81 @@ HighLighter::HighLighter(CodeEdit *edit, QTextDocument *text) : QSyntaxHighlight
 }
 
 void HighLighter::highlightBlock(const QString &text)
-{ // 搴旂敤楂樹寒瑙勫��?
+{ // 应用高亮规�???
     foreach (const HighLighterRule &rule, highlighterrules)
     {
-        QRegularExpressionMatchIterator matchIterator = rule.pattern.globalMatch(text); // 鍦ㄦ暣涓猼ext鏂囨湰涓尮閰嶅綋鍓峳ule鐨刾attern
+        QRegularExpressionMatchIterator matchIterator = rule.pattern.globalMatch(text); // 在整个text文本中匹配当前rule的pattern
         while (matchIterator.hasNext())
-        { // 楂樹寒鏁翠釜鏂囨湰涓尮閰嶅埌鐨勫瓧��??
+        { // 高亮整个文本中匹配到的字????
             QRegularExpressionMatch match = matchIterator.next();
-            setFormat(match.capturedStart(), match.capturedLength(), rule.format); //(鍖归厤鍒扮殑璧峰浣嶇疆锛屾枃鏈潡闀垮害锛岄珮浜鍒欐牸寮?)
+            setFormat(match.capturedStart(), match.capturedLength(), rule.format); //(匹配到的起始位置，文本块长度，高亮规则格�?)
         }
     }
 
-    // 澶勭悊澶氳娉ㄩ噴锛岀敱浜庡琛屾敞閲婁紭鍏堢骇鏈€楂橈紝鎵€浠ユ渶鍚庡��??
+    // 处理多行注释，由于多行注释优先级最高，所以最后处????
     setCurrentBlockState(0);
     int start = 0;
     if (previousBlockState() != 1)
-    {                                        // 涓婁竴涓枃鏈潡涓嶆槸澶氳娉ㄩ噴鐨勬枃鏈唴瀹癸紝濡傛灉鏄紝鏂囨湰鐘舵€佸簲璁剧疆��??1
-        start = text.indexOf(comment_start); // 鍏堝畾浣嶅埌绗竴涓琛屾敞閲婄殑璧峰瀛楃锛屾壘鍒拌繑鍥炰綅缃紝娌℃壘鍒拌繑鍥?-1
+    {                                        // 上一个文本块不是多行注释的文本内容，如果是，文本状态应设置????1
+        start = text.indexOf(comment_start); // 先定位到第一个多行注释的起始字符，找到返回位置，没找到返�?-1
     }
     while (start >= 0)
     {
-        QRegularExpressionMatch match = comment_end.match(text, start); // 浠庡綋鍓嶈捣濮嬪瓧绗﹀尮閰嶇涓€涓粨鏉熷瓧绗︼紝鍗冲綋鍓嶅琛屾敞閲婄殑鎴瀛楃��?
-        int end = match.capturedStart();                                // match瀵瑰簲comment_end锛屾鏃舵壘鐨勬槸浠庡綋鍓峴tart(澶氳娉ㄩ噴璧峰瀛楃��?)寮€濮嬪尮閰嶇殑绗竴涓粨鏉熷瓧绗?
+        QRegularExpressionMatch match = comment_end.match(text, start); // 从当前起始字符匹配第一个结束字符，即当前多行注释的截止字�???
+        int end = match.capturedStart();                                // match对应comment_end，此时找的是从当前start(多行注释起始字�???)开始匹配的第一个结束字�?
         int length = 0;
         if (end == -1)
-        { // 鎵句笉鍒扮粨鏉熷瓧绗︼紝璇存槑鏄渶鍚庝竴涓琛屾敞閲婏紝涓轰簡璁╀笅涓€涓枃鏈潡鐭ラ亾涔嬪墠鏄琛屾敞閲婃ā鍧楋紝鎵€浠ヨ鐘舵€佷负1锛岀劧鍚庣粨鏉熶綅缃笌鏂囨湰缁撴潫浣嶇疆鐩稿悓
+        { // 找不到结束字符，说明是最后一个多行注释，为了让下一个文本块知道之前是多行注释模块，所以设状态为1，然后结束位置与文本结束位置相同
             setCurrentBlockState(1);
             length = text.length() - start;
         }
         else
         {
-            length = end - start + match.capturedLength(); // 闇€瑕侀珮浜殑鏂囨湰闀垮害��?? 缁撴潫瀛楃涓嬫爣-璧峰瀛楃涓嬫爣+鍖归厤鍒扮殑鏂囨��?(*/)鐨勯暱搴?
+            length = end - start + match.capturedLength(); // 需要高亮的文本长度???? 结束字符下标-起始字符下标+匹配到的文�???(*/)的长�?
         }
         setFormat(start, length, multiLine_comment_format);
-        start = text.indexOf(comment_start, start + length); // 浠庡綋鍓峴tart+length寮€濮嬪尮閰嶄笅涓€涓猻tart
+        start = text.indexOf(comment_start, start + length); // 从当前start+length开始匹配下一个start
+    }
+}
+
+void HighLighter::highlightError(const QString &error){
+    QRegularExpression errorRegex("(.*):(\\d+):(\\d+):\\s+(error|warning):(.*)");
+    int errorOffset=0;
+    QTextCursor cursor=edit->ui->textEdit->textCursor();
+    while(errorOffset!=-1){
+        auto match=errorRegex.match(error,errorOffset);
+        if(match.hasMatch()){
+            int lineNumber=match.captured(2).toInt();
+            int columnNumber = match.captured(3).toInt()-1;
+            QString errorData = match.captured(5);
+            int left=0;
+            int right=0;
+            for(int i=0;i<errorData.length();i++){
+                if(errorData[i]=='\''){
+                    left=i+1;
+                    break;
+                }
+            }
+            for(int i=left;i<errorData.length();i++){
+                if(errorData[i]=='\''){
+                    right=i-1;
+                    break;
+                }
+            }
+            QString errorChar;
+            for(int i=left;i<=right;i++){
+                errorChar.push_back(errorData[i]);
+            }
+            QTextBlock block=edit->ui->textEdit->document()->findBlockByLineNumber(lineNumber);
+            QTextCursor cursor=QTextCursor(block);
+            cursor.setPosition(block.position());
+            cursor.movePosition(QTextCursor::Right,QTextCursor::MoveAnchor,columnNumber);
+            cursor.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, errorChar.length()-1);
+            QTextCharFormat error_format;
+            error_format.setUnderlineColor(Qt::red);
+            error_format.setUnderlineStyle(QTextCharFormat::WaveUnderline);
+            cursor.mergeCharFormat(error_format);
+        }
     }
 }
 
@@ -600,7 +637,7 @@ void AssociateListWidget::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)
     {
-        // 获取当前选中的项
+        // ��ȡ��ǰѡ�е���
         QListWidgetItem *item = currentItem();
         if (item)
         {

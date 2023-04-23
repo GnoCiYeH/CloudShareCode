@@ -45,9 +45,11 @@ public:
 
     static QString userId;
 
-    static QHash<int,QMultiHash<QString,int>>* debugInfo;
+    static QHash<int,QMultiHash<QString,int>*>* debugInfo;
 
     std::map<QString,CodeEdit*>mp;//存放路径名字和CodeEdit指针的相互映射
+
+    QString runCompilerAndGetOutput(QString pro_Path);
 
 
 public slots:
@@ -88,6 +90,23 @@ private slots:
     void on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column);
 
 private:
+
+    enum class ProjectWorkState{
+        NONE,
+        BUILDING,
+        RUNNING,
+        DEBUGING,
+    } workState = ProjectWorkState::NONE;
+
+    enum class DebugState{
+        NONE,
+        START,
+        WAIT_BREAKPOINT_INFO,
+        WAIT_DEBUG_INFO
+    } debugState = DebugState::NONE;
+
+    void disposeDebugInfo(QString);
+
     Ui::MainWindow *ui;
 
     QString userName;
@@ -108,6 +127,13 @@ private:
     QTextEdit* buildDockwidget;
     QDockWidget* runDock;
     QTextEdit* runDockwidget;
+    QToolBar* debugToolBar;
+
+    QToolButton* continueDebugButton;
+    QToolButton* stopDebugButton;
+    QToolButton* nextDebugButton;
+    QToolButton* stepIntoDubugButton;
+    QToolButton* stepOutDebugButton;
 
     QToolButton* runbutton;
     QToolButton* debugbutton;
@@ -147,6 +173,7 @@ private:
     QLabel* label2=new QLabel(this);
     QTimer *timer=new QTimer(this);
 
+
 private:
     void Login();
     bool addFileWidget(std::shared_ptr<FileInfo> file);
@@ -154,6 +181,7 @@ private:
 
     SwitchingEncodingMode* encodingType=new SwitchingEncodingMode(this);//编码方式
     QLabel* EncodingTypeLabel=new QLabel(this);//打印编码方式到状态栏
+<<<<<<< HEAD
 
     QString current_project_path;//记录当前项目的路径
 
@@ -162,6 +190,8 @@ private:
     QTreeWidgetItem* tree_widget_item_header_file_name=new QTreeWidgetItem();
     QTreeWidgetItem* tree_widget_item_source_file_name=new QTreeWidgetItem();
 
+=======
+>>>>>>> adabae4897384a9c22733b6526246d19bd602086
 };
 
 
