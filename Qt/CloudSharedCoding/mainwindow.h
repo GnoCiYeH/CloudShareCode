@@ -181,7 +181,7 @@ private:
 
     SwitchingEncodingMode* encodingType=new SwitchingEncodingMode(this);//编码方式
     QLabel* EncodingTypeLabel=new QLabel(this);//打印编码方式到状态栏
-<<<<<<< HEAD
+
 
     QString current_project_path;//记录当前项目的路径
 
@@ -190,8 +190,6 @@ private:
     QTreeWidgetItem* tree_widget_item_header_file_name=new QTreeWidgetItem();
     QTreeWidgetItem* tree_widget_item_source_file_name=new QTreeWidgetItem();
 
-=======
->>>>>>> adabae4897384a9c22733b6526246d19bd602086
 };
 
 

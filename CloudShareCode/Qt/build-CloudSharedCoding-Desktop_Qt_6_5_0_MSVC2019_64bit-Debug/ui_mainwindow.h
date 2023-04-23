@@ -23,7 +23,7 @@
 #include <QtWidgets/QTreeWidget>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
-#include "codeedit.h"
+#include "welcomewind.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -61,7 +61,7 @@ public:
     QTabWidget *tabWidget;
     QWidget *tab;
     QVBoxLayout *verticalLayout;
-    CodeEdit *widget;
+    WelcomeWind *widget;
     QWidget *tab_2;
     QMenuBar *menuBar;
     QMenu *menu;
@@ -155,7 +155,7 @@ public:
         verticalLayout->setContentsMargins(11, 11, 11, 11);
         verticalLayout->setObjectName("verticalLayout");
         verticalLayout->setContentsMargins(0, 0, 0, 0);
-        widget = new CodeEdit(nullptr,tab);
+        widget = new WelcomeWind(tab);
         widget->setObjectName("widget");
 
         verticalLayout->addWidget(widget);

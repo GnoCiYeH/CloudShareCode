@@ -235,13 +235,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->new_file_action,&QAction::triggered,this,[=](){QFileDialog::getOpenFileName(this,"新建文件","C:/Users");});
 
     //添加文件
-<<<<<<< HEAD
     connect(ui->actionAdd_Cloud_File,&QAction::triggered,this,[=](){QFileDialog::getOpenFileName(this,"添加文件","C:/Users");});
-=======
-    connect(ui->add_file_action,&QAction::triggered,this,[=](){QFileDialog::getOpenFileName(this,"添加文件","C:/Users");});
+    //connect(ui->add_file_action,&QAction::triggered,this,[=](){QFileDialog::getOpenFileName(this,"添加文件","C:/Users");});
 
-    compile();
->>>>>>> adabae4897384a9c22733b6526246d19bd602086
 }
 
 MainWindow::~MainWindow()
