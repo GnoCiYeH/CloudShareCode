@@ -97,7 +97,7 @@ class HighLighter : public QSyntaxHighlighter
 public:
     friend class CodeEdit;
     HighLighter(CodeEdit *edit, QTextDocument *text = nullptr); // 构造函数需要先传一个QTextDocument对象给父类，因为要先构造父�?
-    int showMistake();
+    void highlightError(const QString &text);
 
 protected:
     void highlightBlock(const QString &text) override; // 重写父类QSyntaxHighlighter的highlightBlock函数，使多行注释高亮
