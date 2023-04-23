@@ -46,6 +46,8 @@ public:
 
     std::map<QString,CodeEdit*>mp;//存放路径名字和CodeEdit指针的相互映射
 
+    QString runCompilerAndGetOutput(QString pro_Path);
+
 
 public slots:
     void dataProgress();
@@ -167,6 +169,7 @@ private:
     QLabel* label2=new QLabel(this);
     QTimer *timer=new QTimer(this);
 
+
 private:
     void Login();
     bool addFileWidget(std::shared_ptr<FileInfo> file);
@@ -174,8 +177,6 @@ private:
 
     SwitchingEncodingMode* encodingType=new SwitchingEncodingMode(this);//编码方式
     QLabel* EncodingTypeLabel=new QLabel(this);//打印编码方式到状态栏
-
-
 };
 
 

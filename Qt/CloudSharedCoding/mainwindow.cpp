@@ -231,6 +231,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //添加文件
     connect(ui->add_file_action,&QAction::triggered,this,[=](){QFileDialog::getOpenFileName(this,"添加文件","C:/Users");});
+
+    compile();
 }
 
 MainWindow::~MainWindow()
@@ -1157,3 +1159,25 @@ void MainWindow::runProject()
         socket->write(pck.getPdata(),pck.getSize());
     }
 }
+
+QString MainWindow::runCompilerAndGetOutput(QString pro_Path){
+    QProcess* process=new QProcess(this);
+    process->setProgram("cmake");
+    process->setNativeArguments(pro_Path+" -B "+pro_Path+"\\build -G \"Unix Makefiles\"");
+    process->start();
+    process->waitForStarted();
+    process->waitForFinished();
+
+    process->setProgram("mingw32-make");
+    process->setNativeArguments(" -C "+pro_Path+"\\build");
+    process->start();
+    process->waitForStarted();
+    process->waitForFinished();
+    auto data=process->readAllStandardOutput();
+    auto error=process->readAllStandardError();
+    QString data_text=QString::fromLocal8Bit(data);
+    QString error_text=QString::fromLocal8Bit(error);
+    buildDockwidget->insertPlainText(data_text+error_text);
+    return error_text;
+}
+
