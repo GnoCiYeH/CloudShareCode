@@ -26,6 +26,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+    addlocalfile.cpp \
     cloudsharedcoding.cpp \
     codedocedit.cpp \
     codethemeitem.cpp \
@@ -35,6 +36,7 @@ SOURCES += \
     logindialog.cpp \
     newfiledialog.cpp \
     newlocalfile.cpp \
+    newlocalproject.cpp \
     newprojectdialog.cpp \
     package.cpp \
     privilegelistitem.cpp \
@@ -47,6 +49,7 @@ SOURCES += \
 
 HEADERS += \
     InfoType.h \
+    addlocalfile.h \
     cloudsharedcoding.h \
     codedocedit.h \
     codethemeitem.h \
@@ -56,6 +59,7 @@ HEADERS += \
     logindialog.h \
     newfiledialog.h \
     newlocalfile.h \
+    newlocalproject.h \
     newprojectdialog.h \
     package.h \
     privilegelistitem.h \
@@ -67,6 +71,7 @@ HEADERS += \
     welcomewind.h
 
 FORMS += \
+    addlocalfile.ui \
     cloudsharedcoding.ui \
     codethemeitem.ui \
         mainwindow.ui \
@@ -74,6 +79,7 @@ FORMS += \
     logindialog.ui \
     newfiledialog.ui \
     newlocalfile.ui \
+    newlocalproject.ui \
     newprojectdialog.ui \
     privilegelistitem.ui \
     privilegemanager.ui \
