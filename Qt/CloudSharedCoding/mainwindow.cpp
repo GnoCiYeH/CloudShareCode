@@ -232,7 +232,6 @@ MainWindow::MainWindow(QWidget *parent) :
     //添加文件
     connect(ui->add_file_action,&QAction::triggered,this,[=](){QFileDialog::getOpenFileName(this,"添加文件","C:/Users");});
 
-    compile();
 }
 
 MainWindow::~MainWindow()
@@ -845,6 +844,8 @@ void MainWindow::dataProgress()
     }
     case (int)Package::ReturnType::BUILD_FINISH:
     {
+        auto codee = ((CodeEdit*)ui->tabWidget->currentWidget());
+        codee->highlightError(buildDockwidget->toPlainText());
         //
         debugState = DebugState::START;
         if(workState==ProjectWorkState::DEBUGING)
