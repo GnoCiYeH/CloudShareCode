@@ -70,6 +70,9 @@ public slots:
     void saveLocalProj();
     void addLocalFile();
 
+    /*-------------------*/
+    void addFile(QString file_path);
+
     static bool loginState(){
         return isLogin;
     }
