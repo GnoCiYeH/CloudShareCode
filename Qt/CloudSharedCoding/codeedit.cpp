@@ -486,10 +486,10 @@ void HighLighter::highlightBlock(const QString &text)
     }
 }
 
-void HighLighter::highlightError(const QString &error){
+void CodeEdit::highlightError(const QString &error){
     QRegularExpression errorRegex("(.*):(\\d+):(\\d+):\\s+(error|warning):(.*)");
     int errorOffset=0;
-    QTextCursor cursor=edit->ui->textEdit->textCursor();
+    //QTextCursor cursor=this->document().
     while(errorOffset!=-1){
         auto match=errorRegex.match(error,errorOffset);
         if(match.hasMatch()){
@@ -514,7 +514,7 @@ void HighLighter::highlightError(const QString &error){
             for(int i=left;i<=right;i++){
                 errorChar.push_back(errorData[i]);
             }
-            QTextBlock block=edit->ui->textEdit->document()->findBlockByLineNumber(lineNumber);
+            QTextBlock block=ui->textEdit->document()->findBlockByLineNumber(lineNumber);
             QTextCursor cursor=QTextCursor(block);
             cursor.setPosition(block.position());
             cursor.movePosition(QTextCursor::Right,QTextCursor::MoveAnchor,columnNumber);
