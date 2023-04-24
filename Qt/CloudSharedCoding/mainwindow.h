@@ -23,7 +23,10 @@
 #include<algorithm>
 #include<QDir>
 #include<QMultiHash>
+#include"newlocalproject.h"
 #include"newlocalfile.h"
+#include"addlocalfile.h"
+#include<QTreeWidget>
 
 namespace Ui {
 class MainWindow;
@@ -65,6 +68,11 @@ public slots:
     void deleteProFile();
     void newCloudProj();
     void saveLocalProj();
+    void addLocalFile();
+
+    /*-------------------*/
+    void addFile(QString file_path);
+    void openFileAndAddTab(QString file_path);
 
     static bool loginState(){
         return isLogin;
@@ -177,6 +185,15 @@ private:
 
     SwitchingEncodingMode* encodingType=new SwitchingEncodingMode(this);//编码方式
     QLabel* EncodingTypeLabel=new QLabel(this);//打印编码方式到状态栏
+
+
+    QString current_project_path;//记录当前项目的路径
+
+    QTreeWidgetItem* tree_widget_item_project_name=new QTreeWidgetItem();
+    QTreeWidgetItem* tree_widget_item_file_information=new QTreeWidgetItem();
+    QTreeWidgetItem* tree_widget_item_header_file_name=new QTreeWidgetItem();
+    QTreeWidgetItem* tree_widget_item_source_file_name=new QTreeWidgetItem();
+
 };
 
 

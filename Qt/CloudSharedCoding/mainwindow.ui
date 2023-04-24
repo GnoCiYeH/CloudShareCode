@@ -81,7 +81,7 @@
      <x>0</x>
      <y>0</y>
      <width>1390</width>
-     <height>21</height>
+     <height>17</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
@@ -100,12 +100,20 @@
       <string>打开项目</string>
      </property>
      <addaction name="actionCloud_project"/>
-     <addaction name="actionLocal_project"/>
+     <addaction name="actionOpenLocal_project"/>
+    </widget>
+    <widget class="QMenu" name="menu_2">
+     <property name="title">
+      <string>添加文件</string>
+     </property>
+     <addaction name="separator"/>
+     <addaction name="actionAdd_Cloud_File"/>
+     <addaction name="actionAdd_Local_File"/>
     </widget>
     <addaction name="menuOpen_project"/>
     <addaction name="menuNew_project"/>
     <addaction name="separator"/>
-    <addaction name="add_file_action"/>
+    <addaction name="menu_2"/>
     <addaction name="new_file_action"/>
     <addaction name="separator"/>
     <addaction name="actionClose_project_2"/>
@@ -184,7 +192,7 @@
     <string>Cloud project</string>
    </property>
   </action>
-  <action name="actionLocal_project">
+  <action name="actionOpenLocal_project">
    <property name="text">
     <string>Local project</string>
    </property>
@@ -192,11 +200,6 @@
   <action name="actionNew_cloud_project">
    <property name="text">
     <string>New cloud project</string>
-   </property>
-  </action>
-  <action name="add_file_action">
-   <property name="text">
-    <string>添加文件</string>
    </property>
   </action>
   <action name="new_file_action">
@@ -292,6 +295,16 @@
   <action name="actionSetting">
    <property name="text">
     <string>Setting</string>
+   </property>
+  </action>
+  <action name="actionAdd_Cloud_File">
+   <property name="text">
+    <string>添加云文件</string>
+   </property>
+  </action>
+  <action name="actionAdd_Local_File">
+   <property name="text">
+    <string>添加本地文件</string>
    </property>
   </action>
  </widget>
