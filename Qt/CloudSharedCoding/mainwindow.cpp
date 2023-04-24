@@ -1177,6 +1177,7 @@ void MainWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int colu
 //打开本地项目文件
 void MainWindow::openLocalProj()
 {
+    debugInfo->insert(-1,new QMultiHash<QString,int>());
     //把之前项目中的树节点删除
     int header_count=tree_widget_item_header_file_name->childCount();
     for(int i=0;i<header_count;i++)
@@ -1455,6 +1456,8 @@ void MainWindow::openFileAndAddTab(QString file_path)
     std::shared_ptr<FileInfo> file_information(new FileInfo);
     file_information->file_name=info.fileName();
     file_information->file_path=info.filePath();
+
+    file_information->file_project=-1;
 
     //file_information构造出一个code_edit文本编辑器
     CodeEdit* code_edit=new CodeEdit(file_information,this);
