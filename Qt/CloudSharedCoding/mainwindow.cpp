@@ -1041,8 +1041,6 @@ void MainWindow::openLocalProj()
         QTreeWidgetItem* item=new QTreeWidgetItem();
         item->setText(0,header_list[i]);
         tree_widget_item_header_file_name->addChild(item);
-        //添加code_edit和tab
-        print_on_code_edit(header_path+"/"+header_list[i]);
     }
 
     //导入项目中的所有源文件
@@ -1055,8 +1053,6 @@ void MainWindow::openLocalProj()
         QTreeWidgetItem* item=new QTreeWidgetItem();
         item->setText(0,source_list[i]);
         tree_widget_item_source_file_name->addChild(item);
-        //添加code_edit和path
-        print_on_code_edit(header_path+"/"+source_list[i]);
     }
 
     /*
@@ -1221,6 +1217,7 @@ void MainWindow::addLocalFile()
             {
                QString file_path=current_project_path+"/源文件/"+dialog->get_lineEdit_name()->text()+".cpp";
                this->addFile(file_path);
+
                QTreeWidgetItem* item=new QTreeWidgetItem();
                item->setText(0,dialog->get_lineEdit_name()->text()+".cpp");
                tree_widget_item_source_file_name->addChild(item);
@@ -1231,6 +1228,7 @@ void MainWindow::addLocalFile()
                 QString  file_path2=current_project_path+"/源文件/"+dialog->get_lineEdit_name()->text()+".cpp";
                 this->addFile(file_path1);
                 this->addFile(file_path2);
+
                 QTreeWidgetItem* item1=new QTreeWidgetItem();
                 QTreeWidgetItem* item2=new QTreeWidgetItem();
                 item1->setText(0,dialog->get_lineEdit_name()->text()+".h");
@@ -1239,64 +1237,6 @@ void MainWindow::addLocalFile()
                 tree_widget_item_source_file_name->addChild(item2);
             }
             dialog->close();
-
-            /*
-            //添加文件
-            QFile *new_file=new QFile(this);
-            new_file->setFileName(file_path);
-
-            bool res=new_file->open(QIODevice::ReadWrite|QIODevice::Text);
-            new_file->close();
-            if(!res)
-            {
-                QMessageBox::critical(this,"错误","文件新建失败");
-                return;
-            }
-            else
-            {
-                QMessageBox::information(this,"新建文件","新建文件成功");
-                QFileInfo info(file_path);
-                std::shared_ptr<FileInfo> file_information_ptr(new FileInfo);
-                file_information_ptr->file_name=info.fileName();
-                file_information_ptr->file_path=info.filePath();
-
-                //添加子节点到dock栏里的treeWidget中
-                QTreeWidgetItem* top=ui->treeWidget->topLevelItem(0);
-                QTreeWidgetItem* childItem=new QTreeWidgetItem(top);
-                childItem->setText(0,file_information->file_name);
-                top->addChild(childItem);
-                QTreeWidgetItem* item=new QTreeWidgetItem();
-                if(dialog->get_comboBox_current_index()==0)
-                {
-                    item->setText(0,dialog->get_lineEdit_name()->text()+".cpp");
-                    tree_widget_item_source_file_name->addChild(item);
-                }
-                else
-                {
-                    item->setText(0,dialog->get_lineEdit_name()->text()+".h");
-                    tree_widget_item_header_file_name->addChild(item);
-                }
-
-                //file_information构造出一个code_edit文本编辑器
-                CodeEdit* code_edit=new CodeEdit(file_information_ptr,this);
-
-                //新建一个tab加入到tabWidget中
-                ui->tabWidget->addTab(code_edit,file_information_ptr->file_name);
-                file_information_ptr->is_open=true;
-
-                //读取文件的内容并打印到code_edit编辑器
-                QFile file(file_path);
-                file.open(QIODevice::ReadOnly);
-                QByteArray array=file.readAll();
-                code_edit->addText(array);
-
-                //一个path对应一个code_edit指针，添加到映射表中
-                mp[file_information_ptr->file_path]=code_edit;
-
-                dialog->close();
-                return;
-            }
-        */
         }
     });
 }
@@ -1319,8 +1259,6 @@ void MainWindow::addFile(QString file_path)
     else
     {
         QMessageBox::information(this,"新建文件","新建文件成功");
-
-        openFileAndAddTab(file_path);
     }
 }
 
@@ -1339,6 +1277,7 @@ void MainWindow::openFileAndAddTab(QString file_path)
     ui->tabWidget->addTab(code_edit,file_information->file_name);
     file_information->is_open=true;
 
+
     //读取文件的内容并打印到code_edit编辑器
     QFile file(file_path);
     file.open(QIODevice::ReadOnly);
@@ -1347,6 +1286,7 @@ void MainWindow::openFileAndAddTab(QString file_path)
 
     //一个path对应一个code_edit指针，添加到映射表中
     mp[file_information->file_path]=code_edit;
+
 }
 
 //该函数的作用是在给定的路径下获取当中的所有文件夹，并添加到参数QStringList中
@@ -1401,48 +1341,6 @@ bool MainWindow::get_SubFile_Under_SubDir(QString path,QStringList& list,int tag
         dir=nullptr;
         return true;
     }
-}
-
-//该函数的作用是给定一个文件的路径，将文件读取到code_edit中，并且添加code_edit到一个tab中显示出来
-void MainWindow::print_on_code_edit(QString file_path)
-{
-    QFile *new_file=new QFile(this);
-    new_file->setFileName(file_path);
-
-    bool res=new_file->open(QIODevice::ReadWrite|QIODevice::Text);
-    new_file->close();
-    if(!res)
-    {
-        QMessageBox::critical(this,"错误","文件新建失败");
-        return;
-    }
-    else
-    {
-        //新建info：QFileInfo和info_ptr:std::shared_ptr<FileInfo>
-        QFileInfo info(file_path);
-        std::shared_ptr<FileInfo> info_ptr(new FileInfo);
-        info_ptr->file_name=info.fileName();
-        info_ptr->file_path=info.filePath();
-
-        //file_information构造出一个code_edit文本编辑器
-        CodeEdit* code_edit=new CodeEdit(info_ptr,this);
-
-        //新建一个tab加入到tabWidget中
-        ui->tabWidget->addTab(code_edit,info_ptr->file_name);
-        info_ptr->is_open=true;
-
-        //读取文件的内容并打印到code_edit编辑器
-        QFile file(file_path);
-        file.open(QIODevice::ReadOnly);
-        QByteArray array=file.readAll();
-        code_edit->addText(array);
-
-        //一个path对应一个code_edit指针，添加到映射表中
-        mp[info_ptr->file_path]=code_edit;
-
-        return;
-    }
-
 }
 
 //run project
