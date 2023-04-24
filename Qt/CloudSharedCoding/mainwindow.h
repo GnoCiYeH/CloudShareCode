@@ -73,6 +73,8 @@ public slots:
     /*-------------------*/
     void addFile(QString file_path);
     void openFileAndAddTab(QString file_path);
+    bool get_SubDir_Under_Dir(QString path,QStringList& list);
+    bool get_SubFile_Under_SubDir(QString path,QStringList& list,int tag);
 
     static bool loginState(){
         return isLogin;

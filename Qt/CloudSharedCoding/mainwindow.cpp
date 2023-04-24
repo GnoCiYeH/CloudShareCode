@@ -983,9 +983,55 @@ void MainWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int colu
 //打开本地项目文件
 void MainWindow::openLocalProj()
 {
-    QString path=QFileDialog::getOpenFileName(this,"打开文件","C://Users");
+    //文件夹的目录
+    QString folder_path=QFileDialog::getExistingDirectory(this,tr("选择目录"),"/",QFileDialog::ShowDirsOnly|QFileDialog::DontResolveSymlinks);
+    current_project_path=folder_path;
+    QStringList dir_list;
+    bool res=get_SubDir_Under_Dir(folder_path,dir_list);
+    if(res==true&&dir_list.size()==2)
+    {
+        if(dir_list[0]!="头文件"||dir_list[1]!="源文件")
+            return;
+    }
+    else
+    {
+      return;
+    }
+
+    //获取项目的名字，并设置顶层节点的内容
+    int last_index=folder_path.lastIndexOf('/');
+    QString project_name=folder_path.mid(last_index+1);
+    tree_widget_item_project_name->setText(0,project_name);
+
+    //为新的项目添加文件树
+    ui->treeWidget->addTopLevelItem(tree_widget_item_project_name);
+    tree_widget_item_project_name->addChild(tree_widget_item_file_information);
+    tree_widget_item_project_name->addChild(tree_widget_item_header_file_name);
+    tree_widget_item_project_name->addChild(tree_widget_item_source_file_name);
+
+    QString header_path=current_project_path+"/头文件";
+    QStringList header_list;
+    get_SubFile_Under_SubDir(header_path,header_list,0);
+    for(int i=0;i<header_list.size();i++)
+    {
+        QTreeWidgetItem* item=new QTreeWidgetItem();
+        item->setText(0,header_list[i]);
+        tree_widget_item_header_file_name->addChild(item);
+    }
+
+    QString source_path=current_project_path+"/源文件";
+    QStringList source_list;
+    get_SubFile_Under_SubDir(source_path,source_list,1);
+    for(int i=0;i<source_list.size();i++)
+    {
+        QTreeWidgetItem* item=new QTreeWidgetItem();
+        item->setText(0,source_list[i]);
+        tree_widget_item_source_file_name->addChild(item);
+    }
+
+    /*
     //文件的信息 info实例化file_information
-    QFileInfo info(path);
+    QFileInfo info(folder_path);
     std::shared_ptr<FileInfo> file_information(new FileInfo);
     file_information->file_name=info.fileName();
     file_information->file_path=info.filePath();
@@ -994,9 +1040,8 @@ void MainWindow::openLocalProj()
     CodeEdit* code_edit=new CodeEdit(file_information,this);
 
     //新建一个tab加入到tabWidget中
-    /*
     ui->tabWidget->addTab(code_edit,file_information->file_name);
-    file_information->is_open=true;*/
+    file_information->is_open=true;
 
     //读取文件的内容并打印到code_edit编辑器
     QFile file(path);
@@ -1006,6 +1051,7 @@ void MainWindow::openLocalProj()
 
     //一个path对应一个code_edit指针，添加到映射表中
     mp[file_information->file_path]=code_edit;
+    */
 }
 
 //保存本地项目文件
@@ -1273,6 +1319,60 @@ void MainWindow::openFileAndAddTab(QString file_path)
 
     //一个path对应一个code_edit指针，添加到映射表中
     mp[file_information->file_path]=code_edit;
+}
+
+//该函数的作用是在给定的路径下获取当中的所有文件夹，并添加到参数QStringList中
+bool MainWindow::get_SubDir_Under_Dir(QString path,QStringList& list)
+{
+    QDir* dir=new QDir(path);
+    //不存在此目录
+    if(!dir->exists())
+    {
+        delete dir;
+        dir=nullptr;
+        return false;
+    }
+    else
+    {
+        list=dir->entryList(QDir::Dirs);//指明仅接受文件夹
+        list.removeOne(".");
+        list.removeOne("..");
+        delete dir;
+        dir=nullptr;
+        return true;
+    }
+}
+
+//该函数的作用是在给定的文件夹下获取当中的所有文件，并添加到参数QStringList中(参数tag1==0指明要获取的是"*.h"文件，tag==1指明要获取的是"*.cpp"文件)
+bool MainWindow::get_SubFile_Under_SubDir(QString path,QStringList& list,int tag)
+{
+    QDir* dir=new QDir(path);
+    //不存在此目录
+    if(!dir->exists())
+    {
+        delete dir;
+        dir=nullptr;
+        return false;
+    }
+    else
+    {
+        if(tag==0)
+            dir->setNameFilters(QStringList("*.h"));
+        else if(tag==1)
+            dir->setNameFilters((QStringList("*.cpp")));
+        else
+        {
+            delete dir;
+            dir=nullptr;
+            return false;
+        }
+        list=dir->entryList(QDir::Files);
+        list.removeOne(".");
+        list.removeOne("..");
+        delete dir;
+        dir=nullptr;
+        return true;
+    }
 }
 
 //run project
