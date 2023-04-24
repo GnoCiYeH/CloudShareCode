@@ -888,6 +888,18 @@ void MainWindow::dataProgress()
 
 void MainWindow::disposeDebugInfo(QString buf)
 {
+    QRegularExpression breakpointRegex("(Breakpoint \\d+) at .*");//断点信息
+    QRegularExpression tobreakpointRegex("(\\sBreakpoint \\d+).*");//断点信息
+    QRegularExpression crashRegex("Program received signal .*");//程序崩溃信息
+    QRegularExpression varValueRegex("\\$\\d+\\s+=\\s+(.*)");//变量值信息
+    QRegularExpression stackFrameRegex("#\\d+\\s+0x[a-f0-9]+\\s+in\\s+.+\\s+\\(.+\\)\\s+at\\s+.*:(\\d+)");//栈帧信息
+    QRegularExpression segFaultRegex("(Program received signal SIGSEGV.*)");//段错误信息
+    QRegularExpression leakRegex("(LEAK SUMMARY:).*");//内存泄露信息
+    QRegularExpression unhandledExceptionRegex("(terminate called after throwing.*)");//未处理的异常信息
+    QRegularExpression assertRegex("(Assertion.*)");//断言失败信息
+    QRegularExpression errorRegex("(.*):(\\d+):(\\d+):\\s+(error|warning):(.*)");//错误信息
+
+
     qDebug()<<"buf:"<<buf;
     QStringList list = buf.split("\n",Qt::SkipEmptyParts);
     for(auto data : list)
