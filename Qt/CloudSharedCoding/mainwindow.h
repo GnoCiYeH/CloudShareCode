@@ -75,6 +75,7 @@ public slots:
     void openFileAndAddTab(QString file_path);
     bool get_SubDir_Under_Dir(QString path,QStringList& list);
     bool get_SubFile_Under_SubDir(QString path,QStringList& list,int tag);
+    void print_on_code_edit(QString);
 
     static bool loginState(){
         return isLogin;
