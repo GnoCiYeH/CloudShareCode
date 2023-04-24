@@ -47,6 +47,8 @@ public:
     explicit CodeEdit(std::shared_ptr<FileInfo> fileptr = std::shared_ptr<FileInfo>(new FileInfo()), QWidget *parent = nullptr);
     ~CodeEdit() override;
 
+    void gotoline(int lineNum);
+
     void highlightError(const QString &error);
 
     void addText(const QString str);

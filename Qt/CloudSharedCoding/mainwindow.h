@@ -12,6 +12,7 @@
 #include<QTimer>
 #include<QLabel>
 #include<QDateTime>
+#include <QTableWidget>
 #include"ui_mainwindow.h"
 #include"switchingencodingmode.h"
 #include "codeedit.h"
@@ -92,6 +93,7 @@ private slots:
     void stopProject();
     void debugProject();
     void cmdStdin(int,int,int);
+    void gotoStackFrame(QListWidgetItem*);
 
     void on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column);
 
@@ -103,13 +105,6 @@ private:
         RUNNING,
         DEBUGING,
     } workState = ProjectWorkState::NONE;
-
-    enum class DebugState{
-        NONE,
-        START,
-        WAIT_BREAKPOINT_INFO,
-        WAIT_DEBUG_INFO
-    } debugState = DebugState::NONE;
 
     void disposeDebugInfo(QString);
 
@@ -135,6 +130,13 @@ private:
     QTextEdit* runDockwidget;
     QToolBar* debugToolBar;
 
+    QDockWidget* breakPointDock;
+    QDockWidget* varDock;
+    QTableWidget* breakPointInfo;
+    QTableWidget* varInfo;
+    QDockWidget* stackDock;
+    QListWidget* stackList;
+
     QToolButton* continueDebugButton;
     QToolButton* stopDebugButton;
     QToolButton* nextDebugButton;
@@ -144,6 +146,8 @@ private:
     QToolButton* runbutton;
     QToolButton* debugbutton;
     QToolButton* stopRun;
+
+    QPair<std::shared_ptr<FileInfo>,int> currentLine;
 
     //瀛愮獥鍙?
 

@@ -159,6 +159,32 @@ MainWindow::MainWindow(QWidget *parent) :
     this->addDockWidget(Qt::BottomDockWidgetArea,runDock);
     connect(runDockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int,int,int)));
 
+    stackDock = new QDockWidget(this);
+    stackList = new QListWidget(stackDock);
+    stackDock->setHidden(true);
+    stackDock->setWidget(stackList);
+    connect(stackList,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(gotoStackFrame(QListWidgetItem*)));
+
+    breakPointDock = new QDockWidget(this);
+    varDock = new QDockWidget(this);
+    varInfo = new QTableWidget(varDock);
+    breakPointInfo = new QTableWidget(breakPointDock);
+    breakPointDock->setHidden(true);
+    varDock->setHidden(true);
+    stackDock->setHidden(true);
+    breakPointDock->setWidget(breakPointInfo);
+    varDock->setWidget(varInfo);
+    this->setDockNestingEnabled(false);
+    this->addDockWidget(Qt::RightDockWidgetArea,varDock);
+    this->setDockNestingEnabled(true);
+    this->addDockWidget(Qt::RightDockWidgetArea,stackDock);
+    this->addDockWidget(Qt::RightDockWidgetArea,breakPointDock);
+
+    breakPointInfo->setColumnCount(4);
+    breakPointInfo->setHorizontalHeaderLabels({"断点","地址","文件","行号"});
+    varInfo->setColumnCount(2);
+    varInfo->setHorizontalHeaderLabels({"变量","值"});
+
     debugToolBar = new QToolBar(this);
     this->addToolBar(Qt::ToolBarArea::RightToolBarArea,debugToolBar);
     debugToolBar->setHidden(true);
@@ -168,9 +194,15 @@ MainWindow::MainWindow(QWidget *parent) :
     continueDebugButton->setDisabled(true);
     connect(continueDebugButton,&QToolButton::clicked,this,[=](){
         QString data = Package::intToByteArr(currentProject);
-        data+="c\n";
+        data+="c\ninfo local\n";
+        varInfo->clear();
         Package pck(data.toUtf8(),(int)Package::PackageType::POST_STDIN);
         socket->write(pck.getPdata(),pck.getSize());
+
+        continueDebugButton->setDisabled(true);
+        nextDebugButton->setDisabled(true);
+        stepIntoDubugButton->setDisabled(true);
+        stepOutDebugButton->setDisabled(true);
     });
 
     stopDebugButton = new QToolButton(debugToolBar);
@@ -181,16 +213,31 @@ MainWindow::MainWindow(QWidget *parent) :
         data+="q\ny\n";
         Package pck(data.toUtf8(),(int)Package::PackageType::POST_STDIN);
         socket->write(pck.getPdata(),pck.getSize());
+
+        stopDebugButton->setDisabled(true);
+        continueDebugButton->setDisabled(true);
+        nextDebugButton->setDisabled(true);
+        stepIntoDubugButton->setDisabled(true);
+        stepOutDebugButton->setDisabled(true);
     });
 
     nextDebugButton = new QToolButton(debugToolBar);
     nextDebugButton->setIcon(QIcon("://icon/next.png"));
     nextDebugButton->setDisabled(true);
     connect(nextDebugButton,&QToolButton::clicked,this,[=](){
+        fileWidgets.value(currentLine.first->file_id)->gotoline(currentLine.second+1);
+        currentLine.second+=1;
+
         QString data = Package::intToByteArr(currentProject);
-        data+="n\n";
+        data+="n\ninfo local\n";
+        varInfo->clear();
         Package pck(data.toUtf8(),(int)Package::PackageType::POST_STDIN);
         socket->write(pck.getPdata(),pck.getSize());
+
+        continueDebugButton->setDisabled(true);
+        nextDebugButton->setDisabled(true);
+        stepIntoDubugButton->setDisabled(true);
+        stepOutDebugButton->setDisabled(true);
     });
 
     stepIntoDubugButton = new QToolButton(debugToolBar);
@@ -198,9 +245,15 @@ MainWindow::MainWindow(QWidget *parent) :
     stepIntoDubugButton->setDisabled(true);
     connect(stepIntoDubugButton,&QToolButton::clicked,this,[=](){
         QString data = Package::intToByteArr(currentProject);
-        data+="step\n";
+        data+="step\ninfo local\nbacktrace\n";
+        varInfo->clear();
         Package pck(data.toUtf8(),(int)Package::PackageType::POST_STDIN);
         socket->write(pck.getPdata(),pck.getSize());
+
+        continueDebugButton->setDisabled(true);
+        nextDebugButton->setDisabled(true);
+        stepIntoDubugButton->setDisabled(true);
+        stepOutDebugButton->setDisabled(true);
     });
 
     stepOutDebugButton = new QToolButton(debugToolBar);
@@ -208,9 +261,15 @@ MainWindow::MainWindow(QWidget *parent) :
     stepOutDebugButton->setDisabled(true);
     connect(stepOutDebugButton,&QToolButton::clicked,this,[=](){
         QString data = Package::intToByteArr(currentProject);
-        data+="finish\n";
+        data+="finish\ninfo local\nbacktrace\n";
+        varInfo->clear();
         Package pck(data.toUtf8(),(int)Package::PackageType::POST_STDIN);
         socket->write(pck.getPdata(),pck.getSize());
+
+        continueDebugButton->setDisabled(true);
+        nextDebugButton->setDisabled(true);
+        stepIntoDubugButton->setDisabled(true);
+        stepOutDebugButton->setDisabled(true);
     });
 
     debugToolBar->addWidget(continueDebugButton);
@@ -242,6 +301,12 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    if(workState==ProjectWorkState::DEBUGING||workState==ProjectWorkState::RUNNING)
+    {
+        Package pck(QString::number(runningProject).toUtf8(),(int)Package::PackageType::KILL_PROJECT_FORCE);
+        socket->write(pck.getPdata(),pck.getSize());
+    }
+
     mp.clear();
     delete ui;
     socket->close();
@@ -252,6 +317,29 @@ MainWindow::~MainWindow()
     delete tree_widget_item_file_information;
     delete tree_widget_item_header_file_name;
     delete tree_widget_item_source_file_name;
+}
+
+void MainWindow::gotoStackFrame(QListWidgetItem* item)
+{
+    QPair<QString,int> pair = item->data(Qt::UserRole).value<QPair<QString,int>>();
+    QString path = pair.first;
+    int lineNum = pair.second;
+    auto vec = pro_fileMap.value(runningProject);
+    std::shared_ptr<FileInfo> file;
+    for(auto it : vec)
+    {
+        if(it->file_path==path)
+        {
+            file=it;
+            break;
+        }
+    }
+    if(file.get())
+    {
+        CodeEdit* widget = fileWidgets.value(file->file_id);
+        ui->tabWidget->setCurrentWidget(widget);
+        widget->gotoline(lineNum);
+    }
 }
 
 void MainWindow::cmdStdin(int pos,int charRemoved,int charAdded)
@@ -293,6 +381,31 @@ void MainWindow::stopProject()
 
 void MainWindow::debugProject()
 {
+    ui->tabWidget->setTabsClosable(false);
+
+    stopDebugButton->setDisabled(false);
+
+    runningProject = currentProject;
+    varDock->setHidden(false);
+    breakPointDock->setHidden(false);
+    stackDock->setHidden(false);
+
+    buildDockwidget->clear();
+
+    breakPointInfo->clear();
+    varInfo->clear();
+    stackList->clear();
+
+    breakPointInfo->setHorizontalHeaderLabels({"断点","地址","文件","行号"});
+    varInfo->setHorizontalHeaderLabels({"变量","值"});
+
+    if(workState == ProjectWorkState::DEBUGING||workState == ProjectWorkState::RUNNING)
+    {
+        QString data = QString::number(userProjs->value(runningProject).pro_id);
+        Package pck(data.toUtf8(),(int)Package::PackageType::KILL_PROJECT_FORCE);
+        socket->write(pck.getPdata(),pck.getSize());
+    }
+
     debugToolBar->setHidden(false);
     workState = ProjectWorkState::DEBUGING;
     QString data = QString::number(userProjs->value(currentProject).pro_id);
@@ -847,7 +960,6 @@ void MainWindow::dataProgress()
         auto codee = ((CodeEdit*)ui->tabWidget->currentWidget());
         codee->highlightError(buildDockwidget->toPlainText());
         //
-        debugState = DebugState::START;
         if(workState==ProjectWorkState::DEBUGING)
         {
             auto breakPoints = debugInfo->value(currentProject);
@@ -856,7 +968,7 @@ void MainWindow::dataProgress()
             {
                 data+= "b " + it.key()+":"+QString::number(it.value())+"\n";
             }
-            data+="r\n";
+            data+="r\ninfo local\nbacktrace\n";
             Package pck(data.toUtf8(),(int)Package::PackageType::POST_STDIN);
             socket->write(pck.getPdata(),pck.getSize());
         }
@@ -864,6 +976,8 @@ void MainWindow::dataProgress()
     }
     case (int)Package::ReturnType::RUN_FINISH:
     {
+        ui->tabWidget->setTabsClosable(true);
+        workState = ProjectWorkState::NONE;
         runbutton->setEnabled(true);
         debugbutton->setEnabled(true);
         stopRun->setEnabled(false);
@@ -883,50 +997,121 @@ void MainWindow::dataProgress()
     }
 }
 
-void MainWindow::disposeDebugInfo(QString buf)
+void MainWindow::disposeDebugInfo(QString data)
 {
-    QRegularExpression breakpointRegex("(Breakpoint \\d+) at .*");//断点信息
-    QRegularExpression tobreakpointRegex("(\\sBreakpoint \\d+).*");//断点信息
+    QRegularExpression breakpointRegex("(Breakpoint \\d+) at (.*): file (.*) line (\\d+)");//断点信息
+    QRegularExpression tobreakpointRegex("Breakpoint \\d+, .* \\(\\) at (.*):(\\d+)");//运行到断点信息
     QRegularExpression crashRegex("Program received signal .*");//程序崩溃信息
-    QRegularExpression varValueRegex("\\$\\d+\\s+=\\s+(.*)");//变量值信息
-    QRegularExpression stackFrameRegex("#\\d+\\s+0x[a-f0-9]+\\s+in\\s+.+\\s+\\(.+\\)\\s+at\\s+.*:(\\d+)");//栈帧信息
+    QRegularExpression varValueRegex("(.*) = (.*)");//变量值信息
+    QRegularExpression stackFrameRegex("#\\d+\\s+0x[a-f0-9]+\\s+in\\s+.+\\s+\\(.+\\)\\s+at\\s+(.*):(\\d+)");//栈帧信息
     QRegularExpression segFaultRegex("(Program received signal SIGSEGV.*)");//段错误信息
     QRegularExpression leakRegex("(LEAK SUMMARY:).*");//内存泄露信息
     QRegularExpression unhandledExceptionRegex("(terminate called after throwing.*)");//未处理的异常信息
     QRegularExpression assertRegex("(Assertion.*)");//断言失败信息
     QRegularExpression errorRegex("(.*):(\\d+):(\\d+):\\s+(error|warning):(.*)");//错误信息
 
-
-    qDebug()<<"buf:"<<buf;
-    QStringList list = buf.split("\n",Qt::SkipEmptyParts);
-    for(auto data : list)
+    qDebug()<<"data:"<<data;
+    QStringList list = data.split("\n",Qt::SkipEmptyParts);
+    for(auto buf : list)
     {
-        if(data.startsWith("(gdb)"))
+        QRegularExpressionMatch match;
+        if((match = breakpointRegex.match(buf)).hasMatch())
         {
-            //命令行
-            if(data == "(gdb) ")
-            {
+            QString num = match.captured(1);
+            QString address = match.captured(2);
+            QString file = match.captured(3);
+            file = "." + file.mid(46);
+            QString lineNum = match.captured(4);
 
+            int row = breakPointInfo->rowCount();
+            breakPointInfo->insertRow(row);
+            breakPointInfo->setItem(row,0,new QTableWidgetItem(num));
+            breakPointInfo->setItem(row,1,new QTableWidgetItem(address));
+            breakPointInfo->setItem(row,2,new QTableWidgetItem(file));
+            breakPointInfo->setItem(row,3,new QTableWidgetItem("Line "+lineNum));
+        }
+        else if((match = tobreakpointRegex.match(buf)).hasMatch())
+        {
+            continueDebugButton->setDisabled(false);
+            nextDebugButton->setDisabled(false);
+            stepIntoDubugButton->setDisabled(false);
+            stepOutDebugButton->setDisabled(false);
+            int lineNum = match.captured(2).toInt();
+            QString path = "."+match.captured(1).mid(46);
+            auto vec = pro_fileMap.value(runningProject);
+            std::shared_ptr<FileInfo> file;
+            for(auto it : vec)
+            {
+                if(it->file_path==path)
+                {
+                    file=it;
+                    break;
+                }
+            }
+            if(file.get())
+            {
+                currentLine.first = file;
+                currentLine.second = lineNum;
+                CodeEdit* widget = fileWidgets.value(file->file_id);
+                ui->tabWidget->setCurrentWidget(widget);
+                widget->gotoline(lineNum);
             }
             else
             {
-                data = data.mid(6);
+                buildDockwidget->insertPlainText(buf);
             }
         }
-        else if(data.startsWith("Breakpoint ")&&debugState==DebugState::WAIT_BREAKPOINT_INFO)
+        else if((match = crashRegex.match(buf)).hasMatch())
         {
-            //生成
-            qDebug()<<"Breakpoint:"<<data;
 
-            debugState = DebugState::WAIT_DEBUG_INFO;
         }
-        else if(data.startsWith("Reading symbols from ")&&debugState==DebugState::START)
+        else if((match = varValueRegex.match(buf)).hasMatch())
         {
-            qDebug()<<"Reading:"<<data;
-            debugState = DebugState::WAIT_BREAKPOINT_INFO;
-        }
+            QString var = match.captured(1);
+            QString val = match.captured(2);
 
-        buildDockwidget->insertPlainText(data);
+            int row = varInfo->rowCount();
+            varInfo->insertRow(row);
+            varInfo->setItem(row,0,new QTableWidgetItem(var));
+            varInfo->setItem(row,1,new QTableWidgetItem(val));
+        }
+        else if((match = stackFrameRegex.match(buf)).hasMatch())
+        {
+            //"#\\d+\\s+0x[a-f0-9]+\\s+in\\s+.+\\s+\\(.+\\)\\s+at\\s+(.*):(\\d+)"
+            QString path = "."+match.captured(1).mid(46);
+            int line = match.captured(2).toInt();
+            QPair<QString,int> pair(path,line);
+            QListWidgetItem* item = new QListWidgetItem(stackList);
+            QVariant var;
+            var.setValue(pair);
+            item->setData(Qt::UserRole,var);
+            item->setText(buf);
+            stackList->addItem(item);
+        }
+        else if((match = segFaultRegex.match(buf)).hasMatch())
+        {
+
+        }
+        else if((match = leakRegex.match(buf)).hasMatch())
+        {
+
+        }
+        else if((match = unhandledExceptionRegex.match(buf)).hasMatch())
+        {
+
+        }
+        else if((match = assertRegex.match(buf)).hasMatch())
+        {
+
+        }
+        else if((match = errorRegex.match(buf)).hasMatch())
+        {
+
+        }
+        else
+        {
+
+        }
     }
 }
 
@@ -1347,6 +1532,7 @@ bool MainWindow::get_SubFile_Under_SubDir(QString path,QStringList& list,int tag
 //run project
 void MainWindow::runProject()
 {
+    workState = ProjectWorkState::RUNNING;
     runbutton->setEnabled(false);
     debugbutton->setEnabled(false);
 
