@@ -1259,6 +1259,7 @@ void MainWindow::addFile(QString file_path)
     else
     {
         QMessageBox::information(this,"新建文件","新建文件成功");
+        openFileAndAddTab(file_path);
     }
 }
 
