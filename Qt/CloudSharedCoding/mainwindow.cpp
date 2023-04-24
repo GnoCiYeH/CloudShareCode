@@ -997,7 +997,20 @@ void MainWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int colu
 //打开本地项目文件
 void MainWindow::openLocalProj()
 {
-    //文件夹的目录
+    //把之前项目中的树节点删除
+    int header_count=tree_widget_item_header_file_name->childCount();
+    for(int i=0;i<header_count;i++)
+    {
+        delete tree_widget_item_header_file_name->child(i);
+    }
+
+    int source_count=tree_widget_item_source_file_name->childCount();
+    for(int i=0;i<source_count;i++)
+    {
+        delete tree_widget_item_source_file_name->child(i);
+    }
+
+    //获取文件夹的目录
     QString folder_path=QFileDialog::getExistingDirectory(this,tr("选择目录"),"/",QFileDialog::ShowDirsOnly|QFileDialog::DontResolveSymlinks);
     current_project_path=folder_path;
     QStringList dir_list;
