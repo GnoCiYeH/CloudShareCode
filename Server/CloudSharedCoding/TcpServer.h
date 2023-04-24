@@ -69,6 +69,8 @@ private:
 
     static void killProjectP(int sock_fd, char* data);
 
+    static void killProjectForce(int sock_fd, char* data);
+
     static void debugProject(int sock_fd, char* data);
 
     struct UserInfo

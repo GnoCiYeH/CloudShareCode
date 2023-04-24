@@ -111,7 +111,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -199,6 +199,13 @@
                      </size>
                     </property>
                    </spacer>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="pushButton_9">
+                    <property name="text">
+                     <string>拉取至本地</string>
+                    </property>
+                   </widget>
                   </item>
                   <item>
                    <widget class="QPushButton" name="pushButton_2">
@@ -299,6 +306,13 @@
                      </size>
                     </property>
                    </spacer>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="pushButton_8">
+                    <property name="text">
+                     <string>拉取至本地</string>
+                    </property>
+                   </widget>
                   </item>
                   <item>
                    <widget class="QPushButton" name="pushButton_4">

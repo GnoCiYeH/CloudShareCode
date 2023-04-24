@@ -74,7 +74,13 @@ public:
         KILL_PROJECT = 18,
 
         //调试
-        DEBUG_PROJECT = 19
+        DEBUG_PROJECT = 19,
+
+        //下载项目至本地
+        DOWNLOAD_PROJECT = 20,
+
+        //用户异常退出时终止程序
+        KILL_PROJECT_FORCE = 21
     };
     enum class ReturnType{
         SERVER_ALLOW = 0,
