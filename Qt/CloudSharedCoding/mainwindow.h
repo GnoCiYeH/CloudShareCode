@@ -72,6 +72,7 @@ public slots:
 
     /*-------------------*/
     void addFile(QString file_path);
+    void openFileAndAddTab(QString file_path);
 
     static bool loginState(){
         return isLogin;

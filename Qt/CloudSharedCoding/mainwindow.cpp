@@ -1245,30 +1245,35 @@ void MainWindow::addFile(QString file_path)
     else
     {
         QMessageBox::information(this,"新建文件","新建文件成功");
-        QFileInfo info(file_path);
-        std::shared_ptr<FileInfo> file_information(new FileInfo);
-        file_information->file_name=info.fileName();
-        file_information->file_path=info.filePath();
 
-        //file_information构造出一个code_edit文本编辑器
-        CodeEdit* code_edit=new CodeEdit(file_information,this);
-
-        //新建一个tab加入到tabWidget中
-        ui->tabWidget->addTab(code_edit,file_information->file_name);
-        file_information->is_open=true;
-
-        //读取文件的内容并打印到code_edit编辑器
-        QFile file(file_path);
-        file.open(QIODevice::ReadOnly);
-        QByteArray array=file.readAll();
-        code_edit->addText(array);
-
-        //一个path对应一个code_edit指针，添加到映射表中
-        mp[file_information->file_path]=code_edit;
-
+        openFileAndAddTab(file_path);
     }
 }
 
+//本函数的作用是在给定的路径下将文件打开并构造一个文本编辑器和添加到tabWidget中
+void MainWindow::openFileAndAddTab(QString file_path)
+{
+    QFileInfo info(file_path);
+    std::shared_ptr<FileInfo> file_information(new FileInfo);
+    file_information->file_name=info.fileName();
+    file_information->file_path=info.filePath();
+
+    //file_information构造出一个code_edit文本编辑器
+    CodeEdit* code_edit=new CodeEdit(file_information,this);
+
+    //新建一个tab加入到tabWidget中
+    ui->tabWidget->addTab(code_edit,file_information->file_name);
+    file_information->is_open=true;
+
+    //读取文件的内容并打印到code_edit编辑器
+    QFile file(file_path);
+    file.open(QIODevice::ReadOnly);
+    QByteArray array=file.readAll();
+    code_edit->addText(array);
+
+    //一个path对应一个code_edit指针，添加到映射表中
+    mp[file_information->file_path]=code_edit;
+}
 
 //run project
 void MainWindow::runProject()
