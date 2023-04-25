@@ -94,6 +94,7 @@ public:
         BUILD_FINISH = 14,
         RUN_FINISH = 15,
         DUBUG_INFO = 16,
+        FILE_TRANSOVER = 17
     };
     Package(const char* data, int type, int size);
     ~Package();

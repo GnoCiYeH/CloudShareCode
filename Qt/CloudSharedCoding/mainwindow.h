@@ -28,6 +28,7 @@
 #include"newlocalfile.h"
 #include"addlocalfile.h"
 #include<QTreeWidget>
+#include<QMovie>
 
 namespace Ui {
 class MainWindow;
@@ -51,6 +52,8 @@ public:
     std::map<QString,CodeEdit*>mp;//存放路径名字和CodeEdit指针的相互映射
 
     QString runCompilerAndGetOutput(QString pro_Path);
+
+    static void Login();
 
 
 public slots:
@@ -93,7 +96,7 @@ private slots:
     void stopProject();
     void debugProject();
     void cmdStdin(int,int,int);
-    void gotoStackFrame(QListWidgetItem*);
+    void gotoCodeLine(QListWidgetItem*);
 
     void on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column);
 
@@ -107,6 +110,10 @@ private:
     } workState = ProjectWorkState::NONE;
 
     void disposeDebugInfo(QString);
+
+    void openProjFile(std::shared_ptr<FileInfo> file);
+
+    bool is_wait_file = false;
 
     Ui::MainWindow *ui;
 
@@ -132,7 +139,7 @@ private:
 
     QDockWidget* breakPointDock;
     QDockWidget* varDock;
-    QTableWidget* breakPointInfo;
+    QListWidget* breakPointInfo;
     QTableWidget* varInfo;
     QDockWidget* stackDock;
     QListWidget* stackList;
@@ -151,7 +158,7 @@ private:
 
     //瀛愮獥鍙?
 
-    LoginDialog* loginDialog;
+    static LoginDialog* loginDialog;
     ProjectForm* projectForm;
 
     //鏂囦欢瀹瑰櫒
@@ -178,6 +185,12 @@ private:
     bool isAlive = true;
 
     QStatusBar* status_bar=new QStatusBar();
+
+    QLabel* statusIcon = new QLabel(this);
+    QMovie* runningMovie = new QMovie("://icon/running.gif",QByteArray(),this);
+    QMovie* buildingMovie = new QMovie("://icon/building.gif",QByteArray(),this);
+    QMovie* debugingMovie = new QMovie("://icon/debuging.gif",QByteArray(),this);
+    QMovie* stateokMovie = new QMovie("://icon/stateok.gif",QByteArray(),this);
     QLabel* label1=new QLabel("就绪",this);
 
     QLabel* label2=new QLabel(this);
@@ -185,7 +198,6 @@ private:
 
 
 private:
-    void Login();
     bool addFileWidget(std::shared_ptr<FileInfo> file);
 
 

@@ -132,7 +132,10 @@ void TcpServer::tcpStart()
                         }
                     }
 
-
+                    if (user.runningPid != -1)
+                    {
+                        killpg(user.runningPid, 9);
+                    }
 
                     userMap->erase(sock_fd);
                 }
@@ -455,6 +458,9 @@ void TcpServer::sendFile(int sock_fd, char* data)
             Package pck(buffer, (int)Package::ReturnType::FILE, ret+4);
             write(sock_fd, pck.getPdata(), pck.getSize());
         }
+
+        Package pck(temp.c_str(), (int)Package::ReturnType::FILE_TRANSOVER, temp.size());
+        write(sock_fd, pck.getPdata(), pck.getSize());
     }
 
     std::pair<int, int> p(fid, sock_fd);
@@ -737,7 +743,7 @@ void TcpServer::runProject(int sock_fd, char* data)
         int saveInfd = dup2(subRfd, STDIN_FILENO);
 
         std::string exePath = buildPath + "/bin/" + std::string(rows[0][0]);
-        std::string cmdstr = "find "+ buildPath + " -iname " + std::string(rows[0][0]) + " -exec{} \\; ";
+        std::string cmdstr = "find "+ buildPath + " -iname " + std::string(rows[0][0]) + " -exec {} \\; ";
         /*if (execlp(exePath.c_str(),NULL) == -1)
         {
             std::string str = "run project error";
@@ -756,6 +762,7 @@ void TcpServer::runProject(int sock_fd, char* data)
     }
     else
     {
+        userMap->find(sock_fd)->second.runningPid = pid;
         //服务器代码
         std::vector<int> vec = { pid,subWfd,mainRfd };
         projectPidMap->insert(std::pair<std::string, std::vector<int>>(proId, vec));
@@ -776,6 +783,7 @@ void TcpServer::runProject(int sock_fd, char* data)
         //waitpid(pid, &ret, 0);
         wait(&ret);
         projectPidMap->erase(proId);
+        userMap->find(sock_fd)->second.runningPid = -1;
     }
 
     close(subRfd);
@@ -860,7 +868,6 @@ void TcpServer::killProjectForce(int sock_fd, char* data)
     std::string proId(data);
     if (projectPidMap->find(proId) != projectPidMap->end())
     {
-
         auto res = projectPidMap->find(proId)->second;
         close(projectPidMap->find(proId)->second[1]);
         close(projectPidMap->find(proId)->second[2]);
@@ -959,6 +966,7 @@ void TcpServer::debugProject(int sock_fd, char* data)
     }
     else
     {
+        userMap->find(sock_fd)->second.runningPid = pid;
         //服务器代码
         std::vector<int> vec = { pid,subWfd,mainRfd };
         projectPidMap->insert(std::pair<std::string, std::vector<int>>(proId, vec));
@@ -992,6 +1000,7 @@ void TcpServer::debugProject(int sock_fd, char* data)
         Package pck(str.c_str(), (int)Package::ReturnType::RUN_FINISH, str.size());
         write(sock_fd, pck.getPdata(), pck.getSize());
 
+        userMap->find(sock_fd)->second.runningPid = -1;
         projectPidMap->erase(proId);
     }
 
