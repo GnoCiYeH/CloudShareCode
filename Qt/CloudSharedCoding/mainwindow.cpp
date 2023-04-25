@@ -1220,12 +1220,25 @@ void MainWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int colu
 // 新建本地项目
 void MainWindow::newLocalProj()
 {
+    // 把之前项目中的树节点删除
+    int header_count = tree_widget_item_header_file_name->childCount();
+    for (int i = 0; i < header_count; i++)
+    {
+        delete tree_widget_item_header_file_name->child(0);
+    }
+
+    int source_count=tree_widget_item_source_file_name->childCount();
+    for (int i = 0; i < source_count; i++)
+    {
+        delete tree_widget_item_source_file_name->child(0);
+    }
+
     NewLocalProject *dialog = new NewLocalProject(this);
     dialog->setAttribute(Qt::WA_DeleteOnClose);
     dialog->show();
     // 新建按钮
     connect(dialog->get_pushButton_new(), &QPushButton::clicked, this, [=]()
-            {
+    {
         if(dialog->get_lineEdit_name()->text()=="")
         {
             QMessageBox::critical(this,"错误","请输入项目名");
@@ -1293,20 +1306,19 @@ void MainWindow::newLocalProj()
                 QMessageBox::critical(this,"错误","新建项目失败");
             }
             dialog->close();
-        } });
+        }
+    });
 }
 
 // 打开本地项目文件
 void MainWindow::openLocalProj()
 {
-
     // 把之前项目中的树节点删除
     int header_count = tree_widget_item_header_file_name->childCount();
     for (int i = 0; i < header_count; i++)
     {
         delete tree_widget_item_header_file_name->child(0);
     }
-
 
     int source_count=tree_widget_item_source_file_name->childCount();
     for (int i = 0; i < source_count; i++)
@@ -1319,7 +1331,7 @@ void MainWindow::openLocalProj()
     QString folder_path=QFileDialog::getExistingDirectory(this,tr("选择目录"),"/",QFileDialog::ShowDirsOnly|QFileDialog::DontResolveSymlinks);
     current_project_path=folder_path;
 
-
+    //获取子目录
     QStringList dir_list;
     bool res = get_SubDir_Under_Dir(folder_path, dir_list);
     if (res == true && dir_list.size() == 2)
@@ -1343,7 +1355,7 @@ void MainWindow::openLocalProj()
         return;
     }
 
-    // 获取项目的名
+    // 获取项目的名字
     int last_index = folder_path.lastIndexOf('/');
     current_project_name = folder_path.mid(last_index + 1);
 
@@ -1494,8 +1506,6 @@ void MainWindow::addLocalFile()
                    return;
                }
 
-
-
                //文件信息指针******************************************************
                std::shared_ptr<FileInfo> file_info_ptr(new FileInfo);
 
@@ -1587,18 +1597,8 @@ void MainWindow::addLocalFile()
                 item2->setData(0,Qt::UserRole,var2);
             }
             dialog->close();
-        } });}
-
-bool MainWindow::is_contain_file_name(QString file_name,QVector<std::shared_ptr<FileInfo>>ptr_vector)
-{
-    for(int i=0;i<ptr_vector.size();i++)
-    {
-        if(file_name+".h"==ptr_vector[i]->file_name||file_name+".cpp"==ptr_vector[i]->file_name)
-            return true;
-        else
-            continue;
-    }
-    return false;
+        }
+    });
 }
 
 //保存本地项目文件
@@ -1629,6 +1629,19 @@ void MainWindow::saveLocalProj()
         }
     }
     QMessageBox::information(this,"成功","项目保存成功");
+}
+
+//判断要新建的文件名是否已经存在
+bool MainWindow::is_contain_file_name(QString file_name,QVector<std::shared_ptr<FileInfo>>ptr_vector)
+{
+    for(int i=0;i<ptr_vector.size();i++)
+    {
+        if(file_name+".h"==ptr_vector[i]->file_name||file_name+".cpp"==ptr_vector[i]->file_name)
+            return true;
+        else
+            continue;
+    }
+    return false;
 }
 
 // 本函数的作用是在指定的路径下新建一个新的文件（可以使任何类型的文件，例如.cpp .h .txt)

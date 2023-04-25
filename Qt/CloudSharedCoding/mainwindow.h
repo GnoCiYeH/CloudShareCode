@@ -138,7 +138,7 @@ private:
     QString serverIP = "192.168.239.129";
     quint16 mainPort = 9098;
 
-    // 子窗��?
+    // 子窗口
     SettingForm *settingWind;
     QDockWidget *buildDock;
     QTextEdit *buildDockwidget;
