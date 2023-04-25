@@ -202,7 +202,7 @@ void CodeEdit::showAssociateWidget()
         int maxSize = 0;
         QMap<QString, int> differenceRecord;
         vector<QString> itemVec;
-        foreach (const QString &keyword, associateList)
+        foreach (const QString &keyword, *associateList)
         {
             if (keyword.contains(word))
             { // 如果当前输入字符属于联想表中的字符串
@@ -537,7 +537,8 @@ void CodeEdit::highlightError(const QString &error){
 
 void setUpAssociateList()
 {
-    associateList << "char"
+    associateList=MainWindow::fileName;
+    *associateList << "char"
                   << "class"
                   << "const"
                   << "double"
@@ -592,7 +593,7 @@ void setUpAssociateList()
                   << "this"
                   << "switch"
                   << "include <>"
-                  << "include \"\""
+                  << "include \""
                   << "define"
                   << "iostream";
 }
