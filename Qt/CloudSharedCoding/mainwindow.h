@@ -53,6 +53,7 @@ public:
     QString runCompilerAndGetOutput(QString pro_Path);
 
 
+
 public slots:
     void dataProgress();
 
@@ -192,13 +193,17 @@ private:
     SwitchingEncodingMode* encodingType=new SwitchingEncodingMode(this);//编码方式
     QLabel* EncodingTypeLabel=new QLabel(this);//打印编码方式到状态栏
 
+    static int local_project_id;//本地项目的id
+    static int local_file_id;//本地文件的id
 
-    QString current_project_path;//记录当前项目的路径
+    QString current_project_path;//记录当前项目的路径（根路径)
+    QString current_project_name;//记录当前项目的名字
+    int current_project_id;//记录当前项目的id
 
-    QTreeWidgetItem* tree_widget_item_project_name=new QTreeWidgetItem();
-    QTreeWidgetItem* tree_widget_item_file_information=new QTreeWidgetItem();
-    QTreeWidgetItem* tree_widget_item_header_file_name=new QTreeWidgetItem();
-    QTreeWidgetItem* tree_widget_item_source_file_name=new QTreeWidgetItem();
+    MyTreeItem* tree_widget_item_project_name=new MyTreeItem(MyTreeItem::Type::PROJECT);
+    MyTreeItem* tree_widget_item_file_information=new MyTreeItem(MyTreeItem::Type::DIR);
+    MyTreeItem* tree_widget_item_header_file_name=new MyTreeItem(MyTreeItem::Type::DIR);
+    MyTreeItem* tree_widget_item_source_file_name=new MyTreeItem(MyTreeItem::Type::DIR);
 
 };
 

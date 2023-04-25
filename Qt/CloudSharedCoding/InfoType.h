@@ -29,6 +29,12 @@ struct Project
             pro_uuid = uuid;
         }
     }
+
+    Project(int id,QString name)
+    {
+        pro_id=id;
+        pro_name=name;
+    }
 };
 
 struct FileInfo
