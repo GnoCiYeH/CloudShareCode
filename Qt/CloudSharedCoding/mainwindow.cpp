@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+#include"mainwindow.h"
 #include "ui_mainwindow.h"
 #include "myhelper.h"
 #include "projectform.h"
@@ -19,6 +19,8 @@ QHash<int, QMultiHash<QString, int> *> *MainWindow::debugInfo = new QHash<int, Q
 bool MainWindow::isLogin = false;
 int MainWindow::local_project_id = -1; // 静态变量的定义
 int MainWindow::local_file_id = -1;    // 静态变量的定义
+QStringList* MainWindow::fileName = new QStringList();
+LoginDialog* MainWindow::loginDialog;
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
                                           ui(new Ui::MainWindow)
@@ -651,11 +653,11 @@ void MainWindow::openCloudProj()
 void MainWindow::Login()
 {
     loginDialog->setAttribute(Qt::WA_DeleteOnClose);
-    connect(loginDialog, &LoginDialog::loginAllowded, this, [=]() mutable
+    connect(loginDialog, &LoginDialog::loginAllowded,[=]() mutable
             {
         loginDialog->deleteLater();
-        this->isLogin = true;
-        this->userId = loginDialog->userID; });
+        isLogin = true;
+        userId = loginDialog->userID; });
     loginDialog->exec();
 }
 

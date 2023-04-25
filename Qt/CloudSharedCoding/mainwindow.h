@@ -23,7 +23,6 @@
 #include <map>
 #include <algorithm>
 #include <QDir>
-#include <QFileInfo>
 #include <QMultiHash>
 #include "newlocalproject.h"
 #include "newlocalfile.h"
@@ -56,6 +55,10 @@ public:
     std::map<QString, CodeEdit *> mp; // 存放路径名字和CodeEdit指针的相互映�?
 
     QString runCompilerAndGetOutput(QString pro_Path);
+
+    static void Login();
+
+    static QStringList* fileName;
 
 public slots:
     void dataProgress();
@@ -157,11 +160,18 @@ private:
     QToolButton *debugbutton;
     QToolButton *stopRun;
 
+    QLabel* statusIcon = new QLabel(this);
+    QMovie* buildingMovie = new QMovie("://icon/building.gif");
+    QMovie* runningMovie = new QMovie("://icon/running.gif");
+    QMovie* debugingMovie = new QMovie("://icon/debuging.gif");
+    QMovie* stateokMovie = new QMovie("://icon/stateok.gif");
+
+
     QPair<std::shared_ptr<FileInfo>, int> currentLine;
 
     // 瀛愮獥鍙?
 
-    LoginDialog *loginDialog;
+    static LoginDialog *loginDialog;
     ProjectForm *projectForm;
 
     // 鏂囦欢瀹瑰�?
@@ -197,7 +207,6 @@ private:
     DebugThread *debugThread;
 
 private:
-    void Login();
     bool addFileWidget(std::shared_ptr<FileInfo> file);
 
     SwitchingEncodingMode *encodingType = new SwitchingEncodingMode(this); // 编码方式
