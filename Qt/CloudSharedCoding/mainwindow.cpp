@@ -426,18 +426,34 @@ void MainWindow::debugProject()
     varInfo->setRowCount(0);
     stackList->clear();
 
-    if (workState == ProjectWorkState::DEBUGING || workState == ProjectWorkState::RUNNING)
+    if(runningProject<0)
     {
-        QString data = QString::number(userProjs->value(runningProject).pro_id);
-        Package pck(data.toUtf8(), (int)Package::PackageType::KILL_PROJECT_FORCE);
+        if(debugThread)
+        {
+            debugThread->deleteLater();
+        }
+        QString path = pro_fileMap.value(runningProject)[0]->file_path;
+        path = path.left(path.lastIndexOf("\\"));
+        debugThread = new DebugThread(path,this);
+        connect(debugThread,SIGNAL(buildInfo(QString)),this,SLOT(appendBuildText(QString)));
+        connect(debugThread,SIGNAL(debugInfo(QString)),this,SLOT(disposeDebugInfo(QString)));
+        debugThread->start();
+    }
+    else
+    {
+        if (workState == ProjectWorkState::DEBUGING || workState == ProjectWorkState::RUNNING)
+        {
+            QString data = QString::number(userProjs->value(runningProject).pro_id);
+            Package pck(data.toUtf8(), (int)Package::PackageType::KILL_PROJECT_FORCE);
+            socket->write(pck.getPdata(), pck.getSize());
+        }
+
+        debugToolBar->setHidden(false);
+        workState = ProjectWorkState::DEBUGING;
+        QString data = QString::number(userProjs->value(currentProject).pro_id);
+        Package pck(data.toUtf8(), (int)Package::PackageType::DEBUG_PROJECT);
         socket->write(pck.getPdata(), pck.getSize());
     }
-
-    debugToolBar->setHidden(false);
-    workState = ProjectWorkState::DEBUGING;
-    QString data = QString::number(userProjs->value(currentProject).pro_id);
-    Package pck(data.toUtf8(), (int)Package::PackageType::DEBUG_PROJECT);
-    socket->write(pck.getPdata(), pck.getSize());
 }
 
 void MainWindow::newCloudProj()
@@ -1693,7 +1709,6 @@ void MainWindow::runProject()
     statusIcon->movie()->stop();
     buildingMovie->start();
     statusIcon->setMovie(buildingMovie);
-    workState = ProjectWorkState::RUNNING;
     runbutton->setEnabled(false);
     debugbutton->setEnabled(false);
 
@@ -1701,48 +1716,41 @@ void MainWindow::runProject()
     runDockwidget->clear();
     connect(runDockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int, int, int)));
 
-    //    auto item = (MyTreeItem*)ui->treeWidget->currentItem();
-    //    bool is_local = true;
-    //    int pro_id;
-    //    switch (item->getType()) {
-    //    case MyTreeItem::DIR:
-    //    {
-    //        if((pro_id = item->data(0,Qt::UserRole).value<std::shared_ptr<Directory>>()->pro_id)!=-1)
-    //        {
-    //            is_local = false;
-    //        }
-    //        break;
-    //    }
-    //    case MyTreeItem::FILE:
-    //    {
-    //        if((pro_id = item->data(0,Qt::UserRole).value<std::shared_ptr<FileInfo>>()->file_project)!=-1)
-    //        {
-    //            is_local = false;
-    //        }
-    //        break;
-    //    }
-    //    case MyTreeItem::PROJECT:
-    //    {
-    //        if((pro_id = item->data(0,Qt::UserRole).value<std::shared_ptr<Project>>()->pro_id)!=-1)
-    //        {
-    //            is_local = false;
-    //        }
-    //        break;
-    //    }
-    //    default:
-    //        break;
-    //    }
-
     if (currentProject < 0)
     {
+        if(runThread)
+        {
+            runThread->deleteLater();
+        }
         runningProject = currentProject;
+        QString path = pro_fileMap.value(runningProject)[0]->file_path;
+        path = path.left(path.lastIndexOf("\\"));
+        runThread = new RunThread(path,this);
+        connect(runThread,SIGNAL(buildInfo(QString)),this,SLOT(appendBuildText(QString)));
+        connect(runThread,SIGNAL(stdOut(QString)),this,SLOT(appendRunningText(QString)));
+        runThread->start();
     }
     else
     {
+        workState = ProjectWorkState::RUNNING;
         runningProject = currentProject;
         Package pck(QString::number(currentProject).toUtf8(), (int)Package::PackageType::RUN_PROJECT);
         socket->write(pck.getPdata(), pck.getSize());
     }
+}
+
+void MainWindow::appendBuildText(QString text)
+{
+    disconnect(buildDockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int, int, int)));
+    buildDockwidget->insertPlainText(text);
+    connect(buildDockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int, int, int)));
+}
+
+void MainWindow::appendRunningText(QString text)
+{
+    disconnect(runDockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int, int, int)));
+    runDockwidget->insertPlainText(text);
+    connect(runDockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int, int, int)));
 }
 
 QString MainWindow::runCompilerAndGetOutput(QString pro_Path)

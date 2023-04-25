@@ -30,6 +30,8 @@
 #include "addlocalfile.h"
 #include <QTreeWidget>
 #include <QMovie>
+#include<QProcess>
+#include"CodeworkThread.h"
 
 namespace Ui
 {
@@ -81,6 +83,10 @@ public slots:
     void saveLocalProj();
     void addLocalFile();
 
+    void appendBuildText(QString);
+    void appendRunningText(QString);
+    void disposeDebugInfo(QString);
+
     /*-------------------*/
     void addFile(QString file_path);
     void openFileAndAddTab(QString file_path);
@@ -116,8 +122,6 @@ private:
         RUNNING,
         DEBUGING,
     } workState = ProjectWorkState::NONE;
-
-    void disposeDebugInfo(QString);
 
     void openProjFile(std::shared_ptr<FileInfo> file);
 
@@ -203,6 +207,10 @@ private:
     QTimer *timer = new QTimer(this);
 
     QString systemVar;
+
+    //运行与调试程序
+    RunThread* runThread;
+    DebugThread* debugThread;
 
 private:
     bool addFileWidget(std::shared_ptr<FileInfo> file);
