@@ -160,6 +160,32 @@ MainWindow::MainWindow(QWidget *parent) :
     this->addDockWidget(Qt::BottomDockWidgetArea,runDock);
     connect(runDockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int,int,int)));
 
+    stackDock = new QDockWidget(this);
+    stackList = new QListWidget(stackDock);
+    stackDock->setHidden(true);
+    stackDock->setWidget(stackList);
+    connect(stackList,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(gotoStackFrame(QListWidgetItem*)));
+
+    breakPointDock = new QDockWidget(this);
+    varDock = new QDockWidget(this);
+    varInfo = new QTableWidget(varDock);
+    breakPointInfo = new QTableWidget(breakPointDock);
+    breakPointDock->setHidden(true);
+    varDock->setHidden(true);
+    stackDock->setHidden(true);
+    breakPointDock->setWidget(breakPointInfo);
+    varDock->setWidget(varInfo);
+    this->setDockNestingEnabled(false);
+    this->addDockWidget(Qt::RightDockWidgetArea,varDock);
+    this->setDockNestingEnabled(true);
+    this->addDockWidget(Qt::RightDockWidgetArea,stackDock);
+    this->addDockWidget(Qt::RightDockWidgetArea,breakPointDock);
+
+    breakPointInfo->setColumnCount(4);
+    breakPointInfo->setHorizontalHeaderLabels({"断点","地址","文件","行号"});
+    varInfo->setColumnCount(2);
+    varInfo->setHorizontalHeaderLabels({"变量","值"});
+
     debugToolBar = new QToolBar(this);
     this->addToolBar(Qt::ToolBarArea::RightToolBarArea,debugToolBar);
     debugToolBar->setHidden(true);
@@ -169,9 +195,15 @@ MainWindow::MainWindow(QWidget *parent) :
     continueDebugButton->setDisabled(true);
     connect(continueDebugButton,&QToolButton::clicked,this,[=](){
         QString data = Package::intToByteArr(currentProject);
-        data+="c\n";
+        data+="c\ninfo local\n";
+        varInfo->clear();
         Package pck(data.toUtf8(),(int)Package::PackageType::POST_STDIN);
         socket->write(pck.getPdata(),pck.getSize());
+
+        continueDebugButton->setDisabled(true);
+        nextDebugButton->setDisabled(true);
+        stepIntoDubugButton->setDisabled(true);
+        stepOutDebugButton->setDisabled(true);
     });
 
     stopDebugButton = new QToolButton(debugToolBar);
@@ -182,16 +214,31 @@ MainWindow::MainWindow(QWidget *parent) :
         data+="q\ny\n";
         Package pck(data.toUtf8(),(int)Package::PackageType::POST_STDIN);
         socket->write(pck.getPdata(),pck.getSize());
+
+        stopDebugButton->setDisabled(true);
+        continueDebugButton->setDisabled(true);
+        nextDebugButton->setDisabled(true);
+        stepIntoDubugButton->setDisabled(true);
+        stepOutDebugButton->setDisabled(true);
     });
 
     nextDebugButton = new QToolButton(debugToolBar);
     nextDebugButton->setIcon(QIcon("://icon/next.png"));
     nextDebugButton->setDisabled(true);
     connect(nextDebugButton,&QToolButton::clicked,this,[=](){
+        fileWidgets.value(currentLine.first->file_id)->gotoline(currentLine.second+1);
+        currentLine.second+=1;
+
         QString data = Package::intToByteArr(currentProject);
-        data+="n\n";
+        data+="n\ninfo local\n";
+        varInfo->clear();
         Package pck(data.toUtf8(),(int)Package::PackageType::POST_STDIN);
         socket->write(pck.getPdata(),pck.getSize());
+
+        continueDebugButton->setDisabled(true);
+        nextDebugButton->setDisabled(true);
+        stepIntoDubugButton->setDisabled(true);
+        stepOutDebugButton->setDisabled(true);
     });
 
     stepIntoDubugButton = new QToolButton(debugToolBar);
@@ -199,9 +246,15 @@ MainWindow::MainWindow(QWidget *parent) :
     stepIntoDubugButton->setDisabled(true);
     connect(stepIntoDubugButton,&QToolButton::clicked,this,[=](){
         QString data = Package::intToByteArr(currentProject);
-        data+="step\n";
+        data+="step\ninfo local\nbacktrace\n";
+        varInfo->clear();
         Package pck(data.toUtf8(),(int)Package::PackageType::POST_STDIN);
         socket->write(pck.getPdata(),pck.getSize());
+
+        continueDebugButton->setDisabled(true);
+        nextDebugButton->setDisabled(true);
+        stepIntoDubugButton->setDisabled(true);
+        stepOutDebugButton->setDisabled(true);
     });
 
     stepOutDebugButton = new QToolButton(debugToolBar);
@@ -209,9 +262,15 @@ MainWindow::MainWindow(QWidget *parent) :
     stepOutDebugButton->setDisabled(true);
     connect(stepOutDebugButton,&QToolButton::clicked,this,[=](){
         QString data = Package::intToByteArr(currentProject);
-        data+="finish\n";
+        data+="finish\ninfo local\nbacktrace\n";
+        varInfo->clear();
         Package pck(data.toUtf8(),(int)Package::PackageType::POST_STDIN);
         socket->write(pck.getPdata(),pck.getSize());
+
+        continueDebugButton->setDisabled(true);
+        nextDebugButton->setDisabled(true);
+        stepIntoDubugButton->setDisabled(true);
+        stepOutDebugButton->setDisabled(true);
     });
 
     debugToolBar->addWidget(continueDebugButton);
@@ -245,6 +304,12 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    if(workState==ProjectWorkState::DEBUGING||workState==ProjectWorkState::RUNNING)
+    {
+        Package pck(QString::number(runningProject).toUtf8(),(int)Package::PackageType::KILL_PROJECT_FORCE);
+        socket->write(pck.getPdata(),pck.getSize());
+    }
+
     mp.clear();
     delete ui;
     socket->close();
@@ -256,6 +321,29 @@ MainWindow::~MainWindow()
     delete tree_widget_item_header_file_name;
     delete tree_widget_item_source_file_name;
     delete fileName;
+}
+
+void MainWindow::gotoStackFrame(QListWidgetItem* item)
+{
+    QPair<QString,int> pair = item->data(Qt::UserRole).value<QPair<QString,int>>();
+    QString path = pair.first;
+    int lineNum = pair.second;
+    auto vec = pro_fileMap.value(runningProject);
+    std::shared_ptr<FileInfo> file;
+    for(auto it : vec)
+    {
+        if(it->file_path==path)
+        {
+            file=it;
+            break;
+        }
+    }
+    if(file.get())
+    {
+        CodeEdit* widget = fileWidgets.value(file->file_id);
+        ui->tabWidget->setCurrentWidget(widget);
+        widget->gotoline(lineNum);
+    }
 }
 
 void MainWindow::cmdStdin(int pos,int charRemoved,int charAdded)
@@ -297,6 +385,31 @@ void MainWindow::stopProject()
 
 void MainWindow::debugProject()
 {
+    ui->tabWidget->setTabsClosable(false);
+
+    stopDebugButton->setDisabled(false);
+
+    runningProject = currentProject;
+    varDock->setHidden(false);
+    breakPointDock->setHidden(false);
+    stackDock->setHidden(false);
+
+    buildDockwidget->clear();
+
+    breakPointInfo->clear();
+    varInfo->clear();
+    stackList->clear();
+
+    breakPointInfo->setHorizontalHeaderLabels({"断点","地址","文件","行号"});
+    varInfo->setHorizontalHeaderLabels({"变量","值"});
+
+    if(workState == ProjectWorkState::DEBUGING||workState == ProjectWorkState::RUNNING)
+    {
+        QString data = QString::number(userProjs->value(runningProject).pro_id);
+        Package pck(data.toUtf8(),(int)Package::PackageType::KILL_PROJECT_FORCE);
+        socket->write(pck.getPdata(),pck.getSize());
+    }
+
     debugToolBar->setHidden(false);
     workState = ProjectWorkState::DEBUGING;
     QString data = QString::number(userProjs->value(currentProject).pro_id);
@@ -481,9 +594,6 @@ void MainWindow::close()
     qApp->exit(0);
 }
 
-//************************************************************************************************
-//************************************************************************************************
-//************************************************************************************************
 void MainWindow::openCloudProj()
 {
     //若用户未登录则无法使用在线功能，弹出登录界面
@@ -504,9 +614,7 @@ void MainWindow::openCloudProj()
         projectForm->show();
     }
 }
-//************************************************************************************************
-//************************************************************************************************
-//************************************************************************************************
+
 
 void MainWindow::Login()
 {
@@ -853,8 +961,9 @@ void MainWindow::dataProgress()
     }
     case (int)Package::ReturnType::BUILD_FINISH:
     {
+        auto codee = ((CodeEdit*)ui->tabWidget->currentWidget());
+        codee->highlightError(buildDockwidget->toPlainText());
         //
-        debugState = DebugState::START;
         if(workState==ProjectWorkState::DEBUGING)
         {
             auto breakPoints = debugInfo->value(currentProject);
@@ -863,7 +972,7 @@ void MainWindow::dataProgress()
             {
                 data+= "b " + it.key()+":"+QString::number(it.value())+"\n";
             }
-            data+="r\n";
+            data+="r\ninfo local\nbacktrace\n";
             Package pck(data.toUtf8(),(int)Package::PackageType::POST_STDIN);
             socket->write(pck.getPdata(),pck.getSize());
         }
@@ -871,6 +980,8 @@ void MainWindow::dataProgress()
     }
     case (int)Package::ReturnType::RUN_FINISH:
     {
+        ui->tabWidget->setTabsClosable(true);
+        workState = ProjectWorkState::NONE;
         runbutton->setEnabled(true);
         debugbutton->setEnabled(true);
         stopRun->setEnabled(false);
@@ -890,50 +1001,121 @@ void MainWindow::dataProgress()
     }
 }
 
-void MainWindow::disposeDebugInfo(QString buf)
+void MainWindow::disposeDebugInfo(QString data)
 {
-    QRegularExpression breakpointRegex("Breakpoint (\\d+) at (.*): file (.*), line (\\d+)[^\\s]");//断点信息
-    QRegularExpression tobreakpointRegex("(\\sBreakpoint \\d+).*");//运行到断点信息
+    QRegularExpression breakpointRegex("(Breakpoint \\d+) at (.*): file (.*) line (\\d+)");//断点信息
+    QRegularExpression tobreakpointRegex("Breakpoint \\d+, .* \\(\\) at (.*):(\\d+)");//运行到断点信息
     QRegularExpression crashRegex("Program received signal .*");//程序崩溃信息
-    QRegularExpression varValueRegex("\\$\\d+\\s+=\\s+(.*)");//变量值信息
-    QRegularExpression stackFrameRegex("#\\d+\\s+0x[a-f0-9]+\\s+in\\s+.+\\s+\\(.+\\)\\s+at\\s+.*:(\\d+)");//栈帧信息
+    QRegularExpression varValueRegex("(.*) = (.*)");//变量值信息
+    QRegularExpression stackFrameRegex("#\\d+\\s+0x[a-f0-9]+\\s+in\\s+.+\\s+\\(.+\\)\\s+at\\s+(.*):(\\d+)");//栈帧信息
     QRegularExpression segFaultRegex("(Program received signal SIGSEGV.*)");//段错误信息
     QRegularExpression leakRegex("(LEAK SUMMARY:).*");//内存泄露信息
     QRegularExpression unhandledExceptionRegex("(terminate called after throwing.*)");//未处理的异常信息
     QRegularExpression assertRegex("(Assertion.*)");//断言失败信息
     QRegularExpression errorRegex("(.*):(\\d+):(\\d+):\\s+(error|warning):(.*)");//错误信息
 
-
-    qDebug()<<"buf:"<<buf;
-    QStringList list = buf.split("\n",Qt::SkipEmptyParts);
-    for(auto data : list)
+    qDebug()<<"data:"<<data;
+    QStringList list = data.split("\n",Qt::SkipEmptyParts);
+    for(auto buf : list)
     {
-        if(data.startsWith("(gdb)"))
+        QRegularExpressionMatch match;
+        if((match = breakpointRegex.match(buf)).hasMatch())
         {
-            //命令行
-            if(data == "(gdb) ")
-            {
+            QString num = match.captured(1);
+            QString address = match.captured(2);
+            QString file = match.captured(3);
+            file = "." + file.mid(46);
+            QString lineNum = match.captured(4);
 
+            int row = breakPointInfo->rowCount();
+            breakPointInfo->insertRow(row);
+            breakPointInfo->setItem(row,0,new QTableWidgetItem(num));
+            breakPointInfo->setItem(row,1,new QTableWidgetItem(address));
+            breakPointInfo->setItem(row,2,new QTableWidgetItem(file));
+            breakPointInfo->setItem(row,3,new QTableWidgetItem("Line "+lineNum));
+        }
+        else if((match = tobreakpointRegex.match(buf)).hasMatch())
+        {
+            continueDebugButton->setDisabled(false);
+            nextDebugButton->setDisabled(false);
+            stepIntoDubugButton->setDisabled(false);
+            stepOutDebugButton->setDisabled(false);
+            int lineNum = match.captured(2).toInt();
+            QString path = "."+match.captured(1).mid(46);
+            auto vec = pro_fileMap.value(runningProject);
+            std::shared_ptr<FileInfo> file;
+            for(auto it : vec)
+            {
+                if(it->file_path==path)
+                {
+                    file=it;
+                    break;
+                }
+            }
+            if(file.get())
+            {
+                currentLine.first = file;
+                currentLine.second = lineNum;
+                CodeEdit* widget = fileWidgets.value(file->file_id);
+                ui->tabWidget->setCurrentWidget(widget);
+                widget->gotoline(lineNum);
             }
             else
             {
-                data = data.mid(6);
+                buildDockwidget->insertPlainText(buf);
             }
         }
-        else if(data.startsWith("Breakpoint ")&&debugState==DebugState::WAIT_BREAKPOINT_INFO)
+        else if((match = crashRegex.match(buf)).hasMatch())
         {
-            //生成
-            qDebug()<<"Breakpoint:"<<data;
 
-            debugState = DebugState::WAIT_DEBUG_INFO;
         }
-        else if(data.startsWith("Reading symbols from ")&&debugState==DebugState::START)
+        else if((match = varValueRegex.match(buf)).hasMatch())
         {
-            qDebug()<<"Reading:"<<data;
-            debugState = DebugState::WAIT_BREAKPOINT_INFO;
-        }
+            QString var = match.captured(1);
+            QString val = match.captured(2);
 
-        buildDockwidget->insertPlainText(data);
+            int row = varInfo->rowCount();
+            varInfo->insertRow(row);
+            varInfo->setItem(row,0,new QTableWidgetItem(var));
+            varInfo->setItem(row,1,new QTableWidgetItem(val));
+        }
+        else if((match = stackFrameRegex.match(buf)).hasMatch())
+        {
+            //"#\\d+\\s+0x[a-f0-9]+\\s+in\\s+.+\\s+\\(.+\\)\\s+at\\s+(.*):(\\d+)"
+            QString path = "."+match.captured(1).mid(46);
+            int line = match.captured(2).toInt();
+            QPair<QString,int> pair(path,line);
+            QListWidgetItem* item = new QListWidgetItem(stackList);
+            QVariant var;
+            var.setValue(pair);
+            item->setData(Qt::UserRole,var);
+            item->setText(buf);
+            stackList->addItem(item);
+        }
+        else if((match = segFaultRegex.match(buf)).hasMatch())
+        {
+
+        }
+        else if((match = leakRegex.match(buf)).hasMatch())
+        {
+
+        }
+        else if((match = unhandledExceptionRegex.match(buf)).hasMatch())
+        {
+
+        }
+        else if((match = assertRegex.match(buf)).hasMatch())
+        {
+
+        }
+        else if((match = errorRegex.match(buf)).hasMatch())
+        {
+
+        }
+        else
+        {
+
+        }
     }
 }
 
@@ -999,9 +1181,73 @@ void MainWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int colu
 //打开本地项目文件
 void MainWindow::openLocalProj()
 {
-    QString path=QFileDialog::getOpenFileName(this,"打开文件","C://Users");
+    debugInfo->insert(-1,new QMultiHash<QString,int>());
+    //把之前项目中的树节点删除
+    int header_count=tree_widget_item_header_file_name->childCount();
+    for(int i=0;i<header_count;i++)
+    {
+        delete tree_widget_item_header_file_name->child(i);
+    }
+
+    int source_count=tree_widget_item_source_file_name->childCount();
+    for(int i=0;i<source_count;i++)
+    {
+        delete tree_widget_item_source_file_name->child(i);
+    }
+
+    //获取文件夹的目录
+    QString folder_path=QFileDialog::getExistingDirectory(this,tr("选择目录"),"/",QFileDialog::ShowDirsOnly|QFileDialog::DontResolveSymlinks);
+    current_project_path=folder_path;
+    QStringList dir_list;
+    bool res=get_SubDir_Under_Dir(folder_path,dir_list);
+    if(res==true&&dir_list.size()==2)
+    {
+        if(dir_list[0]!="头文件"||dir_list[1]!="源文件")
+            return;
+    }
+    else
+    {
+      return;
+    }
+
+    //获取项目的名字，并设置顶层节点的内容
+    int last_index=folder_path.lastIndexOf('/');
+    QString project_name=folder_path.mid(last_index+1);
+    tree_widget_item_project_name->setText(0,project_name);
+
+    //为新的项目添加文件树
+    ui->treeWidget->addTopLevelItem(tree_widget_item_project_name);
+    tree_widget_item_project_name->addChild(tree_widget_item_file_information);
+    tree_widget_item_project_name->addChild(tree_widget_item_header_file_name);
+    tree_widget_item_project_name->addChild(tree_widget_item_source_file_name);
+
+    //导入项目中的所有头文件
+    QString header_path=current_project_path+"/头文件";
+    QStringList header_list;
+    get_SubFile_Under_SubDir(header_path,header_list,0);
+    for(int i=0;i<header_list.size();i++)
+    {
+        //为头文件树节点新建新节点
+        QTreeWidgetItem* item=new QTreeWidgetItem();
+        item->setText(0,header_list[i]);
+        tree_widget_item_header_file_name->addChild(item);
+    }
+
+    //导入项目中的所有源文件
+    QString source_path=current_project_path+"/源文件";
+    QStringList source_list;
+    get_SubFile_Under_SubDir(source_path,source_list,1);
+    for(int i=0;i<source_list.size();i++)
+    {
+        //为源文件树节点新建新节点
+        QTreeWidgetItem* item=new QTreeWidgetItem();
+        item->setText(0,source_list[i]);
+        tree_widget_item_source_file_name->addChild(item);
+    }
+
+    /*
     //文件的信息 info实例化file_information
-    QFileInfo info(path);
+    QFileInfo info(folder_path);
     std::shared_ptr<FileInfo> file_information(new FileInfo);
     file_information->file_name=info.fileName();
     file_information->file_path=info.filePath();
@@ -1010,9 +1256,8 @@ void MainWindow::openLocalProj()
     CodeEdit* code_edit=new CodeEdit(file_information,this);
 
     //新建一个tab加入到tabWidget中
-    /*
     ui->tabWidget->addTab(code_edit,file_information->file_name);
-    file_information->is_open=true;*/
+    file_information->is_open=true;
 
     //读取文件的内容并打印到code_edit编辑器
     QFile file(path);
@@ -1022,6 +1267,7 @@ void MainWindow::openLocalProj()
 
     //一个path对应一个code_edit指针，添加到映射表中
     mp[file_information->file_path]=code_edit;
+    */
 }
 
 //保存本地项目文件
@@ -1161,6 +1407,7 @@ void MainWindow::addLocalFile()
             {
                QString file_path=current_project_path+"/源文件/"+dialog->get_lineEdit_name()->text()+".cpp";
                this->addFile(file_path);
+
                QTreeWidgetItem* item=new QTreeWidgetItem();
                item->setText(0,dialog->get_lineEdit_name()->text()+".cpp");
                tree_widget_item_source_file_name->addChild(item);
@@ -1171,6 +1418,7 @@ void MainWindow::addLocalFile()
                 QString  file_path2=current_project_path+"/源文件/"+dialog->get_lineEdit_name()->text()+".cpp";
                 this->addFile(file_path1);
                 this->addFile(file_path2);
+
                 QTreeWidgetItem* item1=new QTreeWidgetItem();
                 QTreeWidgetItem* item2=new QTreeWidgetItem();
                 item1->setText(0,dialog->get_lineEdit_name()->text()+".h");
@@ -1179,66 +1427,6 @@ void MainWindow::addLocalFile()
                 tree_widget_item_source_file_name->addChild(item2);
             }
             dialog->close();
-
-            /*
-            //新建文件
-            QFile *new_file=new QFile(this);
-            new_file->setFileName(file_path);
-
-            bool res=new_file->open(QIODevice::ReadWrite|QIODevice::Text);
-            new_file->close();
-            if(!res)
-            {
-                QMessageBox::critical(this,"错误","文件新建失败");
-                return;
-            }
-            else
-            {
-                QMessageBox::information(this,"新建文件","新建文件成功");
-                QFileInfo info(file_path);
-                std::shared_ptr<FileInfo> file_information(new FileInfo);
-                file_information->file_name=info.fileName();
-                file_information->file_path=info.filePath();
-
-                //file_information构造出一个code_edit文本编辑器
-                CodeEdit* code_edit=new CodeEdit(file_information,this);
-
-                //新建一个tab加入到tabWidget中
-                ui->tabWidget->addTab(code_edit,file_information->file_name);
-                file_information->is_open=true;
-
-                //添加子节点到dock栏里的treeWidget中
-
-                QTreeWidgetItem* top=ui->treeWidget->topLevelItem(0);
-                QTreeWidgetItem* childItem=new QTreeWidgetItem(top);
-                childItem->setText(0,file_information->file_name);
-                top->addChild(childItem);
-                QTreeWidgetItem* item=new QTreeWidgetItem();
-                if(dialog->get_comboBox_current_index()==0)
-                {
-                    item->setText(0,dialog->get_lineEdit_name()->text()+".cpp");
-                    tree_widget_item_source_file_name->addChild(item);
-                }
-                else
-                {
-                    item->setText(0,dialog->get_lineEdit_name()->text()+".h");
-                    tree_widget_item_header_file_name->addChild(item);
-                }
-
-
-                //读取文件的内容并打印到code_edit编辑器
-                QFile file(file_path);
-                file.open(QIODevice::ReadOnly);
-                QByteArray array=file.readAll();
-                code_edit->addText(array);
-
-                //一个path对应一个code_edit指针，添加到映射表中
-                mp[file_information->file_path]=code_edit;
-
-                dialog->close();
-                return;
-            }
-        */
         }
     });
 }
@@ -1261,7 +1449,6 @@ void MainWindow::addFile(QString file_path)
     else
     {
         QMessageBox::information(this,"新建文件","新建文件成功");
-
         openFileAndAddTab(file_path);
     }
 }
@@ -1274,12 +1461,15 @@ void MainWindow::openFileAndAddTab(QString file_path)
     file_information->file_name=info.fileName();
     file_information->file_path=info.filePath();
 
+    file_information->file_project=-1;
+
     //file_information构造出一个code_edit文本编辑器
     CodeEdit* code_edit=new CodeEdit(file_information,this);
 
     //新建一个tab加入到tabWidget中
     ui->tabWidget->addTab(code_edit,file_information->file_name);
     file_information->is_open=true;
+
 
     //读取文件的内容并打印到code_edit编辑器
     QFile file(file_path);
@@ -1289,11 +1479,67 @@ void MainWindow::openFileAndAddTab(QString file_path)
 
     //一个path对应一个code_edit指针，添加到映射表中
     mp[file_information->file_path]=code_edit;
+
+}
+
+//该函数的作用是在给定的路径下获取当中的所有文件夹，并添加到参数QStringList中
+bool MainWindow::get_SubDir_Under_Dir(QString path,QStringList& list)
+{
+    QDir* dir=new QDir(path);
+    //不存在此目录
+    if(!dir->exists())
+    {
+        delete dir;
+        dir=nullptr;
+        return false;
+    }
+    else
+    {
+        list=dir->entryList(QDir::Dirs);//指明仅接受文件夹
+        list.removeOne(".");
+        list.removeOne("..");
+        delete dir;
+        dir=nullptr;
+        return true;
+    }
+}
+
+//该函数的作用是在给定的文件夹下获取当中的所有文件，并添加到参数QStringList中(参数tag1==0指明要获取的是"*.h"文件，tag==1指明要获取的是"*.cpp"文件)
+bool MainWindow::get_SubFile_Under_SubDir(QString path,QStringList& list,int tag)
+{
+    QDir* dir=new QDir(path);
+    //不存在此目录
+    if(!dir->exists())
+    {
+        delete dir;
+        dir=nullptr;
+        return false;
+    }
+    else
+    {
+        if(tag==0)
+            dir->setNameFilters(QStringList("*.h"));
+        else if(tag==1)
+            dir->setNameFilters((QStringList("*.cpp")));
+        else
+        {
+            delete dir;
+            dir=nullptr;
+            return false;
+        }
+        list=dir->entryList(QDir::Files);
+        list.removeOne(".");
+        list.removeOne("..");
+        delete dir;
+        dir=nullptr;
+        return true;
+    }
 }
 
 //run project
 void MainWindow::runProject()
 {
+    workState = ProjectWorkState::RUNNING;
     runbutton->setEnabled(false);
     debugbutton->setEnabled(false);
 

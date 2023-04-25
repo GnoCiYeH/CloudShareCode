@@ -131,6 +131,9 @@ void TcpServer::tcpStart()
                             pit++;
                         }
                     }
+
+
+
                     userMap->erase(sock_fd);
                 }
                 else
@@ -235,6 +238,11 @@ void TcpServer::tcpStart()
                     case (int)Package::PackageType::DUBUG_PROJECT:
                     {
                         pool->submit(debugProject, sock_fd, data);
+                        break;
+                    }
+                    case (int)Package::PackageType::KILL_PROJECT_FORCE:
+                    {
+                        pool->submit(killProjectForce, sock_fd, data);
                         break;
                     }
                     default:
@@ -847,6 +855,29 @@ void TcpServer::killProjectP(int sock_fd, char* data)
     delete[] data;
 }
 
+void TcpServer::killProjectForce(int sock_fd, char* data)
+{
+    std::string proId(data);
+    if (projectPidMap->find(proId) != projectPidMap->end())
+    {
+
+        auto res = projectPidMap->find(proId)->second;
+        close(projectPidMap->find(proId)->second[1]);
+        close(projectPidMap->find(proId)->second[2]);
+        if (killpg(projectPidMap->find(proId)->second[0], SIGKILL) == -1)
+        {
+            ERROR_LOG(m_logger, "kill p error");
+        }
+
+        int ret = 0;
+        waitpid(projectPidMap->find(proId)->second[0], &ret, 0);
+
+        projectPidMap->erase(proId);
+    }
+
+    delete[] data;
+}
+
 void TcpServer::debugProject(int sock_fd, char* data)
 {
     std::string proId = std::string(data);
@@ -955,8 +986,12 @@ void TcpServer::debugProject(int sock_fd, char* data)
                 break;
         }
 
-        //waitpid(pid, &ret, 0);
-        wait(&ret);
+        waitpid(pid, &ret, 0);
+
+        std::string str = "Program exited with code " + std::to_string(ret);
+        Package pck(str.c_str(), (int)Package::ReturnType::RUN_FINISH, str.size());
+        write(sock_fd, pck.getPdata(), pck.getSize());
+
         projectPidMap->erase(proId);
     }
 

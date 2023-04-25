@@ -47,6 +47,10 @@ public:
     explicit CodeEdit(std::shared_ptr<FileInfo> fileptr = std::shared_ptr<FileInfo>(new FileInfo()), QWidget *parent = nullptr);
     ~CodeEdit() override;
 
+    void gotoline(int lineNum);
+
+    void highlightError(const QString &error);
+
     void addText(const QString str);
     QString getText();
 
@@ -97,7 +101,7 @@ class HighLighter : public QSyntaxHighlighter
 public:
     friend class CodeEdit;
     HighLighter(CodeEdit *edit, QTextDocument *text = nullptr); // 构造函数需要先传一个QTextDocument对象给父类，因为要先构造父�?
-    void highlightError(const QString &text);
+    //void highlightError(const QString &text);
 
 protected:
     void highlightBlock(const QString &text) override; // 重写父类QSyntaxHighlighter的highlightBlock函数，使多行注释高亮

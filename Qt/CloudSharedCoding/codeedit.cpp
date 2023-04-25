@@ -74,6 +74,13 @@ CodeEdit::~CodeEdit()
     delete ui;
 }
 
+void CodeEdit::gotoline(int line)
+{
+    auto block = document->findBlockByLineNumber(line-1);
+    QTextCursor cursor(block);
+    ui->textEdit->setTextCursor(cursor);
+}
+
 void CodeEdit::docChange(int pos, int charRemoved, int charAdded)
 {
     showAssociateWidget();
@@ -486,10 +493,10 @@ void HighLighter::highlightBlock(const QString &text)
     }
 }
 
-void HighLighter::highlightError(const QString &error){
+void CodeEdit::highlightError(const QString &error){
     QRegularExpression errorRegex("(.*):(\\d+):(\\d+):\\s+(error|warning):(.*)");
     int errorOffset=0;
-    QTextCursor cursor=edit->ui->textEdit->textCursor();
+    //QTextCursor cursor=this->document().
     while(errorOffset!=-1){
         auto match=errorRegex.match(error,errorOffset);
         if(match.hasMatch()){
@@ -499,13 +506,13 @@ void HighLighter::highlightError(const QString &error){
             int left=0;
             int right=0;
             for(int i=0;i<errorData.length();i++){
-                if(errorData[i]=='\''){
+                if(errorData[i]==QChar(8216)){
                     left=i+1;
                     break;
                 }
             }
             for(int i=left;i<errorData.length();i++){
-                if(errorData[i]=='\''){
+                if(errorData[i]==QChar(8217)){
                     right=i-1;
                     break;
                 }
@@ -514,16 +521,17 @@ void HighLighter::highlightError(const QString &error){
             for(int i=left;i<=right;i++){
                 errorChar.push_back(errorData[i]);
             }
-            QTextBlock block=edit->ui->textEdit->document()->findBlockByLineNumber(lineNumber);
-            QTextCursor cursor=QTextCursor(block);
-            cursor.setPosition(block.position());
-            cursor.movePosition(QTextCursor::Right,QTextCursor::MoveAnchor,columnNumber);
-            cursor.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, errorChar.length()-1);
+            QTextBlock block=ui->textEdit->document()->findBlockByLineNumber(lineNumber-1);
+            QTextCursor cursor(block);
+//            cursor.movePosition(QTextCursor::NextCharacter,QTextCursor::MoveAnchor,columnNumber-block.length());
+//            cursor.movePosition(QTextCursor::NextCharacter, QTextCursor::KeepAnchor, errorChar.length());
+            cursor.select(QTextCursor::SelectionType::BlockUnderCursor);
             QTextCharFormat error_format;
             error_format.setUnderlineColor(Qt::red);
             error_format.setUnderlineStyle(QTextCharFormat::WaveUnderline);
             cursor.mergeCharFormat(error_format);
         }
+        errorOffset=match.capturedEnd();
     }
 }
 
