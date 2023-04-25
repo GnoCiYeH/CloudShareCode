@@ -42,6 +42,7 @@ public:
 
     static QTcpSocket* socket;
 
+    static void Login();
     static QHash<int,Project>* userProjs;
 
     static QString userId;
@@ -51,6 +52,8 @@ public:
     std::map<QString,CodeEdit*>mp;//存放路径名字和CodeEdit指针的相互映射
 
     QString runCompilerAndGetOutput(QString pro_Path);
+
+    static QStringList* fileName;
 
 
 
@@ -73,10 +76,11 @@ public slots:
     void addLocalFile();
 
     /*-------------------*/
-    void addFile(QString file_path);
+    bool addFile(QString file_path);
     void openFileAndAddTab(QString file_path);
     bool get_SubDir_Under_Dir(QString path,QStringList& list);
     bool get_SubFile_Under_SubDir(QString path,QStringList& list,int tag);
+    bool is_contain_file_name(QString file_name,QVector<std::shared_ptr<FileInfo>>ptr_vector);
 
     static bool loginState(){
         return isLogin;
@@ -152,7 +156,7 @@ private:
 
     //瀛愮獥鍙?
 
-    LoginDialog* loginDialog;
+    static LoginDialog* loginDialog;
     ProjectForm* projectForm;
 
     //鏂囦欢瀹瑰櫒
@@ -186,7 +190,7 @@ private:
 
 
 private:
-    void Login();
+
     bool addFileWidget(std::shared_ptr<FileInfo> file);
 
 

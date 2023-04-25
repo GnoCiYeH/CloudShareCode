@@ -17,8 +17,10 @@ QHash<int,Project>* MainWindow::userProjs = new QHash<int,Project>();
 QString MainWindow::userId = "";
 QHash<int,QMultiHash<QString,int>*>* MainWindow::debugInfo = new QHash<int,QMultiHash<QString,int>*>();
 bool MainWindow::isLogin = false;
+QStringList* MainWindow::fileName = new QStringList();
 int MainWindow::local_project_id=-1;//静态变量的定义
 int MainWindow::local_file_id=-1;//静态变量的定义
+LoginDialog* MainWindow::loginDialog;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -26,9 +28,9 @@ MainWindow::MainWindow(QWidget *parent) :
 {
 
 
-    tree_widget_item_file_information->setText(0,"项目信息.txt");
-    tree_widget_item_source_file_name->setText(0,"源文件");
-    tree_widget_item_header_file_name->setText(0,"头文件");
+    tree_widget_item_file_information->setText(0,"CMakeLists.txt");
+    tree_widget_item_source_file_name->setText(0,"Source");
+    tree_widget_item_header_file_name->setText(0,"Header");
 
     ui->setupUi(this);
     settingWind = new SettingForm(this);
@@ -540,8 +542,12 @@ void MainWindow::openProjFile()
             if(addFileWidget(file))
             {
                 CodeEdit* widget = fileWidgets.value(file->file_id);
-                //读取文件
-
+                //读取文件并添加到code_edit中
+                QFile read_file(file->file_path);
+                read_file.open(QIODevice::ReadWrite);
+                QByteArray array=read_file.readAll();
+                qDebug()<<array;
+                widget->addText(array);
             }
         }
         else
@@ -641,10 +647,10 @@ void MainWindow::openCloudProj()
 void MainWindow::Login()
 {
     loginDialog->setAttribute(Qt::WA_DeleteOnClose);
-    connect(loginDialog,&LoginDialog::loginAllowded,this,[=]()mutable{
+    connect(loginDialog,&LoginDialog::loginAllowded,[=]()mutable{
         loginDialog->deleteLater();
-        this->isLogin = true;
-        this->userId = loginDialog->userID;
+        isLogin = true;
+        userId = loginDialog->userID;
     });
     loginDialog->exec();
 }
@@ -1236,9 +1242,9 @@ void MainWindow::newLocalProj()
             {
                 QMessageBox::information(this,"信息","新建项目成功");
                 //为项目创建两个文件夹：头文件、源文件   和项目信息.txt
-                QString header_file=current_project_path+"/头文件";
-                QString cpp_file=current_project_path+"/源文件";
-                QString information_file=current_project_path+"/项目信息.txt";
+                QString header_file=current_project_path+"/Header";
+                QString cpp_file=current_project_path+"/Source";
+                QString information_file=current_project_path+"/CMakeLists.txt";
                 QFile file(information_file);
                 file.open(QIODevice::ReadWrite);
                 file.close();
@@ -1249,6 +1255,7 @@ void MainWindow::newLocalProj()
                 current_project_id=local_project_id;
                 local_project_id--;
                 Project current_project(current_project_id,current_project_name);
+                debugInfo->insert(current_project_id,new QMultiHash<QString,int>());
 
                 //将项目的id和Project结构体添加到userProjs中****************************************************************************************
                 userProjs->insert(current_project_id,current_project);
@@ -1287,7 +1294,6 @@ void MainWindow::newLocalProj()
 //打开本地项目文件
 void MainWindow::openLocalProj()
 {
-    //debugInfo->insert(-1,new QMultiHash<QString,int>());
 
     //把之前项目中的树节点删除
     int header_count=tree_widget_item_header_file_name->childCount();
@@ -1297,7 +1303,6 @@ void MainWindow::openLocalProj()
         delete tree_widget_item_header_file_name->child(0);
     }
 
-
     int source_count=tree_widget_item_source_file_name->childCount();
     qDebug()<<source_count;
     for(int i=0;i<source_count;i++)
@@ -1305,19 +1310,28 @@ void MainWindow::openLocalProj()
         delete tree_widget_item_source_file_name->child(0);
     }
 
-
     //获取文件夹的目录
     QString folder_path=QFileDialog::getExistingDirectory(this,tr("选择目录"),"/",QFileDialog::ShowDirsOnly|QFileDialog::DontResolveSymlinks);
     current_project_path=folder_path;
+
     QStringList dir_list;
     bool res=get_SubDir_Under_Dir(folder_path,dir_list);
     if(res==true&&dir_list.size()==2)
     {
-        if(dir_list[0]!="头文件"||dir_list[1]!="源文件")
+        if(dir_list[0]!="Header"||dir_list[1]!="Source")
+        {
+            QMessageBox::critical(this,tr("错误"),"请打开合法的CloudSharedCoding项目");
             return;
+        }
+        else
+        {
+            QMessageBox::information(this,tr("成功"),"成功打开项目");
+        }
+
     }
     else
     {
+       QMessageBox::critical(this,tr("错误"),"请打开合法的CloudSharedCoding项目");
       return;
     }
 
@@ -1329,6 +1343,7 @@ void MainWindow::openLocalProj()
     current_project_id=local_project_id;
     local_project_id--;
     Project current_project(current_project_id,current_project_name);
+    debugInfo->insert(current_project_id,new QMultiHash<QString,int>());
 
     //将项目的id和Project结构体添加到userProjs中****************************************************************************************
     userProjs->insert(current_project_id,current_project);
@@ -1354,7 +1369,7 @@ void MainWindow::openLocalProj()
     QVector<std::shared_ptr<FileInfo>> file_info_ptr_vector;
 
     //导入项目中的所有头文件
-    QString header_path=current_project_path+"/头文件";
+    QString header_path=current_project_path+"/Header";
     QStringList header_list;
     get_SubFile_Under_SubDir(header_path,header_list,0);
     for(int i=0;i<header_list.size();i++)
@@ -1385,7 +1400,7 @@ void MainWindow::openLocalProj()
     }
 
     //导入项目中的所有源文件
-    QString source_path=current_project_path+"/源文件";
+    QString source_path=current_project_path+"/Source";
     QStringList source_list;
     get_SubFile_Under_SubDir(source_path,source_list,1);
     for(int i=0;i<source_list.size();i++)
@@ -1419,41 +1434,6 @@ void MainWindow::openLocalProj()
     pro_fileMap.insert(current_project_id,file_info_ptr_vector);
 }
 
-//保存本地项目文件
-void MainWindow::saveLocalProj()
-{
-    QFileDialog file_dialog;
-    //获取文件的路径
-    QString file_path=file_dialog.getSaveFileName(this,tr("打开文件"));
-
-    if(file_path=="")
-        return;
-    QFile file(file_path);
-
-    //在map映射表中进行查询此路径是否对应有code_edit
-    if(mp.count(file_path)==1)//打开的方式进行保存
-    {
-        CodeEdit* code_edit=mp[file_path];
-        if(file.open(QIODevice::WriteOnly|QIODevice::Text))
-        {
-            QTextStream cout(&file);
-            QString str=code_edit->getText();
-            cout<<str;
-            QMessageBox::information(this,"提示","保存成功");
-            file.close();
-        }
-        else
-        {
-            QMessageBox::critical(this,"错误","保存失败");
-            return;
-        }
-    }
-    else//新建的方式进行保存
-    {
-
-    }
-}
-
 //添加本地文件
 void MainWindow::addLocalFile()
 {
@@ -1482,13 +1462,26 @@ void MainWindow::addLocalFile()
             QMessageBox::warning(this,"警告","请输入合法的文件名（只允许包含字母和数字）");
             return;
         }
+        else if(is_contain_file_name(dialog->get_lineEdit_name()->text(),pro_fileMap.value(current_project_id)))
+        {
+            QMessageBox::warning(this,"警告","此文件已存在，请更换文件名再添加");
+            return;
+        }
         else
         {
             if(dialog->get_comboBox_current_index()==0)//.cpp
             {
                //获取要添加的文件路径并添加文件
-               QString file_path=current_project_path+"/源文件/"+dialog->get_lineEdit_name()->text()+".cpp";
-               this->addFile(file_path);
+               QString file_path=current_project_path+"/Source/"+dialog->get_lineEdit_name()->text()+".cpp";
+               bool res=this->addFile(file_path);
+               if(res==true)
+                   QMessageBox::information(this,"成功","添加文件成功");
+               else
+               {
+                   QMessageBox::information(this,"失败","添加文件失败");
+                   return;
+               }
+
 
                //文件信息指针******************************************************
                std::shared_ptr<FileInfo> file_info_ptr(new FileInfo);
@@ -1519,10 +1512,17 @@ void MainWindow::addLocalFile()
             else//.h
             {
                 //获取要添加的文件路径并添加文件
-                QString  file_path1=current_project_path+"/头文件/"+dialog->get_lineEdit_name()->text()+".h";
-                QString  file_path2=current_project_path+"/源文件/"+dialog->get_lineEdit_name()->text()+".cpp";
-                this->addFile(file_path1);
-                this->addFile(file_path2);
+                QString  file_path1=current_project_path+"/Header/"+dialog->get_lineEdit_name()->text()+".h";
+                QString  file_path2=current_project_path+"/Source/"+dialog->get_lineEdit_name()->text()+".cpp";
+                bool res1=this->addFile(file_path1);
+                bool res2=this->addFile(file_path2);
+                if(res1==true&&res2==true)
+                    QMessageBox::information(this,"成功","添加文件成功");
+                else
+                {
+                    QMessageBox::information(this,"失败","添加文件失败");
+                    return;
+                }
 
                 //文件信息指针******************************************************
                 std::shared_ptr<FileInfo> file_info_ptr1(new FileInfo);
@@ -1577,26 +1577,59 @@ void MainWindow::addLocalFile()
     });
 }
 
+bool MainWindow::is_contain_file_name(QString file_name,QVector<std::shared_ptr<FileInfo>>ptr_vector)
+{
+    for(int i=0;i<ptr_vector.size();i++)
+    {
+        if(file_name+".h"==ptr_vector[i]->file_name||file_name+".cpp"==ptr_vector[i]->file_name)
+            return true;
+        else
+            continue;
+    }
+    return false;
+}
+
+//保存本地项目文件
+void MainWindow::saveLocalProj()
+{
+    //获取存放文件信息指针的vector数组
+    QVector<std::shared_ptr<FileInfo>> ptr_vector=pro_fileMap.value(current_project_id);
+
+    for(int i=0;i<ptr_vector.size();i++)
+    {
+        //要保存的文件id和code_edit
+        int file_id=ptr_vector[i]->file_id;
+        CodeEdit* code_edit=fileWidgets.value(file_id);
+
+        //要保存的文件路径
+        QString file_path=ptr_vector[i]->file_path;
+        QFile file(file_path);
+        if(file.open(QIODevice::WriteOnly|QIODevice::Text))
+        {
+            QTextStream cout(&file);
+            QString str=code_edit->getText();
+            qDebug()<<str;
+            cout<<str;
+        }
+        else
+        {
+            QMessageBox::critical(this,"错误","项目保存失败");
+            return;
+        }
+    }
+    QMessageBox::information(this,"成功","项目保存成功");
+}
+
 //本函数的作用是在指定的路径下新建一个新的文件（可以使任何类型的文件，例如.cpp .h .txt)
 //例如 D:D:/4.23/123.txt 将在D盘4.23文件目录下新建一个名为123.txt的文本文件
-void MainWindow::addFile(QString file_path)
+bool MainWindow::addFile(QString file_path)
 {
     //新建文件
     QFile *new_file=new QFile(this);
     new_file->setFileName(file_path);
     bool res=new_file->open(QIODevice::ReadWrite|QIODevice::Text);
     new_file->close();
-    //判断是否新建成功
-    if(!res)
-    {
-        QMessageBox::critical(this,"错误","文件新建失败");
-        return;
-    }
-    else
-    {
-        QMessageBox::information(this,"新建文件","新建文件成功");
-        //openFileAndAddTab(file_path);
-    }
+    return res;
 }
 
 //本函数的作用是在给定的路径下将文件打开并构造一个文本编辑器和添加到tabWidget中
