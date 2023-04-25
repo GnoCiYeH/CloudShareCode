@@ -32,7 +32,7 @@ class AssociateListWidget;
 class HighLighter;
 
 static void setUpAssociateList();
-static QStringList associateList;
+static QStringList* associateList;
 
 class CodeEdit : public QWidget
 {

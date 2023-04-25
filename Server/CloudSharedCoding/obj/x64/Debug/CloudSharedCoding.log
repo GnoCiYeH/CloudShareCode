@@ -242,116 +242,117 @@ D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(121,53): warning : 
 D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(121,53): warning :   121 |                         int num = project_map->count(it);
 D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(121,53): warning :       |                                   ~~~~~~~~~~~~~~~~~~^~~~
 D:\Git\CloudShareCode\Server\CloudSharedCoding\Log.h(35,86): warning : conversion from ‘long long unsigned int’ to ‘uint32_t’ {aka ‘unsigned int’} may change value [-Wconversion]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(249,25): message : in expansion of macro ‘INFO_LOG’
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(249,25): message :   249 |                         INFO_LOG(m_logger, "UNKNOW PACKAGETYPE");
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(249,25): message :       |                         ^~~~~~~~
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(267,82): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(277,90): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(343,82): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(362,77): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(397,79): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(252,25): message : in expansion of macro ‘INFO_LOG’
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(252,25): message :   252 |                         INFO_LOG(m_logger, "UNKNOW PACKAGETYPE");
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(252,25): message :       |                         ^~~~~~~~
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(270,82): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(280,90): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(346,82): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(365,77): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(400,79): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
 D:\Git\CloudShareCode\Server\CloudSharedCoding\Log.h(20,86): warning : conversion from ‘long long unsigned int’ to ‘uint32_t’ {aka ‘unsigned int’} may change value [-Wconversion]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(420,9): message : in expansion of macro ‘ERROR_LOG’
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(420,9): message :   420 |         ERROR_LOG(m_logger, "rm_dir ERROR!");
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(420,9): message :       |         ^~~~~~~~~
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(423,9): message : in expansion of macro ‘ERROR_LOG’
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(423,9): message :   423 |         ERROR_LOG(m_logger, "rm_dir ERROR!");
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(423,9): message :       |         ^~~~~~~~~
 D:\Git\CloudShareCode\Server\CloudSharedCoding\Log.h(20,86): warning : conversion from ‘long long unsigned int’ to ‘uint32_t’ {aka ‘unsigned int’} may change value [-Wconversion]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(441,9): message : in expansion of macro ‘ERROR_LOG’
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(441,9): message :   441 |         ERROR_LOG(m_logger, "ifstream open file error");
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(441,9): message :       |         ^~~~~~~~~
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(450,22): warning : comparison of integer expressions of different signedness: ‘size_t’ {aka ‘long unsigned int’} and ‘__off_t’ {aka ‘long int’} [-Wsign-compare]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(450,22): warning :   450 |         while (sended<st.st_size)
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(450,22): warning :       |                ~~~~~~^~~~~~~~~~~
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(453,35): warning : conversion from ‘std::streamsize’ {aka ‘long int’} to ‘int’ may change value [-Wconversion]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(453,35): warning :   453 |             int ret = ifs.readsome(buffer+4, sizeof(buffer)-4);
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(453,35): warning :       |                       ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(503,34): warning : conversion from ‘std::multimap<int, int>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(503,34): warning :   503 |     int pnum = project_map->count(pro_id);
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(503,34): warning :       |                ~~~~~~~~~~~~~~~~~~^~~~~~~~
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(508,83): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(534,92): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(535,33): warning : conversion from ‘std::multimap<int, int>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(535,33): warning :   535 |     int num = project_map->count(pid);
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(535,33): warning :       |               ~~~~~~~~~~~~~~~~~~^~~~~
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(580,82): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(444,9): message : in expansion of macro ‘ERROR_LOG’
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(444,9): message :   444 |         ERROR_LOG(m_logger, "ifstream open file error");
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(444,9): message :       |         ^~~~~~~~~
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(453,22): warning : comparison of integer expressions of different signedness: ‘size_t’ {aka ‘long unsigned int’} and ‘__off_t’ {aka ‘long int’} [-Wsign-compare]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(453,22): warning :   453 |         while (sended<st.st_size)
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(453,22): warning :       |                ~~~~~~^~~~~~~~~~~
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(456,35): warning : conversion from ‘std::streamsize’ {aka ‘long int’} to ‘int’ may change value [-Wconversion]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(456,35): warning :   456 |             int ret = ifs.readsome(buffer+4, sizeof(buffer)-4);
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(456,35): warning :       |                       ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(462,86): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(509,34): warning : conversion from ‘std::multimap<int, int>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(509,34): warning :   509 |     int pnum = project_map->count(pro_id);
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(509,34): warning :       |                ~~~~~~~~~~~~~~~~~~^~~~~~~~
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(514,83): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(540,92): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(541,33): warning : conversion from ‘std::multimap<int, int>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(541,33): warning :   541 |     int num = project_map->count(pid);
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(541,33): warning :       |               ~~~~~~~~~~~~~~~~~~^~~~~
 D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(586,82): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(594,85): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(592,82): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(600,85): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
 D:\Git\CloudShareCode\Server\CloudSharedCoding\Log.h(20,86): warning : conversion from ‘long long unsigned int’ to ‘uint32_t’ {aka ‘unsigned int’} may change value [-Wconversion]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(615,9): message : in expansion of macro ‘ERROR_LOG’
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(615,9): message :   615 |         ERROR_LOG(m_logger, "edit file error");
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(615,9): message :       |         ^~~~~~~~~
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(618,30): warning : conversion from ‘std::multimap<int, int>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(618,30): warning :   618 |     int num = file_map->count(file_id);
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(618,30): warning :       |               ~~~~~~~~~~~~~~~^~~~~~~~~
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(626,78): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(648,80): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(660,23): warning : comparison of integer expressions of different signedness: ‘int’ and ‘std::vector<std::__cxx11::basic_string<char> >::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(660,23): warning :   660 |     for (int i = 1; i < list.size(); i++)
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(660,23): warning :       |                     ~~^~~~~~~~~~~~~
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(670,75): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(698,82): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(621,9): message : in expansion of macro ‘ERROR_LOG’
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(621,9): message :   621 |         ERROR_LOG(m_logger, "edit file error");
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(621,9): message :       |         ^~~~~~~~~
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(624,30): warning : conversion from ‘std::multimap<int, int>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(624,30): warning :   624 |     int num = file_map->count(file_id);
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(624,30): warning :       |               ~~~~~~~~~~~~~~~^~~~~~~~~
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(632,78): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(654,80): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(666,23): warning : comparison of integer expressions of different signedness: ‘int’ and ‘std::vector<std::__cxx11::basic_string<char> >::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(666,23): warning :   666 |     for (int i = 1; i < list.size(); i++)
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(666,23): warning :       |                     ~~^~~~~~~~~~~~~
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(676,75): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(704,82): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
 D:\Git\CloudShareCode\Server\CloudSharedCoding\Log.h(20,86): warning : conversion from ‘long long unsigned int’ to ‘uint32_t’ {aka ‘unsigned int’} may change value [-Wconversion]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(700,9): message : in expansion of macro ‘ERROR_LOG’
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(700,9): message :   700 |         ERROR_LOG(m_logger, "pipe error");
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(700,9): message :       |         ^~~~~~~~~
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(709,82): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(706,9): message : in expansion of macro ‘ERROR_LOG’
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(706,9): message :   706 |         ERROR_LOG(m_logger, "pipe error");
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(706,9): message :       |         ^~~~~~~~~
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(715,82): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
 D:\Git\CloudShareCode\Server\CloudSharedCoding\Log.h(20,86): warning : conversion from ‘long long unsigned int’ to ‘uint32_t’ {aka ‘unsigned int’} may change value [-Wconversion]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(711,9): message : in expansion of macro ‘ERROR_LOG’
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(711,9): message :   711 |         ERROR_LOG(m_logger, "pipe error");
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(711,9): message :       |         ^~~~~~~~~
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(717,9): message : in expansion of macro ‘ERROR_LOG’
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(717,9): message :   717 |         ERROR_LOG(m_logger, "pipe error");
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(717,9): message :       |         ^~~~~~~~~
 D:\Git\CloudShareCode\Server\CloudSharedCoding\Log.h(20,86): warning : conversion from ‘long long unsigned int’ to ‘uint32_t’ {aka ‘unsigned int’} may change value [-Wconversion]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(726,9): message : in expansion of macro ‘ERROR_LOG’
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(726,9): message :   726 |         ERROR_LOG(m_logger, "fork error");
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(726,9): message :       |         ^~~~~~~~~
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(749,80): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(736,13): warning : unused variable ‘saveOutfd’ [-Wunused-variable]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(736,13): warning :   736 |         int saveOutfd = dup2(subWfd, STDOUT_FILENO);
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(736,13): warning :       |             ^~~~~~~~~
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(737,13): warning : unused variable ‘saveInfd’ [-Wunused-variable]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(737,13): warning :   737 |         int saveInfd = dup2(subRfd, STDIN_FILENO);
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(737,13): warning :       |             ^~~~~~~~
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(764,27): warning : conversion from ‘ssize_t’ {aka ‘long int’} to ‘int’ may change value [-Wconversion]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(764,27): warning :   764 |         while ((ret = read(mainRfd, buf, 1024)) != NULL)
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(764,27): warning :       |                       ~~~~^~~~~~~~~~~~~~~~~~~~
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(764,52): warning : NULL used in arithmetic [-Wpointer-arith]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(764,52): warning :   764 |         while ((ret = read(mainRfd, buf, 1024)) != NULL)
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(764,52): warning :       |                                                    ^~~~
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(732,9): message : in expansion of macro ‘ERROR_LOG’
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(732,9): message :   732 |         ERROR_LOG(m_logger, "fork error");
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(732,9): message :       |         ^~~~~~~~~
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(755,80): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(742,13): warning : unused variable ‘saveOutfd’ [-Wunused-variable]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(742,13): warning :   742 |         int saveOutfd = dup2(subWfd, STDOUT_FILENO);
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(742,13): warning :       |             ^~~~~~~~~
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(743,13): warning : unused variable ‘saveInfd’ [-Wunused-variable]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(743,13): warning :   743 |         int saveInfd = dup2(subRfd, STDIN_FILENO);
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(743,13): warning :       |             ^~~~~~~~
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(771,27): warning : conversion from ‘ssize_t’ {aka ‘long int’} to ‘int’ may change value [-Wconversion]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(771,27): warning :   771 |         while ((ret = read(mainRfd, buf, 1024)) != NULL)
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(771,27): warning :       |                       ~~~~^~~~~~~~~~~~~~~~~~~~
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(771,52): warning : NULL used in arithmetic [-Wpointer-arith]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(771,52): warning :   771 |         while ((ret = read(mainRfd, buf, 1024)) != NULL)
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(771,52): warning :       |                                                    ^~~~
 D:\Git\CloudShareCode\Server\CloudSharedCoding\Log.h(20,86): warning : conversion from ‘long long unsigned int’ to ‘uint32_t’ {aka ‘unsigned int’} may change value [-Wconversion]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(843,13): message : in expansion of macro ‘ERROR_LOG’
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(843,13): message :   843 |             ERROR_LOG(m_logger, "kill p error");
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(843,13): message :       |             ^~~~~~~~~
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(849,80): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(851,13): message : in expansion of macro ‘ERROR_LOG’
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(851,13): message :   851 |             ERROR_LOG(m_logger, "kill p error");
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(851,13): message :       |             ^~~~~~~~~
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(857,80): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
 D:\Git\CloudShareCode\Server\CloudSharedCoding\Log.h(20,86): warning : conversion from ‘long long unsigned int’ to ‘uint32_t’ {aka ‘unsigned int’} may change value [-Wconversion]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(869,13): message : in expansion of macro ‘ERROR_LOG’
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(869,13): message :   869 |             ERROR_LOG(m_logger, "kill p error");
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(869,13): message :       |             ^~~~~~~~~
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(903,82): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(876,13): message : in expansion of macro ‘ERROR_LOG’
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(876,13): message :   876 |             ERROR_LOG(m_logger, "kill p error");
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(876,13): message :       |             ^~~~~~~~~
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(910,82): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
 D:\Git\CloudShareCode\Server\CloudSharedCoding\Log.h(20,86): warning : conversion from ‘long long unsigned int’ to ‘uint32_t’ {aka ‘unsigned int’} may change value [-Wconversion]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(905,9): message : in expansion of macro ‘ERROR_LOG’
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(905,9): message :   905 |         ERROR_LOG(m_logger, "pipe error");
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(905,9): message :       |         ^~~~~~~~~
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(914,82): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(912,9): message : in expansion of macro ‘ERROR_LOG’
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(912,9): message :   912 |         ERROR_LOG(m_logger, "pipe error");
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(912,9): message :       |         ^~~~~~~~~
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(921,82): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
 D:\Git\CloudShareCode\Server\CloudSharedCoding\Log.h(20,86): warning : conversion from ‘long long unsigned int’ to ‘uint32_t’ {aka ‘unsigned int’} may change value [-Wconversion]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(916,9): message : in expansion of macro ‘ERROR_LOG’
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(916,9): message :   916 |         ERROR_LOG(m_logger, "pipe error");
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(916,9): message :       |         ^~~~~~~~~
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(923,9): message : in expansion of macro ‘ERROR_LOG’
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(923,9): message :   923 |         ERROR_LOG(m_logger, "pipe error");
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(923,9): message :       |         ^~~~~~~~~
 D:\Git\CloudShareCode\Server\CloudSharedCoding\Log.h(20,86): warning : conversion from ‘long long unsigned int’ to ‘uint32_t’ {aka ‘unsigned int’} may change value [-Wconversion]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(931,9): message : in expansion of macro ‘ERROR_LOG’
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(931,9): message :   931 |         ERROR_LOG(m_logger, "fork error");
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(931,9): message :       |         ^~~~~~~~~
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(953,80): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(941,13): warning : unused variable ‘saveOutfd’ [-Wunused-variable]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(941,13): warning :   941 |         int saveOutfd = dup2(subWfd, STDOUT_FILENO);
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(941,13): warning :       |             ^~~~~~~~~
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(942,13): warning : unused variable ‘saveInfd’ [-Wunused-variable]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(942,13): warning :   942 |         int saveInfd = dup2(subRfd, STDIN_FILENO);
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(942,13): warning :       |             ^~~~~~~~
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(977,27): warning : conversion from ‘ssize_t’ {aka ‘long int’} to ‘int’ may change value [-Wconversion]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(977,27): warning :   977 |         while ((ret = read(mainRfd, buf, 4096)) != NULL)
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(977,27): warning :       |                       ~~~~^~~~~~~~~~~~~~~~~~~~
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(977,52): warning : NULL used in arithmetic [-Wpointer-arith]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(977,52): warning :   977 |         while ((ret = read(mainRfd, buf, 4096)) != NULL)
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(977,52): warning :       |                                                    ^~~~
-D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(992,80): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(938,9): message : in expansion of macro ‘ERROR_LOG’
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(938,9): message :   938 |         ERROR_LOG(m_logger, "fork error");
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(938,9): message :       |         ^~~~~~~~~
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(960,80): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(948,13): warning : unused variable ‘saveOutfd’ [-Wunused-variable]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(948,13): warning :   948 |         int saveOutfd = dup2(subWfd, STDOUT_FILENO);
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(948,13): warning :       |             ^~~~~~~~~
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(949,13): warning : unused variable ‘saveInfd’ [-Wunused-variable]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(949,13): warning :   949 |         int saveInfd = dup2(subRfd, STDIN_FILENO);
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(949,13): warning :       |             ^~~~~~~~
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(985,27): warning : conversion from ‘ssize_t’ {aka ‘long int’} to ‘int’ may change value [-Wconversion]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(985,27): warning :   985 |         while ((ret = read(mainRfd, buf, 4096)) != NULL)
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(985,27): warning :       |                       ~~~~^~~~~~~~~~~~~~~~~~~~
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(985,52): warning : NULL used in arithmetic [-Wpointer-arith]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(985,52): warning :   985 |         while ((ret = read(mainRfd, buf, 4096)) != NULL)
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(985,52): warning :       |                                                    ^~~~
+D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(1000,80): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
 D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(220,20): warning : ‘std::string readLine(int)’ defined but not used [-Wunused-function]
 D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(37,13): warning : ‘void WARN_CHECK(int, std::string, Log::Logger)’ defined but not used [-Wunused-function]
 D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(29,13): warning : ‘void INFO_CHECK(int, std::string, Log::Logger)’ defined but not used [-Wunused-function]
