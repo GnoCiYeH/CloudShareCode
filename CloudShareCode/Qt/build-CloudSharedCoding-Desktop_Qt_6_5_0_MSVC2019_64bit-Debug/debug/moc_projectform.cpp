@@ -48,11 +48,12 @@ static constexpr auto qt_meta_stringdata_CLASSProjectFormENDCLASS = QtMocHelpers
     "on_toolButton_3_clicked",
     "on_pushButton_clicked",
     "on_pushButton_4_clicked",
-    "on_pushButton_7_clicked"
+    "on_pushButton_7_clicked",
+    "on_pushButton_9_clicked"
 );
 #else  // !QT_MOC_HAS_STRING_DATA
 struct qt_meta_stringdata_CLASSProjectFormENDCLASS_t {
-    uint offsetsAndSizes[22];
+    uint offsetsAndSizes[24];
     char stringdata0[12];
     char stringdata1[9];
     char stringdata2[1];
@@ -64,6 +65,7 @@ struct qt_meta_stringdata_CLASSProjectFormENDCLASS_t {
     char stringdata8[22];
     char stringdata9[24];
     char stringdata10[24];
+    char stringdata11[24];
 };
 #define QT_MOC_LITERAL(ofs, len) \
     uint(sizeof(qt_meta_stringdata_CLASSProjectFormENDCLASS_t::offsetsAndSizes) + ofs), len 
@@ -79,7 +81,8 @@ Q_CONSTINIT static const qt_meta_stringdata_CLASSProjectFormENDCLASS_t qt_meta_s
         QT_MOC_LITERAL(97, 23),  // "on_toolButton_3_clicked"
         QT_MOC_LITERAL(121, 21),  // "on_pushButton_clicked"
         QT_MOC_LITERAL(143, 23),  // "on_pushButton_4_clicked"
-        QT_MOC_LITERAL(167, 23)   // "on_pushButton_7_clicked"
+        QT_MOC_LITERAL(167, 23),  // "on_pushButton_7_clicked"
+        QT_MOC_LITERAL(191, 23)   // "on_pushButton_9_clicked"
     },
     "ProjectForm",
     "openProj",
@@ -91,7 +94,8 @@ Q_CONSTINIT static const qt_meta_stringdata_CLASSProjectFormENDCLASS_t qt_meta_s
     "on_toolButton_3_clicked",
     "on_pushButton_clicked",
     "on_pushButton_4_clicked",
-    "on_pushButton_7_clicked"
+    "on_pushButton_7_clicked",
+    "on_pushButton_9_clicked"
 };
 #undef QT_MOC_LITERAL
 #endif // !QT_MOC_HAS_STRING_DATA
@@ -103,7 +107,7 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSProjectFormENDCLASS[] = {
       11,       // revision
        0,       // classname
        0,    0, // classinfo
-       9,   14, // methods
+      10,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -111,22 +115,24 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSProjectFormENDCLASS[] = {
        1,       // signalCount
 
  // signals: name, argc, parameters, tag, flags, initial metatype offsets
-       1,    1,   68,    2, 0x06,    1 /* Public */,
+       1,    1,   74,    2, 0x06,    1 /* Public */,
 
  // slots: name, argc, parameters, tag, flags, initial metatype offsets
-       3,    0,   71,    2, 0x0a,    3 /* Public */,
-       4,    0,   72,    2, 0x08,    4 /* Private */,
-       5,    0,   73,    2, 0x08,    5 /* Private */,
-       6,    0,   74,    2, 0x08,    6 /* Private */,
-       7,    0,   75,    2, 0x08,    7 /* Private */,
-       8,    0,   76,    2, 0x08,    8 /* Private */,
-       9,    0,   77,    2, 0x08,    9 /* Private */,
-      10,    0,   78,    2, 0x08,   10 /* Private */,
+       3,    0,   77,    2, 0x0a,    3 /* Public */,
+       4,    0,   78,    2, 0x08,    4 /* Private */,
+       5,    0,   79,    2, 0x08,    5 /* Private */,
+       6,    0,   80,    2, 0x08,    6 /* Private */,
+       7,    0,   81,    2, 0x08,    7 /* Private */,
+       8,    0,   82,    2, 0x08,    8 /* Private */,
+       9,    0,   83,    2, 0x08,    9 /* Private */,
+      10,    0,   84,    2, 0x08,   10 /* Private */,
+      11,    0,   85,    2, 0x08,   11 /* Private */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::Int,    2,
 
  // slots: parameters
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -166,6 +172,8 @@ Q_CONSTINIT const QMetaObject ProjectForm::staticMetaObject = { {
         // method 'on_pushButton_4_clicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'on_pushButton_7_clicked'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'on_pushButton_9_clicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>
     >,
     nullptr
@@ -186,6 +194,7 @@ void ProjectForm::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id,
         case 6: _t->on_pushButton_clicked(); break;
         case 7: _t->on_pushButton_4_clicked(); break;
         case 8: _t->on_pushButton_7_clicked(); break;
+        case 9: _t->on_pushButton_9_clicked(); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -219,13 +228,13 @@ int ProjectForm::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 9)
+        if (_id < 10)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 9;
+        _id -= 10;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 9)
+        if (_id < 10)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 9;
+        _id -= 10;
     }
     return _id;
 }
