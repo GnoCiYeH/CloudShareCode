@@ -22,6 +22,7 @@
 #include<map>
 #include<algorithm>
 #include<QDir>
+#include<QFileInfo>
 #include<QMultiHash>
 #include"newlocalproject.h"
 #include"newlocalfile.h"
@@ -51,6 +52,11 @@ public:
 
     QString runCompilerAndGetOutput(QString pro_Path);
 
+    void setSystemVar(const QString& bin_Path);
+
+    void findFileName(const QString& path);
+
+    static QStringList* fileName;
 
 public slots:
     void dataProgress();
@@ -177,6 +183,7 @@ private:
     QLabel* label2=new QLabel(this);
     QTimer *timer=new QTimer(this);
 
+    QString systemVar;
 
 private:
     void Login();

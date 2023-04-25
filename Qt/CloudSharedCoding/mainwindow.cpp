@@ -13,6 +13,7 @@
 #include"newlocalproject.h"
 
 QTcpSocket* MainWindow::socket = new QTcpSocket();
+QStringList* MainWindow::fileName=new QStringList();
 QHash<int,Project>* MainWindow::userProjs = new QHash<int,Project>();
 QString MainWindow::userId = "";
 QHash<int,QMultiHash<QString,int>*>* MainWindow::debugInfo = new QHash<int,QMultiHash<QString,int>*>();
@@ -238,6 +239,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionAdd_Cloud_File,&QAction::triggered,this,[=](){QFileDialog::getOpenFileName(this,"添加文件","C:/Users");});
     //connect(ui->add_file_action,&QAction::triggered,this,[=](){QFileDialog::getOpenFileName(this,"添加文件","C:/Users");});
 
+    setSystemVar("D:\\mingw64\\bin");
+    findFileName(systemVar);
 }
 
 MainWindow::~MainWindow()
@@ -252,6 +255,7 @@ MainWindow::~MainWindow()
     delete tree_widget_item_file_information;
     delete tree_widget_item_header_file_name;
     delete tree_widget_item_source_file_name;
+    delete fileName;
 }
 
 void MainWindow::cmdStdin(int pos,int charRemoved,int charAdded)
@@ -888,8 +892,8 @@ void MainWindow::dataProgress()
 
 void MainWindow::disposeDebugInfo(QString buf)
 {
-    QRegularExpression breakpointRegex("(Breakpoint \\d+) at .*");//断点信息
-    QRegularExpression tobreakpointRegex("(\\sBreakpoint \\d+).*");//断点信息
+    QRegularExpression breakpointRegex("Breakpoint (\\d+) at (.*): file (.*), line (\\d+)[^\\s]");//断点信息
+    QRegularExpression tobreakpointRegex("(\\sBreakpoint \\d+).*");//运行到断点信息
     QRegularExpression crashRegex("Program received signal .*");//程序崩溃信息
     QRegularExpression varValueRegex("\\$\\d+\\s+=\\s+(.*)");//变量值信息
     QRegularExpression stackFrameRegex("#\\d+\\s+0x[a-f0-9]+\\s+in\\s+.+\\s+\\(.+\\)\\s+at\\s+.*:(\\d+)");//栈帧信息
@@ -1362,3 +1366,20 @@ QString MainWindow::runCompilerAndGetOutput(QString pro_Path){
     return error_text;
 }
 
+void MainWindow::findFileName(const QString& path){
+
+    QDir dir(path);
+    QFileInfoList files = dir.entryInfoList(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot);
+    for (const QFileInfo& fileInfo : files) {
+        if (fileInfo.isFile()) {
+            fileName->append("\""+fileInfo.fileName()+"\"");
+        }
+        else{
+            findFileName(path+"\\"+fileInfo.fileName());
+        }
+    }
+}
+
+void MainWindow::setSystemVar(const QString&bin_Path ){
+    this->systemVar=bin_Path;
+}
