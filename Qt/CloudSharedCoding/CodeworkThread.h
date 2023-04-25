@@ -8,6 +8,7 @@
 
 class RunThread : public QThread
 {
+    Q_OBJECT
 public:
     explicit RunThread(QString path,QObject *parent = nullptr);
     ~RunThread();
@@ -28,6 +29,7 @@ protected:
 
 class DebugThread : public QThread
 {
+    Q_OBJECT
 public:
     explicit DebugThread(QString path,QObject *parent = nullptr);
     ~DebugThread();

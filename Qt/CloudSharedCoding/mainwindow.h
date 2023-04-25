@@ -23,7 +23,6 @@
 #include <map>
 #include <algorithm>
 #include <QDir>
-#include <QFileInfo>
 #include <QMultiHash>
 #include "newlocalproject.h"
 #include "newlocalfile.h"
@@ -51,9 +50,6 @@ public:
     static void Login();
     static QHash<int,Project>* userProjs;
 
-    static QHash<int, Project> *userProjs;
-
-
     static QString userId;
 
     static QHash<int, QMultiHash<QString, int> *> *debugInfo;
@@ -64,7 +60,6 @@ public:
 
 
     static QStringList* fileName;
-
 
 public slots:
     void dataProgress();
@@ -95,9 +90,6 @@ public slots:
     bool get_SubDir_Under_Dir(QString path,QStringList& list);
     bool get_SubFile_Under_SubDir(QString path,QStringList& list,int tag);
     bool is_contain_file_name(QString file_name,QVector<std::shared_ptr<FileInfo>>ptr_vector);
-
-    bool get_SubDir_Under_Dir(QString path, QStringList &list);
-    bool get_SubFile_Under_SubDir(QString path, QStringList &list, int tag);
 
     static bool loginState()
     {
@@ -171,16 +163,19 @@ private:
     QToolButton *debugbutton;
     QToolButton *stopRun;
 
+    QLabel* statusIcon = new QLabel(this);
+    QMovie* buildingMovie = new QMovie("://icon/building.gif");
+    QMovie* runningMovie = new QMovie("://icon/running.gif");
+    QMovie* debugingMovie = new QMovie("://icon/debuging.gif");
+    QMovie* stateokMovie = new QMovie("://icon/stateok.gif");
+
+
     QPair<std::shared_ptr<FileInfo>, int> currentLine;
 
     // 瀛愮獥鍙?
 
-    LoginDialog *loginDialog;
+    static LoginDialog *loginDialog;
     ProjectForm *projectForm;
-
-
-    static LoginDialog* loginDialog;
-    ProjectForm* projectForm;
 
     // 鏂囦欢瀹瑰�?
     QHash<int, QVector<std::shared_ptr<FileInfo>>> pro_fileMap;
@@ -225,8 +220,8 @@ private:
     static int local_project_id; // 本地项目的id
     static int local_file_id;    // 本地文件的id
 
-    QString current_project_path; // 记录当前项目的路径（根路�?)
-    QString current_project_name; // 记录当前项目的名�?
+    QString current_project_path; // 记录当前项目的路径（根路径)
+    QString current_project_name; // 记录当前项目的名字
     int current_project_id;       // 记录当前项目的id
 
     MyTreeItem *tree_widget_item_project_name = new MyTreeItem(MyTreeItem::Type::PROJECT);
