@@ -26,9 +26,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
                                           ui(new Ui::MainWindow)
 {
 
-    tree_widget_item_file_information->setText(0, "项目信息.txt");
-    tree_widget_item_source_file_name->setText(0, "源文�?");
-    tree_widget_item_header_file_name->setText(0, "头文�?");
+    tree_widget_item_file_information->setText(0, "CMakeLists.txt");
+    tree_widget_item_source_file_name->setText(0, "Source");
+    tree_widget_item_header_file_name->setText(0, "Header");
 
     ui->setupUi(this);
     settingWind = new SettingForm(this);
@@ -1245,9 +1245,9 @@ void MainWindow::newLocalProj()
             {
                 QMessageBox::information(this,"信息","新建项目成功");
                 //为项目创建两个文件夹：头文件、源文件   和项目信�?.txt
-                QString header_file=current_project_path+"/头文�?";
-                QString cpp_file=current_project_path+"/源文�?";
-                QString information_file=current_project_path+"/项目信息.txt";
+                QString header_file=current_project_path+"/Header";
+                QString cpp_file=current_project_path+"/Source";
+                QString information_file=current_project_path+"/CMakeLists.txt";
                 QFile file(information_file);
                 file.open(QIODevice::ReadWrite);
                 file.close();

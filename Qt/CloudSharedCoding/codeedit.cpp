@@ -1,6 +1,6 @@
 #include "codeedit.h"
-#include "qpainter.h"
-#include "qscrollbar.h"
+//#include "qpainter.h"
+//#include "qscrollbar.h"
 #include "ui_codeedit.h"
 #include <QKeyEvent>
 #include <QDebug>
