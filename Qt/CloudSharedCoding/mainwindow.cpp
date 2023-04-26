@@ -25,7 +25,6 @@ LoginDialog* MainWindow::loginDialog;
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),ui(new Ui::MainWindow)
 {
-    current_project_id=0;
     current_project_name="";
     current_project_path="";
 
@@ -58,7 +57,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),ui(new Ui::MainWin
         }
         isAlive = false; });
 
-    // 设置主窗口基本属�?
+    // 设置主窗口基本属��?
     this->setWindowFlags(Qt::FramelessWindowHint);
     this->setWindowTitle("CloudSharedCoding");
     runbutton = new QToolButton(this);
@@ -87,9 +86,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),ui(new Ui::MainWin
     ui->treeWidget->header()->hide();
     ui->treeWidget->setContextMenuPolicy(Qt::CustomContextMenu);
     ui->tabWidget->removeTab(1);
-    ui->actionCloud_project->setText("打开云项�?");
+    ui->actionCloud_project->setText("打开云项��?");
     ui->actionOpenLocal_project->setText("打开本地项目");
-    ui->actionNew_cloud_project->setText("新建云项�?");
+    ui->actionNew_cloud_project->setText("新建云项��?");
     ui->actionNew_local_project->setText("新建本地项目");
 
     connect(runbutton, SIGNAL(clicked()), this, SLOT(runProject()));
@@ -102,8 +101,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),ui(new Ui::MainWin
     newFile = new QAction("新建文件", ui->treeWidget);
     deleteFile = new QAction("删除", ui->treeWidget);
     openFile = new QAction("打开", ui->treeWidget);
-    attribute = new QAction("属�?", ui->treeWidget);
-    rename = new QAction("重命�?", ui->treeWidget);
+    attribute = new QAction("属��?", ui->treeWidget);
+    rename = new QAction("重命��?", ui->treeWidget);
 
     QSize size(25,25);
     statusIcon->setFixedSize(size);
@@ -112,7 +111,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),ui(new Ui::MainWin
     runningMovie->setScaledSize(size);
     debugingMovie->setScaledSize(size);
 
-    // 状态栏(显示状态和时间�?
+    // 状态栏(显示状态和时间��?
     setStatusBar(status_bar);
     status_bar->addWidget(statusIcon);
     statusIcon->setMovie(stateokMovie);
@@ -129,7 +128,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),ui(new Ui::MainWin
         status_bar->addPermanentWidget(label2); });
 
     // 在状态栏显示编码方式
-    EncodingTypeLabel->setText("        当前的编码方式为：UTF-8 (默认为UTF-8编码，如需更改，请打开“设�?-编码方式”中进行选择");
+    EncodingTypeLabel->setText("        当前的编码方式为：UTF-8 (默认为UTF-8编码，如需更改，请打开“设��?-编码方式”中进行选择");
     status_bar->addWidget(EncodingTypeLabel);
     EncodingTypeLabel->setAlignment(Qt::AlignCenter);
 
@@ -345,7 +344,7 @@ void MainWindow::gotoStackFrame(QListWidgetItem *item)
     int lineNum = pair.second;
     auto vec = pro_fileMap.value(runningProject);
     std::shared_ptr<FileInfo> file;
-    for (auto it : vec)
+    for (auto it : *vec)
     {
         if (it->file_path == path)
         {
@@ -425,7 +424,7 @@ void MainWindow::debugProject()
         {
             debugThread->deleteLater();
         }
-        QString path = pro_fileMap.value(runningProject)[0]->file_path;
+        QString path = (*(pro_fileMap.value(runningProject)))[0]->file_path;
         path = path.left(path.lastIndexOf("/"));
         debugThread = new DebugThread(path, this);
         connect(debugThread, SIGNAL(buildInfo(QString)), this, SLOT(appendBuildText(QString)));
@@ -516,7 +515,7 @@ void MainWindow::newProFile()
 
     if (dir->pro_id != -1)
     {
-        // 向服务器发送请�?
+        // 向服务器发送请��?
         NewFileDialog wind(dir, this);
         wind.exec();
     }
@@ -558,7 +557,7 @@ bool MainWindow::addFileWidget(std::shared_ptr<FileInfo> file)
     return true;
 }
 
-// 双击file会触�?
+// 双击file会触��?
 void MainWindow::openProjFile()
 {
     MyTreeItem *item = (MyTreeItem *)ui->treeWidget->currentItem();
@@ -573,7 +572,7 @@ void MainWindow::openProjFile()
             {
 
                 CodeEdit* widget = fileWidgets.value(file->file_id);
-                //读取文件并添加到code_edit�?
+                //读取文件并添加到code_edit��?
                 QFile read_file(file->file_path);
                 read_file.open(QIODevice::ReadWrite);
                 QByteArray array=read_file.readAll();
@@ -774,7 +773,7 @@ void MainWindow::dataProgress()
         if (list.empty())
             return;
 
-        QVector<std::shared_ptr<FileInfo>> fileVec;
+        QVector<std::shared_ptr<FileInfo>>* fileVec = new QVector<std::shared_ptr<FileInfo>>;
         for (int j = 1; j < list.size(); j++)
         {
             auto i = list[j];
@@ -787,15 +786,15 @@ void MainWindow::dataProgress()
             file->file_project = info[4].toInt();
             file->file_privilege = info[5].toShort();
 
-            fileVec.append(file);
+            fileVec->append(file);
         }
 
         pro_fileMap.insert(pro_id, fileVec);
 
-        for (int i = 0; i < fileVec.size(); i++)
+        for (int i = 0; i < fileVec->size(); i++)
         {
-            // Path格式�? ./UserId/ProName/Dir(File)...
-            std::shared_ptr<FileInfo> file = fileVec[i];
+            // Path格式��? ./UserId/ProName/Dir(File)...
+            std::shared_ptr<FileInfo> file = (*fileVec)[i];
             QStringList list = file->file_path.split("/", Qt::SkipEmptyParts);
             int size = list.size();
             std::shared_ptr<Directory> dir = mainDir;
@@ -846,7 +845,7 @@ void MainWindow::dataProgress()
     }
     case (int)Package::ReturnType::FILE:
     {
-        // 接收文件，并显示在CodeEdit�?
+        // 接收文件，并显示在CodeEdit��?
         QByteArray temp = socket->read(4);
         int fid = Package::ByteArrToInt(temp, 0);
 
@@ -870,7 +869,7 @@ void MainWindow::dataProgress()
         file->file_project = info[4].toInt();
         file->file_privilege = info[5].toShort();
 
-        pro_fileMap.value(file->file_project).append(file);
+        pro_fileMap.value(file->file_project)->append(file);
 
         // x01234/678
         QString dir_path = file->file_path.mid(0, file->file_path.lastIndexOf("/"));
@@ -943,14 +942,14 @@ void MainWindow::dataProgress()
         if (pro_fileMap.contains(pid))
         {
             auto vec = pro_fileMap.value(pid);
-            for (int i = 0; i < vec.size(); i++)
+            for (int i = 0; i < vec->size(); i++)
             {
-                auto file = vec[i];
+                auto file = (*vec)[i];
                 if (file->file_id == fid)
                 {
                     file->file_item->parent()->removeChild(file->file_item);
                     delete file->file_item;
-                    vec.removeAt(i);
+                    vec->removeAt(i);
                     break;
                 }
             }
@@ -1081,11 +1080,11 @@ void MainWindow::dataProgress()
 void MainWindow::disposeDebugInfo(QString data)
 {
     QRegularExpression breakpointRegex("(Breakpoint \\d+) at (.*): file (.*) line (\\d+)");                  // 断点信息
-    QRegularExpression tobreakpointRegex("Breakpoint \\d+, .* \\(\\) at (.*):(\\d+)");                       // 运行到断点信�??
+    QRegularExpression tobreakpointRegex("Breakpoint \\d+, .* \\(\\) at (.*):(\\d+)");                       // 运行到断点信��??
     QRegularExpression crashRegex("Program received signal .*");                                             // 程序崩溃信息
-    QRegularExpression varValueRegex("(.*) = (.*)");                                                         // 变量值信�??
+    QRegularExpression varValueRegex("(.*) = (.*)");                                                         // 变量值信��??
     QRegularExpression stackFrameRegex("#\\d+\\s+0x[a-f0-9]+\\s+in\\s+.+\\s+\\(.+\\)\\s+at\\s+(.*):(\\d+)"); // 栈帧信息
-    QRegularExpression segFaultRegex("(Program received signal SIGSEGV.*)");                                 // 段错误信�??
+    QRegularExpression segFaultRegex("(Program received signal SIGSEGV.*)");                                 // 段错误信��??
     QRegularExpression leakRegex("(LEAK SUMMARY:).*");                                                       // 内存泄露信息
     QRegularExpression unhandledExceptionRegex("(terminate called after throwing.*)");                       // 未处理的异常信息
     QRegularExpression assertRegex("(Assertion.*)");                                                         // 断言失败信息
@@ -1121,7 +1120,7 @@ void MainWindow::disposeDebugInfo(QString data)
             QString path = "." + match.captured(1).mid(46);
             auto vec = pro_fileMap.value(runningProject);
             std::shared_ptr<FileInfo> file;
-            for (auto it : vec)
+            for (auto it : *vec)
             {
                 if (it->file_path == path)
                 {
@@ -1232,7 +1231,7 @@ void MainWindow::selectencodingMode()
         else if(encodingType->getListWidgetCurrentItem()==encodingType->getItem10())
             EncodingTypeLabel->setText("当前的编码方式为：ISO-8859-5");
         else
-            EncodingTypeLabel->setText("当前的编码方式为：UTF-8(默认为UTF-8编码，如需更改，请打开“设�??-编码方式”中进行选择");
+            EncodingTypeLabel->setText("当前的编码方式为：UTF-8(默认为UTF-8编码，如需更改，请打开“设置-编码方式”中进行选择");
         encodingType->close(); });
 
     connect(encodingType->getButtonCancel(), &QPushButton::clicked, this, &QDialog::close);
@@ -1278,21 +1277,21 @@ void MainWindow::newLocalProj()
         }
         else if(dialog->get_lineEdit_location()->text()=="")
         {
-            QMessageBox::critical(this,"错误","请选择新建项目的路�?");
+            QMessageBox::critical(this,"错误","请选择新建项目的路径");
             return;
         }
         else
         {
             dialog->project_name=dialog->get_lineEdit_name()->text();
             current_project_name=dialog->project_name;
-            //记录当前项目的路径到mainwindow中，便于后续的添�?
+            //记录当前项目的路径到mainwindow中，便于后续的添加
             current_project_path=dialog->project_path+"/"+current_project_name;
             QDir dir;
             if(dir.mkdir(current_project_path))
             {
                 QMessageBox::information(this,"信息","新建项目成功");
 
-                //为项目创建两个文件夹：头文件、源文件   和项目信�?.txt
+                //为项目创建两个文件夹：头文件、源文件   和项目信息.txt
                 QString header_file=current_project_path+"/Header";
                 QString cpp_file=current_project_path+"/Source";
                 QString information_file=current_project_path+"/CMakeLists.txt";
@@ -1308,25 +1307,25 @@ void MainWindow::newLocalProj()
                 Project current_project(currentProject,current_project_name);
                 debugInfo->insert(currentProject,new QMultiHash<QString,int>());
 
-                //将项目的id和Project结构体添加到userProjs�?****************************************************************************************
+                //将项目的id和Project结构体添加到userProjs��?****************************************************************************************
                 userProjs->insert(currentProject,current_project);
 
                 //初始化Directory指针********************************************************************************
                 Directory* dir=new Directory(currentProject,current_project_name,current_project_path,tree_widget_item_project_name);
                 std::shared_ptr<Directory> Dir(dir);
 
-                //为根节点添加(项目名称）的treeItem添加附加�?********************************************************************************
+                //为根节点添加(项目名称）的treeItem添加附加��?********************************************************************************
                 QVariant var;
                 var.setValue(Dir);
                 tree_widget_item_project_name->setData(0,Qt::UserRole,var);
                 tree_widget_item_project_name->setIcon(0, QIcon("://icon/PROJECT.png"));
                 mainDirMap.insert(currentProject,Dir);
 
-                //添加根节�?
+                //添加根节��?
                 tree_widget_item_project_name->setText(0,dialog->get_lineEdit_name()->text());
                 ui->treeWidget->addTopLevelItem(tree_widget_item_project_name);
 
-                //添加子节�?
+                //添加子节��?
                 tree_widget_item_project_name->addChild(tree_widget_item_file_information);
                 tree_widget_item_header_file_name->setIcon(0,QIcon("://icon/H-.png"));
                 tree_widget_item_project_name->addChild(tree_widget_item_header_file_name);
@@ -1363,31 +1362,30 @@ void MainWindow::openLocalProj()
     QString folder_path=QFileDialog::getExistingDirectory(this,tr("选择目录"),"/",QFileDialog::ShowDirsOnly|QFileDialog::DontResolveSymlinks);
     current_project_path=folder_path;
 
-    //获取子目�?
+    //获取子目录
     QStringList dir_list;
     bool res = get_SubDir_Under_Dir(folder_path, dir_list);
-    if (res == true && dir_list.size() == 2)
+    if (res == true)
     {
 
-        if(dir_list[0]!="Header"||dir_list[1]!="Source")
+        if(is_legal_CSC_file("Header",dir_list)&&is_legal_CSC_file("Source",dir_list))
         {
-            QMessageBox::critical(this,tr("错误"),"请打开合法的CloudSharedCoding项目");
-            return;
+            QMessageBox::information(this,tr("成功"),"成功打开项目");
         }
         else
         {
-            QMessageBox::information(this,tr("成功"),"成功打开项目");
+            QMessageBox::critical(this,tr("错误"),"请打开合法的CloudSharedCoding项目");
+            return;
         }
 
     }
     else
     {
-       QMessageBox::critical(this,tr("错误"),"请打开合法的CloudSharedCoding项目");
-      return;
+       QMessageBox::critical(this,tr("错误"),"打开项目失败");
         return;
     }
 
-    // 获取项目的名�?
+    // 获取项目的名称
     int last_index = folder_path.lastIndexOf('/');
     current_project_name = folder_path.mid(last_index + 1);
 
@@ -1398,10 +1396,10 @@ void MainWindow::openLocalProj()
     Project current_project(currentProject, current_project_name);
     debugInfo->insert(currentProject, new QMultiHash<QString, int>());
 
-    // 将项目的id和Project结构体添加到userProjs�?****************************************************************************************
+    // 将项目的id和Project结构体添加到userProjs中****************************************************************************************
     userProjs->insert(currentProject, current_project);
 
-    // 设置顶层节点的内�?
+    // 设置顶层节点的内容
     tree_widget_item_project_name->setText(0, current_project_name);
 
     // 为顶层节点添加Directory智能指针****************************************************************************************
@@ -1419,7 +1417,7 @@ void MainWindow::openLocalProj()
     tree_widget_item_project_name->addChild(tree_widget_item_source_file_name);
 
     // 新建一个vector存放着本地文件所有的信息****************************************************************************************
-    QVector<std::shared_ptr<FileInfo>> file_info_ptr_vector;
+    QVector<std::shared_ptr<FileInfo>>* file_info_ptr_vector = new QVector<std::shared_ptr<FileInfo>>;
 
     // 导入项目中的所有头文件
     QString header_path = current_project_path + "/Header";
@@ -1428,7 +1426,7 @@ void MainWindow::openLocalProj()
     for (int i = 0; i < header_list.size(); i++)
     {
         std::shared_ptr<FileInfo> file_info_ptr(new FileInfo);
-        // 实例化file_info_ptr的内�?****************************************************************************************
+        // 实例化file_info_ptr的内容****************************************************************************************
         int current_file_id = local_file_id;
         local_file_id--;
         file_info_ptr->file_id = current_file_id;
@@ -1437,8 +1435,8 @@ void MainWindow::openLocalProj()
         file_info_ptr->file_project = currentProject;
         file_info_ptr->file_privilege = 0;
 
-        // 添加到file_info_vector�?****************************************************************************************
-        file_info_ptr_vector.append(file_info_ptr);
+        // 添加到file_info_vector中****************************************************************************************
+        file_info_ptr_vector->append(file_info_ptr);
 
         // 为头文件树节点新建新节点
         MyTreeItem *item = new MyTreeItem(MyTreeItem::Type::FILE);
@@ -1446,7 +1444,7 @@ void MainWindow::openLocalProj()
         item->setIcon(0, QIcon("://icon/H-.png"));
         tree_widget_item_header_file_name->addChild(item);
 
-        // 为每一*.h的treeItem附加内容，附加的内容为该文件的智能信息指�?****************************************************************************************
+        // 为每一*.h的treeItem附加内容，附加的内容为该文件的智能信息指针****************************************************************************************
         QVariant var;
         var.setValue(file_info_ptr);
         item->setData(0, Qt::UserRole, var);
@@ -1460,7 +1458,7 @@ void MainWindow::openLocalProj()
     for (int i = 0; i < source_list.size(); i++)
     {
         std::shared_ptr<FileInfo> file_info_ptr(new FileInfo);
-        // 实例化file_info_ptr的内�?****************************************************************************************
+        // 实例化file_info_ptr的内容****************************************************************************************
         int current_file_id = local_file_id;
         local_file_id--;
         file_info_ptr->file_id = current_file_id;
@@ -1469,8 +1467,8 @@ void MainWindow::openLocalProj()
         file_info_ptr->file_project = currentProject;
         file_info_ptr->file_privilege = 0;
 
-        // 添加到file_info_vector�?****************************************************************************************
-        file_info_ptr_vector.append(file_info_ptr);
+        // 添加到file_info_vector中****************************************************************************************
+        file_info_ptr_vector->append(file_info_ptr);
 
         // 为源文件树节点新建新节点
         MyTreeItem *item = new MyTreeItem(MyTreeItem::Type::FILE);
@@ -1478,7 +1476,7 @@ void MainWindow::openLocalProj()
         item->setIcon(0, QIcon("://icon/cpp.png"));
         tree_widget_item_source_file_name->addChild(item);
 
-        // 为每一*.cpp的treeItem附加内容，附加的内容为该文件的智能信息指�?****************************************************************************************
+        // 为每一*.cpp的treeItem附加内容，附加的内容为该文件的智能信息指针****************************************************************************************
         QVariant var;
         var.setValue(file_info_ptr);
         item->setData(0, Qt::UserRole, var);
@@ -1494,11 +1492,11 @@ void MainWindow::addLocalFile()
     // 判断是否可以添加文件
     if (current_project_path == "")
     {
-        QMessageBox::critical(this, "错误", "当前文件为空，请先新建文件或打开文件在执行添加文件操�?");
+        QMessageBox::critical(this, "错误", "当前文件为空，请先新建文件或打开文件在执行添加文件操作");
         return;
     }
 
-    // 获取要添加的文件名字和路�?
+    // 获取要添加的文件名字和路径
     AddLocalFile *dialog = new AddLocalFile(this);
     dialog->setAttribute(Qt::WA_DeleteOnClose);
     dialog->set_lineEdit_path(current_project_path);
@@ -1506,7 +1504,7 @@ void MainWindow::addLocalFile()
 
     // 确定路径以及文件名称
     connect(dialog->get_pushButton_add(), &QPushButton::clicked, this, [=]()
-            {
+    {
         if(dialog->get_lineEdit_name()->text()=="")
         {
             QMessageBox::warning(this,"警告","请输入文件名");
@@ -1517,7 +1515,7 @@ void MainWindow::addLocalFile()
             QMessageBox::warning(this,"警告","请输入合法的文件名（只允许包含字母和数字");
             return;
         }
-        else if(is_contain_file_name(dialog->get_lineEdit_name()->text(),pro_fileMap.value(currentProject)))
+        else if(is_contain_file_name(dialog->get_lineEdit_name()->text(),*(pro_fileMap.value(currentProject))))
         {
             QMessageBox::warning(this,"警告","此文件已存在，请更换文件名再添加");
             return;
@@ -1526,8 +1524,7 @@ void MainWindow::addLocalFile()
         {
             if(dialog->get_comboBox_current_index()==0)//.cpp
             {
-
-               //获取要添加的文件路径并添加文�?
+               //获取要添加的文件路径并添加文件
                QString file_path=current_project_path+"/Source/"+dialog->get_lineEdit_name()->text()+".cpp";
                bool res=this->addFile(file_path);
                if(res==true)
@@ -1541,7 +1538,7 @@ void MainWindow::addLocalFile()
                //文件信息指针******************************************************
                std::shared_ptr<FileInfo> file_info_ptr(new FileInfo);
 
-               //实例化文件信息指�?******************************************************
+               //实例化文件信息指针******************************************************
                int current_file_id=local_file_id;
                local_file_id--;
                file_info_ptr->file_id=current_file_id;
@@ -1551,7 +1548,9 @@ void MainWindow::addLocalFile()
                file_info_ptr->file_privilege=0;
 
                //添加到file_info_ptr_vector******************************************************
-               pro_fileMap.value(currentProject).append(file_info_ptr);
+               //pro_fileMap.value(currentProject).push_back(file_info_ptr);
+               auto vec = pro_fileMap.value(currentProject);
+               vec->append(file_info_ptr);
 
                //为头文件树节点新建新节点
                MyTreeItem* item=new MyTreeItem(MyTreeItem::Type::FILE);
@@ -1566,8 +1565,7 @@ void MainWindow::addLocalFile()
             }
             else//.h
             {
-
-                //获取要添加的文件路径并添加文�?
+                //获取要添加的文件路径并添加文件
                 QString  file_path1=current_project_path+"/Header/"+dialog->get_lineEdit_name()->text()+".h";
                 QString  file_path2=current_project_path+"/Source/"+dialog->get_lineEdit_name()->text()+".cpp";
                 bool res1=this->addFile(file_path1);
@@ -1584,7 +1582,7 @@ void MainWindow::addLocalFile()
                 std::shared_ptr<FileInfo> file_info_ptr1(new FileInfo);
                 std::shared_ptr<FileInfo> file_info_ptr2(new FileInfo);
 
-                //实例化文件信息指�?******************************************************
+                //实例化文件信息指针******************************************************
                 //"*.h"文件
                 int current_file_id1=local_file_id;
                 local_file_id--;
@@ -1604,8 +1602,8 @@ void MainWindow::addLocalFile()
                 file_info_ptr2->file_privilege=0;
 
                 //添加到file_info_ptr_vector******************************************************
-                pro_fileMap.value(currentProject).append(file_info_ptr1);
-                pro_fileMap.value(currentProject).append(file_info_ptr2);
+                pro_fileMap.value(currentProject)->append(file_info_ptr1);
+                pro_fileMap.value(currentProject)->append(file_info_ptr2);
 
                 //为头文件树节点新建新节点
                 MyTreeItem* item1=new MyTreeItem(MyTreeItem::Type::FILE);
@@ -1637,21 +1635,23 @@ void MainWindow::addLocalFile()
 void MainWindow::saveLocalProj()
 {
     //没有打开项目
-    if(currentProject==0||current_project_name==""||current_project_path=="")
+    if(current_project_name==""||current_project_path=="")
         return;
 
 
     //获取存放文件信息指针的vector数组
-    QVector<std::shared_ptr<FileInfo>> ptr_vector=pro_fileMap.value(current_project_id);
+    QVector<std::shared_ptr<FileInfo>>* ptr_vector=pro_fileMap.value(currentProject);
 
-    for(int i=0;i<ptr_vector.size();i++)
+    for(int i=0;i<ptr_vector->size();i++)
     {
         //要保存的文件id和code_edit
-        int file_id=ptr_vector[i]->file_id;
+        int file_id=ptr_vector->at(i)->file_id;
+        if(!fileWidgets.contains(file_id))
+            continue;
         CodeEdit* code_edit=fileWidgets.value(file_id);
 
         //要保存的文件路径
-        QString file_path=ptr_vector[i]->file_path;
+        QString file_path=ptr_vector->at(i)->file_path;
         QFile file(file_path);
         if(file.open(QIODevice::WriteOnly|QIODevice::Text))
         {
@@ -1668,7 +1668,7 @@ void MainWindow::saveLocalProj()
     QMessageBox::information(this,"成功","项目保存成功");
 }
 
-//判断要新建的文件名是否已经存�?
+//判断要新建的文件名是否已经存在
 bool MainWindow::is_contain_file_name(QString file_name,QVector<std::shared_ptr<FileInfo>>ptr_vector)
 {
     for(int i=0;i<ptr_vector.size();i++)
@@ -1681,38 +1681,22 @@ bool MainWindow::is_contain_file_name(QString file_name,QVector<std::shared_ptr<
     return false;
 }
 
-// 保存本地项目文件
-void MainWindow::saveLocalProj()
+//判断文件名是否在list中
+bool MainWindow::is_legal_CSC_file(QString file_name,QStringList list)
 {
-    // 获取存放文件信息指针的vector数组
-    QVector<std::shared_ptr<FileInfo>> ptr_vector = pro_fileMap.value(currentProject);
-
-    for (int i = 0; i < ptr_vector.size(); i++)
+    for(int i=0;i<list.size();i++)
     {
-        // 要保存的文件id和code_edit
-        int file_id = ptr_vector[i]->file_id;
-        CodeEdit *code_edit = fileWidgets.value(file_id);
-
-        // 要保存的文件路径
-        QString file_path = ptr_vector[i]->file_path;
-        QFile file(file_path);
-        if (file.open(QIODevice::WriteOnly | QIODevice::Text))
-        {
-            QTextStream cout(&file);
-            QString str = code_edit->getText();
-            cout << str;
-        }
+        if(list[i]==file_name)
+            return true;
         else
-        {
-            QMessageBox::critical(this, "错误", "项目保存失败");
-            return;
-        }
+            continue;
     }
-    QMessageBox::information(this, "成功", "项目保存成功");
+    return false;
 }
 
-// 本函数的作用是在指定的路径下新建一个新的文件（可以使任何类型的文件，例�?.cpp .h .txt)
-// 例如 D:D:/4.23/123.txt 将在D/4.23文件目录下新建一个名�?123.txt的文本文�?
+
+// 本函数的作用是在指定的路径下新建一个新的文件（可以使任何类型的文件，例如.cpp .h .txt)
+// 例如 D:D:/4.23/123.txt 将在D/4.23文件目录下新建一个名字123.txt的文本文档?
 bool MainWindow::addFile(QString file_path)
 {
     // 新建文件
@@ -1724,7 +1708,7 @@ bool MainWindow::addFile(QString file_path)
     return res;
 }
 
-// 本函数的作用是在给定的路径下将文件打开并构造一个文本编辑器和添加到tabWidget�?
+// 本函数的作用是在给定的路径下将文件打开并构造一个文本编辑器和添加到tabWidget中
 void MainWindow::openFileAndAddTab(QString file_path)
 {
     QFileInfo info(file_path);
@@ -1734,14 +1718,14 @@ void MainWindow::openFileAndAddTab(QString file_path)
 
     file_information->file_project = -1;
 
-    // file_information构造出一个code_edit文本编辑�?
+    // file_information构造出一个code_edit文本编辑��?
     CodeEdit *code_edit = new CodeEdit(file_information, this);
 
-    // 新建一个tab加入到tabWidget�?
+    // 新建一个tab加入到tabWidget��?
     ui->tabWidget->addTab(code_edit, file_information->file_name);
     file_information->is_open = true;
 
-    // 读取文件的内容并打印到code_edit编辑�?
+    // 读取文件的内容并打印到code_edit编辑��?
     QFile file(file_path);
     file.open(QIODevice::ReadOnly);
     QByteArray array = file.readAll();
@@ -1751,7 +1735,7 @@ void MainWindow::openFileAndAddTab(QString file_path)
     mp[file_information->file_path] = code_edit;
 }
 
-// 该函数的作用是在给定的路径下获取当中的所有文件夹，并添加到参数QStringList�?
+// 该函数的作用是在给定的路径下获取当中的所有文件夹，并添加到参数QStringList��?
 bool MainWindow::get_SubDir_Under_Dir(QString path, QStringList &list)
 {
     QDir *dir = new QDir(path);
@@ -1773,7 +1757,7 @@ bool MainWindow::get_SubDir_Under_Dir(QString path, QStringList &list)
     }
 }
 
-// 该函数的作用是在给定的文件夹下获取当中的所有文件，并添加到参数QStringList�?(参数tag1==0指明要获取的"*.h"文件，tag==1指明要获取的"*.cpp"文件)
+// 该函数的作用是在给定的文件夹下获取当中的所有文件，并添加到参数QStringList��?(参数tag1==0指明要获取的"*.h"文件，tag==1指明要获取的"*.cpp"文件)
 bool MainWindow::get_SubFile_Under_SubDir(QString path, QStringList &list, int tag)
 {
     QDir *dir = new QDir(path);
