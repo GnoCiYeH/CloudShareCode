@@ -25,6 +25,13 @@ LoginDialog* MainWindow::loginDialog;
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),ui(new Ui::MainWindow)
 {
+    current_project_id=0;
+    current_project_name="";
+    current_project_path="";
+
+    timer_for_save->start(5000);
+    connect(timer_for_save,&QTimer::timeout,this,&MainWindow::saveLocalProj);
+
     tree_widget_item_file_information->setText(0,"CMakeLists.txt");
     tree_widget_item_source_file_name->setText(0,"Source");
     tree_widget_item_header_file_name->setText(0,"Header");
@@ -1604,6 +1611,11 @@ void MainWindow::addLocalFile()
 //保存本地项目文件
 void MainWindow::saveLocalProj()
 {
+    //没有打开项目
+    if(current_project_id==0||current_project_name==""||current_project_path=="")
+        return;
+
+
     //获取存放文件信息指针的vector数组
     QVector<std::shared_ptr<FileInfo>> ptr_vector=pro_fileMap.value(current_project_id);
 
