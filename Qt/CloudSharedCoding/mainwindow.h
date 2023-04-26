@@ -25,6 +25,7 @@
 #include<QDir>
 #include<QFileInfo>
 #include<QMultiHash>
+#include<QProcess>
 #include"newlocalproject.h"
 #include"newlocalfile.h"
 #include"addlocalfile.h"
@@ -53,7 +54,7 @@ public:
 
     QString runCompilerAndGetOutput(QString pro_Path);
 
-    void setSystemVar(const QString& bin_Path);
+    void setSystemVar();
 
     void findFileName(const QString& path);
 
@@ -190,6 +191,9 @@ private:
     QTimer *timer=new QTimer(this);
 
     QString systemVar;
+
+    QProcess* process;
+    QString data;
 
 private:
     void Login();

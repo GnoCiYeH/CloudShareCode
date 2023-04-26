@@ -298,7 +298,13 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionAdd_Cloud_File,&QAction::triggered,this,[=](){QFileDialog::getOpenFileName(this,"添加文件","C:/Users");});
     //connect(ui->add_file_action,&QAction::triggered,this,[=](){QFileDialog::getOpenFileName(this,"添加文件","C:/Users");});
 
-    setSystemVar("D:\\mingw64\\bin");
+    process=new QProcess(this);
+    connect(process,&QProcess::readyReadStandardOutput,this,[&]()mutable{
+        this->data+=QString(process->readAllStandardOutput());
+    });
+
+
+    setSystemVar();
     findFileName(systemVar);
 }
 
@@ -1626,6 +1632,17 @@ void MainWindow::findFileName(const QString& path){
     }
 }
 
-void MainWindow::setSystemVar(const QString&bin_Path ){
-    this->systemVar=bin_Path;
+void MainWindow::setSystemVar(){
+    process->setProgram("g++");
+    process->setNativeArguments(" -v -E -x c++ -");
+    process->setProcessChannelMode(QProcess::MergedChannels);
+    process->start();
+    process->waitForStarted();
+    process->waitForFinished();
+    QRegularExpression includePath=QRegularExpression("(\\w:.*include).c\\+\\+");
+    auto match=includePath.match(data,0);
+    systemVar=match.captured();
+    QString b=systemVar;
+    QString c=data;
+    int a=0;
 }
