@@ -386,14 +386,14 @@ void TcpServer::newProject(int sock_fd, char* data)
         std::fstream fileStream(path + "/CMakeLists.txt", std::ios::out | std::ios::in | std::ios::trunc);
         if (fileStream.is_open())
         {
+            fileStream << "cmake_minimum_required(VERSION 3.9)\n";
             fileStream << "project(" << proName << ")\n";
-            fileStream << "add_definitions(\" - Wall - g\")\n";
             fileStream << "set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)\n";
             fileStream << "set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)\n";
             fileStream << "set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)\n";
             fileStream << "SET(CMAKE_BUILD_TYPE \"Debug\")\n";
-            fileStream << "SET(CMAKE_CXX_FLAGS_DEBUG \"$ENV{ CXXFLAGS } - O0 - Wall - g2 - ggdb\")\n";
-            fileStream << "SET(CMAKE_CXX_FLAGS_RELEASE \"$ENV{ CXXFLAGS } - O3 - Wall\")\n";
+            fileStream << "SET(CMAKE_CXX_FLAGS_DEBUG \"$ENV{ CXXFLAGS } -O0 -Wall -g2 -ggdb\")\n";
+            fileStream << "SET(CMAKE_CXX_FLAGS_RELEASE \"$ENV{ CXXFLAGS } -O3 -Wall\")\n";
             fileStream << "add_executable(" << proName << " ${SOURCES})\n";
             fileStream.close();
         }

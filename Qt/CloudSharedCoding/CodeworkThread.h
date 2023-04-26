@@ -6,45 +6,52 @@
 #include<QProcess>
 
 
-class RunThread : public QThread
+class RunThread : public QObject
 {
     Q_OBJECT
 public:
     explicit RunThread(QString path,QObject *parent = nullptr);
     ~RunThread();
-
+    void run();
+    void writeStdin(QString);
 signals:
     void buildInfo(QString);
+    void buildFinish();
+    void runFinish(int);
     void stdOut(QString);
 private:
     QString workPath;
     QString proName;
+
+    void make();
+    void exe();
 protected:
-    void run()override;
     QProcess* cmakeProcess;
     QProcess* makefileProcess;
-    QProcess* findExecProcess;
     QProcess* runProcess;
 };
 
-class DebugThread : public QThread
+class DebugThread : public QObject
 {
     Q_OBJECT
 public:
     explicit DebugThread(QString path,QObject *parent = nullptr);
     ~DebugThread();
-
+    void run();
+    void writeGdbOrStdin(QString);
 signals:
     void buildInfo(QString);
+    void buildFinish();
     void debugInfo(QString);
+    void debugFinish(int);
 private:
     QString workPath;
     QString proName;
+    void make();
+    void exe();
 protected:
-    void run()override;
     QProcess* cmakeProcess;
     QProcess* makefileProcess;
-    QProcess* findExecProcess;
     QProcess* debugProcess;
 };
 
