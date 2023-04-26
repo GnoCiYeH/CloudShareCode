@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+#include"mainwindow.h"
 #include "ui_mainwindow.h"
 #include "myhelper.h"
 #include "projectform.h"
@@ -18,16 +18,23 @@ QString MainWindow::userId = "";
 QHash<int, QMultiHash<QString, int> *> *MainWindow::debugInfo = new QHash<int, QMultiHash<QString, int> *>();
 bool MainWindow::isLogin = false;
 
-QStringList *MainWindow::fileName = new QStringList();
-int MainWindow::local_project_id = -1; // 静态变量的定义
-int MainWindow::local_file_id = -1;    // 静态变量的定义
-LoginDialog *MainWindow::loginDialog;
+QStringList* MainWindow::fileName = new QStringList();
+int MainWindow::local_project_id=-1;//静态变量的定义
+int MainWindow::local_file_id=-1;//静态变量的定义
+LoginDialog* MainWindow::loginDialog;
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),ui(new Ui::MainWindow)
 {
-    tree_widget_item_file_information->setText(0, "CMakeLists.txt");
-    tree_widget_item_source_file_name->setText(0, "Source");
-    tree_widget_item_header_file_name->setText(0, "Header");
+    current_project_id=0;
+    current_project_name="";
+    current_project_path="";
+
+    //timer_for_save->start(5000);
+    //connect(timer_for_save,&QTimer::timeout,this,&MainWindow::saveLocalProj);
+
+    tree_widget_item_file_information->setText(0,"CMakeLists.txt");
+    tree_widget_item_source_file_name->setText(0,"Source");
+    tree_widget_item_header_file_name->setText(0,"Header");
 
     ui->setupUi(this);
     settingWind = new SettingForm(this);
@@ -565,12 +572,12 @@ void MainWindow::openProjFile()
             if (addFileWidget(file))
             {
 
-                CodeEdit *widget = fileWidgets.value(file->file_id);
-                // 读取文件并添加到code_edit�?
+                CodeEdit* widget = fileWidgets.value(file->file_id);
+                //读取文件并添加到code_edit�?
                 QFile read_file(file->file_path);
                 read_file.open(QIODevice::ReadWrite);
-                QByteArray array = read_file.readAll();
-                qDebug() << array;
+                QByteArray array=read_file.readAll();
+                qDebug()<<array;
                 widget->addText(array);
             }
         }
@@ -672,11 +679,12 @@ void MainWindow::Login()
 {
     loginDialog->setAttribute(Qt::WA_DeleteOnClose);
 
-    connect(loginDialog, &LoginDialog::loginAllowded, [=]() mutable
-            {
+
+    connect(loginDialog,&LoginDialog::loginAllowded,[=]()mutable{
         loginDialog->deleteLater();
         isLogin = true;
-        userId = loginDialog->userID; });
+        userId = loginDialog->userID;
+    });
 
     loginDialog->exec();
 }
@@ -746,6 +754,7 @@ void MainWindow::dataProgress()
     {
         QString data(socket->read(packageSize));
         QStringList list = data.split("\n", Qt::SkipEmptyParts);
+
 
         QStringList proInfo = list[0].split("\t");
         int pro_id = proInfo[0].toInt();
@@ -1243,12 +1252,25 @@ void MainWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int colu
 // 新建本地项目
 void MainWindow::newLocalProj()
 {
+    // 把之前项目中的树节点删除
+    int header_count = tree_widget_item_header_file_name->childCount();
+    for (int i = 0; i < header_count; i++)
+    {
+        delete tree_widget_item_header_file_name->child(0);
+    }
+
+    int source_count=tree_widget_item_source_file_name->childCount();
+    for (int i = 0; i < source_count; i++)
+    {
+        delete tree_widget_item_source_file_name->child(0);
+    }
+
     NewLocalProject *dialog = new NewLocalProject(this);
     dialog->setAttribute(Qt::WA_DeleteOnClose);
     dialog->show();
     // 新建按钮
     connect(dialog->get_pushButton_new(), &QPushButton::clicked, this, [=]()
-            {
+    {
         if(dialog->get_lineEdit_name()->text()=="")
         {
             QMessageBox::critical(this,"错误","请输入项目名");
@@ -1316,13 +1338,13 @@ void MainWindow::newLocalProj()
                 QMessageBox::critical(this,"错误","新建项目失败");
             }
             dialog->close();
-        } });
+        }
+    });
 }
 
 // 打开本地项目文件
 void MainWindow::openLocalProj()
 {
-
     // 把之前项目中的树节点删除
     int header_count = tree_widget_item_header_file_name->childCount();
     for (int i = 0; i < header_count; i++)
@@ -1330,39 +1352,42 @@ void MainWindow::openLocalProj()
         delete tree_widget_item_header_file_name->child(0);
     }
 
-    int source_count = tree_widget_item_source_file_name->childCount();
+    int source_count=tree_widget_item_source_file_name->childCount();
     for (int i = 0; i < source_count; i++)
     {
         delete tree_widget_item_source_file_name->child(0);
     }
 
-    // 获取文件夹的目录
-    QString folder_path = QFileDialog::getExistingDirectory(this, tr("选择目录"), "/", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
-    current_project_path = folder_path;
 
+    //获取文件夹的目录
+    QString folder_path=QFileDialog::getExistingDirectory(this,tr("选择目录"),"/",QFileDialog::ShowDirsOnly|QFileDialog::DontResolveSymlinks);
+    current_project_path=folder_path;
+
+    //获取子目�?
     QStringList dir_list;
     bool res = get_SubDir_Under_Dir(folder_path, dir_list);
     if (res == true && dir_list.size() == 2)
     {
 
-        if (dir_list[0] != "Header" || dir_list[1] != "Source")
+        if(dir_list[0]!="Header"||dir_list[1]!="Source")
         {
-            QMessageBox::critical(this, tr("错误"), "请打开合法的CloudSharedCoding项目");
+            QMessageBox::critical(this,tr("错误"),"请打开合法的CloudSharedCoding项目");
             return;
         }
         else
         {
-            QMessageBox::information(this, tr("成功"), "成功打开项目");
+            QMessageBox::information(this,tr("成功"),"成功打开项目");
         }
+
     }
     else
     {
-        QMessageBox::critical(this, tr("错误"), "请打开合法的CloudSharedCoding项目");
-        return;
+       QMessageBox::critical(this,tr("错误"),"请打开合法的CloudSharedCoding项目");
+      return;
         return;
     }
 
-    // 获取项目的名
+    // 获取项目的名�?
     int last_index = folder_path.lastIndexOf('/');
     current_project_name = folder_path.mid(last_index + 1);
 
@@ -1427,8 +1452,9 @@ void MainWindow::openLocalProj()
         item->setData(0, Qt::UserRole, var);
     }
 
-    // 导入项目中的所有源文件
-    QString source_path = current_project_path + "/Source";
+
+    //导入项目中的所有源文件
+    QString source_path=current_project_path+"/Source";
     QStringList source_list;
     get_SubFile_Under_SubDir(source_path, source_list, 1);
     for (int i = 0; i < source_list.size(); i++)
@@ -1511,8 +1537,6 @@ void MainWindow::addLocalFile()
                    QMessageBox::information(this,"失败","添加文件失败");
                    return;
                }
-
-
 
                //文件信息指针******************************************************
                std::shared_ptr<FileInfo> file_info_ptr(new FileInfo);
@@ -1605,14 +1629,51 @@ void MainWindow::addLocalFile()
                 item2->setData(0,Qt::UserRole,var2);
             }
             dialog->close();
-        } });
+        }
+    });
 }
 
-bool MainWindow::is_contain_file_name(QString file_name, QVector<std::shared_ptr<FileInfo>> ptr_vector)
+//保存本地项目文件
+void MainWindow::saveLocalProj()
 {
-    for (int i = 0; i < ptr_vector.size(); i++)
+    //没有打开项目
+    if(currentProject==0||current_project_name==""||current_project_path=="")
+        return;
+
+
+    //获取存放文件信息指针的vector数组
+    QVector<std::shared_ptr<FileInfo>> ptr_vector=pro_fileMap.value(current_project_id);
+
+    for(int i=0;i<ptr_vector.size();i++)
     {
-        if (file_name + ".h" == ptr_vector[i]->file_name || file_name + ".cpp" == ptr_vector[i]->file_name)
+        //要保存的文件id和code_edit
+        int file_id=ptr_vector[i]->file_id;
+        CodeEdit* code_edit=fileWidgets.value(file_id);
+
+        //要保存的文件路径
+        QString file_path=ptr_vector[i]->file_path;
+        QFile file(file_path);
+        if(file.open(QIODevice::WriteOnly|QIODevice::Text))
+        {
+            QTextStream cout(&file);
+            QString str=code_edit->getText();
+            cout<<str;
+        }
+        else
+        {
+            QMessageBox::critical(this,"错误","项目保存失败");
+            return;
+        }
+    }
+    QMessageBox::information(this,"成功","项目保存成功");
+}
+
+//判断要新建的文件名是否已经存�?
+bool MainWindow::is_contain_file_name(QString file_name,QVector<std::shared_ptr<FileInfo>>ptr_vector)
+{
+    for(int i=0;i<ptr_vector.size();i++)
+    {
+        if(file_name+".h"==ptr_vector[i]->file_name||file_name+".cpp"==ptr_vector[i]->file_name)
             return true;
         else
             continue;

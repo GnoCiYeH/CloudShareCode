@@ -138,7 +138,7 @@ private:
     QString serverIP = "192.168.239.129";
     quint16 mainPort = 9098;
 
-    // 子窗��?
+    // 子窗口
     SettingForm *settingWind;
     QDockWidget *buildDock;
     QTextEdit *buildDockwidget;
@@ -223,10 +223,14 @@ private:
     QString current_project_path; // 记录当前项目的路径（根路径)
     QString current_project_name; // 记录当前项目的名字
 
+    //四个树节点
     MyTreeItem *tree_widget_item_project_name = new MyTreeItem(MyTreeItem::Type::PROJECT);
     MyTreeItem *tree_widget_item_file_information = new MyTreeItem(MyTreeItem::Type::DIR);
     MyTreeItem *tree_widget_item_header_file_name = new MyTreeItem(MyTreeItem::Type::DIR);
     MyTreeItem *tree_widget_item_source_file_name = new MyTreeItem(MyTreeItem::Type::DIR);
+
+    //自动保存计时器
+    QTimer* timer_for_save=new QTimer(this);
 };
 
 #endif // MAINWINDOW_H

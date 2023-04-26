@@ -1874,6 +1874,45 @@ debug\moc_mainwindow.cpp: ..\CloudSharedCoding\mainwindow.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtablewidget.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtableview.h \
 		ui_mainwindow.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QAction \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QApplication \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qeventloop.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication_platform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfutureinterface.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmutex.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtsan_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qresultstore.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthreadpool.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthread.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdeadlinetimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qelapsedtimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qrunnable.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qexception.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpromise.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qinputmethod.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication_platform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QDockWidget \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qdockwidget.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QGridLayout \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qgridlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayoutitem.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qboxlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QHeaderView \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qheaderview.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QMenu \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qmenu.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QMenuBar \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qmenubar.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTabWidget \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTreeWidget \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QVBoxLayout \
+		..\CloudSharedCoding\welcomewind.h \
 		..\CloudSharedCoding\switchingencodingmode.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QRadioButton \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qradiobutton.h \
@@ -1882,47 +1921,29 @@ debug\moc_mainwindow.cpp: ..\CloudSharedCoding\mainwindow.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qpushbutton.h \
 		..\CloudSharedCoding\codeedit.h \
 		ui_codeedit.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTextEdit \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QHBoxLayout \
+		..\CloudSharedCoding\codedocedit.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QPlainTextEdit \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qplaintextedit.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtextedit.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextoption.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextcursor.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextformat.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpen.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QSyntaxHighlighter \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qsyntaxhighlighter.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextobject.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qabstracttextdocumentlayout.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextlayout.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qglyphrun.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qrawfont.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qfontdatabase.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QTextBlock \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextobject.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTextEdit \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QSyntaxHighlighter \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qsyntaxhighlighter.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QTextCharFormat \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QRegularExpression \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QThread \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthread.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdeadlinetimer.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qelapsedtimer.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QMutex \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmutex.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtsan_impl.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QPlainTextEdit \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qplaintextedit.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qabstracttextdocumentlayout.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QApplication \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qapplication.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qeventloop.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication_platform.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfutureinterface.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qresultstore.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture_impl.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthreadpool.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qrunnable.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qexception.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpromise.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qinputmethod.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication_platform.h \
 		..\CloudSharedCoding\useredittip.h \
 		..\CloudSharedCoding\settingform.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QListWidgetItem \
@@ -1945,7 +1966,6 @@ debug\moc_mainwindow.cpp: ..\CloudSharedCoding\mainwindow.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlineedit.h \
 		..\CloudSharedCoding\newlocalfile.h \
 		..\CloudSharedCoding\addlocalfile.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTreeWidget \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QMovie \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qmovie.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qimagereader.h \
@@ -1968,10 +1988,9 @@ debug\moc_mainwindow.cpp: ..\CloudSharedCoding\mainwindow.h \
 
 debug\moc_codeedit.cpp: ..\CloudSharedCoding\codeedit.h \
 		ui_codeedit.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QWidget \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qwidget.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtwidgetsglobal.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtguiglobal.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QVariant \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qvariant.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qatomic.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qglobal.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtversionchecks.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qconfig.h \
@@ -1993,10 +2012,6 @@ debug\moc_codeedit.cpp: ..\CloudSharedCoding\codeedit.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qlogging.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qflags.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcompare_impl.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qatomic.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qbasicatomic.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qatomic_cxx11.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qgenericatomic.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qconstructormacros.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdarwinhelpers.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qexceptionhandling.h \
@@ -2014,22 +2029,14 @@ debug\moc_codeedit.cpp: ..\CloudSharedCoding\codeedit.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtresource.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qttranslation.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qversiontagging.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtgui-config.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtguiexports.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtwidgets-config.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtwidgetsexports.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qwindowdefs.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qobjectdefs.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qnamespace.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtmetamacros.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qobjectdefs_impl.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qwindowdefs_win.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qobject.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qstring.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qchar.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qstringview.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qbasicatomic.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qatomic_cxx11.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qgenericatomic.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmetatype.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qbytearray.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qrefcount.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qnamespace.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtmetamacros.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qarraydata.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpair.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qarraydatapointer.h \
@@ -2039,6 +2046,17 @@ debug\moc_codeedit.cpp: ..\CloudSharedCoding\codeedit.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qbytearrayalgorithms.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qbytearrayview.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qstringfwd.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcompare.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdatastream.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qscopedpointer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qiodevicebase.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfloat16.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmath.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qalgorithms.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qhashfunctions.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qstring.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qchar.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qstringview.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qstringliteral.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qstringalgorithms.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qutf8stringview.h \
@@ -2046,70 +2064,100 @@ debug\moc_codeedit.cpp: ..\CloudSharedCoding\codeedit.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\q20type_traits.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qstringtokenizer.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qstringbuilder.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qlist.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qhashfunctions.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qiterator.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qbytearraylist.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qstringlist.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qalgorithms.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qstringmatcher.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreevent.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qscopedpointer.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmetatype.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcompare.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdatastream.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qiodevicebase.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfloat16.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmath.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qiterable.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmetacontainer.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcontainerinfo.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtaggedpointer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qobjectdefs.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qobjectdefs_impl.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qscopeguard.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qobject_impl.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qbindingstorage.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmargins.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qaction.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qkeysequence.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qicon.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qsize.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpixmap.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpaintdevice.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qrect.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpoint.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qcolor.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qrgb.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qrgba64.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdebug.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtextstream.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qstringconverter_base.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcontiguouscache.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qsharedpointer.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qshareddata.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qsharedpointer_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qlist.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qiterator.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qbytearraylist.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qstringlist.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qstringmatcher.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmap.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qshareddata_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qset.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qhash.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qvarlengtharray.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qobject.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreevent.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qobject_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qbindingstorage.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QApplication \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtwidgetsglobal.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtguiglobal.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtgui-config.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtguiexports.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtwidgets-config.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtwidgetsexports.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qeventloop.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qnativeinterface.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication_platform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfutureinterface.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmutex.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtsan_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qresultstore.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthreadpool.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthread.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdeadlinetimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qelapsedtimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qrunnable.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qexception.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpointer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpromise.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qwindowdefs.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qwindowdefs_win.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpoint.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qsize.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmargins.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qcursor.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qbitmap.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpixmap.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpaintdevice.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qrect.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qcolor.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qrgb.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qrgba64.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qimage.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpixelformat.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtransform.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpolygon.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qregion.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qline.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qvariant.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdebug.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtextstream.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qstringconverter_base.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcontiguouscache.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmap.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qshareddata_impl.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qset.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qhash.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qvarlengtharray.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qinputmethod.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qlocale.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication_platform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QHBoxLayout \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qboxlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayoutitem.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qsizepolicy.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qgridlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qwidget.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qaction.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qkeysequence.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qicon.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpalette.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qbrush.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qfont.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qfontmetrics.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qfontinfo.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qsizepolicy.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qcursor.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qbitmap.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qevent.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qiodevice.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpointer.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qurl.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qeventpoint.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qvector2d.h \
@@ -2123,8 +2171,10 @@ debug\moc_codeedit.cpp: ..\CloudSharedCoding\codeedit.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QSize \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QSizeF \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QTransform \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qnativeinterface.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTextEdit \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QWidget \
+		..\CloudSharedCoding\codedocedit.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QPlainTextEdit \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qplaintextedit.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtextedit.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractscrollarea.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qframe.h \
@@ -2133,23 +2183,41 @@ debug\moc_codeedit.cpp: ..\CloudSharedCoding\codeedit.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextcursor.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextformat.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpen.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QSyntaxHighlighter \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qsyntaxhighlighter.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextobject.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qabstracttextdocumentlayout.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextlayout.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qglyphrun.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qrawfont.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qfontdatabase.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QTextBlock \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextobject.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QSet \
+		..\CloudSharedCoding\InfoType.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QString \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTreeWidgetItem \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtreewidget.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtreeview.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractitemview.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qabstractitemmodel.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qitemselectionmodel.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractitemdelegate.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qstyleoption.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractspinbox.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qvalidator.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qregularexpression.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qslider.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractslider.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qstyle.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtabbar.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtabwidget.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qrubberband.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtreewidgetitemiterator.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTextEdit \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QSyntaxHighlighter \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qsyntaxhighlighter.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QTextCharFormat \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QRegularExpression \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qregularexpression.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QThread \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthread.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdeadlinetimer.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qelapsedtimer.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QMutex \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmutex.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtsan_impl.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtNetwork\QTcpSocket \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtNetwork\qtcpsocket.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtNetwork\qtnetworkglobal.h \
@@ -2160,48 +2228,7 @@ debug\moc_codeedit.cpp: ..\CloudSharedCoding\codeedit.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QListWidget \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlistwidget.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlistview.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractitemview.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qabstractitemmodel.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qitemselectionmodel.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractitemdelegate.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qstyleoption.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qlocale.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractspinbox.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qvalidator.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qslider.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractslider.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qstyle.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtabbar.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtabwidget.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qrubberband.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QPlainTextEdit \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qplaintextedit.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qabstracttextdocumentlayout.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QApplication \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qapplication.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qeventloop.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication_platform.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfutureinterface.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qresultstore.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture_impl.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthreadpool.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qrunnable.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qexception.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpromise.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qinputmethod.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication_platform.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QHash \
-		..\CloudSharedCoding\InfoType.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QString \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QVariant \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTreeWidgetItem \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtreewidget.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtreeview.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtreewidgetitemiterator.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QSet \
 		..\CloudSharedCoding\useredittip.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QTimer \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtimer.h \
@@ -3098,6 +3125,65 @@ debug\moc_newprojectdialog.cpp: ..\CloudSharedCoding\newprojectdialog.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QTransform \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qnativeinterface.h \
 		ui_newprojectdialog.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QVariant \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QApplication \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qeventloop.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication_platform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfutureinterface.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmutex.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtsan_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qresultstore.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthreadpool.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthread.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdeadlinetimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qelapsedtimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qrunnable.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qexception.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpromise.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qinputmethod.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qlocale.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication_platform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QComboBox \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qcombobox.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractitemdelegate.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qstyleoption.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractspinbox.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qvalidator.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qregularexpression.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qslider.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractslider.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qstyle.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtabbar.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtabwidget.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qrubberband.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qframe.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qabstractitemmodel.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QGridLayout \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qgridlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayoutitem.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qboxlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QHBoxLayout \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QLabel \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlabel.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpicture.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextdocument.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QLineEdit \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlineedit.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextcursor.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextformat.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpen.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextoption.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QPushButton \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qpushbutton.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractbutton.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QSpacerItem \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QWidget \
 		debug\moc_predefs.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\bin\moc.exe
 	D:\Qt\6.5.0\msvc2019_64\bin\moc.exe $(DEFINES) --compiler-flavor=msvc --include D:/CSC/Qt/build-CloudSharedCoding-Desktop_Qt_6_5_0_MSVC2019_64bit-Debug/debug/moc_predefs.h -ID:/Qt/6.5.0/msvc2019_64/mkspecs/win32-msvc -ID:/CSC/Qt/CloudSharedCoding -ID:/Qt/6.5.0/msvc2019_64/include -ID:/Qt/6.5.0/msvc2019_64/include/QtWidgets -ID:/Qt/6.5.0/msvc2019_64/include/QtGui -ID:/Qt/6.5.0/msvc2019_64/include/QtCore5Compat -ID:/Qt/6.5.0/msvc2019_64/include/QtNetwork -ID:/Qt/6.5.0/msvc2019_64/include/QtCore -I. -I"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\ATLMFC\include" -I"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\include" -I"C:\Program Files (x86)\Windows Kits\10\include\10.0.22621.0\ucrt" -I"C:\Program Files (x86)\Windows Kits\10\\include\10.0.22621.0\\shared" -I"C:\Program Files (x86)\Windows Kits\10\\include\10.0.22621.0\\um" -I"C:\Program Files (x86)\Windows Kits\10\\include\10.0.22621.0\\winrt" -I"C:\Program Files (x86)\Windows Kits\10\\include\10.0.22621.0\\cppwinrt" ..\CloudSharedCoding\newprojectdialog.h -o debug\moc_newprojectdialog.cpp
@@ -4561,6 +4647,45 @@ ui_cloudsharedcoding.h: ..\CloudSharedCoding\cloudsharedcoding.ui \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtablewidget.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtableview.h \
 		ui_mainwindow.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QAction \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QApplication \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qeventloop.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication_platform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfutureinterface.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmutex.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtsan_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qresultstore.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthreadpool.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthread.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdeadlinetimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qelapsedtimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qrunnable.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qexception.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpromise.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qinputmethod.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication_platform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QDockWidget \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qdockwidget.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QGridLayout \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qgridlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayoutitem.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qboxlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QHeaderView \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qheaderview.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QMenu \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qmenu.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QMenuBar \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qmenubar.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTabWidget \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTreeWidget \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QVBoxLayout \
+		..\CloudSharedCoding\welcomewind.h \
 		..\CloudSharedCoding\switchingencodingmode.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QRadioButton \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qradiobutton.h \
@@ -4569,47 +4694,29 @@ ui_cloudsharedcoding.h: ..\CloudSharedCoding\cloudsharedcoding.ui \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qpushbutton.h \
 		..\CloudSharedCoding\codeedit.h \
 		ui_codeedit.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTextEdit \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QHBoxLayout \
+		..\CloudSharedCoding\codedocedit.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QPlainTextEdit \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qplaintextedit.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtextedit.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextoption.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextcursor.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextformat.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpen.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QSyntaxHighlighter \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qsyntaxhighlighter.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextobject.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qabstracttextdocumentlayout.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextlayout.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qglyphrun.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qrawfont.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qfontdatabase.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QTextBlock \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextobject.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTextEdit \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QSyntaxHighlighter \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qsyntaxhighlighter.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QTextCharFormat \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QRegularExpression \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QThread \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthread.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdeadlinetimer.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qelapsedtimer.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QMutex \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmutex.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtsan_impl.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QPlainTextEdit \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qplaintextedit.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qabstracttextdocumentlayout.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QApplication \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qapplication.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qeventloop.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication_platform.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfutureinterface.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qresultstore.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture_impl.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthreadpool.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qrunnable.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qexception.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpromise.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qinputmethod.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication_platform.h \
 		..\CloudSharedCoding\useredittip.h \
 		..\CloudSharedCoding\settingform.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QListWidgetItem \
@@ -4632,7 +4739,6 @@ ui_cloudsharedcoding.h: ..\CloudSharedCoding\cloudsharedcoding.ui \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlineedit.h \
 		..\CloudSharedCoding\newlocalfile.h \
 		..\CloudSharedCoding\addlocalfile.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTreeWidget \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QMovie \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qmovie.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qimagereader.h \
@@ -5356,7 +5462,53 @@ debug\addlocalfile.obj: ..\CloudSharedCoding\addlocalfile.cpp ..\CloudSharedCodi
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextformat.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpen.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextoption.h \
-		ui_addlocalfile.h
+		ui_addlocalfile.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QVariant \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QApplication \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qeventloop.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication_platform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfutureinterface.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmutex.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtsan_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qresultstore.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthreadpool.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthread.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdeadlinetimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qelapsedtimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qrunnable.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qexception.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpromise.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qinputmethod.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication_platform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QComboBox \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qcombobox.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractitemdelegate.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qstyleoption.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractspinbox.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qvalidator.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qregularexpression.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qslider.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractslider.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qstyle.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtabbar.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtabwidget.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qrubberband.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qabstractitemmodel.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QGridLayout \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qgridlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayoutitem.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qboxlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QLabel \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlabel.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpicture.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QSpacerItem \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QWidget
 
 debug\cloudsharedcoding.obj: ..\CloudSharedCoding\cloudsharedcoding.cpp ..\CloudSharedCoding\cloudsharedcoding.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QWidget \
@@ -5516,7 +5668,182 @@ debug\cloudsharedcoding.obj: ..\CloudSharedCoding\cloudsharedcoding.cpp ..\Cloud
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QTransform \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qnativeinterface.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QMouseEvent \
-		ui_cloudsharedcoding.h
+		ui_cloudsharedcoding.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QVariant \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QIcon \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QApplication \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qeventloop.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication_platform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfutureinterface.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmutex.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtsan_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qresultstore.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthreadpool.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthread.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdeadlinetimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qelapsedtimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qrunnable.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qexception.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpromise.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qinputmethod.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qlocale.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication_platform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QHBoxLayout \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qboxlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayoutitem.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qgridlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QLabel \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlabel.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qframe.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpicture.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextdocument.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QSpacerItem \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QToolButton \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtoolbutton.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractbutton.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QVBoxLayout \
+		..\CloudSharedCoding\mainwindow.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QMainWindow \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qmainwindow.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtabwidget.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtNetwork\QTcpSocket \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtNetwork\qtcpsocket.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtNetwork\qtnetworkglobal.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtNetwork\qtnetwork-config.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtNetwork\qtnetworkexports.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtNetwork\qabstractsocket.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtNetwork\qhostaddress.h \
+		..\CloudSharedCoding\logindialog.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QDialog \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qdialog.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QMessageBox \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qmessagebox.h \
+		..\CloudSharedCoding\projectform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QListWidget \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlistwidget.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlistview.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractitemview.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractscrollarea.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qabstractitemmodel.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qitemselectionmodel.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractitemdelegate.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qstyleoption.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractspinbox.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qvalidator.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qregularexpression.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qslider.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractslider.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qstyle.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtabbar.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qrubberband.h \
+		..\CloudSharedCoding\InfoType.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QString \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTreeWidgetItem \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtreewidget.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtreeview.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtreewidgetitemiterator.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QSet \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QVector \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qvector.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QHash \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QStatusBar \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qstatusbar.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QTimer \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qbasictimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QDateTime \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdatetime.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcalendar.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTableWidget \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtablewidget.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtableview.h \
+		ui_mainwindow.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QAction \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QDockWidget \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qdockwidget.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QGridLayout \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QHeaderView \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qheaderview.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QMenu \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qmenu.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QMenuBar \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qmenubar.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTabWidget \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTreeWidget \
+		..\CloudSharedCoding\welcomewind.h \
+		..\CloudSharedCoding\switchingencodingmode.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QRadioButton \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qradiobutton.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QPushButton \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qpushbutton.h \
+		..\CloudSharedCoding\codeedit.h \
+		ui_codeedit.h \
+		..\CloudSharedCoding\codedocedit.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QPlainTextEdit \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qplaintextedit.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtextedit.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextoption.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextcursor.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextformat.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpen.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qabstracttextdocumentlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qglyphrun.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qrawfont.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qfontdatabase.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QTextBlock \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextobject.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTextEdit \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QSyntaxHighlighter \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qsyntaxhighlighter.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QTextCharFormat \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QRegularExpression \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QThread \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QMutex \
+		..\CloudSharedCoding\useredittip.h \
+		..\CloudSharedCoding\settingform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QListWidgetItem \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QQueue \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qqueue.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QSettings \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qsettings.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QFileDialog \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qfiledialog.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdir.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfile.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfiledevice.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfileinfo.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QFile \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QFileInfo \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QDir \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QMultiHash \
+		..\CloudSharedCoding\newlocalproject.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QLineEdit \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlineedit.h \
+		..\CloudSharedCoding\newlocalfile.h \
+		..\CloudSharedCoding\addlocalfile.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QMovie \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qmovie.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qimagereader.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qimageiohandler.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qplugin.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qjsonobject.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qjsonvalue.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcborvalue.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcborcommon.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\quuid.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\q20algorithm.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\q20functional.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfactoryinterface.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QProcess \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qprocess.h \
+		..\CloudSharedCoding\CodeworkThread.h
 
 debug\codedocedit.obj: ..\CloudSharedCoding\codedocedit.cpp ..\CloudSharedCoding\codedocedit.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QPlainTextEdit \
@@ -5752,6 +6079,45 @@ debug\codedocedit.obj: ..\CloudSharedCoding\codedocedit.cpp ..\CloudSharedCoding
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtablewidget.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtableview.h \
 		ui_mainwindow.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QAction \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QApplication \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qeventloop.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication_platform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfutureinterface.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmutex.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtsan_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qresultstore.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthreadpool.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthread.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdeadlinetimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qelapsedtimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qrunnable.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qexception.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpromise.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qinputmethod.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication_platform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QDockWidget \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qdockwidget.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QGridLayout \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qgridlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayoutitem.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qboxlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QHeaderView \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qheaderview.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QMenu \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qmenu.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QMenuBar \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qmenubar.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTabWidget \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTreeWidget \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QVBoxLayout \
+		..\CloudSharedCoding\welcomewind.h \
 		..\CloudSharedCoding\switchingencodingmode.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QRadioButton \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qradiobutton.h \
@@ -5760,34 +6126,14 @@ debug\codedocedit.obj: ..\CloudSharedCoding\codedocedit.cpp ..\CloudSharedCoding
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qpushbutton.h \
 		..\CloudSharedCoding\codeedit.h \
 		ui_codeedit.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QHBoxLayout \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTextEdit \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QSyntaxHighlighter \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qsyntaxhighlighter.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QTextCharFormat \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QRegularExpression \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QThread \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthread.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdeadlinetimer.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qelapsedtimer.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QMutex \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmutex.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtsan_impl.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QApplication \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qapplication.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qeventloop.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication_platform.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfutureinterface.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qresultstore.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture_impl.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthreadpool.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qrunnable.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qexception.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpromise.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qinputmethod.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication_platform.h \
 		..\CloudSharedCoding\useredittip.h \
 		..\CloudSharedCoding\settingform.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QListWidgetItem \
@@ -5810,7 +6156,6 @@ debug\codedocedit.obj: ..\CloudSharedCoding\codedocedit.cpp ..\CloudSharedCoding
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlineedit.h \
 		..\CloudSharedCoding\newlocalfile.h \
 		..\CloudSharedCoding\addlocalfile.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTreeWidget \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QMovie \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qmovie.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qimagereader.h \
@@ -6013,6 +6358,39 @@ debug\codethemeitem.obj: ..\CloudSharedCoding\codethemeitem.cpp ..\CloudSharedCo
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtreewidgetitemiterator.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QSet \
 		ui_codethemeitem.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QApplication \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qeventloop.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication_platform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfutureinterface.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmutex.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtsan_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qresultstore.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthreadpool.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthread.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdeadlinetimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qelapsedtimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qrunnable.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qexception.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpromise.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qinputmethod.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication_platform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QHBoxLayout \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qboxlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayoutitem.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qgridlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QLabel \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlabel.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpicture.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextdocument.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QPushButton \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qpushbutton.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractbutton.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QColorDialog \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qcolordialog.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qdialog.h
@@ -6417,6 +6795,45 @@ debug\mainwindow.obj: ..\CloudSharedCoding\mainwindow.cpp ..\CloudSharedCoding\m
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtablewidget.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtableview.h \
 		ui_mainwindow.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QAction \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QApplication \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qeventloop.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication_platform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfutureinterface.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmutex.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtsan_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qresultstore.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthreadpool.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthread.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdeadlinetimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qelapsedtimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qrunnable.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qexception.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpromise.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qinputmethod.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication_platform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QDockWidget \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qdockwidget.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QGridLayout \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qgridlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayoutitem.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qboxlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QHeaderView \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qheaderview.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QMenu \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qmenu.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QMenuBar \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qmenubar.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTabWidget \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTreeWidget \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QVBoxLayout \
+		..\CloudSharedCoding\welcomewind.h \
 		..\CloudSharedCoding\switchingencodingmode.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QRadioButton \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qradiobutton.h \
@@ -6425,47 +6842,29 @@ debug\mainwindow.obj: ..\CloudSharedCoding\mainwindow.cpp ..\CloudSharedCoding\m
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qpushbutton.h \
 		..\CloudSharedCoding\codeedit.h \
 		ui_codeedit.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTextEdit \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QHBoxLayout \
+		..\CloudSharedCoding\codedocedit.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QPlainTextEdit \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qplaintextedit.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtextedit.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextoption.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextcursor.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextformat.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpen.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QSyntaxHighlighter \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qsyntaxhighlighter.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextobject.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qabstracttextdocumentlayout.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextlayout.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qglyphrun.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qrawfont.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qfontdatabase.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QTextBlock \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextobject.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTextEdit \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QSyntaxHighlighter \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qsyntaxhighlighter.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QTextCharFormat \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QRegularExpression \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QThread \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthread.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdeadlinetimer.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qelapsedtimer.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QMutex \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmutex.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtsan_impl.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QPlainTextEdit \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qplaintextedit.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qabstracttextdocumentlayout.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QApplication \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qapplication.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qeventloop.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication_platform.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfutureinterface.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qresultstore.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture_impl.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthreadpool.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qrunnable.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qexception.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpromise.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qinputmethod.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication_platform.h \
 		..\CloudSharedCoding\useredittip.h \
 		..\CloudSharedCoding\settingform.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QListWidgetItem \
@@ -6488,7 +6887,6 @@ debug\mainwindow.obj: ..\CloudSharedCoding\mainwindow.cpp ..\CloudSharedCoding\m
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlineedit.h \
 		..\CloudSharedCoding\newlocalfile.h \
 		..\CloudSharedCoding\addlocalfile.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTreeWidget \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QMovie \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qmovie.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qimagereader.h \
@@ -6688,13 +7086,8 @@ debug\mainwindow.obj: ..\CloudSharedCoding\mainwindow.cpp ..\CloudSharedCoding\m
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QtWidgetsDepends \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qaccessiblewidget.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qaction.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QAction \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qactiongroup.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QActionGroup \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qboxlayout.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayout.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayoutitem.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qgridlayout.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qbuttongroup.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qcalendarwidget.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qcheckbox.h \
@@ -6709,7 +7102,6 @@ debug\mainwindow.obj: ..\CloudSharedCoding\mainwindow.cpp ..\CloudSharedCoding\m
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qdatetimeedit.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qdial.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qdialogbuttonbox.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qdockwidget.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qdrawutil.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qerrormessage.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qfileiconprovider.h \
@@ -6740,7 +7132,6 @@ debug\mainwindow.obj: ..\CloudSharedCoding\mainwindow.cpp ..\CloudSharedCoding\m
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qgraphicsview.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qscrollarea.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qgroupbox.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qheaderview.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qinputdialog.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qitemdelegate.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qitemeditorfactory.h \
@@ -6748,8 +7139,6 @@ debug\mainwindow.obj: ..\CloudSharedCoding\mainwindow.cpp ..\CloudSharedCoding\m
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlcdnumber.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qmdiarea.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qmdisubwindow.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qmenu.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qmenubar.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qprogressbar.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qprogressdialog.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qproxystyle.h \
@@ -6789,16 +7178,17 @@ debug\mainwindow.obj: ..\CloudSharedCoding\mainwindow.cpp ..\CloudSharedCoding\m
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QByteArray \
 		..\CloudSharedCoding\newprojectdialog.h \
 		ui_newprojectdialog.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QComboBox \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QSpacerItem \
 		..\CloudSharedCoding\newfiledialog.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QPoint \
 		..\CloudSharedCoding\privilegemanager.h
 
 debug\codeedit.obj: ..\CloudSharedCoding\codeedit.cpp ..\CloudSharedCoding\codeedit.h \
 		ui_codeedit.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QWidget \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qwidget.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtwidgetsglobal.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtguiglobal.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QVariant \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qvariant.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qatomic.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qglobal.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtversionchecks.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qconfig.h \
@@ -6820,10 +7210,6 @@ debug\codeedit.obj: ..\CloudSharedCoding\codeedit.cpp ..\CloudSharedCoding\codee
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qlogging.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qflags.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcompare_impl.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qatomic.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qbasicatomic.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qatomic_cxx11.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qgenericatomic.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qconstructormacros.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdarwinhelpers.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qexceptionhandling.h \
@@ -6841,22 +7227,14 @@ debug\codeedit.obj: ..\CloudSharedCoding\codeedit.cpp ..\CloudSharedCoding\codee
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtresource.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qttranslation.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qversiontagging.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtgui-config.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtguiexports.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtwidgets-config.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtwidgetsexports.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qwindowdefs.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qobjectdefs.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qnamespace.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtmetamacros.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qobjectdefs_impl.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qwindowdefs_win.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qobject.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qstring.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qchar.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qstringview.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qbasicatomic.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qatomic_cxx11.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qgenericatomic.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmetatype.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qbytearray.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qrefcount.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qnamespace.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtmetamacros.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qarraydata.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpair.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qarraydatapointer.h \
@@ -6866,6 +7244,17 @@ debug\codeedit.obj: ..\CloudSharedCoding\codeedit.cpp ..\CloudSharedCoding\codee
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qbytearrayalgorithms.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qbytearrayview.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qstringfwd.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcompare.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdatastream.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qscopedpointer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qiodevicebase.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfloat16.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmath.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qalgorithms.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qhashfunctions.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qstring.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qchar.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qstringview.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qstringliteral.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qstringalgorithms.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qutf8stringview.h \
@@ -6873,70 +7262,100 @@ debug\codeedit.obj: ..\CloudSharedCoding\codeedit.cpp ..\CloudSharedCoding\codee
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\q20type_traits.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qstringtokenizer.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qstringbuilder.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qlist.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qhashfunctions.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qiterator.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qbytearraylist.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qstringlist.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qalgorithms.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qstringmatcher.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreevent.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qscopedpointer.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmetatype.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcompare.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdatastream.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qiodevicebase.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfloat16.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmath.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qiterable.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmetacontainer.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcontainerinfo.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtaggedpointer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qobjectdefs.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qobjectdefs_impl.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qscopeguard.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qobject_impl.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qbindingstorage.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmargins.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qaction.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qkeysequence.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qicon.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qsize.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpixmap.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpaintdevice.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qrect.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpoint.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qcolor.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qrgb.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qrgba64.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdebug.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtextstream.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qstringconverter_base.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcontiguouscache.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qsharedpointer.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qshareddata.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qsharedpointer_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qlist.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qiterator.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qbytearraylist.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qstringlist.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qstringmatcher.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmap.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qshareddata_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qset.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qhash.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qvarlengtharray.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qobject.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreevent.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qobject_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qbindingstorage.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QApplication \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtwidgetsglobal.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtguiglobal.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtgui-config.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtguiexports.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtwidgets-config.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtwidgetsexports.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qeventloop.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qnativeinterface.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication_platform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfutureinterface.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmutex.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtsan_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qresultstore.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthreadpool.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthread.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdeadlinetimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qelapsedtimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qrunnable.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qexception.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpointer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpromise.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qwindowdefs.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qwindowdefs_win.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpoint.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qsize.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmargins.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qcursor.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qbitmap.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpixmap.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpaintdevice.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qrect.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qcolor.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qrgb.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qrgba64.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qimage.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpixelformat.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtransform.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpolygon.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qregion.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qline.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qvariant.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdebug.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtextstream.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qstringconverter_base.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcontiguouscache.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmap.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qshareddata_impl.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qset.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qhash.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qvarlengtharray.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qinputmethod.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qlocale.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication_platform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QHBoxLayout \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qboxlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayoutitem.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qsizepolicy.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qgridlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qwidget.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qaction.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qkeysequence.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qicon.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpalette.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qbrush.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qfont.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qfontmetrics.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qfontinfo.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qsizepolicy.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qcursor.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qbitmap.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qevent.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qiodevice.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpointer.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qurl.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qeventpoint.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qvector2d.h \
@@ -6950,8 +7369,10 @@ debug\codeedit.obj: ..\CloudSharedCoding\codeedit.cpp ..\CloudSharedCoding\codee
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QSize \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QSizeF \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QTransform \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qnativeinterface.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTextEdit \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QWidget \
+		..\CloudSharedCoding\codedocedit.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QPlainTextEdit \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qplaintextedit.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtextedit.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractscrollarea.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qframe.h \
@@ -6960,23 +7381,41 @@ debug\codeedit.obj: ..\CloudSharedCoding\codeedit.cpp ..\CloudSharedCoding\codee
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextcursor.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextformat.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpen.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QSyntaxHighlighter \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qsyntaxhighlighter.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextobject.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qabstracttextdocumentlayout.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextlayout.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qglyphrun.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qrawfont.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qfontdatabase.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QTextBlock \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextobject.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QSet \
+		..\CloudSharedCoding\InfoType.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QString \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTreeWidgetItem \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtreewidget.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtreeview.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractitemview.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qabstractitemmodel.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qitemselectionmodel.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractitemdelegate.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qstyleoption.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractspinbox.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qvalidator.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qregularexpression.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qslider.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractslider.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qstyle.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtabbar.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtabwidget.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qrubberband.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtreewidgetitemiterator.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTextEdit \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QSyntaxHighlighter \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qsyntaxhighlighter.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QTextCharFormat \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QRegularExpression \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qregularexpression.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QThread \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthread.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdeadlinetimer.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qelapsedtimer.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QMutex \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmutex.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtsan_impl.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtNetwork\QTcpSocket \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtNetwork\qtcpsocket.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtNetwork\qtnetworkglobal.h \
@@ -6987,54 +7426,11 @@ debug\codeedit.obj: ..\CloudSharedCoding\codeedit.cpp ..\CloudSharedCoding\codee
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QListWidget \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlistwidget.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlistview.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractitemview.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qabstractitemmodel.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qitemselectionmodel.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractitemdelegate.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qstyleoption.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qlocale.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractspinbox.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qvalidator.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qslider.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractslider.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qstyle.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtabbar.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtabwidget.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qrubberband.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QPlainTextEdit \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qplaintextedit.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qabstracttextdocumentlayout.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QApplication \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qapplication.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qeventloop.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication_platform.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfutureinterface.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qresultstore.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture_impl.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthreadpool.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qrunnable.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qexception.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpromise.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qinputmethod.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication_platform.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QHash \
-		..\CloudSharedCoding\InfoType.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QString \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QVariant \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTreeWidgetItem \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtreewidget.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtreeview.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtreewidgetitemiterator.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QSet \
 		..\CloudSharedCoding\useredittip.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QTimer \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtimer.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qbasictimer.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpainter.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qscrollbar.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QKeyEvent \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QDebug \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore5Compat\QRegExp \
@@ -7066,6 +7462,20 @@ debug\codeedit.obj: ..\CloudSharedCoding\codeedit.cpp ..\CloudSharedCoding\codee
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtablewidget.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtableview.h \
 		ui_mainwindow.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QAction \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QDockWidget \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qdockwidget.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QGridLayout \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QHeaderView \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qheaderview.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QMenu \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qmenu.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QMenuBar \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qmenubar.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTabWidget \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTreeWidget \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QVBoxLayout \
+		..\CloudSharedCoding\welcomewind.h \
 		..\CloudSharedCoding\switchingencodingmode.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QRadioButton \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qradiobutton.h \
@@ -7093,7 +7503,6 @@ debug\codeedit.obj: ..\CloudSharedCoding\codeedit.cpp ..\CloudSharedCoding\codee
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlineedit.h \
 		..\CloudSharedCoding\newlocalfile.h \
 		..\CloudSharedCoding\addlocalfile.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTreeWidget \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QMovie \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qmovie.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qimagereader.h \
@@ -7279,6 +7688,50 @@ debug\logindialog.obj: ..\CloudSharedCoding\logindialog.cpp ..\CloudSharedCoding
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QMessageBox \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qmessagebox.h \
 		ui_logindialog.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QVariant \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QApplication \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qeventloop.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication_platform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfutureinterface.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmutex.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtsan_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qresultstore.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthreadpool.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthread.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdeadlinetimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qelapsedtimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qrunnable.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qexception.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpromise.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qinputmethod.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qlocale.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication_platform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QGridLayout \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qgridlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayoutitem.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qboxlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QLabel \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlabel.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qframe.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpicture.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextdocument.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QLineEdit \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlineedit.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextcursor.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextformat.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpen.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextoption.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QPushButton \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qpushbutton.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractbutton.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QSpacerItem \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QWidget \
 		..\CloudSharedCoding\myhelper.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore5Compat\QtCore5Compat \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore5Compat\QtCore5CompatDepends \
@@ -7291,28 +7744,12 @@ debug\logindialog.obj: ..\CloudSharedCoding\logindialog.cpp ..\CloudSharedCoding
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\q23functional.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qabstractanimation.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qabstracteventdispatcher.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qeventloop.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qabstractitemmodel.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qabstractnativeeventfilter.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qabstractproxymodel.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qanimationgroup.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qapplicationstatic.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QMutex \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmutex.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtsan_impl.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication_platform.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfutureinterface.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qresultstore.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture_impl.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthreadpool.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthread.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdeadlinetimer.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qelapsedtimer.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qrunnable.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qexception.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpromise.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qassociativeiterable.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qbasictimer.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qbitarray.h \
@@ -7320,7 +7757,6 @@ debug\logindialog.obj: ..\CloudSharedCoding\logindialog.cpp ..\CloudSharedCoding
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qbytearraymatcher.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcache.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcalendar.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qlocale.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcborarray.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcborvalue.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdatetime.h \
@@ -7411,7 +7847,6 @@ debug\logindialog.obj: ..\CloudSharedCoding\logindialog.cpp ..\CloudSharedCoding
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qurlquery.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qvarianthash.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QHash \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QVariant \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QString \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qvariantlist.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qvariantmap.h \
@@ -7442,11 +7877,6 @@ debug\logindialog.obj: ..\CloudSharedCoding\logindialog.cpp ..\CloudSharedCoding
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qglyphrun.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qrawfont.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qfontdatabase.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextcursor.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextdocument.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextformat.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpen.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextoption.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qaccessible.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qaccessible_base.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qaccessiblebridge.h \
@@ -7468,9 +7898,6 @@ debug\logindialog.obj: ..\CloudSharedCoding\logindialog.cpp ..\CloudSharedCoding
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qgenericmatrix.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qgenericplugin.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qgenericpluginfactory.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qinputmethod.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication_platform.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qiconengine.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qiconengineplugin.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qimageiohandler.h \
@@ -7502,7 +7929,6 @@ debug\logindialog.obj: ..\CloudSharedCoding\logindialog.cpp ..\CloudSharedCoding
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpainter.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpainterpath.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpdfwriter.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpicture.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpixmapcache.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qrasterwindow.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QPaintDeviceWindow \
@@ -7525,7 +7951,6 @@ debug\logindialog.obj: ..\CloudSharedCoding\logindialog.cpp ..\CloudSharedCoding
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qwindowsmimeconverter.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QtWidgets \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QtWidgetsDepends \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractbutton.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractitemdelegate.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qstyleoption.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractspinbox.h \
@@ -7535,7 +7960,6 @@ debug\logindialog.obj: ..\CloudSharedCoding\logindialog.cpp ..\CloudSharedCoding
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtabbar.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtabwidget.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qrubberband.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qframe.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractitemview.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractscrollarea.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qaccessiblewidget.h \
@@ -7543,11 +7967,6 @@ debug\logindialog.obj: ..\CloudSharedCoding\logindialog.cpp ..\CloudSharedCoding
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QAction \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qactiongroup.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QActionGroup \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qapplication.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qboxlayout.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayout.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayoutitem.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qgridlayout.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qbuttongroup.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qcalendarwidget.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qcheckbox.h \
@@ -7556,7 +7975,6 @@ debug\logindialog.obj: ..\CloudSharedCoding\logindialog.cpp ..\CloudSharedCoding
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qcolumnview.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qcombobox.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qcommandlinkbutton.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qpushbutton.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qcommonstyle.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qcompleter.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qdatawidgetmapper.h \
@@ -7597,11 +8015,9 @@ debug\logindialog.obj: ..\CloudSharedCoding\logindialog.cpp ..\CloudSharedCoding
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qgroupbox.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qheaderview.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qinputdialog.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlineedit.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qitemdelegate.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qitemeditorfactory.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qkeysequenceedit.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlabel.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlcdnumber.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlistview.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlistwidget.h \
@@ -7659,7 +8075,6 @@ debug\logindialog.obj: ..\CloudSharedCoding\logindialog.cpp ..\CloudSharedCoding
 		..\CloudSharedCoding\mainwindow.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QMainWindow \
 		..\CloudSharedCoding\projectform.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QWidget \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QListWidget \
 		..\CloudSharedCoding\InfoType.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTreeWidgetItem \
@@ -7667,22 +8082,30 @@ debug\logindialog.obj: ..\CloudSharedCoding\logindialog.cpp ..\CloudSharedCoding
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QVector \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QStatusBar \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QTimer \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QLabel \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QDateTime \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTableWidget \
 		ui_mainwindow.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QDockWidget \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QHeaderView \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QMenu \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QMenuBar \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTabWidget \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTreeWidget \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QVBoxLayout \
+		..\CloudSharedCoding\welcomewind.h \
 		..\CloudSharedCoding\switchingencodingmode.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QRadioButton \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QPushButton \
 		..\CloudSharedCoding\codeedit.h \
 		ui_codeedit.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QHBoxLayout \
+		..\CloudSharedCoding\codedocedit.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QPlainTextEdit \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QTextBlock \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTextEdit \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QSyntaxHighlighter \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QTextCharFormat \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QRegularExpression \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QThread \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QPlainTextEdit \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QApplication \
 		..\CloudSharedCoding\useredittip.h \
 		..\CloudSharedCoding\settingform.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QListWidgetItem \
@@ -7694,10 +8117,8 @@ debug\logindialog.obj: ..\CloudSharedCoding\logindialog.cpp ..\CloudSharedCoding
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QDir \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QMultiHash \
 		..\CloudSharedCoding\newlocalproject.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QLineEdit \
 		..\CloudSharedCoding\newlocalfile.h \
 		..\CloudSharedCoding\addlocalfile.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTreeWidget \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QMovie \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QProcess \
 		..\CloudSharedCoding\CodeworkThread.h
@@ -7886,6 +8307,50 @@ debug\newfiledialog.obj: ..\CloudSharedCoding\newfiledialog.cpp ..\CloudSharedCo
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtreewidgetitemiterator.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QSet \
 		ui_newfiledialog.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QApplication \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qeventloop.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication_platform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfutureinterface.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmutex.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtsan_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qresultstore.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthreadpool.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthread.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdeadlinetimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qelapsedtimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qrunnable.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qexception.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpromise.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qinputmethod.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication_platform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QComboBox \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qcombobox.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QGridLayout \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qgridlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayoutitem.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qboxlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QHBoxLayout \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QLabel \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlabel.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpicture.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextdocument.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QLineEdit \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlineedit.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextcursor.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextformat.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpen.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextoption.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QPushButton \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qpushbutton.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractbutton.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QSpacerItem \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QWidget \
 		..\CloudSharedCoding\mainwindow.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QMainWindow \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qmainwindow.h \
@@ -7900,7 +8365,6 @@ debug\newfiledialog.obj: ..\CloudSharedCoding\newfiledialog.cpp ..\CloudSharedCo
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QMessageBox \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qmessagebox.h \
 		..\CloudSharedCoding\projectform.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QWidget \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QListWidget \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlistwidget.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlistview.h \
@@ -7912,10 +8376,6 @@ debug\newfiledialog.obj: ..\CloudSharedCoding\newfiledialog.cpp ..\CloudSharedCo
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QTimer \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtimer.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qbasictimer.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QLabel \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlabel.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpicture.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextdocument.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QDateTime \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdatetime.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcalendar.h \
@@ -7923,55 +8383,42 @@ debug\newfiledialog.obj: ..\CloudSharedCoding\newfiledialog.cpp ..\CloudSharedCo
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtablewidget.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtableview.h \
 		ui_mainwindow.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QAction \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QDockWidget \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qdockwidget.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QHeaderView \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qheaderview.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QMenu \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qmenu.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QMenuBar \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qmenubar.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTabWidget \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTreeWidget \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QVBoxLayout \
+		..\CloudSharedCoding\welcomewind.h \
 		..\CloudSharedCoding\switchingencodingmode.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QRadioButton \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qradiobutton.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractbutton.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QPushButton \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qpushbutton.h \
 		..\CloudSharedCoding\codeedit.h \
 		ui_codeedit.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTextEdit \
+		..\CloudSharedCoding\codedocedit.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QPlainTextEdit \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qplaintextedit.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtextedit.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextoption.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextcursor.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextformat.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpen.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QSyntaxHighlighter \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qsyntaxhighlighter.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextobject.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qabstracttextdocumentlayout.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextlayout.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qglyphrun.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qrawfont.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qfontdatabase.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QTextBlock \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextobject.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTextEdit \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QSyntaxHighlighter \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qsyntaxhighlighter.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QTextCharFormat \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QRegularExpression \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QThread \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthread.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdeadlinetimer.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qelapsedtimer.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QMutex \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmutex.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtsan_impl.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QPlainTextEdit \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qplaintextedit.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qabstracttextdocumentlayout.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QApplication \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qapplication.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qeventloop.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication_platform.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfutureinterface.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qresultstore.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture_impl.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthreadpool.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qrunnable.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qexception.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpromise.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qinputmethod.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication_platform.h \
 		..\CloudSharedCoding\useredittip.h \
 		..\CloudSharedCoding\settingform.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QListWidgetItem \
@@ -7990,11 +8437,8 @@ debug\newfiledialog.obj: ..\CloudSharedCoding\newfiledialog.cpp ..\CloudSharedCo
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QDir \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QMultiHash \
 		..\CloudSharedCoding\newlocalproject.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QLineEdit \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlineedit.h \
 		..\CloudSharedCoding\newlocalfile.h \
 		..\CloudSharedCoding\addlocalfile.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTreeWidget \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QMovie \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qmovie.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qimagereader.h \
@@ -8197,6 +8641,37 @@ debug\newlocalfile.obj: ..\CloudSharedCoding\newlocalfile.cpp ..\CloudSharedCodi
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextoption.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QString \
 		ui_newlocalfile.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QVariant \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QApplication \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qeventloop.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication_platform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfutureinterface.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmutex.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtsan_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qresultstore.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthreadpool.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthread.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdeadlinetimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qelapsedtimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qrunnable.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qexception.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpromise.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qinputmethod.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication_platform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QGridLayout \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qgridlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayoutitem.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qboxlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QLabel \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlabel.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpicture.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QSpacerItem \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QDebug
 
 debug\newlocalproject.obj: ..\CloudSharedCoding\newlocalproject.cpp ..\CloudSharedCoding\newlocalproject.h \
@@ -8381,6 +8856,38 @@ debug\newlocalproject.obj: ..\CloudSharedCoding\newlocalproject.cpp ..\CloudShar
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpen.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextoption.h \
 		ui_newlocalproject.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QVariant \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QApplication \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qeventloop.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication_platform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfutureinterface.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmutex.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtsan_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qresultstore.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthreadpool.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthread.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdeadlinetimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qelapsedtimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qrunnable.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qexception.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpromise.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qinputmethod.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication_platform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QGridLayout \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qgridlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayoutitem.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qboxlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QLabel \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlabel.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpicture.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QSpacerItem \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QWidget \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QDebug
 
 debug\newprojectdialog.obj: ..\CloudSharedCoding\newprojectdialog.cpp ..\CloudSharedCoding\newprojectdialog.h \
@@ -8542,10 +9049,68 @@ debug\newprojectdialog.obj: ..\CloudSharedCoding\newprojectdialog.cpp ..\CloudSh
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QTransform \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qnativeinterface.h \
 		ui_newprojectdialog.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QVariant \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QApplication \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qeventloop.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication_platform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfutureinterface.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmutex.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtsan_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qresultstore.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthreadpool.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthread.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdeadlinetimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qelapsedtimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qrunnable.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qexception.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpromise.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qinputmethod.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qlocale.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication_platform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QComboBox \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qcombobox.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractitemdelegate.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qstyleoption.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractspinbox.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qvalidator.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qregularexpression.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qslider.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractslider.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qstyle.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtabbar.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtabwidget.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qrubberband.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qframe.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qabstractitemmodel.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QGridLayout \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qgridlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayoutitem.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qboxlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QHBoxLayout \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QLabel \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlabel.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpicture.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextdocument.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QLineEdit \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlineedit.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextcursor.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextformat.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpen.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextoption.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QPushButton \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qpushbutton.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractbutton.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QSpacerItem \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QWidget \
 		..\CloudSharedCoding\mainwindow.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QMainWindow \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qmainwindow.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtabwidget.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtNetwork\QTcpSocket \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtNetwork\qtcpsocket.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtNetwork\qtnetworkglobal.h \
@@ -8557,29 +9122,14 @@ debug\newprojectdialog.obj: ..\CloudSharedCoding\newprojectdialog.cpp ..\CloudSh
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QMessageBox \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qmessagebox.h \
 		..\CloudSharedCoding\projectform.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QWidget \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QListWidget \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlistwidget.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlistview.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractitemview.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractscrollarea.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qframe.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qabstractitemmodel.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qitemselectionmodel.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractitemdelegate.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qstyleoption.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qlocale.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractspinbox.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qvalidator.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qregularexpression.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qslider.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractslider.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qstyle.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtabbar.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qrubberband.h \
 		..\CloudSharedCoding\InfoType.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QString \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QVariant \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTreeWidgetItem \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtreewidget.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtreeview.h \
@@ -8593,10 +9143,6 @@ debug\newprojectdialog.obj: ..\CloudSharedCoding\newprojectdialog.cpp ..\CloudSh
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QTimer \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtimer.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qbasictimer.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QLabel \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlabel.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpicture.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextdocument.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QDateTime \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdatetime.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcalendar.h \
@@ -8604,55 +9150,42 @@ debug\newprojectdialog.obj: ..\CloudSharedCoding\newprojectdialog.cpp ..\CloudSh
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtablewidget.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtableview.h \
 		ui_mainwindow.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QAction \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QDockWidget \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qdockwidget.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QHeaderView \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qheaderview.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QMenu \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qmenu.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QMenuBar \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qmenubar.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTabWidget \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTreeWidget \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QVBoxLayout \
+		..\CloudSharedCoding\welcomewind.h \
 		..\CloudSharedCoding\switchingencodingmode.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QRadioButton \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qradiobutton.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractbutton.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QPushButton \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qpushbutton.h \
 		..\CloudSharedCoding\codeedit.h \
 		ui_codeedit.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTextEdit \
+		..\CloudSharedCoding\codedocedit.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QPlainTextEdit \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qplaintextedit.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtextedit.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextoption.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextcursor.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextformat.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpen.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QSyntaxHighlighter \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qsyntaxhighlighter.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextobject.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qabstracttextdocumentlayout.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextlayout.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qglyphrun.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qrawfont.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qfontdatabase.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QTextBlock \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextobject.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTextEdit \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QSyntaxHighlighter \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qsyntaxhighlighter.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QTextCharFormat \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QRegularExpression \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QThread \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthread.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdeadlinetimer.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qelapsedtimer.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QMutex \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmutex.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtsan_impl.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QPlainTextEdit \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qplaintextedit.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qabstracttextdocumentlayout.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QApplication \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qapplication.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qeventloop.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication_platform.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfutureinterface.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qresultstore.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture_impl.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthreadpool.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qrunnable.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qexception.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpromise.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qinputmethod.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication_platform.h \
 		..\CloudSharedCoding\useredittip.h \
 		..\CloudSharedCoding\settingform.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QListWidgetItem \
@@ -8671,11 +9204,8 @@ debug\newprojectdialog.obj: ..\CloudSharedCoding\newprojectdialog.cpp ..\CloudSh
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QDir \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QMultiHash \
 		..\CloudSharedCoding\newlocalproject.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QLineEdit \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlineedit.h \
 		..\CloudSharedCoding\newlocalfile.h \
 		..\CloudSharedCoding\addlocalfile.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTreeWidget \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QMovie \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qmovie.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qimagereader.h \
@@ -8954,7 +9484,55 @@ debug\privilegelistitem.obj: ..\CloudSharedCoding\privilegelistitem.cpp ..\Cloud
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QSizeF \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QTransform \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qnativeinterface.h \
-		ui_privilegelistitem.h
+		ui_privilegelistitem.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QVariant \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QApplication \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qeventloop.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication_platform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfutureinterface.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmutex.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtsan_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qresultstore.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthreadpool.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthread.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdeadlinetimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qelapsedtimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qrunnable.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qexception.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpromise.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qinputmethod.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qlocale.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication_platform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QComboBox \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qcombobox.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractitemdelegate.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qstyleoption.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractspinbox.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qvalidator.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qregularexpression.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qslider.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractslider.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qstyle.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtabbar.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtabwidget.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qrubberband.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qframe.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qabstractitemmodel.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QHBoxLayout \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qboxlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayoutitem.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qgridlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QLabel \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlabel.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpicture.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextdocument.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QSpacerItem
 
 debug\privilegemanager.obj: ..\CloudSharedCoding\privilegemanager.cpp ..\CloudSharedCoding\privilegemanager.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QWidget \
@@ -9115,11 +9693,66 @@ debug\privilegemanager.obj: ..\CloudSharedCoding\privilegemanager.cpp ..\CloudSh
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qnativeinterface.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QHash \
 		ui_privilegemanager.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QVariant \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QApplication \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qeventloop.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication_platform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfutureinterface.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmutex.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtsan_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qresultstore.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthreadpool.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthread.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdeadlinetimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qelapsedtimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qrunnable.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qexception.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpromise.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qinputmethod.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qlocale.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication_platform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QGridLayout \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qgridlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayoutitem.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qboxlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QHBoxLayout \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QLabel \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlabel.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qframe.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpicture.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextdocument.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QListWidget \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlistwidget.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlistview.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractitemview.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractscrollarea.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qabstractitemmodel.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qitemselectionmodel.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractitemdelegate.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qstyleoption.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractspinbox.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qvalidator.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qregularexpression.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qslider.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractslider.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qstyle.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtabbar.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtabwidget.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qrubberband.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QPushButton \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qpushbutton.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractbutton.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QSpacerItem \
 		..\CloudSharedCoding\privilegelistitem.h \
 		..\CloudSharedCoding\mainwindow.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QMainWindow \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qmainwindow.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtabwidget.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtNetwork\QTcpSocket \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtNetwork\qtcpsocket.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtNetwork\qtnetworkglobal.h \
@@ -9133,28 +9766,8 @@ debug\privilegemanager.obj: ..\CloudSharedCoding\privilegemanager.cpp ..\CloudSh
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QMessageBox \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qmessagebox.h \
 		..\CloudSharedCoding\projectform.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QListWidget \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlistwidget.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlistview.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractitemview.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractscrollarea.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qframe.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qabstractitemmodel.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qitemselectionmodel.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractitemdelegate.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qstyleoption.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qlocale.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractspinbox.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qvalidator.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qregularexpression.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qslider.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractslider.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qstyle.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtabbar.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qrubberband.h \
 		..\CloudSharedCoding\InfoType.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QString \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QVariant \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTreeWidgetItem \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtreewidget.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtreeview.h \
@@ -9167,10 +9780,6 @@ debug\privilegemanager.obj: ..\CloudSharedCoding\privilegemanager.cpp ..\CloudSh
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QTimer \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtimer.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qbasictimer.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QLabel \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlabel.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpicture.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextdocument.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QDateTime \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdatetime.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcalendar.h \
@@ -9178,55 +9787,46 @@ debug\privilegemanager.obj: ..\CloudSharedCoding\privilegemanager.cpp ..\CloudSh
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtablewidget.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtableview.h \
 		ui_mainwindow.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QAction \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QDockWidget \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qdockwidget.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QHeaderView \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qheaderview.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QMenu \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qmenu.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QMenuBar \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qmenubar.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTabWidget \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTreeWidget \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QVBoxLayout \
+		..\CloudSharedCoding\welcomewind.h \
 		..\CloudSharedCoding\switchingencodingmode.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QRadioButton \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qradiobutton.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractbutton.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QPushButton \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qpushbutton.h \
 		..\CloudSharedCoding\codeedit.h \
 		ui_codeedit.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTextEdit \
+		..\CloudSharedCoding\codedocedit.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QPlainTextEdit \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qplaintextedit.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtextedit.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextoption.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextcursor.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextformat.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpen.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QSyntaxHighlighter \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qsyntaxhighlighter.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextobject.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qabstracttextdocumentlayout.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextlayout.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qglyphrun.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qrawfont.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qfontdatabase.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QTextBlock \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextobject.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTextEdit \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QSyntaxHighlighter \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qsyntaxhighlighter.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QTextCharFormat \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QRegularExpression \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QThread \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthread.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdeadlinetimer.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qelapsedtimer.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QMutex \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmutex.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtsan_impl.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QPlainTextEdit \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qplaintextedit.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qabstracttextdocumentlayout.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QApplication \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qapplication.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qeventloop.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication_platform.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfutureinterface.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qresultstore.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture_impl.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthreadpool.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qrunnable.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qexception.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpromise.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qinputmethod.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication_platform.h \
 		..\CloudSharedCoding\useredittip.h \
 		..\CloudSharedCoding\settingform.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QListWidgetItem \
@@ -9249,7 +9849,6 @@ debug\privilegemanager.obj: ..\CloudSharedCoding\privilegemanager.cpp ..\CloudSh
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlineedit.h \
 		..\CloudSharedCoding\newlocalfile.h \
 		..\CloudSharedCoding\addlocalfile.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTreeWidget \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QMovie \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qmovie.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qimagereader.h \
@@ -9465,6 +10064,47 @@ debug\projectform.obj: ..\CloudSharedCoding\projectform.cpp ..\CloudSharedCoding
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtreewidgetitemiterator.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QSet \
 		ui_projectform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QIcon \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QApplication \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qeventloop.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication_platform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfutureinterface.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmutex.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtsan_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qresultstore.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthreadpool.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthread.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdeadlinetimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qelapsedtimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qrunnable.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qexception.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpromise.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qinputmethod.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication_platform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QHBoxLayout \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qboxlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayoutitem.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qgridlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QLabel \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlabel.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpicture.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextdocument.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QPushButton \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qpushbutton.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractbutton.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QScrollArea \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qscrollarea.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QSpacerItem \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTabWidget \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QToolButton \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtoolbutton.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QVBoxLayout \
 		..\CloudSharedCoding\mainwindow.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QMainWindow \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qmainwindow.h \
@@ -9478,10 +10118,6 @@ debug\projectform.obj: ..\CloudSharedCoding\projectform.cpp ..\CloudSharedCoding
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QTimer \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtimer.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qbasictimer.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QLabel \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlabel.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpicture.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextdocument.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QDateTime \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdatetime.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcalendar.h \
@@ -9489,55 +10125,45 @@ debug\projectform.obj: ..\CloudSharedCoding\projectform.cpp ..\CloudSharedCoding
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtablewidget.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtableview.h \
 		ui_mainwindow.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QAction \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QDockWidget \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qdockwidget.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QGridLayout \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QHeaderView \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qheaderview.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QMenu \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qmenu.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QMenuBar \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qmenubar.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTreeWidget \
+		..\CloudSharedCoding\welcomewind.h \
 		..\CloudSharedCoding\switchingencodingmode.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QRadioButton \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qradiobutton.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractbutton.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QPushButton \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qpushbutton.h \
 		..\CloudSharedCoding\codeedit.h \
 		ui_codeedit.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTextEdit \
+		..\CloudSharedCoding\codedocedit.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QPlainTextEdit \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qplaintextedit.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtextedit.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextoption.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextcursor.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextformat.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpen.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QSyntaxHighlighter \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qsyntaxhighlighter.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextobject.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qabstracttextdocumentlayout.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextlayout.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qglyphrun.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qrawfont.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qfontdatabase.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QTextBlock \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextobject.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTextEdit \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QSyntaxHighlighter \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qsyntaxhighlighter.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QTextCharFormat \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QRegularExpression \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QThread \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthread.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdeadlinetimer.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qelapsedtimer.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QMutex \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmutex.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtsan_impl.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QPlainTextEdit \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qplaintextedit.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qabstracttextdocumentlayout.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QApplication \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qapplication.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qeventloop.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication_platform.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfutureinterface.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qresultstore.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture_impl.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthreadpool.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qrunnable.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qexception.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpromise.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qinputmethod.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication_platform.h \
 		..\CloudSharedCoding\useredittip.h \
 		..\CloudSharedCoding\settingform.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QListWidgetItem \
@@ -9560,7 +10186,6 @@ debug\projectform.obj: ..\CloudSharedCoding\projectform.cpp ..\CloudSharedCoding
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlineedit.h \
 		..\CloudSharedCoding\newlocalfile.h \
 		..\CloudSharedCoding\addlocalfile.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTreeWidget \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QMovie \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qmovie.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qimagereader.h \
@@ -9579,6 +10204,8 @@ debug\projectform.obj: ..\CloudSharedCoding\projectform.cpp ..\CloudSharedCoding
 		..\CloudSharedCoding\CodeworkThread.h \
 		..\CloudSharedCoding\newprojectdialog.h \
 		ui_newprojectdialog.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QComboBox \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qcombobox.h \
 		..\CloudSharedCoding\package.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QByteArray \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QInputDialog \
@@ -9774,6 +10401,54 @@ debug\settingform.obj: ..\CloudSharedCoding\settingform.cpp ..\CloudSharedCoding
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtreewidgetitemiterator.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QSet \
 		ui_settingform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QApplication \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qeventloop.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication_platform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfutureinterface.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmutex.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtsan_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qresultstore.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthreadpool.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthread.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdeadlinetimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qelapsedtimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qrunnable.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qexception.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpromise.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qinputmethod.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication_platform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QComboBox \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qcombobox.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QFormLayout \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qformlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QLayout \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayoutitem.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qboxlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qgridlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QGridLayout \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QLabel \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlabel.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpicture.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextdocument.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QLineEdit \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlineedit.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextcursor.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextformat.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpen.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextoption.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QListWidget \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QPushButton \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qpushbutton.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractbutton.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QSpacerItem \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QStackedWidget \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qstackedwidget.h \
 		..\CloudSharedCoding\myhelper.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore5Compat\QtCore5Compat \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore5Compat\QtCore5CompatDepends \
@@ -9786,27 +10461,11 @@ debug\settingform.obj: ..\CloudSharedCoding\settingform.cpp ..\CloudSharedCoding
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\q23functional.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qabstractanimation.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qabstracteventdispatcher.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qeventloop.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qabstractnativeeventfilter.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qabstractproxymodel.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qanimationgroup.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qapplicationstatic.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QMutex \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmutex.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtsan_impl.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication_platform.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfutureinterface.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qresultstore.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture_impl.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthreadpool.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthread.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdeadlinetimer.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qelapsedtimer.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qrunnable.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qexception.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpromise.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qassociativeiterable.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qbasictimer.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qbitarray.h \
@@ -9929,11 +10588,6 @@ debug\settingform.obj: ..\CloudSharedCoding\settingform.cpp ..\CloudSharedCoding
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qglyphrun.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qrawfont.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qfontdatabase.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextcursor.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextdocument.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextformat.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpen.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextoption.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qaccessible.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qaccessible_base.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qaccessiblebridge.h \
@@ -9955,9 +10609,6 @@ debug\settingform.obj: ..\CloudSharedCoding\settingform.cpp ..\CloudSharedCoding
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qgenericmatrix.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qgenericplugin.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qgenericpluginfactory.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qinputmethod.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication_platform.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qiconengine.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qiconengineplugin.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qimageiohandler.h \
@@ -9989,7 +10640,6 @@ debug\settingform.obj: ..\CloudSharedCoding\settingform.cpp ..\CloudSharedCoding
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpainter.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpainterpath.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpdfwriter.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpicture.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpixmapcache.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qrasterwindow.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QPaintDeviceWindow \
@@ -10011,17 +10661,11 @@ debug\settingform.obj: ..\CloudSharedCoding\settingform.cpp ..\CloudSharedCoding
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qwindowsmimeconverter.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QtWidgets \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QtWidgetsDepends \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractbutton.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qaccessiblewidget.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qaction.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QAction \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qactiongroup.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QActionGroup \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qapplication.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qboxlayout.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayout.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayoutitem.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qgridlayout.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qbuttongroup.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qcalendarwidget.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qcheckbox.h \
@@ -10029,9 +10673,7 @@ debug\settingform.obj: ..\CloudSharedCoding\settingform.cpp ..\CloudSharedCoding
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qdialog.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qcolormap.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qcolumnview.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qcombobox.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qcommandlinkbutton.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qpushbutton.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qcommonstyle.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qcompleter.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qdatawidgetmapper.h \
@@ -10048,8 +10690,6 @@ debug\settingform.obj: ..\CloudSharedCoding\settingform.cpp ..\CloudSharedCoding
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qfocusframe.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qfontcombobox.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qfontdialog.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qformlayout.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QLayout \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qgesture.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qgesturerecognizer.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qgraphicsanchorlayout.h \
@@ -10072,11 +10712,9 @@ debug\settingform.obj: ..\CloudSharedCoding\settingform.cpp ..\CloudSharedCoding
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qgroupbox.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qheaderview.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qinputdialog.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlineedit.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qitemdelegate.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qitemeditorfactory.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qkeysequenceedit.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlabel.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlcdnumber.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qmainwindow.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qmdiarea.h \
@@ -10105,7 +10743,6 @@ debug\settingform.obj: ..\CloudSharedCoding\settingform.cpp ..\CloudSharedCoding
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qsplashscreen.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qsplitter.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qstackedlayout.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qstackedwidget.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qstatusbar.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qstyleditemdelegate.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qstylefactory.h \
@@ -10140,26 +10777,33 @@ debug\settingform.obj: ..\CloudSharedCoding\settingform.cpp ..\CloudSharedCoding
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QDialog \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QMessageBox \
 		..\CloudSharedCoding\projectform.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QListWidget \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QVector \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QStatusBar \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QTimer \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QLabel \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QDateTime \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTableWidget \
 		ui_mainwindow.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QDockWidget \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QHeaderView \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QMenu \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QMenuBar \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTabWidget \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTreeWidget \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QVBoxLayout \
+		..\CloudSharedCoding\welcomewind.h \
 		..\CloudSharedCoding\switchingencodingmode.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QRadioButton \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QPushButton \
 		..\CloudSharedCoding\codeedit.h \
 		ui_codeedit.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QHBoxLayout \
+		..\CloudSharedCoding\codedocedit.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QPlainTextEdit \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QTextBlock \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTextEdit \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QSyntaxHighlighter \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QTextCharFormat \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QRegularExpression \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QThread \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QPlainTextEdit \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QApplication \
 		..\CloudSharedCoding\useredittip.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QFileDialog \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QFile \
@@ -10167,10 +10811,8 @@ debug\settingform.obj: ..\CloudSharedCoding\settingform.cpp ..\CloudSharedCoding
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QDir \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QMultiHash \
 		..\CloudSharedCoding\newlocalproject.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QLineEdit \
 		..\CloudSharedCoding\newlocalfile.h \
 		..\CloudSharedCoding\addlocalfile.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTreeWidget \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QMovie \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QProcess \
 		..\CloudSharedCoding\CodeworkThread.h
@@ -10358,7 +11000,40 @@ debug\switchingencodingmode.obj: ..\CloudSharedCoding\switchingencodingmode.cpp 
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtabbar.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtabwidget.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qrubberband.h \
-		ui_switchingencodingmode.h
+		ui_switchingencodingmode.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QVariant \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QApplication \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qeventloop.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication_platform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfutureinterface.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmutex.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtsan_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qresultstore.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthreadpool.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthread.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdeadlinetimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qelapsedtimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qrunnable.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qexception.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpromise.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qinputmethod.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication_platform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QHBoxLayout \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qboxlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayoutitem.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qgridlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QLabel \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlabel.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpicture.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextdocument.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QSpacerItem \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QWidget
 
 debug\useredittip.obj: ..\CloudSharedCoding\useredittip.cpp ..\CloudSharedCoding\useredittip.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QWidget \
@@ -10520,7 +11195,40 @@ debug\useredittip.obj: ..\CloudSharedCoding\useredittip.cpp ..\CloudSharedCoding
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QTimer \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtimer.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qbasictimer.h \
-		ui_useredittip.h
+		ui_useredittip.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QVariant \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QApplication \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qeventloop.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication_platform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfutureinterface.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmutex.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtsan_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qresultstore.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthreadpool.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthread.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdeadlinetimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qelapsedtimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qrunnable.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qexception.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpromise.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qinputmethod.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qlocale.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication_platform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QHBoxLayout \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qboxlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayoutitem.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qgridlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QLabel \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlabel.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qframe.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpicture.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextdocument.h
 
 debug\welcomewind.obj: ..\CloudSharedCoding\welcomewind.cpp ..\CloudSharedCoding\welcomewind.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QWidget \
@@ -10680,10 +11388,65 @@ debug\welcomewind.obj: ..\CloudSharedCoding\welcomewind.cpp ..\CloudSharedCoding
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QTransform \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qnativeinterface.h \
 		ui_welcomewind.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QVariant \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QApplication \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qeventloop.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication_platform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfutureinterface.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmutex.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtsan_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qresultstore.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture_impl.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthreadpool.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthread.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdeadlinetimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qelapsedtimer.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qrunnable.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qexception.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpromise.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qinputmethod.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qlocale.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication_platform.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QGridLayout \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qgridlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlayoutitem.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qboxlayout.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QLabel \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlabel.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qframe.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpicture.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextdocument.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QListWidget \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlistwidget.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlistview.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractitemview.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractscrollarea.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qabstractitemmodel.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qitemselectionmodel.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractitemdelegate.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qstyleoption.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractspinbox.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qvalidator.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qregularexpression.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qslider.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractslider.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qstyle.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtabbar.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtabwidget.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qrubberband.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QPushButton \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qpushbutton.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractbutton.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QSpacerItem \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QVBoxLayout \
 		..\CloudSharedCoding\mainwindow.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QMainWindow \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qmainwindow.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtabwidget.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtNetwork\QTcpSocket \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtNetwork\qtcpsocket.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtNetwork\qtnetworkglobal.h \
@@ -10697,28 +11460,8 @@ debug\welcomewind.obj: ..\CloudSharedCoding\welcomewind.cpp ..\CloudSharedCoding
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QMessageBox \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qmessagebox.h \
 		..\CloudSharedCoding\projectform.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QListWidget \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlistwidget.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlistview.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractitemview.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractscrollarea.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qframe.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qabstractitemmodel.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qitemselectionmodel.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractitemdelegate.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qstyleoption.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qlocale.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractspinbox.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qvalidator.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qregularexpression.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qslider.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractslider.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qstyle.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtabbar.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qrubberband.h \
 		..\CloudSharedCoding\InfoType.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QString \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QVariant \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTreeWidgetItem \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtreewidget.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtreeview.h \
@@ -10732,10 +11475,6 @@ debug\welcomewind.obj: ..\CloudSharedCoding\welcomewind.cpp ..\CloudSharedCoding
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QTimer \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtimer.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qbasictimer.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QLabel \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlabel.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpicture.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextdocument.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QDateTime \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdatetime.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcalendar.h \
@@ -10743,55 +11482,45 @@ debug\welcomewind.obj: ..\CloudSharedCoding\welcomewind.cpp ..\CloudSharedCoding
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtablewidget.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtableview.h \
 		ui_mainwindow.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QAction \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QDockWidget \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qdockwidget.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QHeaderView \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qheaderview.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QMenu \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qmenu.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QMenuBar \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qmenubar.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTabWidget \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTreeWidget \
 		..\CloudSharedCoding\switchingencodingmode.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QRadioButton \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qradiobutton.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qabstractbutton.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QPushButton \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qpushbutton.h \
 		..\CloudSharedCoding\codeedit.h \
 		ui_codeedit.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTextEdit \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QHBoxLayout \
+		..\CloudSharedCoding\codedocedit.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QPlainTextEdit \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qplaintextedit.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qtextedit.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextoption.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextcursor.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextformat.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qpen.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QSyntaxHighlighter \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qsyntaxhighlighter.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextobject.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qabstracttextdocumentlayout.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextlayout.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qglyphrun.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qrawfont.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qfontdatabase.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QTextBlock \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qtextobject.h \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTextEdit \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QSyntaxHighlighter \
+		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qsyntaxhighlighter.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QTextCharFormat \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QRegularExpression \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QThread \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthread.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qdeadlinetimer.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qelapsedtimer.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\QMutex \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qmutex.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qtsan_impl.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QPlainTextEdit \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qplaintextedit.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qabstracttextdocumentlayout.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QApplication \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qapplication.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qeventloop.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qcoreapplication_platform.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfutureinterface.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qresultstore.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qfuture_impl.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qthreadpool.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qrunnable.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qexception.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtCore\qpromise.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qinputmethod.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qguiapplication_platform.h \
 		..\CloudSharedCoding\useredittip.h \
 		..\CloudSharedCoding\settingform.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QListWidgetItem \
@@ -10814,7 +11543,6 @@ debug\welcomewind.obj: ..\CloudSharedCoding\welcomewind.cpp ..\CloudSharedCoding
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\qlineedit.h \
 		..\CloudSharedCoding\newlocalfile.h \
 		..\CloudSharedCoding\addlocalfile.h \
-		..\..\..\Qt\6.5.0\msvc2019_64\include\QtWidgets\QTreeWidget \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\QMovie \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qmovie.h \
 		..\..\..\Qt\6.5.0\msvc2019_64\include\QtGui\qimagereader.h \
