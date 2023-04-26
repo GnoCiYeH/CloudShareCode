@@ -1,33 +1,14 @@
 
 #include "CodeworkThread.h"
-
+#include<QDebug>
 RunThread::RunThread(QString path,QObject *parent)
-    : QThread{parent}
+    : QObject{parent}
 {
     workPath = path;
-    proName = path.mid(path.lastIndexOf("\\")+1);
-}
-
-RunThread::~RunThread()
-{
-    if(runProcess->state()==QProcess::ProcessState::Running)
-    {
-        runProcess->kill();
-    }
-}
-
-void RunThread::run()
-{
+    proName = path.mid(path.lastIndexOf("/")+1);
     cmakeProcess = new QProcess(this);
     makefileProcess = new QProcess(this);
-    findExecProcess = new QProcess(this);
     runProcess = new QProcess(this);
-
-    //Cmake
-    cmakeProcess->setProgram("cmake");
-    cmakeProcess->setNativeArguments(workPath+" -B "+ workPath +"/build -G \"Unix Makefiles\"");
-    cmakeProcess->start();
-    cmakeProcess->waitForStarted();
 
     connect(cmakeProcess,&QProcess::readyReadStandardOutput,this,[=](){
         QByteArray data = cmakeProcess->readAllStandardOutput();
@@ -39,13 +20,9 @@ void RunThread::run()
         emit buildInfo(QString(data));
     });
 
-    cmakeProcess->waitForFinished();
-
-    //make makefile
-    makefileProcess->setProgram("mingw32-make");
-    makefileProcess->setNativeArguments("-C " + workPath + "/build");
-    makefileProcess->start();
-    makefileProcess->waitForStarted();
+    connect(cmakeProcess,&QProcess::finished,this,[=](){
+        make();
+    });
 
     connect(makefileProcess,&QProcess::readyReadStandardOutput,this,[=](){
         QByteArray data = makefileProcess->readAllStandardOutput();
@@ -57,12 +34,10 @@ void RunThread::run()
         emit buildInfo(QString(data));
     });
 
-    makefileProcess->waitForFinished();
-
-    //find file
-    runProcess->setProgram(workPath+"\\build\\bin\\"+proName+".exe");
-    runProcess->start();
-    runProcess->waitForStarted();
+    connect(makefileProcess,&QProcess::finished,this,[=](){
+        emit buildFinish();
+        exe();
+    });
 
     connect(runProcess,&QProcess::readyReadStandardOutput,this,[=](){
         QByteArray data = runProcess->readAllStandardOutput();
@@ -74,36 +49,60 @@ void RunThread::run()
         emit stdOut(QString(data));
     });
 
-    this->exec();
+    connect(runProcess,&QProcess::finished,this,[=](int exitCode){
+        emit runFinish(exitCode);
+    });
 }
 
-DebugThread::DebugThread(QString path,QObject *parent)
-    : QThread{parent}
+RunThread::~RunThread()
 {
-    workPath = path;
-    proName = path.mid(path.lastIndexOf("\\")+1);
-}
-
-DebugThread::~DebugThread()
-{
-    if(debugProcess->state()==QProcess::ProcessState::Running)
+    if(runProcess->state()==QProcess::ProcessState::Running)
     {
-        debugProcess->kill();
+        runProcess->kill();
     }
+
+    cmakeProcess->deleteLater();
+    makefileProcess->deleteLater();
+    runProcess->deleteLater();
 }
 
-void DebugThread::run()
+void RunThread::make()
 {
-    cmakeProcess = new QProcess(this);
-    makefileProcess = new QProcess(this);
-    findExecProcess = new QProcess(this);
-    debugProcess = new QProcess(this);
+    //make makefile
+    makefileProcess->setProgram("mingw32-make");
+    makefileProcess->setNativeArguments("-C " + workPath + "/build");
+    makefileProcess->start();
+}
+
+void RunThread::exe()
+{
+    //run file
+    runProcess->setProgram(workPath+"\\build\\bin\\"+proName+".exe");
+    runProcess->start();
+}
+
+void RunThread::run()
+{
 
     //Cmake
     cmakeProcess->setProgram("cmake");
-    cmakeProcess->setNativeArguments("-B "+ workPath +"/build -G \"Unix Makefiles\"");
+    cmakeProcess->setNativeArguments(workPath+" -B "+ workPath +"/build -G \"Unix Makefiles\"");
     cmakeProcess->start();
-    cmakeProcess->waitForStarted();
+}
+
+void RunThread::writeStdin(QString data)
+{
+    this->runProcess->write(data.toUtf8());
+}
+
+DebugThread::DebugThread(QString path,QObject *parent)
+    : QObject{parent}
+{
+    workPath = path;
+    proName = path.mid(path.lastIndexOf("/")+1);
+    cmakeProcess = new QProcess(this);
+    makefileProcess = new QProcess(this);
+    debugProcess = new QProcess(this);
 
     connect(cmakeProcess,&QProcess::readyReadStandardOutput,this,[=](){
         QByteArray data = cmakeProcess->readAllStandardOutput();
@@ -115,13 +114,9 @@ void DebugThread::run()
         emit buildInfo(QString(data));
     });
 
-    cmakeProcess->waitForFinished();
-
-    //make makefile
-    makefileProcess->setProgram("mingw32-make");
-    makefileProcess->setNativeArguments("-C " + workPath + "/build");
-    makefileProcess->start();
-    makefileProcess->waitForStarted();
+    connect(cmakeProcess,&QProcess::finished,this,[=](){
+        make();
+    });
 
     connect(makefileProcess,&QProcess::readyReadStandardOutput,this,[=](){
         QByteArray data = makefileProcess->readAllStandardOutput();
@@ -133,14 +128,9 @@ void DebugThread::run()
         emit buildInfo(QString(data));
     });
 
-    makefileProcess->waitForFinished();
-
-    //run
-    QString exePath = workPath+"\\build\\bin\\"+proName+".exe";
-    debugProcess->setProgram("gdb");
-    debugProcess->setNativeArguments(workPath+" -silent");
-    debugProcess->start();
-    debugProcess->waitForStarted();
+    connect(makefileProcess,&QProcess::finished,this,[=](){
+        exe();
+    });
 
     connect(debugProcess,&QProcess::readyReadStandardOutput,this,[=](){
         QByteArray data = debugProcess->readAllStandardOutput();
@@ -152,6 +142,51 @@ void DebugThread::run()
         emit debugInfo(QString(data));
     });
 
-    this->exec();
+    connect(debugProcess,&QProcess::finished,this,[=](int exitCode){
+        emit debugFinish(exitCode);
+    });
+}
+
+DebugThread::~DebugThread()
+{
+    if(debugProcess->state()==QProcess::ProcessState::Running)
+    {
+        debugProcess->kill();
+    }
+
+    cmakeProcess->deleteLater();
+    makefileProcess->deleteLater();
+    debugProcess->deleteLater();
+}
+
+void DebugThread::make()
+{
+    //make makefile
+    makefileProcess->setProgram("mingw32-make");
+    makefileProcess->setNativeArguments("-C " + workPath + "/build");
+    makefileProcess->start();
+}
+
+void DebugThread::exe()
+{
+    //run
+    debugProcess->setProgram("gdb");
+    debugProcess->setNativeArguments(" -silent");
+    debugProcess->start();
+    debugProcess->waitForStarted();
+    emit buildFinish();
+}
+
+void DebugThread::run()
+{
+    //Cmake
+    cmakeProcess->setProgram("cmake");
+    cmakeProcess->setNativeArguments(workPath +" -B "+ workPath +"/build -G \"Unix Makefiles\"");
+    cmakeProcess->start();
+}
+
+void DebugThread::writeGdbOrStdin(QString data)
+{
+    this->debugProcess->write(data.toUtf8());
 }
 

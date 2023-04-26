@@ -1,7 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMainWindow>
+#include<QMainWindow>
 #include <QTcpSocket>
 #include "logindialog.h"
 #include "projectform.h"
@@ -149,7 +149,7 @@ private:
 
     QDockWidget *breakPointDock;
     QDockWidget *varDock;
-    QTableWidget *breakPointInfo;
+    QListWidget *breakPointInfo;
     QTableWidget *varInfo;
     QDockWidget *stackDock;
     QListWidget *stackList;
@@ -210,6 +210,9 @@ private:
     // ��������Գ���
     RunThread *runThread = nullptr;
     DebugThread *debugThread = nullptr;
+
+    QProcess* process;
+    QString data;
 
 private:
 
