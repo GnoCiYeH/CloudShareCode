@@ -25,7 +25,6 @@
 #include <QDir>
 #include <QMultiHash>
 #include "newlocalproject.h"
-#include "newlocalfile.h"
 #include "addlocalfile.h"
 #include <QTreeWidget>
 #include <QMovie>
@@ -60,6 +59,10 @@ public:
 
 
     static QStringList* fileName;
+
+    void setSystemVar();
+
+    void findFileName(const QString&);
 
 public slots:
     void dataProgress();
@@ -213,6 +216,7 @@ private:
 
     QProcess* process;
     QString data;
+    QString systemVar;
 
 private:
 
