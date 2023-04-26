@@ -90,6 +90,7 @@ public slots:
     bool get_SubDir_Under_Dir(QString path,QStringList& list);
     bool get_SubFile_Under_SubDir(QString path,QStringList& list,int tag);
     bool is_contain_file_name(QString file_name,QVector<std::shared_ptr<FileInfo>>ptr_vector);
+    bool is_legal_CSC_file(QString file_name,QStringList list);
 
     static bool loginState()
     {
@@ -178,7 +179,7 @@ private:
     ProjectForm *projectForm;
 
     // 鏂囦欢瀹瑰�?
-    QHash<int, QVector<std::shared_ptr<FileInfo>>> pro_fileMap;
+    QHash<int, QVector<std::shared_ptr<FileInfo>>*> pro_fileMap;
     QHash<int, CodeEdit *> fileWidgets;
     QHash<int, std::shared_ptr<Directory>> mainDirMap;
 
@@ -209,6 +210,9 @@ private:
     // ��������Գ���
     RunThread *runThread = nullptr;
     DebugThread *debugThread = nullptr;
+
+    QProcess* process;
+    QString data;
 
 private:
 

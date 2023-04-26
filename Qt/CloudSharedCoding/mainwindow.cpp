@@ -1,6 +1,6 @@
 #pragma execution_character_set("utf-8")
 
-#include"mainwindow.h"
+#include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "projectform.h"
 #include "logindialog.h"
@@ -14,7 +14,7 @@
 #include <QPoint>
 #include "privilegemanager.h"
 #include "newlocalproject.h"
-#include<QScrollBar>
+#include <QScrollBar>
 
 QTcpSocket *MainWindow::socket = new QTcpSocket();
 QHash<int, Project> *MainWindow::userProjs = new QHash<int, Project>();
@@ -22,22 +22,22 @@ QString MainWindow::userId = "";
 QHash<int, QMultiHash<QString, int> *> *MainWindow::debugInfo = new QHash<int, QMultiHash<QString, int> *>();
 bool MainWindow::isLogin = false;
 
-QStringList* MainWindow::fileName = new QStringList();
-int MainWindow::local_project_id=-1;//闈欐€佸彉閲忕殑瀹氫箟
-int MainWindow::local_file_id=-1;//闈欐€佸彉閲忕殑瀹氫箟
-LoginDialog* MainWindow::loginDialog;
+QStringList *MainWindow::fileName = new QStringList();
+int MainWindow::local_project_id = -1; // 闈欐€佸彉閲忕殑瀹氫�?
+int MainWindow::local_file_id = -1;    // 闈欐€佸彉閲忕殑瀹氫�?
+LoginDialog *MainWindow::loginDialog;
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),ui(new Ui::MainWindow)
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
-    current_project_name="";
-    current_project_path="";
+    current_project_name = "";
+    current_project_path = "";
 
-    //timer_for_save->start(5000);
-    //connect(timer_for_save,&QTimer::timeout,this,&MainWindow::saveLocalProj);
+    // timer_for_save->start(5000);
+    // connect(timer_for_save,&QTimer::timeout,this,&MainWindow::saveLocalProj);
 
-    tree_widget_item_file_information->setText(0,"CMakeLists.txt");
-    tree_widget_item_source_file_name->setText(0,"Source");
-    tree_widget_item_header_file_name->setText(0,"Header");
+    tree_widget_item_file_information->setText(0, "CMakeLists.txt");
+    tree_widget_item_source_file_name->setText(0, "Source");
+    tree_widget_item_header_file_name->setText(0, "Header");
 
     ui->setupUi(this);
     settingWind = new SettingForm(this);
@@ -57,7 +57,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),ui(new Ui::MainWin
             {
         if(!isAlive)
             {
-            //qDebug()<<"绂荤嚎锛侊紒锛侊紒";
+            //qDebug()<<"绂荤嚎锛侊紒锛侊�?";
         }
         isAlive = false; });
 
@@ -108,14 +108,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),ui(new Ui::MainWin
     attribute = new QAction("Attribute", ui->treeWidget);
     rename = new QAction("Rename", ui->treeWidget);
 
-    QSize size(25,25);
+    QSize size(25, 25);
     statusIcon->setFixedSize(size);
     stateokMovie->setScaledSize(size);
     buildingMovie->setScaledSize(size);
     runningMovie->setScaledSize(size);
     debugingMovie->setScaledSize(size);
 
-    // 鐘舵€佹爮(鏄剧ず鐘舵€佸拰鏃堕棿锛?
+    // 鐘舵€佹�?(鏄剧ず鐘舵€佸拰鏃堕棿锛?
     setStatusBar(status_bar);
     status_bar->addWidget(statusIcon);
     statusIcon->setMovie(stateokMovie);
@@ -131,8 +131,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),ui(new Ui::MainWin
         label2->setText(str);
         status_bar->addPermanentWidget(label2); });
 
-    // 鍦ㄧ姸鎬佹爮鏄剧ず缂栫爜鏂瑰紡
-    EncodingTypeLabel->setText("        褰撳墠鐨勭紪鐮佹柟寮忎负锛歎TF-8 (榛樿涓篣TF-8缂栫爜锛屽闇€鏇存敼锛岃鎵撳紑鈥滆缃?-缂栫爜鏂瑰紡鈥濅腑杩涜閫夋嫨");
+    // 鍦ㄧ姸鎬佹爮鏄剧ず缂栫爜鏂瑰�?
+    EncodingTypeLabel->setText("        褰撳墠鐨勭紪鐮佹柟寮忎负锛歎TF-8 (榛樿涓篣TF-8缂栫爜锛屽闇€鏇存敼锛岃鎵撳紑鈥滆�??-缂栫爜鏂瑰紡鈥濅腑杩涜閫夋�?");
     status_bar->addWidget(EncodingTypeLabel);
     EncodingTypeLabel->setAlignment(Qt::AlignCenter);
 
@@ -160,7 +160,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),ui(new Ui::MainWin
     // socket
     connect(socket, SIGNAL(readyRead()), this, SLOT(dataProgress()));
 
-    // 瀛愮獥
+    // 瀛愮�?
     projectForm = new ProjectForm(this);
     projectForm->setWindowFlag(Qt::Window);
     loginDialog = new LoginDialog(this);
@@ -309,8 +309,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),ui(new Ui::MainWin
                 continueDebugButton->setDisabled(true);
                 nextDebugButton->setDisabled(true);
                 stepIntoDubugButton->setDisabled(true);
-                stepOutDebugButton->setDisabled(true);
-            });
+                stepOutDebugButton->setDisabled(true); });
 
     stepOutDebugButton = new QToolButton(debugToolBar);
     stepOutDebugButton->setIcon(QIcon("://icon/stepout.png"));
@@ -343,16 +342,16 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),ui(new Ui::MainWin
     debugToolBar->addWidget(stepIntoDubugButton);
     debugToolBar->addWidget(stepOutDebugButton);
 
-    // 瀛愮獥鍙ｆЫ
+    // 瀛愮獥鍙ｆ�?
     connect(this, &MainWindow::loginAllowed, loginDialog, &LoginDialog::loginSucceed);
     connect(this, SIGNAL(projInited()), projectForm, SLOT(init()));
     connect(projectForm, SIGNAL(openProj(int)), this, SLOT(openProj(int)));
     connect(ui->treeWidget, SIGNAL(itemPressed(QTreeWidgetItem *, int)), this, SLOT(projectItemPressedSlot(QTreeWidgetItem *, int)));
 
-    // 閫夋嫨缂栫爜鏂瑰紡
+    // 閫夋嫨缂栫爜鏂瑰�?
     connect(ui->actionSwitching, &QAction::triggered, this, &MainWindow::selectencodingMode);
 
-    // 鍏抽棴
+    // 鍏抽�?
     connect(ui->actionClose, &QAction::triggered, this, &QMainWindow::close);
 
     // 鏂板缓鏂囦欢
@@ -395,7 +394,7 @@ void MainWindow::gotoStackFrame(QListWidgetItem *item)
     int lineNum = pair.second;
     auto vec = pro_fileMap.value(runningProject);
     std::shared_ptr<FileInfo> file;
-    for (auto it : vec)
+    for (auto it : *vec)
     {
         if (it->file_path == path)
         {
@@ -431,9 +430,9 @@ void MainWindow::cmdStdin(int pos, int charRemoved, int charAdded)
         else
             data += runDockwidget->document()->characterAt(var);
     }
-    if(runningProject<0)
+    if (runningProject < 0)
     {
-        if(workState==ProjectWorkState::DEBUGING)
+        if (workState == ProjectWorkState::DEBUGING)
         {
             debugThread->writeGdbOrStdin(data);
         }
@@ -494,7 +493,8 @@ void MainWindow::debugProject()
         debugThread = new DebugThread(path, this);
         connect(debugThread, SIGNAL(buildInfo(QString)), this, SLOT(appendBuildText(QString)));
         connect(debugThread, SIGNAL(debugInfo(QString)), this, SLOT(disposeDebugInfo(QString)));
-        connect(debugThread,&DebugThread::buildFinish,this,[=](){
+        connect(debugThread, &DebugThread::buildFinish, this, [=]()
+                {
             statusIcon->movie()->stop();
             debugingMovie->start();
             statusIcon->setMovie(debugingMovie);
@@ -507,9 +507,9 @@ void MainWindow::debugProject()
             }
             data += "r\ninfo local\nbacktrace\n";
 
-            debugThread->writeGdbOrStdin(data);
-        });
-        connect(debugThread,&DebugThread::debugFinish,this,[=](int n){
+            debugThread->writeGdbOrStdin(data); });
+        connect(debugThread, &DebugThread::debugFinish, this, [=](int n)
+                {
             statusIcon->movie()->stop();
             stateokMovie->start();
             statusIcon->setMovie(stateokMovie);
@@ -523,8 +523,7 @@ void MainWindow::debugProject()
             varDock->setHidden(true);
             stackDock->setHidden(true);
 
-            appendRunningText("Debug exit with code "+QString::number(n));
-        });
+            appendRunningText("Debug exit with code "+QString::number(n)); });
         debugThread->run();
     }
     else
@@ -546,13 +545,13 @@ void MainWindow::debugProject()
 
 void MainWindow::newCloudProj()
 {
-    // 鑻ョ敤鎴锋湭鐧诲綍鍒欐棤娉曚娇鐢ㄥ湪绾垮姛鑳斤紝寮瑰嚭鐧诲綍鐣岄潰
+    // 鑻ョ敤鎴锋湭鐧诲綍鍒欐棤娉曚娇鐢ㄥ湪绾垮姛鑳斤紝寮瑰嚭鐧诲綍鐣岄�?
     if (!isLogin)
     {
         Login();
         if (isLogin)
         {
-            // 浠庢湇鍔″櫒鎷夊彇椤圭洰淇℃伅
+            // 浠庢湇鍔″櫒鎷夊彇椤圭洰淇℃�?
             Package pck("", (int)Package::PackageType::INIT_PROJS);
             socket->write(pck.getPdata(), pck.getSize());
         }
@@ -579,7 +578,7 @@ void MainWindow::deleteProFile()
     {
         auto file = var.value<std::shared_ptr<FileInfo>>();
 
-        QMessageBox::StandardButton result = QMessageBox::warning(this, "纭畾鍒犻櫎?", "鎮ㄧ‘瀹氳鍒犻櫎鏂囦欢?" + file->file_name + "?");
+        QMessageBox::StandardButton result = QMessageBox::warning(this, "纭畾鍒犻櫎?", "鎮ㄧ‘瀹氳鍒犻櫎鏂囦�??" + file->file_name + "?");
         if (result != QMessageBox::StandardButton::Ok)
             return;
 
@@ -592,7 +591,7 @@ void MainWindow::deleteProFile()
     {
         //        auto dir = var.value<std::shared_ptr<Directory>>();
 
-        //        QMessageBox::StandardButton result = QMessageBox::warning(this,"纭畾鍒犻櫎?","鎮ㄧ‘瀹氳鍒犻櫎鏂囦欢?"+dir->dir_name+"?");
+        //        QMessageBox::StandardButton result = QMessageBox::warning(this,"纭畾鍒犻櫎?","鎮ㄧ‘瀹氳鍒犻櫎鏂囦�??"+dir->dir_name+"?");
         //        if(result!=QMessageBox::StandardButton::Ok)
         //            return;
 
@@ -653,7 +652,7 @@ bool MainWindow::addFileWidget(std::shared_ptr<FileInfo> file)
     return true;
 }
 
-// 鍙屽嚮file浼氳Е鍙?
+// 鍙屽嚮file浼氳Е�??
 void MainWindow::openProjFile()
 {
     MyTreeItem *item = (MyTreeItem *)ui->treeWidget->currentItem();
@@ -667,12 +666,12 @@ void MainWindow::openProjFile()
             if (addFileWidget(file))
             {
 
-                CodeEdit* widget = fileWidgets.value(file->file_id);
-                //璇诲彇鏂囦欢骞舵坊鍔犲埌code_edit涓?
+                CodeEdit *widget = fileWidgets.value(file->file_id);
+                // 璇诲彇鏂囦欢骞舵坊鍔犲埌code_edit�??
                 QFile read_file(file->file_path);
                 read_file.open(QIODevice::ReadWrite);
-                QByteArray array=read_file.readAll();
-                qDebug()<<array;
+                QByteArray array = read_file.readAll();
+                qDebug() << array;
                 widget->addText(array);
             }
         }
@@ -711,12 +710,12 @@ void MainWindow::openProjFile(std::shared_ptr<FileInfo> file)
             if (addFileWidget(file))
             {
 
-                CodeEdit* widget = fileWidgets.value(file->file_id);
-                //璇诲彇鏂囦欢骞舵坊鍔犲埌code_edit涓?
+                CodeEdit *widget = fileWidgets.value(file->file_id);
+                // 璇诲彇鏂囦欢骞舵坊鍔犲埌code_edit�??
                 QFile read_file(file->file_path);
                 read_file.open(QIODevice::ReadWrite);
-                QByteArray array=read_file.readAll();
-                qDebug()<<array;
+                QByteArray array = read_file.readAll();
+                qDebug() << array;
                 widget->addText(array);
             }
         }
@@ -795,13 +794,13 @@ void MainWindow::close()
 
 void MainWindow::openCloudProj()
 {
-    // 鑻ョ敤鎴锋湭鐧诲綍鍒欐棤娉曚娇鐢ㄥ湪绾垮姛鑳斤紝寮瑰嚭鐧诲綍鐣岄潰
+    // 鑻ョ敤鎴锋湭鐧诲綍鍒欐棤娉曚娇鐢ㄥ湪绾垮姛鑳斤紝寮瑰嚭鐧诲綍鐣岄�?
     if (!isLogin)
     {
         Login();
         if (isLogin)
         {
-            // 浠庢湇鍔″櫒鎷夊彇椤圭洰淇℃伅
+            // 浠庢湇鍔″櫒鎷夊彇椤圭洰淇℃�?
             Package pck("", (int)Package::PackageType::INIT_PROJS);
             socket->write(pck.getPdata(), pck.getSize());
         }
@@ -818,12 +817,11 @@ void MainWindow::Login()
 {
     loginDialog->setAttribute(Qt::WA_DeleteOnClose);
 
-
-    connect(loginDialog,&LoginDialog::loginAllowded,[=]()mutable{
+    connect(loginDialog, &LoginDialog::loginAllowded, [=]() mutable
+            {
         loginDialog->deleteLater();
         isLogin = true;
-        userId = loginDialog->userID;
-    });
+        userId = loginDialog->userID; });
 
     loginDialog->exec();
 }
@@ -894,7 +892,6 @@ void MainWindow::dataProgress()
         QString data(socket->read(packageSize));
         QStringList list = data.split("\n", Qt::SkipEmptyParts);
 
-
         QStringList proInfo = list[0].split("\t");
         int pro_id = proInfo[0].toInt();
         MyTreeItem *item = new MyTreeItem(MyTreeItem::Type::PROJECT);
@@ -913,7 +910,7 @@ void MainWindow::dataProgress()
         if (list.empty())
             return;
 
-        QVector<std::shared_ptr<FileInfo>> fileVec;
+        QVector<std::shared_ptr<FileInfo>> *fileVec = new QVector<std::shared_ptr<FileInfo>>;
         for (int j = 1; j < list.size(); j++)
         {
             auto i = list[j];
@@ -926,15 +923,15 @@ void MainWindow::dataProgress()
             file->file_project = info[4].toInt();
             file->file_privilege = info[5].toShort();
 
-            fileVec.append(file);
+            fileVec->append(file);
         }
 
         pro_fileMap.insert(pro_id, fileVec);
 
-        for (int i = 0; i < fileVec.size(); i++)
+        for (int i = 0; i < fileVec->size(); i++)
         {
-            // Path鏍煎紡锛? ./UserId/ProName/Dir(File)...
-            std::shared_ptr<FileInfo> file = fileVec[i];
+            // Path格式��? ./UserId/ProName/Dir(File)...
+            std::shared_ptr<FileInfo> file = (*fileVec)[i];
             QStringList list = file->file_path.split("/", Qt::SkipEmptyParts);
             int size = list.size();
             std::shared_ptr<Directory> dir = mainDir;
@@ -985,7 +982,7 @@ void MainWindow::dataProgress()
     }
     case (int)Package::ReturnType::FILE:
     {
-        // 鎺ユ敹鏂囦欢锛屽苟鏄剧ず鍦–odeEdit涓?
+        // 鎺ユ敹鏂囦欢锛屽苟鏄剧ず鍦–odeEdit�??
         QByteArray temp = socket->read(4);
         int fid = Package::ByteArrToInt(temp, 0);
 
@@ -1009,7 +1006,7 @@ void MainWindow::dataProgress()
         file->file_project = info[4].toInt();
         file->file_privilege = info[5].toShort();
 
-        pro_fileMap.value(file->file_project).append(file);
+        pro_fileMap.value(file->file_project)->append(file);
 
         // x01234/678
         QString dir_path = file->file_path.mid(0, file->file_path.lastIndexOf("/"));
@@ -1082,14 +1079,14 @@ void MainWindow::dataProgress()
         if (pro_fileMap.contains(pid))
         {
             auto vec = pro_fileMap.value(pid);
-            for (int i = 0; i < vec.size(); i++)
+            for (int i = 0; i < vec->size(); i++)
             {
-                auto file = vec[i];
+                auto file = (*vec)[i];
                 if (file->file_id == fid)
                 {
                     file->file_item->parent()->removeChild(file->file_item);
                     delete file->file_item;
-                    vec.removeAt(i);
+                    vec->removeAt(i);
                     break;
                 }
             }
@@ -1222,12 +1219,12 @@ void MainWindow::disposeDebugInfo(QString data)
     QRegularExpression breakpointRegex("(Breakpoint \\d+) at (.*): file (.*) line (\\d+)"); // 譁ｭ轤ｹ菫｡諱ｯ
     QRegularExpression tobreakpointRegex("Breakpoint \\d+, .* \\(\\) at (.*):(\\d+)");      // 霑占｡悟芦譁ｭ轤ｹ菫｡諱?
     QRegularExpression crashRegex("Program received signal .*");                            // 遞句ｺ丞ｴｩ貅�ｿ｡諱ｯ
-    QRegularExpression varValueRegex("(.*) = (.*)");                                        // 蜿倬㍼蛟ｼ菫｡諱?
+    QRegularExpression varValueRegex("(.*) = (.*)");                                        // 蜿倬㍼蛟ｼ菫｡�??
     QRegularExpression stackFrameRegex("#\\d+ .* \\(\\) at (.*):(\\d+)");                   // 譬亥ｸｧ菫｡諱ｯ
-    QRegularExpression segFaultRegex("(Program received signal SIGSEGV.*)");                // 谿ｵ髞呵ｯｯ菫｡諱?
+    QRegularExpression segFaultRegex("(Program received signal SIGSEGV.*)");                // 谿ｵ髞呵ｯｯ菫｡�??
     QRegularExpression leakRegex("(LEAK SUMMARY:).*");                                      // 蜀�ｭ俶ｳ�愆菫｡諱ｯ
     QRegularExpression unhandledExceptionRegex("(terminate called after throwing.*)");      // 譛ｪ螟�炊逧�ｼょｸｸ菫｡諱ｯ
-    QRegularExpression assertRegex("(Assertion.*)");                                        // 譁ｭ險螟ｱ雍･菫｡諱ｯ
+    QRegularExpression assertRegex("(Assertion.*)");                                        // 譁ｭ�?螟ｱ雍･菫｡諱ｯ
     QRegularExpression errorRegex("(.*):(\\d+):(\\d+):\\s+(error|warning):(.*)");           // 髞呵ｯｯ菫｡諱ｯ
     QRegularExpression gotoLine("\\w+ \\(\\) at (.*):(\\d+)");
     QRegularExpression lineinfo("\\d+\\s.*;");
@@ -1457,7 +1454,7 @@ void MainWindow::selectencodingMode()
         else if(encodingType->getListWidgetCurrentItem()==encodingType->getItem10())
             EncodingTypeLabel->setText("褰撳墠鐨勭紪鐮佹柟寮忎负锛欼SO-8859-5");
         else
-            EncodingTypeLabel->setText("褰撳墠鐨勭紪鐮佹柟寮忎负锛歎TF-8(榛樿涓篣TF-8缂栫爜锛屽闇€鏇存敼锛岃鎵撳紑鈥滆缃??-缂栫爜鏂瑰紡鈥濅腑杩涜閫夋嫨");
+            EncodingTypeLabel->setText("褰撳墠鐨勭紪鐮佹柟寮忎负锛歎TF-8(榛樿涓篣TF-8缂栫爜锛屽闇€鏇存敼锛岃鎵撳紑鈥滆�???-缂栫爜鏂瑰紡鈥濅腑杩涜閫夋�?");
         encodingType->close(); });
 
     connect(encodingType->getButtonCancel(), &QPushButton::clicked, this, &QDialog::close);
@@ -1477,14 +1474,14 @@ void MainWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int colu
 // 鏂板缓鏈湴椤圭洰
 void MainWindow::newLocalProj()
 {
-    // 鎶婁箣鍓嶉」鐩腑鐨勬爲鑺傜偣鍒犻櫎
+    // 鎶婁箣鍓嶉」鐩腑鐨勬爲鑺傜偣鍒犻�?
     int header_count = tree_widget_item_header_file_name->childCount();
     for (int i = 0; i < header_count; i++)
     {
         delete tree_widget_item_header_file_name->child(0);
     }
 
-    int source_count=tree_widget_item_source_file_name->childCount();
+    int source_count = tree_widget_item_source_file_name->childCount();
     for (int i = 0; i < source_count; i++)
     {
         delete tree_widget_item_source_file_name->child(0);
@@ -1495,29 +1492,29 @@ void MainWindow::newLocalProj()
     dialog->show();
     // 鏂板缓鎸夐挳
     connect(dialog->get_pushButton_new(), &QPushButton::clicked, this, [=]()
-    {
+            {
         if(dialog->get_lineEdit_name()->text()=="")
         {
-            QMessageBox::critical(this,"閿欒","璇疯緭鍏ラ」鐩悕");
+            QMessageBox::critical(this,"閿欒�?","璇疯緭鍏ラ」鐩悕");
             return;
         }
         else if(dialog->get_lineEdit_location()->text()=="")
         {
-            QMessageBox::critical(this,"閿欒","璇烽€夋嫨鏂板缓椤圭洰鐨勮矾寰?");
+            QMessageBox::critical(this,"閿欒�?","璇烽€夋嫨鏂板缓椤圭洰鐨勮矾�??");
             return;
         }
         else
         {
             dialog->project_name=dialog->get_lineEdit_name()->text();
             current_project_name=dialog->project_name;
-            //璁板綍褰撳墠椤圭洰鐨勮矾寰勫埌mainwindow涓紝渚夸簬鍚庣画鐨勬坊鍔?
+            //璁板綍褰撳墠椤圭洰鐨勮矾寰勫埌mainwindow涓紝渚夸簬鍚庣画鐨勬坊�??
             current_project_path=dialog->project_path+"/"+current_project_name;
             QDir dir;
             if(dir.mkdir(current_project_path))
             {
-                QMessageBox::information(this,"淇℃伅","鏂板缓椤圭洰鎴愬姛");
+                QMessageBox::information(this,"淇℃�?","鏂板缓椤圭洰鎴愬�?");
 
-                //涓洪」鐩垱寤轰袱涓枃浠跺す锛氬ご鏂囦欢銆佹簮鏂囦欢   鍜岄」鐩俊鎭?.txt
+                //涓洪」鐩垱寤轰袱涓枃浠跺す锛氬ご鏂囦欢銆佹簮鏂囦�?   鍜岄」鐩俊�??.txt
                 QString header_file=current_project_path+"/Header";
                 QString cpp_file=current_project_path+"/Source";
                 QString information_file=current_project_path+"/CMakeLists.txt";
@@ -1546,21 +1543,21 @@ void MainWindow::newLocalProj()
                 Project current_project(currentProject,current_project_name);
                 debugInfo->insert(currentProject,new QMultiHash<QString,int>());
 
-                //灏嗛」鐩殑id鍜孭roject缁撴瀯浣撴坊鍔犲埌userProjs涓?****************************************************************************************
+                //灏嗛」鐩殑id鍜孭roject缁撴瀯浣撴坊鍔犲埌userProjs�??****************************************************************************************
                 userProjs->insert(currentProject,current_project);
 
-                //鍒濆鍖朌irectory鎸囬拡********************************************************************************
+                //鍒濆鍖朌irectory鎸囬�?********************************************************************************
                 Directory* dir=new Directory(currentProject,current_project_name,current_project_path,tree_widget_item_project_name);
                 std::shared_ptr<Directory> Dir(dir);
 
-                //涓烘牴鑺傜偣娣诲姞(椤圭洰鍚嶇О锛夌殑treeItem娣诲姞闄勫姞椤?********************************************************************************
+                //涓烘牴鑺傜偣娣诲�?(椤圭洰鍚嶇О锛夌殑treeItem娣诲姞闄勫姞�??********************************************************************************
                 QVariant var;
                 var.setValue(Dir);
                 tree_widget_item_project_name->setData(0,Qt::UserRole,var);
                 tree_widget_item_project_name->setIcon(0, QIcon("://icon/PROJECT.png"));
                 mainDirMap.insert(currentProject,Dir);
 
-                //娣诲姞鏍硅妭鐐?
+                //娣诲姞鏍硅妭�??
                 tree_widget_item_project_name->setText(0,dialog->get_lineEdit_name()->text());
                 ui->treeWidget->addTopLevelItem(tree_widget_item_project_name);
 
@@ -1573,59 +1570,55 @@ void MainWindow::newLocalProj()
             }
             else
             {
-                QMessageBox::critical(this,"閿欒","鏂板缓椤圭洰澶辫触");
+                QMessageBox::critical(this,"閿欒�?","鏂板缓椤圭洰澶辫�?");
             }
             dialog->close();
-        }
-    });
+        } });
 }
 
-// 鎵撳紑鏈湴椤圭洰鏂囦欢
+// 鎵撳紑鏈湴椤圭洰鏂囦�?
 void MainWindow::openLocalProj()
 {
-    // 鎶婁箣鍓嶉」鐩腑鐨勬爲鑺傜偣鍒犻櫎
+    // 鎶婁箣鍓嶉」鐩腑鐨勬爲鑺傜偣鍒犻�?
     int header_count = tree_widget_item_header_file_name->childCount();
     for (int i = 0; i < header_count; i++)
     {
         delete tree_widget_item_header_file_name->child(0);
     }
 
-    int source_count=tree_widget_item_source_file_name->childCount();
+    int source_count = tree_widget_item_source_file_name->childCount();
     for (int i = 0; i < source_count; i++)
     {
         delete tree_widget_item_source_file_name->child(0);
     }
 
+    // 鑾峰彇鏂囦欢澶圭殑鐩綍
+    QString folder_path = QFileDialog::getExistingDirectory(this, tr("閫夋嫨鐩綍"), "/", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+    current_project_path = folder_path;
 
-    //鑾峰彇鏂囦欢澶圭殑鐩綍
-    QString folder_path=QFileDialog::getExistingDirectory(this,tr("閫夋嫨鐩綍"),"/",QFileDialog::ShowDirsOnly|QFileDialog::DontResolveSymlinks);
-    current_project_path=folder_path;
-
-    //鑾峰彇瀛愮洰褰?
+    // 鑾峰彇瀛愮洰褰?
     QStringList dir_list;
     bool res = get_SubDir_Under_Dir(folder_path, dir_list);
-    if (res == true && dir_list.size() == 2)
+    if (res == true)
     {
 
-        if(dir_list[0]!="Header"||dir_list[1]!="Source")
+        if (is_legal_CSC_file("Header", dir_list) && is_legal_CSC_file("Source", dir_list))
         {
-            QMessageBox::critical(this,tr("閿欒"),"璇锋墦寮€鍚堟硶鐨凜loudSharedCoding椤圭洰");
-            return;
+            QMessageBox::information(this, tr("成功"), "成功打开项目");
         }
         else
         {
-            QMessageBox::information(this,tr("鎴愬姛"),"鎴愬姛鎵撳紑椤圭洰");
+            QMessageBox::critical(this, tr("错误"), "请打开合法的CloudSharedCoding项目");
+            return;
         }
-
     }
     else
     {
-       QMessageBox::critical(this,tr("閿欒"),"璇锋墦寮€鍚堟硶鐨凜loudSharedCoding椤圭洰");
-      return;
+        QMessageBox::critical(this, tr("错误"), "打开项目失败");
         return;
     }
 
-    // 鑾峰彇椤圭洰鐨勫悕瀛?
+    // 获取项目的名�?
     int last_index = folder_path.lastIndexOf('/');
     current_project_name = folder_path.mid(last_index + 1);
 
@@ -1636,10 +1629,10 @@ void MainWindow::openLocalProj()
     Project current_project(currentProject, current_project_name);
     debugInfo->insert(currentProject, new QMultiHash<QString, int>());
 
-    // 灏嗛」鐩殑id鍜孭roject缁撴瀯浣撴坊鍔犲埌userProjs涓?****************************************************************************************
+    // 将项目的id和Project结构体添加到userProjs�?****************************************************************************************
     userProjs->insert(currentProject, current_project);
 
-    // 璁剧疆椤跺眰鑺傜偣鐨勫唴瀹?
+    // 设置顶层节点的内�?
     tree_widget_item_project_name->setText(0, current_project_name);
 
     // 涓洪《灞傝妭鐐规坊鍔燚irectory鏅鸿兘鎸囬拡****************************************************************************************
@@ -1656,17 +1649,17 @@ void MainWindow::openLocalProj()
     tree_widget_item_project_name->addChild(tree_widget_item_header_file_name);
     tree_widget_item_project_name->addChild(tree_widget_item_source_file_name);
 
-    // 鏂板缓涓€涓獀ector瀛樻斁鐫€鏈湴鏂囦欢鎵€鏈夌殑淇℃伅****************************************************************************************
-    QVector<std::shared_ptr<FileInfo>> file_info_ptr_vector;
+    // 新建一个vector存放着本地文件所有的信息****************************************************************************************
+    QVector<std::shared_ptr<FileInfo>> *file_info_ptr_vector = new QVector<std::shared_ptr<FileInfo>>;
 
-    // 瀵煎叆椤圭洰涓殑鎵€鏈夊ご鏂囦欢
+    // 瀵煎叆椤圭洰涓殑鎵€鏈夊ご鏂囦�?
     QString header_path = current_project_path + "/Header";
     QStringList header_list;
     get_SubFile_Under_SubDir(header_path, header_list, 0);
     for (int i = 0; i < header_list.size(); i++)
     {
         std::shared_ptr<FileInfo> file_info_ptr(new FileInfo);
-        // 瀹炰緥鍖杅ile_info_ptr鐨勫唴瀹?****************************************************************************************
+        // 实例化file_info_ptr的内�?****************************************************************************************
         int current_file_id = local_file_id;
         local_file_id--;
         file_info_ptr->file_id = current_file_id;
@@ -1675,8 +1668,8 @@ void MainWindow::openLocalProj()
         file_info_ptr->file_project = currentProject;
         file_info_ptr->file_privilege = 0;
 
-        // 娣诲姞鍒癴ile_info_vector涓?****************************************************************************************
-        file_info_ptr_vector.append(file_info_ptr);
+        // 添加到file_info_vector�?****************************************************************************************
+        file_info_ptr_vector->append(file_info_ptr);
 
         // 涓哄ご鏂囦欢鏍戣妭鐐规柊寤烘柊鑺傜偣
         MyTreeItem *item = new MyTreeItem(MyTreeItem::Type::FILE);
@@ -1684,21 +1677,20 @@ void MainWindow::openLocalProj()
         item->setIcon(0, QIcon("://icon/H-.png"));
         tree_widget_item_header_file_name->addChild(item);
 
-        // 涓烘瘡涓€*.h鐨則reeItem闄勫姞鍐呭锛岄檮鍔犵殑鍐呭涓鸿鏂囦欢鐨勬櫤鑳戒俊鎭寚閽?****************************************************************************************
+        // 为每一*.h的treeItem附加内容，附加的内容为该文件的智能信息指�?****************************************************************************************
         QVariant var;
         var.setValue(file_info_ptr);
         item->setData(0, Qt::UserRole, var);
     }
 
-
-    //瀵煎叆椤圭洰涓殑鎵€鏈夋簮鏂囦欢
-    QString source_path=current_project_path+"/Source";
+    // 瀵煎叆椤圭洰涓殑鎵€鏈夋簮鏂囦�?
+    QString source_path = current_project_path + "/Source";
     QStringList source_list;
     get_SubFile_Under_SubDir(source_path, source_list, 1);
     for (int i = 0; i < source_list.size(); i++)
     {
         std::shared_ptr<FileInfo> file_info_ptr(new FileInfo);
-        // 瀹炰緥鍖杅ile_info_ptr鐨勫唴瀹?****************************************************************************************
+        // 实例化file_info_ptr的内�?****************************************************************************************
         int current_file_id = local_file_id;
         local_file_id--;
         file_info_ptr->file_id = current_file_id;
@@ -1707,8 +1699,8 @@ void MainWindow::openLocalProj()
         file_info_ptr->file_project = currentProject;
         file_info_ptr->file_privilege = 0;
 
-        // 娣诲姞鍒癴ile_info_vector涓?****************************************************************************************
-        file_info_ptr_vector.append(file_info_ptr);
+        // 添加到file_info_vector�?****************************************************************************************
+        file_info_ptr_vector->append(file_info_ptr);
 
         // 涓烘簮鏂囦欢鏍戣妭鐐规柊寤烘柊鑺傜偣
         MyTreeItem *item = new MyTreeItem(MyTreeItem::Type::FILE);
@@ -1716,27 +1708,27 @@ void MainWindow::openLocalProj()
         item->setIcon(0, QIcon("://icon/cpp.png"));
         tree_widget_item_source_file_name->addChild(item);
 
-        // 涓烘瘡涓€*.cpp鐨則reeItem闄勫姞鍐呭锛岄檮鍔犵殑鍐呭涓鸿鏂囦欢鐨勬櫤鑳戒俊鎭寚閽?****************************************************************************************
+        // 为每一*.cpp的treeItem附加内容，附加的内容为该文件的智能信息指�?****************************************************************************************
         QVariant var;
         var.setValue(file_info_ptr);
         item->setData(0, Qt::UserRole, var);
     }
 
-    // 瀵筽ro_fileMap涓坊鍔犻」鐩甀D鏄犲皠鎵€鏈夋枃浠朵俊鎭櫤鑳芥寚閽堢殑vector鏁扮粍
+    // 瀵筽ro_fileMap涓坊鍔犻」鐩甀D鏄犲皠鎵€鏈夋枃浠朵俊鎭櫤鑳芥寚閽堢殑vector鏁扮�?
     pro_fileMap.insert(currentProject, file_info_ptr_vector);
 }
 
 // 娣诲姞鏈湴鏂囦欢
 void MainWindow::addLocalFile()
 {
-    // 鍒ゆ柇鏄惁鍙互娣诲姞鏂囦欢
+    // 鍒ゆ柇鏄惁鍙互娣诲姞鏂囦�?
     if (current_project_path == "")
     {
-        QMessageBox::critical(this, "閿欒", "褰撳墠鏂囦欢涓虹┖锛岃鍏堟柊寤烘枃浠舵垨鎵撳紑鏂囦欢鍦ㄦ墽琛屾坊鍔犳枃浠舵搷浣?");
+        QMessageBox::critical(this, "错误", "当前文件为空，请先新建文件或打开文件在执行添加文件操�?");
         return;
     }
 
-    // 鑾峰彇瑕佹坊鍔犵殑鏂囦欢鍚嶅瓧鍜岃矾寰?
+    // 获取要添加的文件名字和路�?
     AddLocalFile *dialog = new AddLocalFile(this);
     dialog->setAttribute(Qt::WA_DeleteOnClose);
     dialog->set_lineEdit_path(current_project_path);
@@ -1747,39 +1739,38 @@ void MainWindow::addLocalFile()
             {
         if(dialog->get_lineEdit_name()->text()=="")
         {
-            QMessageBox::warning(this,"璀﹀憡","璇疯緭鍏ユ枃浠跺悕");
+            QMessageBox::warning(this,"璀﹀�?","璇疯緭鍏ユ枃浠跺�?");
             return;
         }
         else if(!dialog->isLegal(dialog->get_lineEdit_name()->text()))
         {
-            QMessageBox::warning(this,"璀﹀憡","璇疯緭鍏ュ悎娉曠殑鏂囦欢鍚嶏紙鍙厑璁稿寘鍚瓧姣嶅拰鏁板瓧");
+            QMessageBox::warning(this,"璀﹀�?","璇疯緭鍏ュ悎娉曠殑鏂囦欢鍚嶏紙鍙厑璁稿寘鍚瓧姣嶅拰鏁板瓧");
             return;
         }
-        else if(is_contain_file_name(dialog->get_lineEdit_name()->text(),pro_fileMap.value(currentProject)))
+        else if(is_contain_file_name(dialog->get_lineEdit_name()->text(),*(pro_fileMap.value(currentProject))))
         {
-            QMessageBox::warning(this,"璀﹀憡","姝ゆ枃浠跺凡瀛樺湪锛岃鏇存崲鏂囦欢鍚嶅啀娣诲姞");
+            QMessageBox::warning(this,"璀﹀�?","姝ゆ枃浠跺凡瀛樺湪锛岃鏇存崲鏂囦欢鍚嶅啀娣诲�?");
             return;
         }
         else
         {
             if(dialog->get_comboBox_current_index()==0)//.cpp
             {
-
-               //鑾峰彇瑕佹坊鍔犵殑鏂囦欢璺緞骞舵坊鍔犳枃浠?
+               //获取要添加的文件路径并添加文�?
                QString file_path=current_project_path+"/Source/"+dialog->get_lineEdit_name()->text()+".cpp";
                bool res=this->addFile(file_path);
                if(res==true)
-                   QMessageBox::information(this,"鎴愬姛","娣诲姞鏂囦欢鎴愬姛");
+                   QMessageBox::information(this,"鎴愬�?","娣诲姞鏂囦欢鎴愬�?");
                else
                {
-                   QMessageBox::information(this,"澶辫触","娣诲姞鏂囦欢澶辫触");
+                   QMessageBox::information(this,"澶辫�?","娣诲姞鏂囦欢澶辫�?");
                    return;
                }
 
-               //鏂囦欢淇℃伅鎸囬拡******************************************************
+               //鏂囦欢淇℃伅鎸囬�?******************************************************
                std::shared_ptr<FileInfo> file_info_ptr(new FileInfo);
 
-               //瀹炰緥鍖栨枃浠朵俊鎭寚閽?******************************************************
+               //实例化文件信息指�?******************************************************
                int current_file_id=local_file_id;
                local_file_id--;
                file_info_ptr->file_id=current_file_id;
@@ -1788,8 +1779,10 @@ void MainWindow::addLocalFile()
                file_info_ptr->file_project=currentProject;
                file_info_ptr->file_privilege=0;
 
-               //娣诲姞鍒癴ile_info_ptr_vector******************************************************
-               pro_fileMap.value(currentProject).append(file_info_ptr);
+               //添加到file_info_ptr_vector******************************************************
+               //pro_fileMap.value(currentProject).push_back(file_info_ptr);
+               auto vec = pro_fileMap.value(currentProject);
+               vec->append(file_info_ptr);
 
                //涓哄ご鏂囦欢鏍戣妭鐐规柊寤烘柊鑺傜偣
                MyTreeItem* item=new MyTreeItem(MyTreeItem::Type::FILE);
@@ -1804,26 +1797,25 @@ void MainWindow::addLocalFile()
             }
             else//.h
             {
-
-                //鑾峰彇瑕佹坊鍔犵殑鏂囦欢璺緞骞舵坊鍔犳枃浠?
+                //获取要添加的文件路径并添加文�?
                 QString  file_path1=current_project_path+"/Header/"+dialog->get_lineEdit_name()->text()+".h";
                 QString  file_path2=current_project_path+"/Source/"+dialog->get_lineEdit_name()->text()+".cpp";
                 bool res1=this->addFile(file_path1);
                 bool res2=this->addFile(file_path2);
                 if(res1==true&&res2==true)
-                    QMessageBox::information(this,"鎴愬姛","娣诲姞鏂囦欢鎴愬姛");
+                    QMessageBox::information(this,"鎴愬�?","娣诲姞鏂囦欢鎴愬�?");
                 else
                 {
-                    QMessageBox::information(this,"澶辫触","娣诲姞鏂囦欢澶辫触");
+                    QMessageBox::information(this,"澶辫�?","娣诲姞鏂囦欢澶辫�?");
                     return;
                 }
 
-                //鏂囦欢淇℃伅鎸囬拡******************************************************
+                //鏂囦欢淇℃伅鎸囬�?******************************************************
                 std::shared_ptr<FileInfo> file_info_ptr1(new FileInfo);
                 std::shared_ptr<FileInfo> file_info_ptr2(new FileInfo);
 
-                //瀹炰緥鍖栨枃浠朵俊鎭寚閽?******************************************************
-                //"*.h"鏂囦欢
+                //实例化文件信息指�?******************************************************
+                //"*.h"文件
                 int current_file_id1=local_file_id;
                 local_file_id--;
                 file_info_ptr1->file_id=current_file_id1;
@@ -1832,7 +1824,7 @@ void MainWindow::addLocalFile()
                 file_info_ptr1->file_project=currentProject;
                 file_info_ptr1->file_privilege=0;
 
-                //"*.cpp"鏂囦欢
+                //"*.cpp"鏂囦�?
                 int current_file_id2=local_file_id;
                 local_file_id--;
                 file_info_ptr2->file_id=current_file_id2;
@@ -1841,9 +1833,9 @@ void MainWindow::addLocalFile()
                 file_info_ptr2->file_project=currentProject;
                 file_info_ptr2->file_privilege=0;
 
-                //娣诲姞鍒癴ile_info_ptr_vector******************************************************
-                pro_fileMap.value(currentProject).append(file_info_ptr1);
-                pro_fileMap.value(currentProject).append(file_info_ptr2);
+                //添加到file_info_ptr_vector******************************************************
+                pro_fileMap.value(currentProject)->append(file_info_ptr1);
+                pro_fileMap.value(currentProject)->append(file_info_ptr2);
 
                 //涓哄ご鏂囦欢鏍戣妭鐐规柊寤烘柊鑺傜偣
                 MyTreeItem* item1=new MyTreeItem(MyTreeItem::Type::FILE);
@@ -1856,62 +1848,62 @@ void MainWindow::addLocalFile()
                 tree_widget_item_source_file_name->addChild(item2);
 
                 //涓烘瘡涓€涓ご鏂囦欢闄勫姞鍐呭锛岄檮鍔犵殑鍐呭涓鸿澶存枃浠剁殑鏅鸿兘淇℃伅鎸囬拡******************************************************
-                //".h"鏂囦欢
+                //".h"鏂囦�?
                 QVariant var1;
                 var1.setValue(file_info_ptr1);
                 item1->setData(0,Qt::UserRole,var1);
 
-                //"cpp"鏂囦欢
+                //"cpp"鏂囦�?
                 QVariant var2;
                 var2.setValue(file_info_ptr2);
                 item2->setData(0,Qt::UserRole,var2);
             }
             dialog->close();
-        }
-    });
+        } });
 }
 
-//淇濆瓨鏈湴椤圭洰鏂囦欢
+// 淇濆瓨鏈湴椤圭洰鏂囦�?
 void MainWindow::saveLocalProj()
 {
-    //娌℃湁鎵撳紑椤圭洰
-    if(currentProject==0||current_project_name==""||current_project_path=="")
+    // 没有打开项目
+    if (current_project_name == "" || current_project_path == "")
         return;
 
+    // 获取存放文件信息指针的vector数组
+    QVector<std::shared_ptr<FileInfo>> *ptr_vector = pro_fileMap.value(currentProject);
 
-    //鑾峰彇瀛樻斁鏂囦欢淇℃伅鎸囬拡鐨剉ector鏁扮粍
-    QVector<std::shared_ptr<FileInfo>> ptr_vector=pro_fileMap.value(currentProject);
-
-    for(int i=0;i<ptr_vector.size();i++)
+    for (int i = 0; i < ptr_vector->size(); i++)
     {
-        //瑕佷繚瀛樼殑鏂囦欢id鍜宑ode_edit
-        int file_id=ptr_vector[i]->file_id;
-        CodeEdit* code_edit=fileWidgets.value(file_id);
+        // 要保存的文件id和code_edit
+        int file_id = ptr_vector->at(i)->file_id;
+        if (!fileWidgets.contains(file_id))
+            continue;
+        CodeEdit *code_edit = fileWidgets.value(file_id);
 
-        //瑕佷繚瀛樼殑鏂囦欢璺緞
-        QString file_path=ptr_vector[i]->file_path;
+        // 要保存的文件路径
+        QString file_path = ptr_vector->at(i)->file_path;
         QFile file(file_path);
-        if(file.open(QIODevice::WriteOnly|QIODevice::Text))
+        if (file.open(QIODevice::WriteOnly | QIODevice::Text))
         {
             QTextStream cout(&file);
-            QString str=code_edit->getText();
-            cout<<str;
+            QString str = code_edit->getText();
+            cout << str;
         }
         else
         {
-            QMessageBox::critical(this,"閿欒","椤圭洰淇濆瓨澶辫触");
+            QMessageBox::critical(this, "閿欒�?", "椤圭洰淇濆瓨澶辫�?");
             return;
         }
     }
-    QMessageBox::information(this,"鎴愬姛","椤圭洰淇濆瓨鎴愬姛");
+    QMessageBox::information(this, "鎴愬�?", "椤圭洰淇濆瓨鎴愬�?");
 }
 
-//鍒ゆ柇瑕佹柊寤虹殑鏂囦欢鍚嶆槸鍚﹀凡缁忓瓨鍦?
-bool MainWindow::is_contain_file_name(QString file_name,QVector<std::shared_ptr<FileInfo>>ptr_vector)
+// 判断要新建的文件名是否已经存�?
+bool MainWindow::is_contain_file_name(QString file_name, QVector<std::shared_ptr<FileInfo>> ptr_vector)
 {
-    for(int i=0;i<ptr_vector.size();i++)
+    for (int i = 0; i < ptr_vector.size(); i++)
     {
-        if(file_name+".h"==ptr_vector[i]->file_name||file_name+".cpp"==ptr_vector[i]->file_name)
+        if (file_name + ".h" == ptr_vector[i]->file_name || file_name + ".cpp" == ptr_vector[i]->file_name)
             return true;
         else
             continue;
@@ -1919,38 +1911,21 @@ bool MainWindow::is_contain_file_name(QString file_name,QVector<std::shared_ptr<
     return false;
 }
 
-//// 淇濆瓨鏈湴椤圭洰鏂囦欢
-//void MainWindow::saveLocalProj()
-//{
-//    // 鑾峰彇瀛樻斁鏂囦欢淇℃伅鎸囬拡鐨剉ector鏁扮粍
-//    QVector<std::shared_ptr<FileInfo>> ptr_vector = pro_fileMap.value(currentProject);
+// 判断文件名是否在list�?
+bool MainWindow::is_legal_CSC_file(QString file_name, QStringList list)
+{
+    for (int i = 0; i < list.size(); i++)
+    {
+        if (list[i] == file_name)
+            return true;
+        else
+            continue;
+    }
+    return false;
+}
 
-//    for (int i = 0; i < ptr_vector.size(); i++)
-//    {
-//        // 瑕佷繚瀛樼殑鏂囦欢id鍜宑ode_edit
-//        int file_id = ptr_vector[i]->file_id;
-//        CodeEdit *code_edit = fileWidgets.value(file_id);
-
-//        // 瑕佷繚瀛樼殑鏂囦欢璺緞
-//        QString file_path = ptr_vector[i]->file_path;
-//        QFile file(file_path);
-//        if (file.open(QIODevice::WriteOnly | QIODevice::Text))
-//        {
-//            QTextStream cout(&file);
-//            QString str = code_edit->getText();
-//            cout << str;
-//        }
-//        else
-//        {
-//            QMessageBox::critical(this, "閿欒", "椤圭洰淇濆瓨澶辫触");
-//            return;
-//        }
-//    }
-//    QMessageBox::information(this, "鎴愬姛", "椤圭洰淇濆瓨鎴愬姛");
-//}
-
-// 鏈嚱鏁扮殑浣滅敤鏄湪鎸囧畾鐨勮矾寰勪笅鏂板缓涓€涓柊鐨勬枃浠讹紙鍙互浣夸换浣曠被鍨嬬殑鏂囦欢锛屼緥濡?.cpp .h .txt)
-// 渚嬪 D:D:/4.23/123.txt 灏嗗湪D/4.23鏂囦欢鐩綍涓嬫柊寤轰竴涓悕涓?123.txt鐨勬枃鏈枃妗?
+// 本函数的作用是在指定的路径下新建一个新的文件（可以使任何类型的文件，例�?.cpp .h .txt)
+// 例如 D:D:/4.23/123.txt 将在D/4.23文件目录下新建一个名�?123.txt的文本文�??
 bool MainWindow::addFile(QString file_path)
 {
     // 鏂板缓鏂囦欢
@@ -1962,7 +1937,7 @@ bool MainWindow::addFile(QString file_path)
     return res;
 }
 
-// 鏈嚱鏁扮殑浣滅敤鏄湪缁欏畾鐨勮矾寰勪笅灏嗘枃浠舵墦寮€骞舵瀯閫犱竴涓枃鏈紪杈戝櫒鍜屾坊鍔犲埌tabWidget涓?
+// 本函数的作用是在给定的路径下将文件打开并构造一个文本编辑器和添加到tabWidget�?
 void MainWindow::openFileAndAddTab(QString file_path)
 {
     QFileInfo info(file_path);
@@ -1972,28 +1947,28 @@ void MainWindow::openFileAndAddTab(QString file_path)
 
     file_information->file_project = -1;
 
-    // file_information鏋勯€犲嚭涓€涓猚ode_edit鏂囨湰缂栬緫鍣?
+    // file_information构造出一个code_edit文本编辑��?
     CodeEdit *code_edit = new CodeEdit(file_information, this);
 
-    // 鏂板缓涓€涓猼ab鍔犲叆鍒皌abWidget涓?
+    // 新建一个tab加入到tabWidget��?
     ui->tabWidget->addTab(code_edit, file_information->file_name);
     file_information->is_open = true;
 
-    // 璇诲彇鏂囦欢鐨勫唴瀹瑰苟鎵撳嵃鍒癱ode_edit缂栬緫鍣?
+    // 读取文件的内容并打印到code_edit编辑��?
     QFile file(file_path);
     file.open(QIODevice::ReadOnly);
     QByteArray array = file.readAll();
     code_edit->addText(array);
 
-    // 涓€涓猵ath瀵瑰簲涓€涓猚ode_edit鎸囬拡锛屾坊鍔犲埌鏄犲皠琛ㄤ腑
+    // 涓€涓猵ath瀵瑰簲涓€涓猚ode_edit鎸囬拡锛屾坊鍔犲埌鏄犲皠琛ㄤ�?
     mp[file_information->file_path] = code_edit;
 }
 
-// 璇ュ嚱鏁扮殑浣滅敤鏄湪缁欏畾鐨勮矾寰勪笅鑾峰彇褰撲腑鐨勬墍鏈夋枃浠跺す锛屽苟娣诲姞鍒板弬鏁癚StringList涓?
+// 该函数的作用是在给定的路径下获取当中的所有文件夹，并添加到参数QStringList��?
 bool MainWindow::get_SubDir_Under_Dir(QString path, QStringList &list)
 {
     QDir *dir = new QDir(path);
-    // 涓嶅瓨鍦ㄦ鐩綍
+    // 涓嶅瓨鍦ㄦ鐩�?
     if (!dir->exists())
     {
         delete dir;
@@ -2011,11 +1986,11 @@ bool MainWindow::get_SubDir_Under_Dir(QString path, QStringList &list)
     }
 }
 
-// 璇ュ嚱鏁扮殑浣滅敤鏄湪缁欏畾鐨勬枃浠跺す涓嬭幏鍙栧綋涓殑鎵€鏈夋枃浠讹紝骞舵坊鍔犲埌鍙傛暟QStringList涓?(鍙傛暟tag1==0鎸囨槑瑕佽幏鍙栫殑"*.h"鏂囦欢锛宼ag==1鎸囨槑瑕佽幏鍙栫殑"*.cpp"鏂囦欢)
+// 该函数的作用是在给定的文件夹下获取当中的所有文件，并添加到参数QStringList��?(参数tag1==0指明要获取的"*.h"文件，tag==1指明要获取的"*.cpp"文件)
 bool MainWindow::get_SubFile_Under_SubDir(QString path, QStringList &list, int tag)
 {
     QDir *dir = new QDir(path);
-    // 涓嶅瓨鍦ㄦ鐩綍
+    // 涓嶅瓨鍦ㄦ鐩�?
     if (!dir->exists())
     {
         delete dir;
@@ -2060,7 +2035,7 @@ void MainWindow::runProject()
 
     if (currentProject < 0)
     {
-        if (runThread!=nullptr)
+        if (runThread != nullptr)
         {
             disconnect(runThread);
             runThread->deleteLater();
@@ -2069,12 +2044,13 @@ void MainWindow::runProject()
         runThread = new RunThread(path, this);
         connect(runThread, SIGNAL(buildInfo(QString)), this, SLOT(appendBuildText(QString)));
         connect(runThread, SIGNAL(stdOut(QString)), this, SLOT(appendRunningText(QString)));
-        connect(runThread,&RunThread::buildFinish,this,[=](){
+        connect(runThread, &RunThread::buildFinish, this, [=]()
+                {
             statusIcon->movie()->stop();
             runningMovie->start();
-            statusIcon->setMovie(runningMovie);
-        });
-        connect(runThread,&RunThread::runFinish,this,[=](int n){
+            statusIcon->setMovie(runningMovie); });
+        connect(runThread, &RunThread::runFinish, this, [=](int n)
+                {
             statusIcon->movie()->stop();
             stateokMovie->start();
             statusIcon->setMovie(stateokMovie);
@@ -2083,8 +2059,7 @@ void MainWindow::runProject()
             debugbutton->setDisabled(false);
             stopRun->setDisabled(true);
 
-            appendRunningText("Exit with "+QString::number(n));
-        });
+            appendRunningText("Exit with "+QString::number(n)); });
         runThread->run();
     }
     else
