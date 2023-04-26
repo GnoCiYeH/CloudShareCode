@@ -25,7 +25,7 @@ void RunThread::run()
 
     //Cmake
     cmakeProcess->setProgram("cmake");
-    cmakeProcess->setNativeArguments("-B "+ workPath +"/build -G \"Unix Makefiles\"");
+    cmakeProcess->setNativeArguments(workPath+" -B "+ workPath +"/build -G \"Unix Makefiles\"");
     cmakeProcess->start();
     cmakeProcess->waitForStarted();
 

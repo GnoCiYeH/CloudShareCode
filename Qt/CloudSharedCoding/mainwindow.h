@@ -207,8 +207,8 @@ private:
     QTimer *timer = new QTimer(this);
 
     // ��������Գ���
-    RunThread *runThread;
-    DebugThread *debugThread;
+    RunThread *runThread = nullptr;
+    DebugThread *debugThread = nullptr;
 
 private:
 
@@ -222,7 +222,6 @@ private:
 
     QString current_project_path; // 记录当前项目的路径（根路径)
     QString current_project_name; // 记录当前项目的名字
-    int current_project_id;       // 记录当前项目的id
 
     MyTreeItem *tree_widget_item_project_name = new MyTreeItem(MyTreeItem::Type::PROJECT);
     MyTreeItem *tree_widget_item_file_information = new MyTreeItem(MyTreeItem::Type::DIR);
