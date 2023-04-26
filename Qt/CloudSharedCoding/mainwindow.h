@@ -224,10 +224,14 @@ private:
     QString current_project_name; // 记录当前项目的名字
     int current_project_id;       // 记录当前项目的id
 
+    //四个树节点
     MyTreeItem *tree_widget_item_project_name = new MyTreeItem(MyTreeItem::Type::PROJECT);
     MyTreeItem *tree_widget_item_file_information = new MyTreeItem(MyTreeItem::Type::DIR);
     MyTreeItem *tree_widget_item_header_file_name = new MyTreeItem(MyTreeItem::Type::DIR);
     MyTreeItem *tree_widget_item_source_file_name = new MyTreeItem(MyTreeItem::Type::DIR);
+
+    //自动保存计时器
+    QTimer* timer_for_save=new QTimer(this);
 };
 
 #endif // MAINWINDOW_H

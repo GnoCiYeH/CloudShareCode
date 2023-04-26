@@ -29,8 +29,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),ui(new Ui::MainWin
     current_project_name="";
     current_project_path="";
 
-    timer_for_save->start(5000);
-    connect(timer_for_save,&QTimer::timeout,this,&MainWindow::saveLocalProj);
+    //timer_for_save->start(5000);
+    //connect(timer_for_save,&QTimer::timeout,this,&MainWindow::saveLocalProj);
 
     tree_widget_item_file_information->setText(0,"CMakeLists.txt");
     tree_widget_item_source_file_name->setText(0,"Source");
