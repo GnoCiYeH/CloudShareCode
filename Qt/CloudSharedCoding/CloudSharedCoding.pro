@@ -26,6 +26,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+    CodeworkThread.cpp \
     addlocalfile.cpp \
     cloudsharedcoding.cpp \
     codedocedit.cpp \
@@ -48,6 +49,7 @@ SOURCES += \
     welcomewind.cpp
 
 HEADERS += \
+    CodeworkThread.h \
     InfoType.h \
     addlocalfile.h \
     cloudsharedcoding.h \

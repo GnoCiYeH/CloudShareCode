@@ -88,5 +88,9 @@
         <file>icon/stepinto.png</file>
         <file>icon/stepout.png</file>
         <file>icon/stop.png</file>
+        <file>icon/building.gif</file>
+        <file>icon/debuging.gif</file>
+        <file>icon/running.gif</file>
+        <file>icon/stateok.gif</file>
     </qresource>
 </RCC>

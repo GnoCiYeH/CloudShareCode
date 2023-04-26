@@ -78,6 +78,7 @@ private:
         std::string userId;
         std::vector<int> openedFiles;
         std::vector<int> openedProjects;
+        int runningPid = -1;
     };
 
     static std::unordered_map<int, UserInfo>* userMap;

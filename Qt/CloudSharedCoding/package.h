@@ -99,7 +99,8 @@ public:
         RUN_INFO = 13,
         BUILD_FINISH = 14,
         RUN_FINISH = 15,
-        DEBUG_INFO = 16
+        DEBUG_INFO = 16,
+        FILE_TRANSOVER = 17
     };
 
     Package(QByteArray data,int type);
