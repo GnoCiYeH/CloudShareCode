@@ -226,7 +226,7 @@ private:
 
     //四个树节点
     MyTreeItem *tree_widget_item_project_name = new MyTreeItem(MyTreeItem::Type::PROJECT);
-    MyTreeItem *tree_widget_item_file_information = new MyTreeItem(MyTreeItem::Type::DIR);
+    MyTreeItem *tree_widget_item_file_information = new MyTreeItem(MyTreeItem::Type::FILE);
     MyTreeItem *tree_widget_item_header_file_name = new MyTreeItem(MyTreeItem::Type::DIR);
     MyTreeItem *tree_widget_item_source_file_name = new MyTreeItem(MyTreeItem::Type::DIR);
 

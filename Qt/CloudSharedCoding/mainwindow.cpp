@@ -57,7 +57,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),ui(new Ui::MainWin
         }
         isAlive = false; });
 
-    // 设置主窗口基本属��?
+    // 设置主窗口基本属性
     this->setWindowFlags(Qt::FramelessWindowHint);
     this->setWindowTitle("CloudSharedCoding");
     runbutton = new QToolButton(this);
@@ -1291,7 +1291,7 @@ void MainWindow::newLocalProj()
             {
                 QMessageBox::information(this,"信息","新建项目成功");
 
-                //为项目创建两个文件夹：头文件、源文件   和项目信息.txt
+                //为项目创建两个文件夹：头文件、源文件和项目信息.txt
                 QString header_file=current_project_path+"/Header";
                 QString cpp_file=current_project_path+"/Source";
                 QString information_file=current_project_path+"/CMakeLists.txt";
@@ -1301,31 +1301,51 @@ void MainWindow::newLocalProj()
                 dir.mkdir(header_file);
                 dir.mkdir(cpp_file);
 
-                //为新项目分配id********************************************************************************
+                //为新项目分配id
                 currentProject=local_project_id;
                 local_project_id--;
                 Project current_project(currentProject,current_project_name);
                 debugInfo->insert(currentProject,new QMultiHash<QString,int>());
 
-                //将项目的id和Project结构体添加到userProjs��?****************************************************************************************
+                //将项目的id和Project结构体添加到userProjs中
                 userProjs->insert(currentProject,current_project);
 
-                //初始化Directory指针********************************************************************************
+                //初始化Directory指针
                 Directory* dir=new Directory(currentProject,current_project_name,current_project_path,tree_widget_item_project_name);
                 std::shared_ptr<Directory> Dir(dir);
 
-                //为根节点添加(项目名称）的treeItem添加附加��?********************************************************************************
+                //为根节点(项目名称）添加treeItem附加项
                 QVariant var;
                 var.setValue(Dir);
                 tree_widget_item_project_name->setData(0,Qt::UserRole,var);
                 tree_widget_item_project_name->setIcon(0, QIcon("://icon/PROJECT.png"));
                 mainDirMap.insert(currentProject,Dir);
 
-                //添加根节��?
+                //实例化文件信息指针数组****************************
+                std::shared_ptr<FileInfo> file_info_ptr(new FileInfo);
+                int current_file_id=local_file_id;
+                local_file_id--;
+                file_info_ptr->file_id=current_file_id;
+                file_info_ptr->file_name="CMakeLists.txt";
+                file_info_ptr->file_path=information_file;
+                file_info_ptr->file_project=currentProject;
+                file_info_ptr->file_privilege=0;
+
+                QVector<std::shared_ptr<FileInfo>>* vec = new QVector<std::shared_ptr<FileInfo>>;
+                vec->append(file_info_ptr);
+                pro_fileMap.insert(currentProject,vec);
+
+                //为文件信息节点添加附加项****************************
+                QVariant var2;
+                var2.setValue(file_info_ptr);
+                tree_widget_item_file_information->setData(0,Qt::UserRole,var2);
+
+
+                //添加根节点
                 tree_widget_item_project_name->setText(0,dialog->get_lineEdit_name()->text());
                 ui->treeWidget->addTopLevelItem(tree_widget_item_project_name);
 
-                //添加子节��?
+                //添加子节点
                 tree_widget_item_project_name->addChild(tree_widget_item_file_information);
                 tree_widget_item_header_file_name->setIcon(0,QIcon("://icon/H-.png"));
                 tree_widget_item_project_name->addChild(tree_widget_item_header_file_name);
@@ -1356,7 +1376,6 @@ void MainWindow::openLocalProj()
     {
         delete tree_widget_item_source_file_name->child(0);
     }
-
 
     //获取文件夹的目录
     QString folder_path=QFileDialog::getExistingDirectory(this,tr("选择目录"),"/",QFileDialog::ShowDirsOnly|QFileDialog::DontResolveSymlinks);
@@ -1389,20 +1408,20 @@ void MainWindow::openLocalProj()
     int last_index = folder_path.lastIndexOf('/');
     current_project_name = folder_path.mid(last_index + 1);
 
-    // 为该项目分配id****************************************************************************************
+    // 为该项目分配id
     currentProject = local_project_id;
     local_project_id--;
 
     Project current_project(currentProject, current_project_name);
     debugInfo->insert(currentProject, new QMultiHash<QString, int>());
 
-    // 将项目的id和Project结构体添加到userProjs中****************************************************************************************
+    // 将项目的id和Project结构体添加到userProjs中
     userProjs->insert(currentProject, current_project);
 
     // 设置顶层节点的内容
     tree_widget_item_project_name->setText(0, current_project_name);
 
-    // 为顶层节点添加Directory智能指针****************************************************************************************
+    // 为顶层节点添加Directory智能指针
     std::shared_ptr<Directory> Dir(new Directory(currentProject, current_project_name, current_project_path, tree_widget_item_project_name));
     QVariant var;
     var.setValue(Dir);
@@ -1416,8 +1435,25 @@ void MainWindow::openLocalProj()
     tree_widget_item_project_name->addChild(tree_widget_item_header_file_name);
     tree_widget_item_project_name->addChild(tree_widget_item_source_file_name);
 
-    // 新建一个vector存放着本地文件所有的信息****************************************************************************************
+    // 新建一个vector存放着本地文件所有的信息
     QVector<std::shared_ptr<FileInfo>>* file_info_ptr_vector = new QVector<std::shared_ptr<FileInfo>>;
+
+    //导入项目中的配置信息文件************************************************
+    QString information_path = current_project_path + "/CMakeLists.txt";
+    std::shared_ptr<FileInfo> file_info_ptr(new FileInfo);
+    int current_file_id = local_file_id;
+    local_file_id--;
+    file_info_ptr->file_id = current_file_id;
+    file_info_ptr->file_name = "CMakeLists.txt";
+    file_info_ptr->file_path = information_path;
+    file_info_ptr->file_project = currentProject;
+    file_info_ptr->file_privilege = 0;
+    file_info_ptr_vector->append(file_info_ptr);
+
+    //为文件信息节点添加附加项*******************************************************
+    QVariant var2;
+    var2.setValue(file_info_ptr);
+    tree_widget_item_file_information->setData(0,Qt::UserRole,var2);
 
     // 导入项目中的所有头文件
     QString header_path = current_project_path + "/Header";
@@ -1426,7 +1462,7 @@ void MainWindow::openLocalProj()
     for (int i = 0; i < header_list.size(); i++)
     {
         std::shared_ptr<FileInfo> file_info_ptr(new FileInfo);
-        // 实例化file_info_ptr的内容****************************************************************************************
+        // 实例化file_info_ptr的内容
         int current_file_id = local_file_id;
         local_file_id--;
         file_info_ptr->file_id = current_file_id;
@@ -1435,7 +1471,7 @@ void MainWindow::openLocalProj()
         file_info_ptr->file_project = currentProject;
         file_info_ptr->file_privilege = 0;
 
-        // 添加到file_info_vector中****************************************************************************************
+        // 添加到file_info_vector中
         file_info_ptr_vector->append(file_info_ptr);
 
         // 为头文件树节点新建新节点
@@ -1444,7 +1480,7 @@ void MainWindow::openLocalProj()
         item->setIcon(0, QIcon("://icon/H-.png"));
         tree_widget_item_header_file_name->addChild(item);
 
-        // 为每一*.h的treeItem附加内容，附加的内容为该文件的智能信息指针****************************************************************************************
+        // 为每一*.h的treeItem附加内容，附加的内容为该文件的智能信息指针
         QVariant var;
         var.setValue(file_info_ptr);
         item->setData(0, Qt::UserRole, var);
@@ -1458,7 +1494,7 @@ void MainWindow::openLocalProj()
     for (int i = 0; i < source_list.size(); i++)
     {
         std::shared_ptr<FileInfo> file_info_ptr(new FileInfo);
-        // 实例化file_info_ptr的内容****************************************************************************************
+        // 实例化file_info_ptr的内容
         int current_file_id = local_file_id;
         local_file_id--;
         file_info_ptr->file_id = current_file_id;
@@ -1467,7 +1503,7 @@ void MainWindow::openLocalProj()
         file_info_ptr->file_project = currentProject;
         file_info_ptr->file_privilege = 0;
 
-        // 添加到file_info_vector中****************************************************************************************
+        // 添加到file_info_vector中
         file_info_ptr_vector->append(file_info_ptr);
 
         // 为源文件树节点新建新节点
@@ -1476,7 +1512,7 @@ void MainWindow::openLocalProj()
         item->setIcon(0, QIcon("://icon/cpp.png"));
         tree_widget_item_source_file_name->addChild(item);
 
-        // 为每一*.cpp的treeItem附加内容，附加的内容为该文件的智能信息指针****************************************************************************************
+        // 为每一*.cpp的treeItem附加内容，附加的内容为该文件的智能信息指针
         QVariant var;
         var.setValue(file_info_ptr);
         item->setData(0, Qt::UserRole, var);
