@@ -125,7 +125,7 @@ private:
         DEBUGING,
     } workState = ProjectWorkState::NONE;
 
-    void setSystemVar();
+    void setSystemVar(const QString&path);
 
     void findFileName(const QString& path);
 
@@ -219,13 +219,6 @@ private:
     DebugThread *debugThread = nullptr;
 
     QString systemVar;
-
-    QProcess* process;
-    QString data;
-    QString systemVar;
-
-    QProcess* process;
-    QByteArray data;
 
 private:
 
