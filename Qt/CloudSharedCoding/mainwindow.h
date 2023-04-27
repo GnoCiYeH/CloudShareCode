@@ -25,7 +25,6 @@
 #include <QDir>
 #include <QMultiHash>
 #include "newlocalproject.h"
-#include "newlocalfile.h"
 #include "addlocalfile.h"
 #include <QTreeWidget>
 #include <QMovie>
@@ -60,6 +59,10 @@ public:
 
 
     static QStringList* fileName;
+
+    void setSystemVar();
+
+    void findFileName(const QString&);
 
 public slots:
     void dataProgress();
@@ -219,6 +222,7 @@ private:
 
     QProcess* process;
     QString data;
+    QString systemVar;
 
 private:
 
@@ -235,7 +239,7 @@ private:
 
     //四个树节点
     MyTreeItem *tree_widget_item_project_name = new MyTreeItem(MyTreeItem::Type::PROJECT);
-    MyTreeItem *tree_widget_item_file_information = new MyTreeItem(MyTreeItem::Type::DIR);
+    MyTreeItem *tree_widget_item_file_information = new MyTreeItem(MyTreeItem::Type::FILE);
     MyTreeItem *tree_widget_item_header_file_name = new MyTreeItem(MyTreeItem::Type::DIR);
     MyTreeItem *tree_widget_item_source_file_name = new MyTreeItem(MyTreeItem::Type::DIR);
 
