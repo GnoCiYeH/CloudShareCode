@@ -1,7 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include<QMainWindow>
+#include <QMainWindow>
 #include <QTcpSocket>
 #include "logindialog.h"
 #include "projectform.h"
@@ -45,24 +45,22 @@ public:
 
     static QTcpSocket *socket;
 
-
     static void Login();
-    static QHash<int,Project>* userProjs;
+    static QHash<int, Project> *userProjs;
 
     static QString userId;
 
     static QHash<int, QMultiHash<QString, int> *> *debugInfo;
 
-    std::map<QString, CodeEdit *> mp; // 存放路径名字和CodeEdit指针的相互映�?
+    std::map<QString, CodeEdit *> mp; // 存放路径名字和CodeEdit指针的相互映�??
 
     QString runCompilerAndGetOutput(QString pro_Path);
 
+    static QStringList *fileName;
 
-    static QStringList* fileName;
+    void setSystemVar(const QString &path);
 
-    void setSystemVar();
-
-    void findFileName(const QString&);
+    void findFileName(const QString &);
 
 public slots:
     void dataProgress();
@@ -90,10 +88,10 @@ public slots:
     bool addFile(QString file_path);
     void openFileAndAddTab(QString file_path);
 
-    bool get_SubDir_Under_Dir(QString path,QStringList& list);
-    bool get_SubFile_Under_SubDir(QString path,QStringList& list,int tag);
-    bool is_contain_file_name(QString file_name,QVector<std::shared_ptr<FileInfo>>ptr_vector);
-    bool is_legal_CSC_file(QString file_name,QStringList list);
+    bool get_SubDir_Under_Dir(QString path, QStringList &list);
+    bool get_SubFile_Under_SubDir(QString path, QStringList &list, int tag);
+    bool is_contain_file_name(QString file_name, QVector<std::shared_ptr<FileInfo>> ptr_vector);
+    bool is_legal_CSC_file(QString file_name, QStringList list);
 
     static bool loginState()
     {
@@ -142,7 +140,7 @@ private:
     QString serverIP = "192.168.239.129";
     quint16 mainPort = 9098;
 
-    // 子窗口
+    // 子窗�?
     SettingForm *settingWind;
     QDockWidget *buildDock;
     QTextEdit *buildDockwidget;
@@ -167,12 +165,11 @@ private:
     QToolButton *debugbutton;
     QToolButton *stopRun;
 
-    QLabel* statusIcon = new QLabel(this);
-    QMovie* buildingMovie = new QMovie("://icon/building.gif");
-    QMovie* runningMovie = new QMovie("://icon/running.gif");
-    QMovie* debugingMovie = new QMovie("://icon/debuging.gif");
-    QMovie* stateokMovie = new QMovie("://icon/stateok.gif");
-
+    QLabel *statusIcon = new QLabel(this);
+    QMovie *buildingMovie = new QMovie("://icon/building.gif");
+    QMovie *runningMovie = new QMovie("://icon/running.gif");
+    QMovie *debugingMovie = new QMovie("://icon/debuging.gif");
+    QMovie *stateokMovie = new QMovie("://icon/stateok.gif");
 
     QPair<std::shared_ptr<FileInfo>, int> currentLine;
 
@@ -181,11 +178,10 @@ private:
     static LoginDialog *loginDialog;
     ProjectForm *projectForm;
 
-    // 鏂囦欢瀹瑰�?
-    QHash<int, QVector<std::shared_ptr<FileInfo>>*> pro_fileMap;
+    // 鏂囦欢瀹瑰�??
+    QHash<int, QVector<std::shared_ptr<FileInfo>> *> pro_fileMap;
     QHash<int, CodeEdit *> fileWidgets;
     QHash<int, std::shared_ptr<Directory>> mainDirMap;
-
 
     // 椤圭洰鏍戠姸鍒楄〃鑿滃崟
     QAction *submitProject;
@@ -210,17 +206,16 @@ private:
     QLabel *label2 = new QLabel(this);
     QTimer *timer = new QTimer(this);
 
-    // ��������Գ���
+    // ��������Գ���?
     RunThread *runThread = nullptr;
     DebugThread *debugThread = nullptr;
 
     QString systemVar;
 
-    QProcess* process;
+    QProcess *process;
     QString data;
 
 private:
-
     bool addFileWidget(std::shared_ptr<FileInfo> file);
 
     SwitchingEncodingMode *encodingType = new SwitchingEncodingMode(this); // 编码方式
@@ -229,17 +224,17 @@ private:
     static int local_project_id; // 本地项目的id
     static int local_file_id;    // 本地文件的id
 
-    QString current_project_path; // 记录当前项目的路径（根路径)
-    QString current_project_name; // 记录当前项目的名字
+    QString current_project_path; // 记录当前项目的路径（根路�?)
+    QString current_project_name; // 记录当前项目的名�?
 
-    //四个树节点
+    // 四个树节�?
     MyTreeItem *tree_widget_item_project_name = new MyTreeItem(MyTreeItem::Type::PROJECT);
     MyTreeItem *tree_widget_item_file_information = new MyTreeItem(MyTreeItem::Type::FILE);
     MyTreeItem *tree_widget_item_header_file_name = new MyTreeItem(MyTreeItem::Type::DIR);
     MyTreeItem *tree_widget_item_source_file_name = new MyTreeItem(MyTreeItem::Type::DIR);
 
-    //自动保存计时器
-    QTimer* timer_for_save=new QTimer(this);
+    // 自动保存计时�?
+    QTimer *timer_for_save = new QTimer(this);
 };
 
 #endif // MAINWINDOW_H
