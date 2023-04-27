@@ -60,7 +60,7 @@ public:
 
     static QStringList* fileName;
 
-    void setSystemVar(const QString& path);
+    void setSystemVar(const QString&);
 
     void findFileName(const QString&);
 
@@ -124,10 +124,6 @@ private:
         RUNNING,
         DEBUGING,
     } workState = ProjectWorkState::NONE;
-
-    void setSystemVar(const QString&path);
-
-    void findFileName(const QString& path);
 
     void openProjFile(std::shared_ptr<FileInfo> file);
 
