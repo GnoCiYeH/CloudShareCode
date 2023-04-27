@@ -364,8 +364,21 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     // connect(ui->add_file_action,&QAction::triggered,this,[=](){QFileDialog::getOpenFileName(this,"?¡§?????¡ì?¨¦????????","C:/Users");});
 
 
-    setSystemVar();
-    findFileName(systemVar);
+    connect(ui->actionBuild_Dock, &QAction::triggered, this, [=]()
+            { buildDock->setHidden(false); });
+
+    QSettings settings("./configs/configs.ini", QSettings::IniFormat, this);
+    settings.beginGroup("CXX_INCLUDE");
+    int includeNum = settings.beginReadArray("INCLUDES");
+    for (int i = 0; i < includeNum; i++)
+    {
+        settings.setArrayIndex(i);
+        QString includePath = settings.value("include").toString();
+        setSystemVar(includePath);
+        findFileName(systemVar);
+    }
+    settings.endArray();
+    settings.endGroup();
 }
 
 MainWindow::~MainWindow()
