@@ -109,49 +109,6 @@ void CodeEdit::docChange(int pos, int charRemoved, int charAdded)
             data += document->characterAt(var);
     }
 
-    // ?????????????
-    QMap<QChar, QChar> map;
-    map['('] = ')';
-    map['['] = ']';
-    map['{'] = '}';
-    map['\"'] = '\"';
-    map['<'] = '>';
-    int preCharIndex = ui->textEdit->textCursor().position() - 1;
-    QChar preChar = document->characterAt(preCharIndex);
-    QString text = ui->textEdit->textCursor().block().text();
-    if (preChar == '(' || preChar == '[' || preChar == '{' || preChar == '\"' || (text.contains("#include") && preChar == '<'))
-    {
-        ui->textEdit->insertPlainText(map[preChar]);
-        data+=map[preChar];
-        ui->textEdit->moveCursor(QTextCursor::PreviousCharacter);
-        if (preChar == '{')
-        {
-            QTextCursor cursor = ui->textEdit->textCursor();
-            int startPos = cursor.block().position();
-            int spaceCount = 0;
-            while (document->characterAt(startPos) == ' ')
-            {
-                spaceCount++;
-                startPos++;
-            }
-            ui->textEdit->insertPlainText("\n");
-            data+="\n";
-            ui->textEdit->insertPlainText(QString(spaceCount + 4, ' '));
-            data+=QString(spaceCount + 4, ' ');
-            QTextBlock middleBlock = document->findBlockByLineNumber(ui->textEdit->textCursor().blockNumber());
-            QTextCursor middleCursor(middleBlock);
-            cursor.deleteChar();
-            ui->textEdit->insertPlainText("\n");
-            data+="\n";
-            ui->textEdit->insertPlainText(QString(spaceCount, ' '));
-            data+=QString(spaceCount + 4, ' ');
-            ui->textEdit->insertPlainText("}");
-            data+="}";
-            middleCursor.setPosition(middleBlock.position() + spaceCount + 4);
-            ui->textEdit->setTextCursor(middleCursor);
-        }
-    }
-
     Package pck(data.toUtf8(), (int)Package::PackageType::TEXT_CHANGE);
     MainWindow::socket->write(pck.getPdata(), pck.getSize());
     MainWindow::socket->flush();
@@ -292,6 +249,31 @@ void CodeEdit::keyPressEvent(QKeyEvent *event)
             QApplication::sendEvent(associateWidget, newEvent); // 发送模拟事???
             return;                                             // 不调用基类的函数，防止移动光???
         }
+        else{
+            int preCharIndex = ui->textEdit->textCursor().position() - 1;
+            QChar preChar = document->characterAt(preCharIndex);
+            if (preChar == '{')
+            {
+                QTextCursor cursor = ui->textEdit->textCursor();
+                int startPos = cursor.block().position();
+                int spaceCount = 0;
+                while (document->characterAt(startPos) == ' ')
+                {
+                    spaceCount++;
+                    startPos++;
+                }
+                ui->textEdit->insertPlainText("\n");
+                ui->textEdit->insertPlainText(QString(spaceCount + 4, ' '));
+                QTextBlock middleBlock = document->findBlockByLineNumber(ui->textEdit->textCursor().blockNumber());
+                QTextCursor middleCursor(middleBlock);
+                cursor.deleteChar();
+                ui->textEdit->insertPlainText("\n");
+                ui->textEdit->insertPlainText(QString(spaceCount, ' '));
+                ui->textEdit->insertPlainText("}");
+                middleCursor.setPosition(middleBlock.position() + spaceCount + 4);
+                ui->textEdit->setTextCursor(middleCursor);
+            }
+        }
     }
     else if (event->key() == Qt::Key_Down)
     {
@@ -310,6 +292,18 @@ void CodeEdit::keyPressEvent(QKeyEvent *event)
             QApplication::sendEvent(associateWidget, newEvent); // 发送模拟事???
             return;                                             // 不调用基类的函数，防止移动光???
         }
+    }
+    else if(event->key()==Qt::Key_ParenLeft){
+        ui->textEdit->insertPlainText("()");
+        ui->textEdit->moveCursor(QTextCursor::PreviousCharacter);
+    }
+    else if(event->key() == Qt::Key_BracketLeft){
+        ui->textEdit->insertPlainText("[]");
+        ui->textEdit->moveCursor(QTextCursor::PreviousCharacter);
+    }
+    else if(event->key() == Qt::Key_BraceLeft){
+        ui->textEdit->insertPlainText("{}");
+        ui->textEdit->moveCursor(QTextCursor::PreviousCharacter);
     }
 }
 

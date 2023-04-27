@@ -15,6 +15,7 @@
 #include "privilegemanager.h"
 #include "newlocalproject.h"
 #include <QScrollBar>
+#include<QTemporaryFile>>
 
 QTcpSocket *MainWindow::socket = new QTcpSocket();
 QHash<int, Project> *MainWindow::userProjs = new QHash<int, Project>();
@@ -363,15 +364,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
             { QFileDialog::getOpenFileName(this, "?¨?????§žé‚?›????", "C:/Users"); });
     // connect(ui->add_file_action,&QAction::triggered,this,[=](){QFileDialog::getOpenFileName(this,"?¨?????§žé‚?›????","C:/Users");});
 
-
-    process=new QProcess(this);
-    connect(process,&QProcess::readyReadStandardOutput,this,[&]()mutable{
-        this->data+=QString(process->readAllStandardOutput());
-    });
-
-
-//    setSystemVar();
-//    findFileName(systemVar);
+    //setSystemVar();
+    findFileName(systemVar);
 }
 
 MainWindow::~MainWindow()
@@ -2217,17 +2211,6 @@ void MainWindow::findFileName(const QString& path){
     }
 }
 
-void MainWindow::setSystemVar(){
-    process->setProgram("g++");
-    process->setNativeArguments(" -v -E -x c++ -");
-    process->setProcessChannelMode(QProcess::MergedChannels);
-    process->start();
-    process->waitForStarted();
-    process->waitForFinished();
-    QRegularExpression includePath=QRegularExpression("(\\w:.*include).c\\+\\+");
-    auto match=includePath.match(data,0);
-    systemVar=match.captured();
-    QString b=systemVar;
-    QString c=data;
-    int a=0;
+void MainWindow::setSystemVar(const QString&path){
+    systemVar=path;
 }

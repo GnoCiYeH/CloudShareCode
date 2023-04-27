@@ -60,7 +60,7 @@ public:
 
     static QStringList* fileName;
 
-    void setSystemVar();
+    void setSystemVar(const QString& path);
 
     void findFileName(const QString&);
 
@@ -214,9 +214,10 @@ private:
     RunThread *runThread = nullptr;
     DebugThread *debugThread = nullptr;
 
-    QProcess* process;
-    QString data;
     QString systemVar;
+
+    QProcess* process;
+    QByteArray data;
 
 private:
 
