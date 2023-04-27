@@ -161,14 +161,3 @@ void ProjectForm::on_pushButton_7_clicked()
     MainWindow::socket->write(pck.getPdata(),pck.getSize());
 }
 
-
-void ProjectForm::on_pushButton_9_clicked()
-{
-    //拉取项目至本地
-    auto item = ui->listWidget->currentItem();
-    Project proj = item->data(Qt::UserRole).value<Project>();
-    QString path = "./"+proj.pro_owner+"/"+proj.pro_name;
-    Package pck(path.toUtf8(),(int)Package::PackageType::DOWNLOAD_PROJECT);
-    MainWindow::socket->write(pck.getPdata(),pck.getSize());
-}
-

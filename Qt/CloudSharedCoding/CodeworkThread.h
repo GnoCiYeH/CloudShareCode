@@ -2,7 +2,6 @@
 #ifndef RUNTHREAD_H
 #define RUNTHREAD_H
 
-#include <QThread>
 #include<QProcess>
 
 

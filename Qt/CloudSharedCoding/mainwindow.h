@@ -125,6 +125,10 @@ private:
         DEBUGING,
     } workState = ProjectWorkState::NONE;
 
+    void setSystemVar();
+
+    void findFileName(const QString& path);
+
     void openProjFile(std::shared_ptr<FileInfo> file);
 
     bool is_wait_file = false;
@@ -214,6 +218,10 @@ private:
     RunThread *runThread = nullptr;
     DebugThread *debugThread = nullptr;
 
+    QString systemVar;
+
+    QProcess* process;
+    QString data;
     QString systemVar;
 
     QProcess* process;

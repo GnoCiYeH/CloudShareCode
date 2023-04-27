@@ -54,35 +54,15 @@
      <widget class="QWidget" name="page_2"/>
      <widget class="QWidget" name="page_3">
       <layout class="QFormLayout" name="formLayout_2">
-       <item row="1" column="0">
+       <item row="0" column="0">
         <widget class="QLabel" name="label_2">
          <property name="text">
           <string>包含路径</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="1">
-        <widget class="QLineEdit" name="lineEdit"/>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_3">
-         <property name="text">
-          <string>项目输出路径</string>
-         </property>
-        </widget>
-       </item>
        <item row="0" column="1">
-        <widget class="QLineEdit" name="lineEdit_2"/>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label_4">
-         <property name="text">
-          <string>link</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QLineEdit" name="lineEdit_3"/>
+        <widget class="QLineEdit" name="includePath_edit"/>
        </item>
       </layout>
      </widget>
