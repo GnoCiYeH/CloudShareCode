@@ -305,6 +305,7 @@ void CodeEdit::keyPressEvent(QKeyEvent *event)
         ui->textEdit->insertPlainText("{}");
         ui->textEdit->moveCursor(QTextCursor::PreviousCharacter);
     }
+    return QWidget::keyPressEvent(event);
 }
 
 void CodeEdit::resizeEvent(QResizeEvent *event)
