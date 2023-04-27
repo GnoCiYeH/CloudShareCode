@@ -73,23 +73,23 @@ SettingForm::SettingForm(QWidget *parent) :
     layout->addWidget(hframe);
 
     settings->beginGroup("CODETHEME");
-    auto keywordTheme = new CodeThemeItem("Keywords",QColor(settings->value("KEYWORD","#00ffff").toString()),HightlightType::KEYWORD,ui->page_2);
+    auto keywordTheme = new CodeThemeItem("Keywords",QColor(settings->value("KEYWORD","#37bb2d").toString()),HightlightType::KEYWORD,ui->page_2);
     layout->addWidget(keywordTheme);
-    auto classTheme = new CodeThemeItem("Class",QColor(settings->value("CLASS","#00ffff").toString()),HightlightType::CLASS,ui->page_2);
+    auto classTheme = new CodeThemeItem("Class",QColor(settings->value("CLASS","#bcc069").toString()),HightlightType::CLASS,ui->page_2);
     layout->addWidget(classTheme);
-    auto signleLineTheme = new CodeThemeItem("Signle line comment",QColor(settings->value("SIGNLE_LINE_COMMENT","#00ffff").toString()),HightlightType::SIGNLE_LINE_COMMENT,ui->page_2);
+    auto signleLineTheme = new CodeThemeItem("Signle line comment",QColor(settings->value("SIGNLE_LINE_COMMENT","#6e888f").toString()),HightlightType::SIGNLE_LINE_COMMENT,ui->page_2);
     layout->addWidget(signleLineTheme);
-    auto muliilineTheme = new CodeThemeItem("Multiline comment",QColor(settings->value("MULITLINE_COMMENT","#00ffff").toString()),HightlightType::MULITLINE_COMMENT,ui->page_2);
+    auto muliilineTheme = new CodeThemeItem("Multiline comment",QColor(settings->value("MULITLINE_COMMENT","#82887f").toString()),HightlightType::MULITLINE_COMMENT,ui->page_2);
     layout->addWidget(muliilineTheme);
-    auto quotationTheme = new CodeThemeItem("Quotation",QColor(settings->value("QUOTATION","#00ffff").toString()),HightlightType::QUOTATION,ui->page_2);
+    auto quotationTheme = new CodeThemeItem("Quotation",QColor(settings->value("QUOTATION","#dbcf2c").toString()),HightlightType::QUOTATION,ui->page_2);
     layout->addWidget(quotationTheme);
-    auto functionTheme = new CodeThemeItem("Function",QColor(settings->value("FUNCTION","#00ffff").toString()),HightlightType::FUNCTION,ui->page_2);
+    auto functionTheme = new CodeThemeItem("Function",QColor(settings->value("FUNCTION","#ce9191").toString()),HightlightType::FUNCTION,ui->page_2);
     layout->addWidget(functionTheme);
-    auto headerTheme = new CodeThemeItem("Header",QColor(settings->value("HEADER","#00ffff").toString()),HightlightType::HEADER,ui->page_2);
+    auto headerTheme = new CodeThemeItem("Header",QColor(settings->value("HEADER","#a65579").toString()),HightlightType::HEADER,ui->page_2);
     layout->addWidget(headerTheme);
-    auto stdioTheme = new CodeThemeItem("Stdio",QColor(settings->value("STDIO","#00ffff").toString()),HightlightType::STDIO,ui->page_2);
+    auto stdioTheme = new CodeThemeItem("Stdio",QColor(settings->value("STDIO","#8962c1").toString()),HightlightType::STDIO,ui->page_2);
     layout->addWidget(stdioTheme);
-    auto branchTheme = new CodeThemeItem("Branch",QColor(settings->value("BRANCH","#00ffff").toString()),HightlightType::BRANCH,ui->page_2);
+    auto branchTheme = new CodeThemeItem("Branch",QColor(settings->value("BRANCH","#ff7637").toString()),HightlightType::BRANCH,ui->page_2);
     layout->addWidget(branchTheme);
     settings->endGroup();
 
@@ -242,6 +242,21 @@ void SettingForm::on_pushButton_2_clicked()
             }
             break;
         }
+        case SettingType::PROJECT_INCLUDE:
+        {
+            QString path = ui->includePath_edit->text();
+            QStringList list = path.split(";");
+            settings->beginGroup("CXX_INCLUDE");
+            settings->beginWriteArray("INCLUDES");
+            for(int i = 0;i< list.length();i++)
+            {
+                settings->setArrayIndex(i);
+                settings->setValue("include_path",list[i]);
+            }
+            settings->endArray();
+            settings->endGroup();
+            break;
+        }
         default:
             break;
         }
@@ -250,4 +265,9 @@ void SettingForm::on_pushButton_2_clicked()
     this->close();
 }
 
+
+void SettingForm::on_includePath_edit_textEdited(const QString &arg1)
+{
+    settingQueue.enqueue(QPair<SettingType,QVariant>(SettingType::PROJECT_INCLUDE,QVariant()));
+}
 

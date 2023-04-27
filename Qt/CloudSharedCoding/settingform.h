@@ -28,10 +28,13 @@ private slots:
 
     void on_pushButton_2_clicked();
 
+    void on_includePath_edit_textEdited(const QString &arg1);
+
 private:
     enum SettingType{
         THEME,
-        CODETHEME
+        CODETHEME,
+        PROJECT_INCLUDE
     };
 
     Ui::SettingForm *ui;

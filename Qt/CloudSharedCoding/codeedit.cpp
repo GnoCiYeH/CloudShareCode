@@ -344,7 +344,7 @@ HighLighter::HighLighter(CodeEdit *edit, QTextDocument *text) : QSyntaxHighlight
     this->edit = edit;
 
     // 1.添加关键字高亮规????
-    keyword_format.setForeground(QColor(settings.value("KEYWORD", "#00ffff").toString())); // 设置关键字前景颜????(blue)
+    keyword_format.setForeground(QColor(settings.value("KEYWORD", "#37bb2d").toString())); // 设置关键字前景颜????(blue)
     keyword_format.setFontWeight(QFont::Bold);                                             // 设置关键字的字体格式(Bold)
     QVector<QString> keyword_pattern = {                                                   // \b在表示单词字符边界，防止例如intVal也被识别为int导致高亮
                                         "\\bchar\\b", "\\bclass\\b", "\\bconst\\b", "\\bdouble\\b", "\\benum\\b", "\\bexplicit\\b",
@@ -362,7 +362,7 @@ HighLighter::HighLighter(CodeEdit *edit, QTextDocument *text) : QSyntaxHighlight
     } // 规则集合中存储着keyword_pattern中所有关键字的标识符和格????(蓝�??? 粗�???)
 
     // 2.添加Qt类高亮规????
-    class_format.setForeground(QColor(settings.value("CLASS", "#00ffff").toString())); // 设置Qt类前景色(darkCyan)
+    class_format.setForeground(QColor(settings.value("CLASS", "#bcc069").toString())); // 设置Qt类前景色(darkCyan)
     class_format.setFontWeight(QFont::Bold);                                           // 设置Qt类字体格????(Bold)
     QString class_pattern = "\\bQ[a-zA-z]+\\b";                                        // Qt类识别格式为两边有分隔符，且以Q开头的所有英文字符�???
     rule.pattern = QRegularExpression(class_pattern);
@@ -371,14 +371,14 @@ HighLighter::HighLighter(CodeEdit *edit, QTextDocument *text) : QSyntaxHighlight
 
     // 3.添加头文件高亮格????
     // 3.1 #开????
-    headfile_format.setForeground(QColor(settings.value("HEADER", "#00ffff").toString()));
+    headfile_format.setForeground(QColor(settings.value("HEADER", "#a65579").toString()));
     headfile_format.setFontWeight(QFont::Bold);
     rule.format = headfile_format;
     rule.pattern = QRegularExpression("#.*");
     highlighterrules.push_back(rule);
 
     // 3.2 各头文件
-    headfile_format.setForeground(QColor(settings.value("HEADER", "#00ffff").toString()));
+    headfile_format.setForeground(QColor(settings.value("HEADER", "#a65579").toString()));
     headfile_format.setFontWeight(QFont::Bold);
     QVector<QString> headfile_pattern = {
         "<algorithm>", "<bitset>", "<cctype>", "<cerrno>", "<cerrno>", "<cerrno>",
@@ -402,14 +402,14 @@ HighLighter::HighLighter(CodeEdit *edit, QTextDocument *text) : QSyntaxHighlight
     comment_end = QRegularExpression(comment_end_pattern);
 
     // 5.添加引号高亮规则
-    quotation_format.setForeground(QColor(settings.value("QUATATION", "#00ffff").toString())); // 引号内容颜�???(cyan)
+    quotation_format.setForeground(QColor(settings.value("QUATATION", "#dbcf2c").toString())); // 引号内容颜�???(cyan)
     QString quotation_pattern = "\".*\"";
     rule.pattern = QRegularExpression(quotation_pattern);
     rule.format = quotation_format;
     highlighterrules.push_back(rule);
 
     // 6.添加函数高亮格式
-    function_format.setForeground(QColor(settings.value("FUNCTION", "#00ffff").toString())); // 函数字体颜色设置为darkGreen
+    function_format.setForeground(QColor(settings.value("FUNCTION", "#ce9191").toString())); // 函数字体颜色设置为darkGreen
     function_format.setFontWeight(QFont::Bold);                                              // 函数字体格式设置为Bold
     QString function_pattern = "\\b[a-zA-Z0-9_]+(?=\\()";                                    // 函数名可以是大小写英文字符、数字、下划线，其中，(?=\\()表示后面必须跟着一个左括号，但是这个左括号不会被匹配到
     rule.pattern = QRegularExpression(function_pattern);
@@ -417,7 +417,7 @@ HighLighter::HighLighter(CodeEdit *edit, QTextDocument *text) : QSyntaxHighlight
     highlighterrules.push_back(rule);
 
     // 7.添加分支高亮格式
-    branch_format.setForeground(QColor(settings.value("BRANCH", "#00ffff").toString()));
+    branch_format.setForeground(QColor(settings.value("BRANCH", "#ff7637").toString()));
     branch_format.setFontWeight(QFont::Bold);
     QVector<QString> branch_pattern = {
         "if", "else", "switch", "case", "while", "for"};
@@ -429,7 +429,7 @@ HighLighter::HighLighter(CodeEdit *edit, QTextDocument *text) : QSyntaxHighlight
     }
 
     // 8.添加输入输出高亮格�???
-    cincout_format.setForeground(QColor(settings.value("STDIO", "#00ffff").toString()));
+    cincout_format.setForeground(QColor(settings.value("STDIO", "#8962c1").toString()));
     cincout_format.setFontWeight(QFont::Bold);
     QVector<QString> cincout_pattern = {
         "cin", "cout", "std", "endl", "<<", ">>"};
@@ -441,7 +441,7 @@ HighLighter::HighLighter(CodeEdit *edit, QTextDocument *text) : QSyntaxHighlight
     }
 
     // 9.添加单行注释高亮规�???
-    singleLine_comment_format.setForeground(QColor(settings.value("SIGNLE_LINE_COMMENT", "#00ffff").toString()));
+    singleLine_comment_format.setForeground(QColor(settings.value("SIGNLE_LINE_COMMENT", "#6e888f").toString()));
     singleLine_comment_format.setFontWeight(QFont::Bold);
     QString singleLine_comment_pattern = "//[^\n]*"; // 单行注释识别格式为跟�?//后，但不包括换行符，且不需要间隔符
     rule.pattern = QRegularExpression(singleLine_comment_pattern);
@@ -449,7 +449,7 @@ HighLighter::HighLighter(CodeEdit *edit, QTextDocument *text) : QSyntaxHighlight
     highlighterrules.push_back(rule);
 
     // 多行注释格�???
-    multiLine_comment_format.setForeground(QColor(settings.value("MULITLINE_COMMENT", "#00ffff").toString()));
+    multiLine_comment_format.setForeground(QColor(settings.value("MULITLINE_COMMENT", "#82887f").toString()));
     multiLine_comment_format.setFontWeight(QFont::Bold);
 
     settings.endGroup();

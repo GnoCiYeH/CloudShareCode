@@ -42,8 +42,6 @@ private slots:
 
     void on_pushButton_7_clicked();
 
-    void on_pushButton_9_clicked();
-
 private:
     Ui::ProjectForm *ui;
 

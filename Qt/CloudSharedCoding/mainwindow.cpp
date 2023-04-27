@@ -213,7 +213,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     continueDebugButton->setDisabled(true);
     connect(continueDebugButton, &QToolButton::clicked, this, [=]()
             {
-        varInfo->clear();
+        varInfo->clearContents();
+        varInfo->setRowCount(0);
         if(runningProject<0)
         {
             QString data = "";
@@ -266,7 +267,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
         fileWidgets.value(currentLine.first->file_id)->gotoline(currentLine.second+1);
         currentLine.second+=1;
 
-        varInfo->clear();
+        varInfo->clearContents();
+        varInfo->setRowCount(0);
         if(runningProject<0)
         {
             QString data = "";
@@ -291,7 +293,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     stepIntoDubugButton->setDisabled(true);
     connect(stepIntoDubugButton, &QToolButton::clicked, this, [=]()
             {
-                varInfo->clear();
+                varInfo->clearContents();
+                varInfo->setRowCount(0);
                 if(runningProject<0)
                 {
                     QString data = "";
@@ -316,7 +319,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     stepOutDebugButton->setDisabled(true);
     connect(stepOutDebugButton, &QToolButton::clicked, this, [=]()
             {
-        varInfo->clear();
+        varInfo->clearContents();
+                varInfo->setRowCount(0);
         if(runningProject<0)
         {
             QString data = "";
@@ -362,6 +366,35 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->actionAdd_Cloud_File, &QAction::triggered, this, [=]()
             { QFileDialog::getOpenFileName(this, "娣诲姞鏂囦欢", "C:/Users"); });
     // connect(ui->add_file_action,&QAction::triggered,this,[=](){QFileDialog::getOpenFileName(this,"娣诲姞鏂囦欢","C:/Users");});
+
+    connect(ui->actionConsole,&QAction::triggered,this,[=](){
+        runDock->setHidden(false);
+    });
+
+    connect(ui->actionBuild_Dock,&QAction::triggered,this,[=](){
+        buildDock->setHidden(false);
+    });
+
+    process=new QProcess(this);
+    connect(process,&QProcess::readyRead,this,[&]()mutable{
+
+        this->data+=QString::fromLocal8Bit(process->readAll());
+        qDebug()<<this->data;
+    });
+
+    QSettings settings("./configs/configs.ini",QSettings::IniFormat,this);
+    settings.beginGroup("CXX_INCLUDE");
+    int includeNum = settings.beginReadArray("INCLUDES");
+    for(int i = 0;i < includeNum;i++)
+    {
+        settings.setArrayIndex(i);
+        QString includePath = settings.value("include").toString();
+    }
+    settings.endArray();
+    settings.endGroup();
+
+//    setSystemVar();
+//    findFileName(systemVar);
 }
 
 MainWindow::~MainWindow()
@@ -464,6 +497,9 @@ void MainWindow::stopProject()
 
 void MainWindow::debugProject()
 {
+    debugToolBar->setHidden(false);
+    workState = ProjectWorkState::DEBUGING;
+
     statusIcon->movie()->stop();
     buildingMovie->start();
     statusIcon->setMovie(buildingMovie);
@@ -476,10 +512,13 @@ void MainWindow::debugProject()
     breakPointDock->setHidden(false);
     stackDock->setHidden(false);
 
+    disconnect(buildDockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int, int, int)));
     buildDockwidget->clear();
+    connect(buildDockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int, int, int)));
 
     breakPointInfo->clear();
-    varInfo->clear();
+    varInfo->clearContents();
+    varInfo->setRowCount(0);
     stackList->clear();
 
     if (runningProject < 0)
@@ -489,6 +528,10 @@ void MainWindow::debugProject()
             disconnect(debugThread);
             debugThread->deleteLater();
         }
+
+        QDir buildDir(current_project_path+"/build");
+        buildDir.removeRecursively();
+
         QString path = current_project_path;
         debugThread = new DebugThread(path, this);
         connect(debugThread, SIGNAL(buildInfo(QString)), this, SLOT(appendBuildText(QString)));
@@ -510,13 +553,15 @@ void MainWindow::debugProject()
             debugThread->writeGdbOrStdin(data); });
         connect(debugThread, &DebugThread::debugFinish, this, [=](int n)
                 {
-            statusIcon->movie()->stop();
-            stateokMovie->start();
-            statusIcon->setMovie(stateokMovie);
-
-            runbutton->setDisabled(false);
-            debugbutton->setDisabled(false);
-            stopRun->setDisabled(true);
+                    statusIcon->movie()->stop();
+                    stateokMovie->start();
+                    statusIcon->setMovie(stateokMovie);
+                    ui->tabWidget->setTabsClosable(true);
+                    workState = ProjectWorkState::NONE;
+                    runbutton->setEnabled(true);
+                    debugbutton->setEnabled(true);
+                    stopRun->setEnabled(false);
+                    runDockwidget->setEnabled(true);
 
             debugToolBar->setHidden(true);
             breakPointDock->setHidden(true);
@@ -535,8 +580,6 @@ void MainWindow::debugProject()
             socket->write(pck.getPdata(), pck.getSize());
         }
 
-        debugToolBar->setHidden(false);
-        workState = ProjectWorkState::DEBUGING;
         QString data = QString::number(userProjs->value(currentProject).pro_id);
         Package pck(data.toUtf8(), (int)Package::PackageType::DEBUG_PROJECT);
         socket->write(pck.getPdata(), pck.getSize());
@@ -717,6 +760,12 @@ void MainWindow::openProjFile(std::shared_ptr<FileInfo> file)
                 QByteArray array = read_file.readAll();
                 qDebug() << array;
                 widget->addText(array);
+                ui->tabWidget->setCurrentWidget(widget);
+                if(is_wait_file)
+                {
+                    is_wait_file = false;
+                    widget->gotoline(currentLine.second);
+                }
             }
         }
         else
@@ -1218,6 +1267,7 @@ void MainWindow::disposeDebugInfo(QString data)
 {
     QRegularExpression breakpointRegex("(Breakpoint \\d+) at (.*): file (.*) line (\\d+)"); // 譁ｭ轤ｹ菫｡諱ｯ
     QRegularExpression tobreakpointRegex("Breakpoint \\d+, .* \\(\\) at (.*):(\\d+)");      // 霑占｡悟芦譁ｭ轤ｹ菫｡諱?
+    QRegularExpression tobreakpointRegex2("Thread\\s\\d+\\shit\\sBreakpoint\\s\\d+,\\s\\w+\\s\\(\\)\\sat\\s(.*):(\\d+)");
     QRegularExpression crashRegex("Program received signal .*");                            // 遞句ｺ丞ｴｩ貅�ｿ｡諱ｯ
     QRegularExpression varValueRegex("(.*) = (.*)");                                        // 蜿倬㍼蛟ｼ菫｡�??
     QRegularExpression stackFrameRegex("#\\d+ .* \\(\\) at (.*):(\\d+)");                   // 譬亥ｸｧ菫｡諱ｯ
@@ -1229,14 +1279,41 @@ void MainWindow::disposeDebugInfo(QString data)
     QRegularExpression gotoLine("\\w+ \\(\\) at (.*):(\\d+)");
     QRegularExpression lineinfo("\\d+\\s.*;");
     QRegularExpression reg("\\d+\\s.*{?}?");
+    QRegularExpression newThreadInfo("\\[New Thread \\d+.0x.*\\]");
     qDebug() << "data:" << data;
     QStringList list = data.split("\n", Qt::SkipEmptyParts);
     for (auto buf : list)
     {
+        if(buf=="(gdb) ")
+        {
+            continue;
+        }
+        if(buf.startsWith("(gdb) "))
+        {
+            buf = buf.mid(6);
+        }
+        if(buf.isEmpty())
+            continue;
+        if(buf=="No locals.")
+        {
+            disconnect(buildDockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int, int, int)));
+            buildDockwidget->append(buf);
+            connect(buildDockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int, int, int)));
+            continue;
+        }
         QRegularExpressionMatch match;
-        if ((match = breakpointRegex.match(buf)).hasMatch())
+        if((match = newThreadInfo.match(buf)).hasMatch())
         {
             if (match.captured(0).size() == buf.size())
+            {
+                disconnect(buildDockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int, int, int)));
+                buildDockwidget->insertPlainText(buf);
+                connect(buildDockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int, int, int)));
+            }
+        }
+        if ((match = breakpointRegex.match(buf)).hasMatch())
+        {
+            if (match.captured(0).size() == buf.size() || match.captured(0).size() == buf.size()-1)
             {
                 QString num = match.captured(1);
                 QString address = match.captured(2);
@@ -1264,10 +1341,18 @@ void MainWindow::disposeDebugInfo(QString data)
                 stepIntoDubugButton->setDisabled(false);
                 stepOutDebugButton->setDisabled(false);
                 int lineNum = match.captured(2).toInt();
-                QString path = "." + match.captured(1).mid(46);
+                QString path;
+                if(runningProject>=0)
+                {
+                    path = "." + match.captured(1).mid(46);
+                }
+                else
+                {
+                    path = match.captured(1);
+                }
                 auto vec = pro_fileMap.value(runningProject);
                 std::shared_ptr<FileInfo> file;
-                for (auto it : vec)
+                for (auto it : *vec)
                 {
                     if (it->file_path == path)
                     {
@@ -1285,7 +1370,54 @@ void MainWindow::disposeDebugInfo(QString data)
                 }
                 else
                 {
+                    disconnect(buildDockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int, int, int)));
                     buildDockwidget->insertPlainText(buf);
+                    connect(buildDockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int, int, int)));
+                }
+                continue;
+            }
+        }
+        if ((match = tobreakpointRegex2.match(buf)).hasMatch())
+        {
+            if (match.captured(0).size() == buf.size())
+            {
+                continueDebugButton->setDisabled(false);
+                nextDebugButton->setDisabled(false);
+                stepIntoDubugButton->setDisabled(false);
+                stepOutDebugButton->setDisabled(false);
+                int lineNum = match.captured(2).toInt();
+                QString path;
+                if(runningProject>=0)
+                {
+                    path = "." + match.captured(1).mid(46);
+                }
+                else
+                {
+                    path = match.captured(1);
+                }
+                auto vec = pro_fileMap.value(runningProject);
+                std::shared_ptr<FileInfo> file;
+                for (auto it : *vec)
+                {
+                    if (it->file_path == path)
+                    {
+                        file = it;
+                        break;
+                    }
+                }
+                if (file.get())
+                {
+                    currentLine.first = file;
+                    currentLine.second = lineNum;
+                    CodeEdit *widget = fileWidgets.value(file->file_id);
+                    ui->tabWidget->setCurrentWidget(widget);
+                    widget->gotoline(lineNum);
+                }
+                else
+                {
+                    disconnect(buildDockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int, int, int)));
+                    buildDockwidget->insertPlainText(buf);
+                    connect(buildDockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int, int, int)));
                 }
                 continue;
             }
@@ -1295,7 +1427,15 @@ void MainWindow::disposeDebugInfo(QString data)
             if (match.captured(0).size() == buf.size())
             {
                 //"#\\d+ .* \\(\\) at (.*):(\\d+)"
-                QString path = "." + match.captured(1).mid(46);
+                QString path;
+                if(runningProject>=0)
+                {
+                    path = "." + match.captured(1).mid(46);
+                }
+                else
+                {
+                    path = match.captured(1);
+                }
                 int line = match.captured(2).toInt();
                 QPair<QString, int> pair(path, line);
                 QListWidgetItem *item = new QListWidgetItem(stackList);
@@ -1316,10 +1456,18 @@ void MainWindow::disposeDebugInfo(QString data)
                 stepIntoDubugButton->setDisabled(false);
                 stepOutDebugButton->setDisabled(false);
                 int lineNum = match.captured(2).toInt();
-                QString path = "." + match.captured(1).mid(46);
+                QString path;
+                if(runningProject>=0)
+                {
+                    path = "." + match.captured(1).mid(46);
+                }
+                else
+                {
+                    path = match.captured(1);
+                }
                 auto vec = pro_fileMap.value(runningProject);
                 std::shared_ptr<FileInfo> file;
-                for (auto it : vec)
+                for (auto it : *vec)
                 {
                     if (it->file_path == path)
                     {
@@ -1339,13 +1487,15 @@ void MainWindow::disposeDebugInfo(QString data)
                     }
                     else
                     {
-                        openProjFile(file);
                         is_wait_file = true;
+                        openProjFile(file);
                     }
                 }
                 else
                 {
+                    disconnect(buildDockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int, int, int)));
                     buildDockwidget->insertPlainText(buf);
+                    connect(buildDockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int, int, int)));
                 }
                 continue;
             }
@@ -1400,7 +1550,7 @@ void MainWindow::disposeDebugInfo(QString data)
             connect(buildDockwidget->document(), SIGNAL(contentsChange(int, int, int)), this, SLOT(cmdStdin(int, int, int)));
             continue;
         }
-        if (buf == "(gdb) " || buf == "Continuing." || buf == "Quit anyway? (y or n) [answered Y; input not from terminal]")
+        if (buf == "Continuing." || buf == "Quit anyway? (y or n) [answered Y; input not from terminal]")
             continue;
         else
         {
@@ -2051,13 +2201,16 @@ void MainWindow::runProject()
             statusIcon->setMovie(runningMovie); });
         connect(runThread, &RunThread::runFinish, this, [=](int n)
                 {
+
             statusIcon->movie()->stop();
             stateokMovie->start();
             statusIcon->setMovie(stateokMovie);
-
-            runbutton->setDisabled(false);
-            debugbutton->setDisabled(false);
-            stopRun->setDisabled(true);
+            ui->tabWidget->setTabsClosable(true);
+            workState = ProjectWorkState::NONE;
+            runbutton->setEnabled(true);
+            debugbutton->setEnabled(true);
+            stopRun->setEnabled(false);
+            runDockwidget->setEnabled(true);
 
             appendRunningText("Exit with "+QString::number(n)); });
         runThread->run();
@@ -2107,4 +2260,32 @@ QString MainWindow::runCompilerAndGetOutput(QString pro_Path)
     QString error_text = QString::fromLocal8Bit(error);
     buildDockwidget->insertPlainText(data_text + error_text);
     return error_text;
+}
+
+void MainWindow::findFileName(const QString& path){
+    QDir dir(path);
+    QFileInfoList files = dir.entryInfoList(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot);
+    for (const QFileInfo& fileInfo : files) {
+        if (fileInfo.isFile()) {
+            fileName->append("\""+fileInfo.fileName()+"\"");
+        }
+        else{
+            findFileName(path+"\\"+fileInfo.fileName());
+        }
+    }
+}
+
+void MainWindow::setSystemVar(){
+    process->setProgram("g++");
+    process->setNativeArguments(" -v -E -x c++ -");
+    process->setProcessChannelMode(QProcess::MergedChannels);
+    process->start();
+    process->waitForStarted();
+    //process->waitForFinished();
+    QRegularExpression includePath=QRegularExpression("(\\w:.*include).c\\+\\+");
+    auto match=includePath.match(data,0);
+    systemVar=match.captured();
+    QString b=systemVar;
+    QString c=data;
+    int a=0;
 }
