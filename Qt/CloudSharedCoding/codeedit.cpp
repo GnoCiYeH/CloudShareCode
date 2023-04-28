@@ -1,6 +1,6 @@
 #include "codeedit.h"
-//#include "qpainter.h"
-//#include "qscrollbar.h"
+// #include "qpainter.h"
+// #include "qscrollbar.h"
 #include "ui_codeedit.h"
 #include <QKeyEvent>
 #include <QDebug>
@@ -19,9 +19,9 @@ CodeEdit::CodeEdit(std::shared_ptr<FileInfo> fileptr, QWidget *parent) : QWidget
     document = ui->textEdit->document();
     ui->textEdit->setFont(QFont("Consolas"));
     HighLighter *highLighter = new HighLighter(this, document);
-    QHBoxLayout *layout = (QHBoxLayout*)this->layout();
+    QHBoxLayout *layout = (QHBoxLayout *)this->layout();
     setLayout(layout);
-    ((CodeDocEdit*)ui->textEdit)->setFile(fileptr);
+    ((CodeDocEdit *)ui->textEdit)->setFile(fileptr);
 
     this->file = fileptr;
 
@@ -54,18 +54,15 @@ CodeEdit::CodeEdit(std::shared_ptr<FileInfo> fileptr, QWidget *parent) : QWidget
         }
     }
 
-
-
     const int tabstop = 4;
     QFontMetrics m(ui->textEdit->font());
     ui->textEdit->setTabStopDistance(tabstop * m.horizontalAdvance(" "));
 
-    if (file->file_project>=0)
+    if (file->file_project >= 0)
         connect(document, SIGNAL(contentsChange(int, int, int)), this, SLOT(docChange(int, int, int)));
     else
-        connect(document,&QTextDocument::contentsChange,this,[=](){
-            ((CodeDocEdit*)(ui->textEdit))->showAssociateWidget();
-        });
+        connect(document, &QTextDocument::contentsChange, this, [=]()
+                { ((CodeDocEdit *)(ui->textEdit))->showAssociateWidget(); });
 }
 
 CodeEdit::~CodeEdit()
@@ -75,14 +72,14 @@ CodeEdit::~CodeEdit()
 
 void CodeEdit::gotoline(int line)
 {
-    auto block = document->findBlockByLineNumber(line-1);
+    auto block = document->findBlockByLineNumber(line - 1);
     QTextCursor cursor(block);
     ui->textEdit->setTextCursor(cursor);
 }
 
 void CodeEdit::docChange(int pos, int charRemoved, int charAdded)
 {
-    ((CodeDocEdit*)(ui->textEdit))->showAssociateWidget();
+    ((CodeDocEdit *)(ui->textEdit))->showAssociateWidget();
     //*********************************
     QTextCursor cursor(document);
     cursor.setPosition(pos);
@@ -133,14 +130,14 @@ void CodeEdit::changeText(int pos, int charRemoved, QString userId, QString data
     if (userWidget.contains(userId))
     {
         UserEditTip *wind = userWidget.find(userId).value();
-        wind->move(ui->textEdit->cursorRect(cursor).center().x()+20,ui->textEdit->cursorRect(cursor).center().y());
+        wind->move(ui->textEdit->cursorRect(cursor).center().x() + 20, ui->textEdit->cursorRect(cursor).center().y());
         wind->showTip();
     }
     else
     {
         UserEditTip *wind = new UserEditTip(userId, this);
         userWidget.insert(userId, wind);
-        wind->move(ui->textEdit->cursorRect(cursor).center().x()+20,ui->textEdit->cursorRect(cursor).center().y());
+        wind->move(ui->textEdit->cursorRect(cursor).center().x() + 20, ui->textEdit->cursorRect(cursor).center().y());
         wind->showTip();
     }
 }
@@ -315,44 +312,52 @@ void HighLighter::highlightBlock(const QString &text)
     }
 }
 
-void CodeEdit::highlightError(const QString &error){
+void CodeEdit::highlightError(const QString &error)
+{
     QRegularExpression errorRegex("(.*):(\\d+):(\\d+):\\s+(error|warning):(.*)");
-    int errorOffset=0;
-    //QTextCursor cursor=this->document().
-    while(errorOffset!=-1){
-        auto match=errorRegex.match(error,errorOffset);
-        if(match.hasMatch()){
-            int lineNumber=match.captured(2).toInt();
-            int columnNumber = match.captured(3).toInt()-1;
+    int errorOffset = 0;
+    // QTextCursor cursor=this->document().
+    while (errorOffset != -1)
+    {
+        auto match = errorRegex.match(error, errorOffset);
+        if (match.hasMatch())
+        {
+            int lineNumber = match.captured(2).toInt();
+            int columnNumber = match.captured(3).toInt() - 1;
             QString errorData = match.captured(5);
-            int left=0;
-            int right=0;
-            for(int i=0;i<errorData.length();i++){
-                if(errorData[i]==QChar(8216)){
-                    left=i+1;
+            int left = 0;
+            int right = 0;
+            for (int i = 0; i < errorData.length(); i++)
+            {
+                if (errorData[i] == QChar(8216))
+                {
+                    left = i + 1;
                     break;
                 }
             }
-            for(int i=left;i<errorData.length();i++){
-                if(errorData[i]==QChar(8217)){
-                    right=i-1;
+            for (int i = left; i < errorData.length(); i++)
+            {
+                if (errorData[i] == QChar(8217))
+                {
+                    right = i - 1;
                     break;
                 }
             }
             QString errorChar;
-            for(int i=left;i<=right;i++){
+            for (int i = left; i <= right; i++)
+            {
                 errorChar.push_back(errorData[i]);
             }
-            QTextBlock block=ui->textEdit->document()->findBlockByLineNumber(lineNumber-1);
+            QTextBlock block = ui->textEdit->document()->findBlockByLineNumber(lineNumber - 1);
             QTextCursor cursor(block);
-//            cursor.movePosition(QTextCursor::NextCharacter,QTextCursor::MoveAnchor,columnNumber-block.length());
-//            cursor.movePosition(QTextCursor::NextCharacter, QTextCursor::KeepAnchor, errorChar.length());
+            //            cursor.movePosition(QTextCursor::NextCharacter,QTextCursor::MoveAnchor,columnNumber-block.length());
+            //            cursor.movePosition(QTextCursor::NextCharacter, QTextCursor::KeepAnchor, errorChar.length());
             cursor.select(QTextCursor::SelectionType::BlockUnderCursor);
             QTextCharFormat error_format;
             error_format.setUnderlineColor(Qt::red);
             error_format.setUnderlineStyle(QTextCharFormat::WaveUnderline);
             cursor.mergeCharFormat(error_format);
         }
-        errorOffset=match.capturedEnd();
+        errorOffset = match.capturedEnd();
     }
 }
