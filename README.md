@@ -28,27 +28,27 @@
 
 - 离线可用作文本编辑器（代码编辑）
 
-  ![1682699392803](.\README_IMAGE\1682699392803.png)
+  ![1682699392803](https://github.com/GnoCiYeH/CloudShareCode/blob/main/README_IMAGE/1682699392803.png)
 
 - 使用本地编译器以及本地gdb进行代码编译调试运行
 
   - 运行
 
-  ![1682699459241](.\README_IMAGE\1682699459241.png)
+  ![1682699459241](https://github.com/GnoCiYeH/CloudShareCode/blob/main/README_IMAGE/1682699459241.png)
 
   - 调试
 
-  ![1682700231062](.\README_IMAGE\1682700231062.png)
+  ![1682700231062](https://github.com/GnoCiYeH/CloudShareCode/blob/main/README_IMAGE/1682700231062.png)
 
 - 支持云端代码编译运行调试
 
   - 运行
 
-  ![1682700519765](.\README_IMAGE\1682700519765.png)
+  ![1682700519765](https://github.com/GnoCiYeH/CloudShareCode/blob/main/README_IMAGE/1682700519765.png)
 
   - 调试
 
-  ![1682700436465](.\README_IMAGE\1682700436465.png)
+  ![1682700436465](https://github.com/GnoCiYeH/CloudShareCode/blob/main/README_IMAGE/1682700436465.png)
 
 - 登录可参与多人编辑项目（云端存储，以后可支持上传以及下载）
 
@@ -61,11 +61,11 @@
 
   - Light
 
-  ![1682699227777](.\README_IMAGE\1682699227777.png)
+  ![1682699227777](https://github.com/GnoCiYeH/CloudShareCode/blob/main/README_IMAGE/1682699227777.png)
 
   - Dark
 
-  ![1682699338572](.\README_IMAGE\1682699338572.png)
+  ![1682699338572](https://github.com/GnoCiYeH/CloudShareCode/blob/main/README_IMAGE/1682699338572.png)
 
   - 以及诸多其他风格。
 
@@ -73,7 +73,7 @@
 
   用户可自定义自己喜欢的代码风格
 
-  ![1682700990720](.\README_IMAGE\1682700990720.png)
+  ![1682700990720](https://github.com/GnoCiYeH/CloudShareCode/blob/main/README_IMAGE/1682700990720.png)
 
 - 未来可拓展
   - 成为功能更加完美的IDE
@@ -87,7 +87,7 @@
 - Linux搭建服务器
 - 日志系统记录服务器行为
 
-![1682701238819](.\README_IMAGE\1682701238819.png)
+![1682701238819](https://github.com/GnoCiYeH/CloudShareCode/blob/main/README_IMAGE/1682701238819.png)
 
 - 使用epoll io多路复用技术提高并发效率和性能（未系统测试性能）
 - 使用线程池技术提高服务器性能
