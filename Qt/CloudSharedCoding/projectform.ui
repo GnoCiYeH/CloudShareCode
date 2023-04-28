@@ -54,8 +54,8 @@
          <string>...</string>
         </property>
         <property name="icon">
-         <iconset>
-          <normaloff>:/qss/flatblack/branch_open.png</normaloff>:/qss/flatblack/branch_open.png</iconset>
+         <iconset resource="src.qrc">
+          <normaloff>:/icon/addProject.png</normaloff>:/icon/addProject.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -74,8 +74,8 @@
          <string>...</string>
         </property>
         <property name="icon">
-         <iconset resource="qdarkstyle/light/lightstyle.qrc">
-          <normaloff>:/qss_icons/light/rc/arrow_up_disabled.png</normaloff>:/qss_icons/light/rc/arrow_up_disabled.png</iconset>
+         <iconset resource="src.qrc">
+          <normaloff>:/icon/joinProject .png</normaloff>:/icon/joinProject .png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -91,7 +91,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -305,7 +305,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="qdarkstyle/light/lightstyle.qrc"/>
+  <include location="src.qrc"/>
  </resources>
  <connections/>
 </ui>

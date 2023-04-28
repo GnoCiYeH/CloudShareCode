@@ -100,7 +100,10 @@ void TcpServer::tcpStart()
                 {
                     INFO_LOG(m_logger, std::string("client_fd:") + (m_logger, std::to_string(sock_fd)) + " disconnected");
                     epoll_ctl(m_epfd, EPOLL_CTL_DEL, sock_fd, NULL);
-                    auto user = userMap->find(sock_fd)->second;
+                    auto itor = userMap->find(sock_fd);
+                    if (itor == userMap->end())
+                        continue;
+                    auto user = itor->second;
                     for (auto it : user.openedFiles)
                     {
                         int num = file_map->count(it);
@@ -145,6 +148,10 @@ void TcpServer::tcpStart()
                     int packageSize = bytesToInt(buf, 4, sizeof(buf));
 
                     if (type == 0 && packageSize == 0)
+                    {
+                        continue;
+                    }
+                    if (packageSize > 1024 * 1024 || packageSize < 0)
                     {
                         continue;
                     }
@@ -248,8 +255,14 @@ void TcpServer::tcpStart()
                         pool->submit(killProjectForce, sock_fd, data);
                         break;
                     }
+                    case (int)Package::PackageType::REGISTER:
+                    {
+                        pool->submit(userRegister, sock_fd, data);
+                        break;
+                    }
                     default:
                         INFO_LOG(m_logger, "UNKNOW PACKAGETYPE");
+                        delete[] data;
                         break;
                     }
                 }
@@ -264,13 +277,6 @@ void TcpServer::login(int sock_fd, char* data)
     stringList list;
     stringSplit(temp, "\t", list);
     std::string UserId = list[0];
-    if (userMap->find(sock_fd) != userMap->end())
-    {
-        std::string str = "The user is logged in";
-        Package pck(str.c_str(), (int)Package::ReturnType::SERVER_ERROR, str.size());
-        write(sock_fd, pck.getPdata(), pck.getSize());
-    }
-    else
     {
         auto result = sql->exeSql("select user_id from User where user_id = \"" + UserId + "\" and user_password = md5(\"" + list[1] + "\");");
         sqlResultRows vec = sql->getRows(result);
@@ -282,13 +288,28 @@ void TcpServer::login(int sock_fd, char* data)
         }
         else
         {
-            Package pck("", (int)Package::ReturnType::SERVER_ALLOW, 0);
-            write(sock_fd, pck.getPdata(), pck.getSize());
-            UserInfo userinfo;
-            userinfo.openedFiles = std::vector<int>();
-            userinfo.openedProjects = std::vector<int>();
-            userinfo.userId = UserId;
-            userMap->insert(std::pair<int, TcpServer::UserInfo>(sock_fd, userinfo));
+            bool flag = true;
+            for (auto it : *userMap)
+            {
+                if (it.second.userId == UserId)
+                {
+                    std::string str = "The user is logged in";
+                    Package pck(str.c_str(), (int)Package::ReturnType::SERVER_ERROR, str.size());
+                    write(sock_fd, pck.getPdata(), pck.getSize());
+                    flag = false;
+                    break;
+                }
+            }
+            if (flag)
+            {
+                Package pck("", (int)Package::ReturnType::SERVER_ALLOW, 0);
+                write(sock_fd, pck.getPdata(), pck.getSize());
+                UserInfo userinfo;
+                userinfo.openedFiles = std::vector<int>();
+                userinfo.openedProjects = std::vector<int>();
+                userinfo.userId = UserId;
+                userMap->insert(std::pair<int, TcpServer::UserInfo>(sock_fd, userinfo));
+            }
         }
     }
 
@@ -477,9 +498,24 @@ void TcpServer::sendFile(int sock_fd, char* data)
         write(sock_fd, pck.getPdata(), pck.getSize());
     }
 
-    std::pair<int, int> p(fid, sock_fd);
-    file_map->insert(p);
-    userMap->find(sock_fd)->second.openedFiles.push_back(fid);
+    int num = file_map->count(fid);
+    auto it = file_map->find(fid);
+    bool flag = true;
+    for (; num > 0; it++, num--)
+    {
+        int fd = it->second;
+        if (fd == sock_fd)
+        {
+            flag = false;
+            break;
+        }
+    }
+    if (flag)
+    {
+        std::pair<int, int> p(fid, sock_fd);
+        file_map->insert(p);
+    }
+    //userMap->find(sock_fd)->second.openedFiles.push_back(fid);
 
     mysql_free_result(res);
     delete[] data;
@@ -1014,12 +1050,37 @@ void TcpServer::debugProject(int sock_fd, char* data)
         Package pck(str.c_str(), (int)Package::ReturnType::RUN_FINISH, str.size());
         write(sock_fd, pck.getPdata(), pck.getSize());
 
-        userMap->find(sock_fd)->second.runningPid = -1;
+        if(userMap->find(sock_fd)!=userMap->end())
+            userMap->find(sock_fd)->second.runningPid = -1;
         projectPidMap->erase(proId);
     }
 
     close(subRfd);
     close(mainWfd);
 
+    delete[] data;
+}
+
+void TcpServer::userRegister(int sock_fd, char* data)
+{
+    std::string temp(data);
+    stringList list;
+    stringSplit(temp, "\t", list);
+    auto res = sql->exeSql("select 1 from User where user_id =\"" + list[0] + "\" limit 1;");
+    auto rows = sql->getRows(res);
+    if (rows.empty())
+    {
+        sql->exeSql("insert into User (user_id,user_password) values (\"" + list[0] + "\",md5(\"" + list[1] + "\"));");
+        Package pck("", (int)Package::ReturnType::REGISTER_OK, 0);
+        write(sock_fd, pck.getPdata(), pck.getSize());
+    }
+    else
+    {
+        std::string error = "The user ID already exists!";
+        Package pck(error.c_str(), (int)Package::ReturnType::REGISTER_ERROR, error.size());
+        write(sock_fd, pck.getPdata(), pck.getSize());
+    }
+
+    mysql_free_result(res);
     delete[] data;
 }

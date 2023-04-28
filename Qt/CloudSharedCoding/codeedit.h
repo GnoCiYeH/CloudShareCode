@@ -28,10 +28,8 @@ namespace Ui
 {
     class CodeEdit;
 }
-class AssociateListWidget;
 class HighLighter;
 
-static void setUpAssociateList();
 static QStringList* associateList;
 
 class CodeEdit : public QWidget
@@ -52,7 +50,6 @@ public:
     void highlightError(const QString &error);
 
     void addText(const QString str);
-    QString getText();
 
     std::shared_ptr<FileInfo> getFile() { return file; }
 
@@ -60,15 +57,14 @@ public:
 
     int tcnum = 0;
     int ctnum = 0;
-    void lineNumberAreaPaintEvent(QPaintEvent *event);
-    int lineNumberAreaWidth();
+    QString getText();
+
 signals:
     void deleteInfo(int, int);
 
 public slots:
     void docChange(int, int, int);
 protected:
-    void keyPressEvent(QKeyEvent *event) override;
     void resizeEvent(QResizeEvent *event)override;
 private:
     Ui::CodeEdit *ui;
@@ -83,15 +79,8 @@ private:
     std::shared_ptr<FileInfo> file;
 
     QMutex mutex;
-    int associateState;                   // 联想状�?
-    AssociateListWidget *associateWidget; // 联想�?
-    QString getWordCursor();              // 获取当前光标所在位置的字符�?
-    int getAssociateWidgetX();
 
     QHash<QString, UserEditTip *> userWidget;
-
-private slots:
-    void showAssociateWidget(); // 展示联想列表
 };
 
 class HighLighter : public QSyntaxHighlighter
@@ -130,29 +119,4 @@ private:
 
     CodeEdit *edit;
 };
-
-enum AssociateState
-{
-    Ignore = 0,
-    Showing = 1,
-    Hide = 2
-};
-
-class AssociateListWidget : public QListWidget
-{
-public:
-    AssociateListWidget(CodeEdit *edit, QWidget *parent = 0);
-    static int letterDifference(const string source, const string target); // 两个字符串的差异�?
-    static int strToInt(string str);
-
-protected:
-    void keyPressEvent(QKeyEvent *event) override;
-
-private:
-    QPlainTextEdit *p;
-    QColor backgroundColor; // 联想列表背景�?
-    QColor highlightColor;
-    CodeEdit *edit;
-};
-
 #endif // CODEEDIT_H

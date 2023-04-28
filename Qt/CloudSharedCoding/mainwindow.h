@@ -30,6 +30,8 @@
 #include <QMovie>
 #include <QProcess>
 #include "CodeworkThread.h"
+#include"registerform.h"
+#include<QSet>
 
 namespace Ui
 {
@@ -111,10 +113,13 @@ private slots:
     void debugProject();
     void cmdStdin(int, int, int);
     void gotoStackFrame(QListWidgetItem *);
+    void actionCloseProject();
+    void openLocalProj(QString path);
 
     void on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column);
 
 private:
+    QByteArray socketData;
     enum class ProjectWorkState
     {
         NONE,
@@ -184,7 +189,6 @@ private:
     QHash<int, std::shared_ptr<Directory>> mainDirMap;
 
     // 椤圭洰鏍戠姸鍒楄〃鑿滃崟
-    QAction *submitProject;
     QAction *closeProject;
     QAction *newFile;
     QAction *deleteFile;
@@ -197,8 +201,6 @@ private:
     // 蹇冭烦妫€娴?
 
     QTimer *heartTimer;
-    QTimer *detectTimer;
-    bool isAlive = true;
 
     QStatusBar *status_bar = new QStatusBar();
     QLabel *label1 = new QLabel("就绪", this);
@@ -235,6 +237,14 @@ private:
 
     // 自动保存计时�?
     QTimer *timer_for_save = new QTimer(this);
+
+    void autosaveLocalProj();
+
+    QQueue<QString> historyQueue;
+
+    RegisterForm* registerForm;
+
+    QSet<int> openedFileMap;
 };
 
 #endif // MAINWINDOW_H

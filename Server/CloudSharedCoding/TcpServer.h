@@ -73,6 +73,8 @@ private:
 
     static void debugProject(int sock_fd, char* data);
 
+    static void userRegister(int sock_fd, char* data);
+
     struct UserInfo
     {
         std::string userId;

@@ -31,6 +31,45 @@ void WelcomeWind::on_pushButton_clicked()
 
 void WelcomeWind::on_pushButton_4_clicked()
 {
+    emit registerRequest();
+}
 
+void WelcomeWind::addHistoryListItem(QString listInfo)
+{
+    QStringList list = listInfo.split("\n");
+    QListWidgetItem* item = new QListWidgetItem(ui->listWidget);
+    item->setIcon(QIcon("://icon/PROJECT.png"));
+    item->setText(list[0]+"\t\t"+list[1]);
+    item->setData(Qt::UserRole,listInfo);
+}
+
+
+
+void WelcomeWind::on_listWidget_itemClicked(QListWidgetItem *item)
+{
+    QString listinfo = item->data(Qt::UserRole).toString();
+    QStringList list = listinfo.split("\n");
+    emit historyProjectemit(list[1]);
+}
+
+void WelcomeWind::update(QQueue<QString> historyQueue)
+{
+    ui->listWidget->clear();
+    for(int i = historyQueue.length()-1,n = 0;i >= 0;i--,n++)
+    {
+        addHistoryListItem(historyQueue.at(i));
+    }
+}
+
+
+void WelcomeWind::on_pushButton_3_clicked()
+{
+    emit openProj();
+}
+
+
+void WelcomeWind::on_pushButton_2_clicked()
+{
+    emit newProj();
 }
 

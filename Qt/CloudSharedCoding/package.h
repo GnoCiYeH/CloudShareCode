@@ -100,7 +100,9 @@ public:
         BUILD_FINISH = 14,
         RUN_FINISH = 15,
         DEBUG_INFO = 16,
-        FILE_TRANSOVER = 17
+        FILE_TRANSOVER = 17,
+        REGISTER_OK = 18,
+        REGISTER_ERROR = 19
     };
 
     Package(QByteArray data,int type);

@@ -79,6 +79,11 @@ void RunThread::exe()
     //run file
     runProcess->setProgram(workPath+"\\build\\bin\\"+proName+".exe");
     runProcess->start();
+    runProcess->waitForStarted();
+    if(runProcess->state()==QProcess::NotRunning)
+    {
+        emit runFinish(-1);
+    }
 }
 
 void RunThread::run()

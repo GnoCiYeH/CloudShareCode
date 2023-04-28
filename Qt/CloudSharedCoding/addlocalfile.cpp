@@ -6,8 +6,9 @@ AddLocalFile::AddLocalFile(QWidget *parent) :
     ui(new Ui::AddLocalFile)
 {
     ui->setupUi(this);
-    ui->comboBox->addItem("C++文件（.cpp）");
-    ui->comboBox->addItem("头文件（.h)");
+    ui->comboBox->addItem("Source(.cpp)");
+    ui->comboBox->addItem("Header(.h)");
+    ui->comboBox->addItem("Class");
     ui->comboBox->setCurrentIndex(0);
 
     //取消

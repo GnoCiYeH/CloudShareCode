@@ -60,6 +60,8 @@ void ProjectForm::init()
 {
     for(auto i : *MainWindow::userProjs)
     {
+        if(i.pro_id<0)
+            break;
         QListWidgetItem* item = new QListWidgetItem(i.pro_name);
         QVariant var;
         var.setValue(i);
@@ -81,6 +83,8 @@ void ProjectForm::on_pushButton_3_clicked()
     if(ui->tabWidget->currentWidget()==ui->tab)
     {
         QListWidgetItem* litem = ui->listWidget->currentItem();
+        if(!litem)
+            return;
         QVariant var = litem->data(Qt::UserRole);
         Project proj = var.value<Project>();
 
@@ -105,6 +109,8 @@ void ProjectForm::on_pushButton_3_clicked()
 void ProjectForm::on_pushButton_2_clicked()
 {
     QListWidgetItem* litem = ui->listWidget->currentItem();
+    if(!litem)
+        return;
     QVariant var = litem->data(Qt::UserRole);
     Project proj = var.value<Project>();
 
@@ -130,6 +136,8 @@ void ProjectForm::on_toolButton_3_clicked()
 void ProjectForm::on_pushButton_clicked()
 {
     auto item = ui->listWidget->currentItem();
+    if(!item)
+        return;
     Project proj = item->data(Qt::UserRole).value<Project>();
 
     QMessageBox box;
@@ -143,6 +151,8 @@ void ProjectForm::on_pushButton_clicked()
 void ProjectForm::on_pushButton_4_clicked()
 {
     QListWidgetItem* litem = ui->listWidget_2->currentItem();
+    if(!litem)
+        return;
     QVariant var = litem->data(Qt::UserRole);
     Project proj = var.value<Project>();
 

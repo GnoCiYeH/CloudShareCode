@@ -54,19 +54,18 @@ CodeEdit::CodeEdit(std::shared_ptr<FileInfo> fileptr, QWidget *parent) : QWidget
         }
     }
 
-    // 鍒濆鍖栬仈鎯冲垪琛?
-    setUpAssociateList();
-    associateWidget = new AssociateListWidget(this, ui->textEdit);
-    associateWidget->hide();
-    associateWidget->setMaximumHeight(fontMetrics().height() * 5);
-    associateState = AssociateState::Hide;
+
 
     const int tabstop = 4;
     QFontMetrics m(ui->textEdit->font());
     ui->textEdit->setTabStopDistance(tabstop * m.horizontalAdvance(" "));
 
-    if (MainWindow::loginState())
+    if (file->file_project>=0)
         connect(document, SIGNAL(contentsChange(int, int, int)), this, SLOT(docChange(int, int, int)));
+    else
+        connect(document,&QTextDocument::contentsChange,this,[=](){
+            ((CodeDocEdit*)(ui->textEdit))->showAssociateWidget();
+        });
 }
 
 CodeEdit::~CodeEdit()
@@ -83,7 +82,7 @@ void CodeEdit::gotoline(int line)
 
 void CodeEdit::docChange(int pos, int charRemoved, int charAdded)
 {
-    showAssociateWidget();
+    ((CodeDocEdit*)(ui->textEdit))->showAssociateWidget();
     //*********************************
     QTextCursor cursor(document);
     cursor.setPosition(pos);
@@ -134,176 +133,15 @@ void CodeEdit::changeText(int pos, int charRemoved, QString userId, QString data
     if (userWidget.contains(userId))
     {
         UserEditTip *wind = userWidget.find(userId).value();
-        wind->move(ui->textEdit->cursorRect(cursor).center());
+        wind->move(ui->textEdit->cursorRect(cursor).center().x()+20,ui->textEdit->cursorRect(cursor).center().y());
         wind->showTip();
     }
     else
     {
         UserEditTip *wind = new UserEditTip(userId, this);
         userWidget.insert(userId, wind);
-        wind->move(ui->textEdit->cursorRect(cursor).center());
+        wind->move(ui->textEdit->cursorRect(cursor).center().x()+20,ui->textEdit->cursorRect(cursor).center().y());
         wind->showTip();
-    }
-}
-
-void CodeEdit::showAssociateWidget()
-{
-    if (associateState == AssociateState::Ignore)
-        return; // 瀵逛簬鍏夋爣鍜屾枃鏈彉鍖栦笉鍋氫换浣曠浉搴旓紝閬垮厤闄峰叆姝诲惊????
-    associateWidget->hide();
-    associateState = AssociateState::Hide;
-    QString word = this->getWordCursor();
-    associateWidget->clear();
-    if (!word.isEmpty())
-    {
-        int maxSize = 0;
-        QMap<QString, int> differenceRecord;
-        vector<QString> itemVec;
-        foreach (const QString &keyword, *associateList)
-        {
-            if (keyword.contains(word))
-            { // 濡傛灉褰撳墠杈撳叆瀛楃灞炰簬鑱旀兂琛ㄤ腑鐨勫瓧绗︿覆
-                itemVec.push_back(keyword);
-                differenceRecord[keyword] = associateWidget->letterDifference(keyword.toStdString(), word.toStdString());
-                if (keyword.length() > maxSize)
-                    maxSize = keyword.length(); // 鎵惧埌鑱旀兂鍒楄〃涓渶闀跨殑涓�涓紝濂借缃仈鎯冲垪琛ㄥ搴?
-            }
-        }
-
-        if (itemVec.size() > 0)
-        { // 鏈夊尮閰嶅瓧????
-            // 鎸夊樊寮傚害浠庡皬鍒板ぇ鎺掞紝鏈�鍖归厤鐨勫湪鏈�鍓嶉潰
-            sort(itemVec.begin(), itemVec.end(), [&](const QString &s1, const QString &s2) -> bool
-                 { return differenceRecord[s1] < differenceRecord[s2]; });
-            foreach (const QString &item, itemVec)
-            {
-                associateWidget->addItem(new QListWidgetItem(item));
-            }
-
-            int x = this->getAssociateWidgetX();
-            int y = ui->textEdit->cursorRect().y() + fontMetrics().height();
-
-            associateWidget->move(x, y); // 璁剧疆鑱旀兂鍒楄〃鐨勪綅????
-            // 璁剧疆鑱旀兂鍒楄〃鍚堥�傜殑澶у皬
-            if (associateWidget->count() > 5)
-                associateWidget->setFixedHeight(fontMetrics().height() * 6);
-            else
-                associateWidget->setFixedHeight(fontMetrics().height() * (associateWidget->count() + 1));
-            associateWidget->setFixedHeight((fontMetrics().lineWidth() + 6) * maxSize);
-            associateWidget->show();
-            associateState = AssociateState::Showing;
-            associateWidget->setCurrentRow(0, QItemSelectionModel::Select);
-        }
-        associateWidget->setFocus();
-    }
-}
-
-QString CodeEdit::getWordCursor()
-{
-    QTextCursor cursor = ui->textEdit->textCursor();
-    cursor.movePosition(QTextCursor::MoveOperation::StartOfWord);
-    int start = cursor.position();
-    QString res = "";
-    QChar ch = document->characterAt(start);
-    while (ch.isDigit() || ch.isLetter() || ch == '_' || ch == '#')
-    {
-        res.push_back(ch);
-        ch = ui->textEdit->document()->characterAt(++start);
-    }
-    return res;
-}
-
-QString CodeEdit::getText()
-{
-    return ui->textEdit->toPlainText();
-}
-
-int CodeEdit::getAssociateWidgetX()
-{
-    QTextCursor cursor = ui->textEdit->textCursor();
-    int pos = cursor.position() - 1;
-    int originalPos = pos + 1;
-    QChar ch = ui->textEdit->document()->characterAt(pos);
-    while ((ch.isDigit() || ch.isLetter() || ch == '_' || ch == '#') && pos > 0)
-    {
-        ch = ui->textEdit->document()->characterAt(pos--);
-    }
-    pos++;
-    associateState = AssociateState::Ignore;
-    cursor.setPosition(pos);
-    ui->textEdit->setTextCursor(cursor);
-    int x = ui->textEdit->cursorRect().x() + 2 * fontMetrics().lineWidth();
-    cursor.setPosition(originalPos);
-    ui->textEdit->setTextCursor(cursor);
-    associateState = AssociateState::Hide;
-    return x;
-}
-
-void CodeEdit::keyPressEvent(QKeyEvent *event)
-{
-    if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)
-    {
-        if (associateState == AssociateState::Showing)
-        {
-            QKeyEvent *newEvent = new QKeyEvent(QEvent::KeyPress, Qt::Key_Return, Qt::NoModifier);
-            QApplication::sendEvent(associateWidget, newEvent); // 发送模拟事???
-            return;                                             // 不调用基类的函数，防止移动光???
-        }
-        else{
-            int preCharIndex = ui->textEdit->textCursor().position() - 1;
-            QChar preChar = document->characterAt(preCharIndex);
-            if (preChar == '{')
-            {
-                QTextCursor cursor = ui->textEdit->textCursor();
-                int startPos = cursor.block().position();
-                int spaceCount = 0;
-                while (document->characterAt(startPos) == ' ')
-                {
-                    spaceCount++;
-                    startPos++;
-                }
-                ui->textEdit->insertPlainText("\n");
-                ui->textEdit->insertPlainText(QString(spaceCount + 4, ' '));
-                QTextBlock middleBlock = document->findBlockByLineNumber(ui->textEdit->textCursor().blockNumber());
-                QTextCursor middleCursor(middleBlock);
-                cursor.deleteChar();
-                ui->textEdit->insertPlainText("\n");
-                ui->textEdit->insertPlainText(QString(spaceCount, ' '));
-                ui->textEdit->insertPlainText("}");
-                middleCursor.setPosition(middleBlock.position() + spaceCount + 4);
-                ui->textEdit->setTextCursor(middleCursor);
-            }
-        }
-    }
-    else if (event->key() == Qt::Key_Down)
-    {
-        if (associateState == AssociateState::Showing)
-        {
-            QKeyEvent *newEvent = new QKeyEvent(QEvent::KeyPress, Qt::Key_Return, Qt::NoModifier);
-            QApplication::sendEvent(associateWidget, newEvent); // 发送模拟事???
-            return;                                             // 不调用基类的函数，防止移动光???
-        }
-    }
-    else if (event->key() == Qt::Key_Up)
-    {
-        if (associateState == AssociateState::Showing)
-        {
-            QKeyEvent *newEvent = new QKeyEvent(QEvent::KeyPress, Qt::Key_Return, Qt::NoModifier);
-            QApplication::sendEvent(associateWidget, newEvent); // 发送模拟事???
-            return;                                             // 不调用基类的函数，防止移动光???
-        }
-    }
-    else if(event->key()==Qt::Key_ParenLeft){
-        ui->textEdit->insertPlainText("()");
-        ui->textEdit->moveCursor(QTextCursor::PreviousCharacter);
-    }
-    else if(event->key() == Qt::Key_BracketLeft){
-        ui->textEdit->insertPlainText("[]");
-        ui->textEdit->moveCursor(QTextCursor::PreviousCharacter);
-    }
-    else if(event->key() == Qt::Key_BraceLeft){
-        ui->textEdit->insertPlainText("{}");
-        ui->textEdit->moveCursor(QTextCursor::PreviousCharacter);
     }
 }
 
@@ -312,19 +150,9 @@ void CodeEdit::resizeEvent(QResizeEvent *event)
     QWidget::resizeEvent(event);
 }
 
-int CodeEdit::lineNumberAreaWidth()
+QString CodeEdit::getText()
 {
-    int digits = 1;//?????????λ??
-    int max = qMax(1, ui->textEdit->blockCount());
-    while (max >= 10) {
-        max /= 10;
-        ++digits;
-    }
-    if(digits<3)digits=3;
-
-    int space = 3 + ui->textEdit->fontMetrics().averageCharWidth()*digits;
-
-    return space;
+    return ui->textEdit->toPlainText();
 }
 
 HighLighter::HighLighter(CodeEdit *edit, QTextDocument *text) : QSyntaxHighlighter(text),
@@ -526,151 +354,5 @@ void CodeEdit::highlightError(const QString &error){
             cursor.mergeCharFormat(error_format);
         }
         errorOffset=match.capturedEnd();
-    }
-}
-
-void setUpAssociateList()
-{
-    associateList=MainWindow::fileName;
-    *associateList << "char"
-                  << "class"
-                  << "const"
-                  << "double"
-                  << "enum"
-                  << "explicit"
-                  << "friend"
-                  << "inline"
-                  << "int"
-                  << "long"
-                  << "namespace"
-                  << "operator"
-                  << "private"
-                  << "protected"
-                  << "public"
-                  << "short"
-                  << "signals"
-                  << "signed"
-                  << "slots"
-                  << "static"
-                  << "struct"
-                  << "template"
-                  << "typedef"
-                  << "typename"
-                  << "union"
-                  << "unsigned"
-                  << "virtual"
-                  << "void"
-                  << "volatile"
-                  << "bool"
-                  << "using"
-                  << "constexpr"
-                  << "sizeof"
-                  << "if"
-                  << "for"
-                  << "foreach"
-                  << "while"
-                  << "do"
-                  << "case"
-                  << "break"
-                  << "continue"
-                  << "template"
-                  << "delete"
-                  << "new"
-                  << "default"
-                  << "try"
-                  << "return"
-                  << "throw"
-                  << "catch"
-                  << "goto"
-                  << "else"
-                  << "extren"
-                  << "this"
-                  << "switch"
-                  << "include <>"
-                  << "include \""
-                  << "define"
-                  << "iostream";
-}
-
-AssociateListWidget::AssociateListWidget(CodeEdit *edit, QWidget *parent) : QListWidget(parent),
-                                                                            edit(edit)
-{
-    p = (QPlainTextEdit *)parent;
-    backgroundColor = Qt::lightGray;
-    highlightColor.setRgb(22, 165, 248);
-    QPalette palette = this->palette();
-    palette.setColor(QPalette::Active, QPalette::Highlight, highlightColor);
-    palette.setColor(QPalette::Inactive, QPalette::Highlight, highlightColor);
-    palette.setColor(QPalette::Active, QPalette::Base, backgroundColor);
-    palette.setColor(QPalette::Inactive, QPalette::Base, backgroundColor);
-    palette.setColor(QPalette::Text, Qt::white);
-    this->setPalette(palette);
-}
-
-int AssociateListWidget::letterDifference(const std::string source, const std::string text)
-{
-    int difference = 0;
-    for (int i = 0; i < source.length(); i++)
-    {
-        if (i < text.length())
-            difference += abs(text[i] - source[i]);
-        else
-        {
-            if (difference == 0)
-            {
-                return strToInt(source.substr(i, source.length() - i));
-            }
-            difference += source[i];
-        }
-    }
-    return difference;
-}
-
-int AssociateListWidget::strToInt(string str)
-{
-    int res = 0;
-    for (int i = 0; i < str.length(); i++)
-    {
-        res += str[i] - 'a';
-    }
-    return res;
-}
-
-void AssociateListWidget::keyPressEvent(QKeyEvent *event)
-{
-    if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)
-    {
-        // 获取当前选中的项
-        QListWidgetItem *item = currentItem();
-        if (item)
-        {
-            QString text = this->currentItem()->text();
-            QString word = edit->getWordCursor();
-            for (int i = 0; i < word.length(); i++)
-            {
-                edit->ui->textEdit->textCursor().deletePreviousChar();
-            }
-            edit->ui->textEdit->insertPlainText(text);
-        }
-        this->hide();
-        edit->ui->textEdit->setFocus();
-    }
-    else if (event->key() == Qt::Key_Down)
-    {
-        if (this->currentRow() < this->count() - 1)
-        {
-            this->setCurrentRow(this->currentRow() + 1);
-        }
-    }
-    else if (event->key() == Qt::Key_Up)
-    {
-        if (this->currentRow() > 0)
-        {
-            this->setCurrentRow(this->currentRow() - 1);
-        }
-    }
-    else
-    {
-        event->ignore();
     }
 }

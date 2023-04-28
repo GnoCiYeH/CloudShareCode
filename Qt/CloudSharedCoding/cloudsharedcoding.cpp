@@ -8,6 +8,11 @@ CloudSharedCoding::CloudSharedCoding(QWidget *parent) :
     ui->setupUi(this);
     this->setWindowFlags(Qt::FramelessWindowHint);
     this->showMaximized();
+    QPixmap pximap("://ico.png");
+    pximap.scaled(ui->icon->size());
+    ui->icon->setContentsMargins(0,0,0,0);
+    ui->icon->setScaledContents(true);
+    ui->icon->setPixmap(pximap);
 }
 
 CloudSharedCoding::~CloudSharedCoding()

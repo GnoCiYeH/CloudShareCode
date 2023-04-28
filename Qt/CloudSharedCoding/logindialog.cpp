@@ -27,18 +27,17 @@ LoginDialog::~LoginDialog()
 
 void LoginDialog::on_pushButton_clicked()
 {
-    ui->pushButton->setDisabled(true);
     QString IP = ui->lineEdit_ServerIp->text();
-    if(ui->lineEdit_UserID->text().size()>32||ui->lineEdit_Password->text().size()>32||!myHelper::isIP(IP))
+    if(ui->lineEdit_UserID->text().size()>32||ui->lineEdit_Password->text().size()>32||!myHelper::isIP(IP)||ui->lineEdit_Password->text().isEmpty()||ui->lineEdit_UserID->text().isEmpty())
     {
         QMessageBox box(this);
         box.setText("请确认信息输入无误后重试！");
         box.setWindowTitle("WARING");
         box.exec();
-        ui->pushButton->setDisabled(false);
     }
     else
     {
+        MainWindow::socket->disconnectFromHost();
         MainWindow::socket->connectToHost(IP,9098);
     }
 }

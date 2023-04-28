@@ -92,5 +92,11 @@
         <file>icon/debuging.gif</file>
         <file>icon/running.gif</file>
         <file>icon/stateok.gif</file>
+        <file>icon/addProject.png</file>
+        <file>icon/joinProject .png</file>
+        <file>icon/Breakpoint.png</file>
+        <file>icon/stackFrame.png</file>
+        <file>icon/vardock.png</file>
+        <file>ico.png</file>
     </qresource>
 </RCC>

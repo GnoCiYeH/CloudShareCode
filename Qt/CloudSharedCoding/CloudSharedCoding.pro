@@ -24,7 +24,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 CONFIG += c++11
-
+RC_ICONS = MainIcon.ico
 SOURCES += \
     CodeworkThread.cpp \
     addlocalfile.cpp \
@@ -43,6 +43,7 @@ SOURCES += \
     privilegelistitem.cpp \
     privilegemanager.cpp \
     projectform.cpp \
+    registerform.cpp \
     settingform.cpp \
     switchingencodingmode.cpp \
     useredittip.cpp \
@@ -67,6 +68,7 @@ HEADERS += \
     privilegelistitem.h \
     privilegemanager.h \
     projectform.h \
+    registerform.h \
     settingform.h \
     switchingencodingmode.h \
     useredittip.h \
@@ -86,6 +88,7 @@ FORMS += \
     privilegelistitem.ui \
     privilegemanager.ui \
     projectform.ui \
+    registerform.ui \
     settingform.ui \
     switchingencodingmode.ui \
     useredittip.ui \
