@@ -65,15 +65,21 @@ D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(100,25): warning :       |
 D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(111,10): warning : unused variable ‘filepath’ [-Wunused-variable]
 D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(111,10): warning :   111 |     char filepath[256] = { 0 };
 D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(111,10): warning :       |          ^~~~~~~~
-D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(186,24): warning : conversion from ‘__off_t’ {aka ‘long int’} to ‘int’ may change value [-Wconversion]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(186,24): warning :   186 |     int length = stbuf.st_size;
-D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(186,24): warning :       |                  ~~~~~~^~~~~~~
-D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(207,27): warning : comparison of integer expressions of different signedness: ‘int’ and ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(207,27): warning :   207 |     if (pos + charRemoved < buf.length())
-D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(207,27): warning :       |         ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~
-D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(224,29): warning : NULL used in arithmetic [-Wpointer-arith]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(224,29): warning :   224 |     while ((read(fd,&p,1))!=NULL)
-D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(224,29): warning :       |                             ^~~~
+D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(182,23): warning : comparison of integer expressions of different signedness: ‘int’ and ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(182,23): warning :   182 |     for (int i = 0; i < T.size(); i++) {
+D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(182,23): warning :       |                     ~~^~~~~~~~~~
+D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(194,28): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(194,28): warning :   194 |         end_pos = T.size() - 1;
+D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(194,28): warning :       |                   ~~~~~~~~~^~~
+D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(207,24): warning : conversion from ‘__off_t’ {aka ‘long int’} to ‘int’ may change value [-Wconversion]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(207,24): warning :   207 |     int length = stbuf.st_size;
+D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(207,24): warning :       |                  ~~~~~~^~~~~~~
+D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(219,28): warning : comparison of integer expressions of different signedness: ‘int’ and ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(219,28): warning :   219 |     if (started+charRemoved<buf.size())
+D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(219,28): warning :       |         ~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~
+D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(238,29): warning : NULL used in arithmetic [-Wpointer-arith]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(238,29): warning :   238 |     while ((read(fd,&p,1))!=NULL)
+D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(238,29): warning :       |                             ^~~~
 D:\Git\CloudShareCode\Server\CloudSharedCoding\ThreadPool.h(107,27): warning : comparison of integer expressions of different signedness: ‘int’ and ‘std::vector<std::thread>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]
 D:\Git\CloudShareCode\Server\CloudSharedCoding\ThreadPool.h(107,27): warning :   107 |         for (int i = 0; i < m_threads.size(); i++)
 D:\Git\CloudShareCode\Server\CloudSharedCoding\ThreadPool.h(107,27): warning :       |                         ~~^~~~~~~~~~~~~~~~~~
@@ -220,7 +226,8 @@ D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(1035,52): warning :
 D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(1035,52): warning :       |                                                    ^~~~
 D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(1050,80): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
 D:\Git\CloudShareCode\Server\CloudSharedCoding\TcpServer.cpp(1080,88): warning : conversion from ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} to ‘int’ may change value [-Wconversion]
-D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(220,20): warning : ‘std::string readLine(int)’ defined but not used [-Wunused-function]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(234,20): warning : ‘std::string readLine(int)’ defined but not used [-Wunused-function]
+D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(177,13): warning : ‘void pos(const string&, const string&, int, int, int&, int&)’ defined but not used [-Wunused-function]
 D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(37,13): warning : ‘void WARN_CHECK(int, std::string, Log::Logger)’ defined but not used [-Wunused-function]
 D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(29,13): warning : ‘void INFO_CHECK(int, std::string, Log::Logger)’ defined but not used [-Wunused-function]
 D:\Git\CloudShareCode\Server\CloudSharedCoding\Tool.h(21,13): warning : ‘void DEBUG_CHECK(int, std::string, Log::Logger)’ defined but not used [-Wunused-function]

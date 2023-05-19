@@ -1150,6 +1150,7 @@ void MainWindow::dataProgress()
             auto fileEditor = (CodeEdit *)fileWidgets.value(fid);
             ui->tabWidget->setCurrentWidget(fileEditor);
             fileEditor->setFocusPolicy(Qt::StrongFocus);
+            fileEditor->initLastBlock();
             break;
         }
         case (int)Package::ReturnType::NEW_FILE_INFO:
@@ -1274,13 +1275,12 @@ void MainWindow::dataProgress()
             QString data(byteData);
             QStringList list = data.split("#");
             int file_id = list[0].toInt();
-            int pos = list[1].toInt();
-            int charRemoved = list[2].toInt();
+            int lineNum = list[1].toInt();
             if (fileWidgets.contains(file_id))
             {
-                int position = (list[0] + list[1] + list[2] + list[3] + list[4]).length() + 4;
+                int position = (list[0] + list[1] + list[2] + list[3] + list[4] + list[5] + list[6]).length() + 6;
                 CodeEdit *wind = fileWidgets.value(file_id);
-                wind->changeText(pos, charRemoved, list[4], data.mid(position + 1));
+                wind->changeText(lineNum, list[5].toInt(),list[6].toInt(), list[4], data.mid(position + 1));
             }
             break;
         }

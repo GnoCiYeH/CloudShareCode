@@ -515,7 +515,7 @@ void TcpServer::sendFile(int sock_fd, char* data)
         std::pair<int, int> p(fid, sock_fd);
         file_map->insert(p);
     }
-    //userMap->find(sock_fd)->second.openedFiles.push_back(fid);
+    userMap->find(sock_fd)->second.openedFiles.push_back(fid);
 
     mysql_free_result(res);
     delete[] data;
@@ -660,13 +660,13 @@ void TcpServer::sendTextChange(int sock_fd, char* data)
 {
     std::string buf(data);
     stringList list;
-    stringSplit(buf, "#", list,6);
+    stringSplit(buf, "#", list,8);
     int file_id = std::stoi(list[0]);
-    int pos = std::stoi(list[1]);
-    int charRemoved = std::stoi(list[2]);
+    int started = std::stoi(list[2]);
+    int charRemoved = std::stoi(list[5]);
     std::string path = list[3];
 
-    if (!textChange(path, pos, charRemoved, list[5]))
+    if (!textChange(path, started, charRemoved, list[7]))
     {
         ERROR_LOG(m_logger, "edit file error");
     }

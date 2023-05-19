@@ -59,7 +59,9 @@ CodeEdit::CodeEdit(std::shared_ptr<FileInfo> fileptr, QWidget *parent) : QWidget
     ui->textEdit->setTabStopDistance(tabstop * m.horizontalAdvance(" "));
 
     if (file->file_project >= 0)
-        connect(document, SIGNAL(contentsChange(int, int, int)), this, SLOT(docChange(int, int, int)));
+    {
+        connect(document, SIGNAL(contentsChange(int,int,int)), this, SLOT(docChange(int,int,int)));
+    }
     else
         connect(document, &QTextDocument::contentsChange, this, [=]()
                 { ((CodeDocEdit *)(ui->textEdit))->showAssociateWidget(); });
@@ -77,9 +79,9 @@ void CodeEdit::gotoline(int line)
     ui->textEdit->setTextCursor(cursor);
 }
 
-void CodeEdit::docChange(int pos, int charRemoved, int charAdded)
+void CodeEdit::docChange(int pos,int charRemoved,int charAdded)
 {
-    ((CodeDocEdit *)(ui->textEdit))->showAssociateWidget();
+    ((CodeDocEdit*)(ui->textEdit))->showAssociateWidget();
     //*********************************
     QTextCursor cursor(document);
     cursor.setPosition(pos);
@@ -89,8 +91,9 @@ void CodeEdit::docChange(int pos, int charRemoved, int charAdded)
     str.replace(QChar(8232), '\n');
     int size = str.toStdString().size();
     //*********************************
-
-    QString data = QString::number(file->file_id) + "#" + QString::number(size) + "#" + QString::number(charRemoved) + "#" + file->file_path + "#" + MainWindow::userId + "#";
+    int lineNum = ui->textEdit->textCursor().blockNumber();
+    int posInBlock = ui->textEdit->textCursor().positionInBlock();
+    QString buf = "";
     for (int var = pos; var < pos + charAdded; ++var)
     {
         if (document->characterAt(var) == QChar(8233) || document->characterAt(var) == QChar(8232))
@@ -99,12 +102,15 @@ void CodeEdit::docChange(int pos, int charRemoved, int charAdded)
             {
                 return;
             }
-            data += "\n";
+            buf += "\n";
         }
         else
-            data += document->characterAt(var);
+            buf += document->characterAt(var);
     }
-
+    QString data = QString::number(file->file_id) + "#" + QString::number(lineNum) + "#" + QString::number(size) + "#" +
+                   file->file_path + "#" + MainWindow::userId + "#" + QString::number(charRemoved) + "#" + QString::number(posInBlock) + "#";
+    data+=buf;
+    qDebug()<<data;
     Package pck(data.toUtf8(), (int)Package::PackageType::TEXT_CHANGE);
     MainWindow::socket->write(pck.getPdata(), pck.getSize());
     MainWindow::socket->flush();
@@ -112,20 +118,35 @@ void CodeEdit::docChange(int pos, int charRemoved, int charAdded)
 
 void CodeEdit::addText(const QString str)
 {
-    document->disconnect(SIGNAL(contentsChange(int, int, int)), this, SLOT(docChange(int, int, int)));
+    document->disconnect(SIGNAL(contentsChange(int, int, int)), this, SLOT(docChange(int,int,int)));
     ui->textEdit->insertPlainText(str);
-    connect(document, SIGNAL(contentsChange(int, int, int)), this, SLOT(docChange(int, int, int)));
+    connect(document, SIGNAL(contentsChange(int, int, int)), this, SLOT(docChange(int,int,int)));
 }
 
-void CodeEdit::changeText(int pos, int charRemoved, QString userId, QString data)
+void CodeEdit::changeText(int lineNum, int charRemoved,int posInBlock, QString userId, QString data)
 {
-    QTextCursor cursor(document);
-    cursor.movePosition(QTextCursor::NextCharacter, QTextCursor::MoveAnchor, pos);
-    cursor.movePosition(QTextCursor::NextCharacter, QTextCursor::KeepAnchor, charRemoved);
-    document->disconnect(SIGNAL(contentsChange(int, int, int)), this, SLOT(docChange(int, int, int)));
-    cursor.removeSelectedText();
-    cursor.insertText(data);
-    connect(document, SIGNAL(contentsChange(int, int, int)), this, SLOT(docChange(int, int, int)));
+    QTextCursor cursor(document->findBlockByLineNumber(lineNum));
+    if(data!="\n")
+    {
+        cursor.movePosition(QTextCursor::NextCharacter,QTextCursor::MoveAnchor,posInBlock-1);
+        document->disconnect(SIGNAL(contentsChange(int, int, int)), this, SLOT(docChange(int,int,int)));
+        cursor.insertText(data);
+        connect(document, SIGNAL(contentsChange(int, int, int)), this, SLOT(docChange(int,int,int)));
+        cursor.movePosition(QTextCursor::NextCharacter,QTextCursor::MoveAnchor);
+        cursor.movePosition(QTextCursor::NextCharacter,QTextCursor::KeepAnchor,charRemoved);
+        document->disconnect(SIGNAL(contentsChange(int, int, int)), this, SLOT(docChange(int,int,int)));
+        cursor.removeSelectedText();
+        connect(document, SIGNAL(contentsChange(int, int, int)), this, SLOT(docChange(int,int,int)));
+    }
+    else
+    {
+        cursor.movePosition(QTextCursor::Down,QTextCursor::MoveAnchor,lineNum-1);
+        cursor.movePosition(QTextCursor::EndOfBlock);
+
+        document->disconnect(SIGNAL(contentsChange(int, int, int)), this, SLOT(docChange(int,int,int)));
+        cursor.insertBlock();
+        connect(document, SIGNAL(contentsChange(int, int, int)), this, SLOT(docChange(int,int,int)));
+    }
 
     if (userWidget.contains(userId))
     {

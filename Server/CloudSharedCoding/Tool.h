@@ -174,46 +174,60 @@ static int CreateDir(const std::string dir)
     return ret;
 }
 
-static bool textChange(std::string path,int pos, int charRemoved, std::string data)
-{
-    std::fstream fileStream(path.c_str(), std::ios::in | std::ios::out | std::ios::binary);
-    if (!fileStream.is_open())
-        return false;
+static void pos(const std::string& T, const std::string& P, int lineNumber,int deleteLine,int &start_pos,int &end_pos) {
+    if (lineNumber == 0) {
+        start_pos = 0;
+    }
+    int count = 0;
+    for (int i = 0; i < T.size(); i++) {
+        if (T[i] == '\n') {
+            count++;
+            if (count == lineNumber) {
+                start_pos = i+1;
+            }
+            if (count == lineNumber + deleteLine + 1) {
+                end_pos = i;
+            }
+        }
+    }
+    if (count < lineNumber + deleteLine + 1) {
+        end_pos = T.size() - 1;
+    }
+}
 
+static bool textChange(std::string path,int started, int charRemoved, std::string text)
+{
+    std::fstream fs(path, std::ios::in | std::ios::out | std::ios::binary);
+    if (!fs.is_open()) {
+        return false;
+    }
     struct stat stbuf;
     stat(path.c_str(), &stbuf);
 
     int length = stbuf.st_size;
 
     char* buffer = new char[length + 1];
-    fileStream.seekg(0, std::ios::beg);
-    fileStream.read(buffer, length);
-    fileStream.close();
+    fs.seekg(0, std::ios::beg);
+    fs.read(buffer, length);
+    fs.close();
     buffer[length] = '\0';
     std::string buf(buffer);
-    std::string substr0 = buf.substr(0, pos);
-    substr0 += data;
-    std::string substr1 = "";
 
-    for (int i = pos; i < pos + charRemoved; i++)
-    {
-        if (buf[i] < 0) 
-        {
-            charRemoved += 2;
-            i ++;
-        }
-    }
+    std::string substr1 = buf.substr(0, started);
 
-    if (pos + charRemoved < buf.length())
+    std::string substr2 = "";
+    if (started+charRemoved<buf.size())
     {
-        substr1 = buf.substr((size_t)(pos + charRemoved));
+        substr2 = buf.substr(started + charRemoved);
     }
-    buf = substr0 + substr1;
+    buf = substr1 + text +substr2;
+    delete[]buffer;
+
     std::ofstream ofs(path);
+    if (!ofs.is_open())
+        return false;
     ofs.write(buf.c_str(), buf.size());
     ofs.close();
-
-    delete buffer;
     return true;
 }
 

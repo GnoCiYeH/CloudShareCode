@@ -47,13 +47,18 @@ public:
 
     void gotoline(int lineNum);
 
+    void initLastBlock()
+    {
+        lastBlock = ui->textEdit->blockCount();
+    }
+
     void highlightError(const QString &error);
 
     void addText(const QString str);
 
     std::shared_ptr<FileInfo> getFile() { return file; }
 
-    void changeText(int pos, int charRemoved, QString userId, QString data);
+    void changeText(int lineNum, int charRemoved,int posInBlock, QString userId, QString data);
 
     int tcnum = 0;
     int ctnum = 0;
@@ -63,7 +68,7 @@ signals:
     void deleteInfo(int, int);
 
 public slots:
-    void docChange(int, int, int);
+    void docChange(int,int,int);
 protected:
     void resizeEvent(QResizeEvent *event)override;
 private:
